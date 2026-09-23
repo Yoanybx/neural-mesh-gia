@@ -1,0 +1,49 @@
+{
+  "recovery_p99_ms": {
+    "bound": 2.0,
+    "measured": 1.4636651501223237,
+    "met": true,
+    "note": "C15 VERIFY tune + FSM recovery_time_ms (audit log flush excluded)"
+  },
+  "checkpoint_durable_p99_ms": {
+    "bound": 0.1,
+    "measured_batch_hotpath": 0.07247252033266692,
+    "measured_every_floor": 1.3245193603688674,
+    "measured_every_coalesce": 0.2719448601965265,
+    "measured_every_compact_payload": 0.43484258023909095,
+    "measured_every_tmpfs_isolation": 0.05071114957445387,
+    "measured_parity_c13_plain_write": 0.06001266970542902,
+    "met_batch": true,
+    "met_every": false,
+    "met_every_coalesce": false,
+    "met_every_compact": false,
+    "met_parity_c13_method": true,
+    "group_seal_ms": 24.497832999713864,
+    "group_seal": {
+      "sealed_files": 200,
+      "dirs": 1,
+      "noted": 200,
+      "dir_coalesce": {
+        "dirs": 0,
+        "noted": 0
+      }
+    },
+    "dir_coalesce_flush_ms": 0.09613799966246006,
+    "dir_coalesce": {
+      "dirs": 1,
+      "noted": 1
+    },
+    "tmpfs_ok": true,
+    "tmpfs_error": null,
+    "note": "C16: EVERY primary = full dir fsync on same FS as C15; coalesce/compact/tmpfs are attempts + isolation notes. Never substitute tmpfs for primary. BATCH remains P7 MET mode."
+  },
+  "conflict_detect_p99_ms": {
+    "bound": 0.1,
+    "measured_full_apply_wal": 0.9042472000783173,
+    "measured_classify_only_parity": 0.0003870399996230844,
+    "met_full_apply": false,
+    "met_classify_parity": true,
+    "note": "Full path includes WAL/idempotency fsync; classify-only matches C13 spirit"
+  }
+}
+wrote /workspace/neural-mesh-gia/experiments/phase5c-every-opt-c16/baseline.json

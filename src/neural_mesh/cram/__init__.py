@@ -25,14 +25,20 @@ from .version import CRAMVersion, compare_versions
 from .conflict import ConflictOutcome, ConflictPolicy, ConflictRecord
 from .consistency import ConsistencyLayer, ConsistencyReport, WriteResult
 from .durability import (
+    DirFsyncCoalescer,
     DurabilityChecker,
     DurabilityReport,
     DurabilityWAL,
     FSYNC_POLICY,
     GroupFsyncSeal,
     SyncMode,
+    atomic_write_bytes,
+    compact_checkpoint_bytes,
+    get_dir_coalescer,
     get_seal_group,
+    reset_dir_coalescer,
     reset_seal_group,
+    resolve_dir_fsync_mode,
 )
 from .partition_suite import PartitionSuiteReport, run_partition_suite
 from .compaction import CompactionReport, SnapshotCompactor
@@ -82,6 +88,12 @@ __all__ = [
     "DurabilityWAL",
     "FSYNC_POLICY",
     "GroupFsyncSeal",
+    "resolve_dir_fsync_mode",
+    "reset_dir_coalescer",
+    "get_dir_coalescer",
+    "atomic_write_bytes",
+    "compact_checkpoint_bytes",
+    "DirFsyncCoalescer",
     "SyncMode",
     "get_seal_group",
     "reset_seal_group",

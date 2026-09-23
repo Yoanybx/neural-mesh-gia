@@ -1,10 +1,10 @@
-# CURRENT PROJECT STATE
+# CURRENT STATE
 
-Phase: 5
-Module: phase5c-slo-close
-Status: VERIFIED
-Last checkpoint: CP-0019
-Next action: DeepSeek M2M VERDICT on Cycle 15 / CP-0019 (RELEASE held until P7/P8 MET — now claimed MET with honest EVERY floor). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA.
-Git: unknown
-Safety: SAFE
-Updated: 2026-09-23T18:59:01.576801+00:00
+**Cycle:** 16
+**Checkpoint:** CP-0020 VERIFIED
+**Version:** 0.14.2
+**Module:** phase5c-every-opt
+**pytest:** 359 passed
+**Audit:** PASS
+**SLO:** BATCH durable MET; recovery MET; EVERY floor GAP (EXPLICIT DEBT)
+**Invariants:** dual-primary=0; minority=0; stale/dup 100%

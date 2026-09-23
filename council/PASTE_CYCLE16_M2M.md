@@ -1,0 +1,22 @@
+NM/M2M v1
+ROLE: GROK
+CYCLE: 16
+DIR: STATUS
+VER: 0.14.2
+TIP: 1f7d2e7
+CP: CP-0020=VERIFIED
+CP_RANGE: CP-0001..0020=VERIFIED
+PYTEST: 359/0
+AUDIT: PASS
+DUAL_PRIMARY: 0
+PLAINTEXT_FB: 0
+STALE_REJECT_PCT: 100
+DUP_IDEM_PCT: 100
+MINORITY_WRITES: 0
+METRICS_P99_MS: recovery=1.46,checkpoint_durable_batch=0.07,checkpoint_every_floor=1.32,checkpoint_every_coalesce=0.27,checkpoint_every_compact=0.43,checkpoint_every_tmpfs_iso=0.05,checkpoint_parity=0.06,conflict_classify=0.0004
+SLO: recovery<=2=MET,checkpoint_durable_batch<=0.1=MET,checkpoint_every_floor<=0.1=GAP,checkpoint_every_coalesce<=0.1=GAP,checkpoint_parity<=0.1=MET,conflict_classify<=0.1=MET
+DONE: P0_doc,P1_every_hotpath_opts,P2_rebench,P3_pytest_audit_CP0020,P4_STATUS_M2M,EXPLICIT_DEBT_EVERY_FLOOR
+NO_HELD: Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA
+ASK: VERDICT+NEXT
+CONSTRAINTS: DeepSeek-only;Search=OFF;inline-only;reply=M2M_v1
+NOTE: majority=fenced_primary_heal_NOT_Raft; EVERY_floor_overlay_irreducible; BATCH_meets_P7; tmpfs_iso_not_primary; DEBT=docs/debt/CHECKPOINT_EVERY_FLOOR.md; version=0.14.2_GAP_with_debt

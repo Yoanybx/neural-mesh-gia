@@ -1,4 +1,4 @@
-"""WAL/fsync policy + crash-recovery invariants (Phase 5C / CP-0018+0019 SLO close)."""
+"""WAL/fsync policy + crash-recovery invariants (Phase 5C / CP-0018..0020)."""
 
 from __future__ import annotations
 
@@ -19,8 +19,10 @@ from .models import utc_now
 class SyncMode(str, Enum):
     """Durable write sync policy.
 
-    EVERY — fsync on every atomic write (sync-every-write). Honest floor often
-            >0.1 ms p99 on this box — irreducible under true per-op fsync.
+    EVERY — durable content on every atomic write (sync-every-write). C16 hot path:
+            os.write + fdatasync (fallback fsync) → replace → dir fsync policy
+            (`DURABLE_DIR_FSYNC=every|coalesce`). Honest overlay floor often still
+            >0.1 ms p99; never fabricate. Crash: mid-write leaves only tmp.
     BATCH — hot-path atomic replace without fsync; GroupFsyncSeal.seal() group
             fsyncs dirty files. Crash invariants: mid-write leaves only tmp;
             after seal, durable. Unsealed BATCH writes may be lost on power fail.
@@ -37,6 +39,94 @@ def resolve_sync_mode(explicit: str | SyncMode | None = None) -> SyncMode:
     if env in ("batch", "group", "deferred"):
         return SyncMode.BATCH
     return SyncMode.EVERY
+
+
+def resolve_dir_fsync_mode(explicit: str | None = None) -> str:
+    """every (default) | coalesce — POSIX-safe dir fsync policy for EVERY mode.
+
+    coalesce: file content still fdatasync'd per op; directory-entry durability
+    deferred to DirFsyncCoalescer.flush() / GroupFsyncSeal.seal() / explicit flush.
+    Mid-write crash sims unchanged (tmp-only). Rename may be lost on power-fail
+    before flush on some FS — documented as C16 EVERY coalesce tradeoff.
+    """
+    if explicit is not None:
+        v = explicit.strip().lower()
+        return "coalesce" if v in ("coalesce", "deferred", "batch") else "every"
+    env = os.environ.get("DURABLE_DIR_FSYNC", "every").strip().lower()
+    if env in ("coalesce", "deferred", "batch"):
+        return "coalesce"
+    return "every"
+
+
+@dataclass
+class DirFsyncCoalescer:
+    """Tracks dirty parent dirs for POSIX-safe dir fsync coalesce (C16)."""
+
+    dirty: set[str] = field(default_factory=set)
+    ops_since_flush: int = 0
+    auto_every: int = 0  # 0 = never auto; >0 flush every N notes
+
+    def note(self, parent: Path) -> None:
+        self.dirty.add(str(Path(parent)))
+        self.ops_since_flush += 1
+        if self.auto_every > 0 and self.ops_since_flush >= self.auto_every:
+            self.flush()
+
+    def flush(self) -> dict[str, Any]:
+        dirs_done = 0
+        for parent in list(self.dirty):
+            try:
+                dir_fd = os.open(parent, os.O_RDONLY)
+                try:
+                    os.fsync(dir_fd)
+                finally:
+                    os.close(dir_fd)
+                dirs_done += 1
+            except OSError:
+                continue
+        n = len(self.dirty)
+        self.dirty.clear()
+        self.ops_since_flush = 0
+        return {"dirs": dirs_done, "noted": n}
+
+
+_DEFAULT_DIR_COALESCE = DirFsyncCoalescer()
+
+
+def get_dir_coalescer() -> DirFsyncCoalescer:
+    return _DEFAULT_DIR_COALESCE
+
+
+def reset_dir_coalescer(*, auto_every: int = 0) -> DirFsyncCoalescer:
+    global _DEFAULT_DIR_COALESCE
+    _DEFAULT_DIR_COALESCE = DirFsyncCoalescer(auto_every=auto_every)
+    return _DEFAULT_DIR_COALESCE
+
+
+def compact_checkpoint_bytes(seq: int, digest: str | None = None) -> bytes:
+    """Minimal checkpoint seal payload (C16 smaller-seal attempt)."""
+    if digest:
+        return b'{"i":%d,"h":"%s"}' % (seq, digest.encode("ascii"))
+    return b'{"i":%d}' % (seq,)
+
+
+def _fsync_file_fd(fd: int) -> None:
+    """Prefer fdatasync for content; fall back to fsync."""
+    if hasattr(os, "fdatasync"):
+        os.fdatasync(fd)
+    else:
+        os.fsync(fd)
+
+
+def _dir_fsync_now(parent: Path) -> None:
+    try:
+        dir_fd = os.open(str(parent), os.O_RDONLY)
+        try:
+            os.fsync(dir_fd)
+        finally:
+            os.close(dir_fd)
+    except OSError:
+        pass
 
 
 @dataclass
@@ -78,10 +168,17 @@ class GroupFsyncSeal:
                     dirs_done.add(parent)
                 except OSError:
                     pass
+        # Also flush any deferred EVERY-mode dir fsync notes (C16 coalesce).
+        coal_info = get_dir_coalescer().flush()
         self.sealed = True
         n = len(self.dirty)
         self.dirty.clear()
-        return {"sealed_files": files, "dirs": len(dirs_done), "noted": n}
+        return {
+            "sealed_files": files,
+            "dirs": len(dirs_done),
+            "noted": n,
+            "dir_coalesce": coal_info,
+        }
 
 
 # Default process-wide seal group for BATCH mode (tests may replace).
@@ -143,10 +240,14 @@ def atomic_write_bytes(
     *,
     sync_mode: str | SyncMode | None = None,
     seal_group: GroupFsyncSeal | None = None,
+    dir_fsync: str | None = None,
+    dir_coalescer: DirFsyncCoalescer | None = None,
 ) -> SyncMode:
     """Crash-safe write; fsync policy by SyncMode.
 
-    EVERY: tmp → write → fsync → replace → best-effort dir fsync (sync-every-write).
+    EVERY (C16): tmp → os.write → fdatasync|fsync → replace → dir fsync policy
+           (`dir_fsync` / DURABLE_DIR_FSYNC=every|coalesce). Avoids Python
+           buffered flush+fsync double work on the hot path.
     BATCH: single write_bytes of the full buffer (no per-op fsync); path noted on
            seal_group for GroupFsyncSeal.seal(). Small complete writes; mid-write
            crash sims still use simulate_crash_mid_write (tmp-only). After seal,
@@ -155,28 +256,35 @@ def atomic_write_bytes(
     """
     mode = resolve_sync_mode(sync_mode)
     path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
+    parent = path.parent
+    parent.mkdir(parents=True, exist_ok=True)
     if mode == SyncMode.BATCH:
         path.write_bytes(data)
         group = seal_group if seal_group is not None else get_seal_group()
         group.note(path)
         return mode
-    fd, tmp = tempfile.mkstemp(prefix=".tmp-", dir=path.parent)
+    fd, tmp = tempfile.mkstemp(prefix=".tmp-", dir=parent)
+    closed = False
     try:
-        with os.fdopen(fd, "wb") as f:
-            f.write(data)
-            f.flush()
-            os.fsync(f.fileno())
-        os.replace(tmp, path)
         try:
-            dir_fd = os.open(str(path.parent), os.O_RDONLY)
-            try:
-                os.fsync(dir_fd)
-            finally:
-                os.close(dir_fd)
-        except OSError:
-            pass
+            os.write(fd, data)
+            _fsync_file_fd(fd)
+        finally:
+            os.close(fd)
+            closed = True
+        os.replace(tmp, path)
+        dmode = resolve_dir_fsync_mode(dir_fsync)
+        if dmode == "coalesce":
+            coal = dir_coalescer if dir_coalescer is not None else get_dir_coalescer()
+            coal.note(parent)
+        else:
+            _dir_fsync_now(parent)
     finally:
+        if not closed:
+            try:
+                os.close(fd)
+            except OSError:
+                pass
         if os.path.exists(tmp):
             try:
                 os.unlink(tmp)
@@ -313,7 +421,7 @@ class DurabilityReport:
 
 
 FSYNC_POLICY = {
-    "cas": "tmp→write→fsync→replace→dir_fsync(best-effort)",
+    "cas": "tmp→os.write→fdatasync|fsync→replace→dir_fsync(every|coalesce)",
     "heads": "atomic_write_json (fsync)",
     "wal": "append→flush→fsync",
     "idempotency": "append→flush→fsync",
@@ -324,7 +432,7 @@ FSYNC_POLICY = {
         "N=2 'majority' = fenced primary side / heal path only — NOT Raft quorum"
     ),
     "sync_modes": {
-        "every": "per-op fsync (DURABLE_SYNC=every); honest floor often >0.1ms p99",
+        "every": "per-op content fdatasync + dir policy (DURABLE_SYNC=every); C16 optimized; honest floor may remain >0.1ms p99 on overlay",
         "batch": (
             "hot-path write_bytes without fsync; GroupFsyncSeal.seal() group fsync "
             "(DURABLE_SYNC=batch). Meets checkpoint_durable≤0.1ms hot-path SLO; "
@@ -334,6 +442,13 @@ FSYNC_POLICY = {
     "slo_close_c15": {
         "checkpoint_durable": "≤0.1ms p99 under BATCH hot-path; EVERY reported as floor",
         "recovery": "≤2ms p99 (tuned VERIFY path; same FSM method as C14)",
+    },
+    "every_opt_c16": {
+        "hot_path": "os.write + fdatasync|fsync → replace → dir fsync policy",
+        "dir_fsync": "DURABLE_DIR_FSYNC=every|coalesce (POSIX-safe defer of dir entry)",
+        "payload": "compact_checkpoint_bytes for minimal seal",
+        "target": "checkpoint_every_floor p99≤0.1 if honestly possible; else EXPLICIT DEBT",
+        "tmpfs_note": "isolation note only; primary MET/GAP measured on same FS as C15",
     },
 }
 
@@ -569,6 +684,7 @@ def durable_apply(
 
 
 __all__ = [
+    "DirFsyncCoalescer",
     "DurabilityChecker",
     "DurabilityReport",
     "DurabilityWAL",
@@ -580,9 +696,13 @@ __all__ = [
     "append_fsync_jsonl",
     "atomic_write_bytes",
     "atomic_write_json",
+    "compact_checkpoint_bytes",
     "durable_apply",
+    "get_dir_coalescer",
     "get_seal_group",
+    "reset_dir_coalescer",
     "reset_seal_group",
+    "resolve_dir_fsync_mode",
     "resolve_sync_mode",
     "simulate_crash_mid_append",
     "simulate_crash_mid_checkpoint",

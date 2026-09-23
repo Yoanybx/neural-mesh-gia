@@ -45,3 +45,9 @@ Phase 4 Network Fabric + local mTLS. CP-0015 VERIFIED. 217 passed. version 0.11.
 
 ## Cycle 15 — 2026-09-23 EDT
 CP-0019 SLO close P7/P8 MET; pytest 343; 0.14.1; BATCH durable + recovery tune.
+
+## Cycle 16 — 2026-09-23 EDT
+CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; pytest 359; 0.14.2.
+
+## Cycle 16 — 2026-09-23 EDT
+CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; pytest 359; 0.14.2.

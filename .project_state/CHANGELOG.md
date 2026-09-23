@@ -1,6 +1,10 @@
 # Changelog
 
-## Cycle 15 — 2026-09-23 — CP-0019 SLO close (P7/P8)
+## Cycle 16 — 2026-09-23 — CP-0020 EVERY floor opt (GAP-with-debt)
+- EVERY hot-path: os.write + fdatasync|fsync; DirFsyncCoalescer; compact_checkpoint_bytes.
+- Rebench phase5c-every-opt-c16; EVERY primary GAP; BATCH+recovery MET; EXPLICIT DEBT.
+- pytest 359; audit PASS; version 0.14.2; CP-0020 VERIFIED.
+
 - P7: DURABLE_SYNC=batch + GroupFsyncSeal; checkpoint_durable p99 MET ≤0.1ms; EVERY floor reported honestly.
 - P8: recovery VERIFY tune; FSM recovery_time_ms; p99 MET ≤2ms.
 - Rebench experiments/phase5c-slo-close-c15/; pytest 343; version 0.14.1; CP-0019 VERIFIED.

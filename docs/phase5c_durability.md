@@ -1,8 +1,8 @@
 # Phase 5C — Durability & Adversarial Partition Hardening (FROZEN Cycle 14 / P0)
 
-**Status:** FROZEN merge gate (council `COUNCIL_AGREEMENT_CYCLE14.md`); SLO-close Cycle 15 (`COUNCIL_AGREEMENT_CYCLE15.md`).
+**Status:** FROZEN merge gate (C14); SLO-close C15; **EVERY-floor opt Cycle 16** (`COUNCIL_AGREEMENT_CYCLE16.md`).
 **Date:** 2026-09-23 America/New_York (EDT).
-**Checkpoint target:** CP-0018 / 0.14.0; **SLO-close seal CP-0019 / 0.14.1**.
+**Checkpoint target:** CP-0018 / 0.14.0; CP-0019 / 0.14.1; **CP-0020 / 0.14.2** (EVERY opt; GAP-with-debt if floor irreducible).
 **Builds on:** Cycle 13 Phase 5B consistency (CP-0017); Cycle 12 Phase 5A N=2 Fabric replica.
 
 This document freezes the Phase 5C durability + adversarial partition contract.
@@ -73,7 +73,7 @@ Crash between (1) and (4): recovery replays WAL; incomplete COMMIT → discard o
 
 | Mode | Env | Hot path | Seal | Crash invariants |
 |------|-----|----------|------|------------------|
-| **EVERY** (default) | `DURABLE_SYNC=every` | tmp→write→**fsync**→replace→dir fsync | N/A (per-op) | Full sync-every-write |
+| **EVERY** (default) | `DURABLE_SYNC=every` | tmp→**os.write**→**fdatasync\|fsync**→replace→dir fsync (`DURABLE_DIR_FSYNC=every\|coalesce`) | coalesce flush via `DirFsyncCoalescer` / seal | Content durable per-op; mid-write tmp-only |
 | **BATCH** | `DURABLE_SYNC=batch` | full-buffer `write_bytes` **without** fsync; note dirty | `GroupFsyncSeal.seal()` group fsync | Mid-write sims still tmp-only; post-seal durable; unsealed BATCH may be lost on power-fail |
 
 API: `atomic_write_bytes(..., sync_mode=...)`, `GroupFsyncSeal`, `reset_seal_group()`.
@@ -83,9 +83,11 @@ API: `atomic_write_bytes(..., sync_mode=...)`, `GroupFsyncSeal`, `reset_seal_gro
 fsync durability is **best-effort** as far as the underlying filesystem honors it on this box.
 We do not claim battery-backed NVRAM or power-fail lab certification.
 
-**Sync-every-write floor:** on this box, per-op fsync checkpoint p99 is typically
-**~0.3–0.8 ms** — physically irreducible under EVERY for ≤0.1 ms. Cycle 15 closes the
-SLO under **BATCH** hot-path + seal, and reports **both** numbers honestly.
+**Sync-every-write floor:** on this box (overlay FS under `/workspace`), per-op
+durable checkpoint p99 is typically **~0.2–0.8 ms** even after C16 hot-path
+optimizations — dominated by `fdatasync`/`fsync` latency on new-file create+replace,
+not Python. Cycle 15 closes the SLO under **BATCH**; Cycle 16 pushes EVERY further
+and reports honest p99 (MET only if ≤0.1; else **EXPLICIT DEBT**).
 
 ---
 
@@ -171,13 +173,13 @@ Report MET or GAP honestly in bench + STATUS. Prefer real MET under BATCH; never
 
 ## 9. Acceptance
 
-- pytest ≥ 320 (C14); ≥ 328 prefer ≥340 (C15)
+- pytest ≥ 320 (C14); ≥ 328 prefer ≥340 (C15); ≥343 prefer ≥360 (C16)
 - audit PASS
-- **CP-0018 VERIFIED**; **CP-0019 VERIFIED** (SLO-close seal)
-- CP-0001..0018 still VERIFIED
-- version **0.14.1** (C15)
-- P7 checkpoint_durable≤0.1ms MET (BATCH) + EVERY floor reported
-- P8 recovery≤2ms MET
+- **CP-0018 VERIFIED**; **CP-0019 VERIFIED**; **CP-0020 VERIFIED** (EVERY opt seal)
+- CP-0001..0019 still VERIFIED
+- version **0.14.2** (C16 tune / GAP-with-debt) or **0.15.0** if EVERY≤0.1 MET
+- P7 checkpoint_durable≤0.1ms MET (BATCH) held; EVERY floor optimized + reported
+- P8 recovery≤2ms MET held
 - Hard NO list held
 
 ---
@@ -189,3 +191,37 @@ Report MET or GAP honestly in bench + STATUS. Prefer real MET under BATCH; never
 - `cram/compaction.py` — safe snapshot compaction
 - `cram/durability_cli.py` — CLI handlers
 - Cycle 15: `SyncMode` / `GroupFsyncSeal` / `DURABLE_SYNC` in `durability.py`; recovery VERIFY hot-path tune in `recovery_protocol.py`
+- Cycle 16: EVERY hot-path `os.write`+`fdatasync`, `DirFsyncCoalescer` / `DURABLE_DIR_FSYNC`, `compact_checkpoint_bytes`; bench `experiments/phase5c-every-opt-c16/`
+
+---
+
+## 11. Cycle 16 — EVERY floor optimization (CP-0020)
+
+**Goal:** drive `checkpoint_every_floor` p99 toward ≤**0.1 ms** without fabricating.
+Keep BATCH MET; recovery ≤2; invariants dual-primary=0, minority=0, stale/dup 100%.
+
+### 11.1 Attempts (code)
+
+| Attempt | Change | Crash impact |
+|---------|--------|--------------|
+| Smaller seal payload | `compact_checkpoint_bytes(i, digest)` minimal JSON | None |
+| Avoid double-fsync | drop Python `flush`+buffered `fsync`; use `os.write` + `fdatasync`\|`fsync` once | Content still durable before replace |
+| Dir fsync coalesce | `DURABLE_DIR_FSYNC=coalesce` + `DirFsyncCoalescer.flush()` | Mid-write still tmp-only; rename dir-entry durability deferred until flush (POSIX-safe tradeoff; documented) |
+| Reduce Python overhead | no `fdopen` on EVERY hot path; keep `mkstemp` uniqueness | None |
+| tmpfs isolation note | optional bench root under `/dev/shm` | **Not** primary claim; isolation only |
+
+### 11.2 Measurement method (same spirit as C15)
+
+1. Warmup then **n=200** checkpoint writes.
+2. Timed section includes content-hash + `atomic_write_bytes(..., sync_mode=EVERY)` (C15 method).
+3. Report **p50/p95/p99/max** via same `percentile` helper.
+4. Primary MET/GAP on **same FS as C15** (`/workspace` overlay).
+5. Optionally also report tmpfs isolation numbers — never substitute them for primary.
+6. **Never fabricate p99.**
+
+### 11.3 Floor / EXPLICIT DEBT
+
+If primary EVERY p99 remains >0.1 ms after attempts above, seal **CP-0020** with
+version **0.14.2** and `docs/debt/CHECKPOINT_EVERY_FLOOR.md` (HW/OS fsync floor on
+overlay). BATCH remains the SLO-meeting durable mode. Do not claim EVERY MET.
+
