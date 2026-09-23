@@ -276,6 +276,11 @@ def test_golden_manifest_fixture_fields(tmp_path: Path):
     assert d["created_utc"] == "1970-01-01T00:00:00+00:00"
     assert FIXED_MTIME == 0
     assert ARCHIVE_ROOT == "neural-mesh-gia"
+    # CP-0025 additive freeze (default on)
+    assert d.get("freeze") == {
+        "channel": "0.16.x",
+        "schema": "mesh.bundle.manifest/v1",
+    }
 
 
 def test_scripts_build_and_verify_cli(tmp_path: Path):
@@ -330,16 +335,16 @@ def test_scripts_build_and_verify_cli(tmp_path: Path):
     assert "VERIFY: PASS" in r2.stdout
 
 
-def test_repo_version_is_0160_when_installed():
-    """Package version bump gate for CP-0024."""
+def test_repo_version_is_0161_when_installed():
+    """Package version bump gate for CP-0025 (0.16.1 patch on 0.16.0)."""
     import neural_mesh
 
     # Allow running mid-implement; assert file source of truth.
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.16.0"' in pyproject or "version = '0.16.0'" in pyproject
-    assert '__version__ = "0.16.0"' in init
+    assert 'version = "0.16.1"' in pyproject or "version = '0.16.1'" in pyproject
+    assert '__version__ = "0.16.1"' in init
     # If already imported older, still check file; prefer live if matches.
     if hasattr(neural_mesh, "__version__"):
         # May be stale if module imported before bump in same session — file is SoT.
-        assert neural_mesh.__version__ in {"0.15.0", "0.16.0"}
+        assert neural_mesh.__version__ in {"0.15.0", "0.16.0", "0.16.1"}

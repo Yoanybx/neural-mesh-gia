@@ -4,10 +4,10 @@
 P0
 
 ## Action
-DeepSeek M2M VERDICT on Cycle 20 / CP-0024 (Mesh Packaging Single-Node Bundle). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
+DeepSeek M2M VERDICT on Cycle 21 / CP-0025 (Clean-node smoke; manifest repro; RC freeze). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
 
 ## Status
 READY
 
 ## Checkpoint
-CP-0024
+CP-0025

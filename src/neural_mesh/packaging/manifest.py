@@ -8,10 +8,14 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 SCHEMA_ID = "mesh.bundle.manifest/v1"
+# RC freeze channel for 0.16.x packaging (Cycle 21 / CP-0025).
+FREEZE_CHANNEL = "0.16.x"
 
 __all__ = [
     "SCHEMA_ID",
+    "FREEZE_CHANNEL",
     "PytestSummary",
+    "FreezeInfo",
     "BundleManifest",
     "manifest_to_dict",
     "manifest_to_json",
@@ -25,11 +29,26 @@ class PytestSummary(BaseModel):
     failed: int = 0
 
 
+class FreezeInfo(BaseModel):
+    """RC freeze metadata (additive optional; Cycle 21 / CP-0025).
+
+    Documents that ``mesh.bundle.manifest/v1`` is frozen for the given channel.
+    Breaking manifest changes require a CP + semver minor bump.
+    """
+
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    channel: str = FREEZE_CHANNEL
+    schema_name: str = Field(default=SCHEMA_ID, alias="schema")
+
+
 class BundleManifest(BaseModel):
     """Stable, JSON-serializable single-node bundle manifest (v1).
 
     Required fields per DeepSeek CP-0024:
     name, ver, tip, cp_range, pytest, entrypoint, checksums.
+
+    Optional additive (CP-0025): freeze {channel, schema}.
     """
 
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
@@ -47,6 +66,7 @@ class BundleManifest(BaseModel):
     created_utc: str | None = None
     files: list[str] = Field(default_factory=list)
     bundle_sha256: str | None = None
+    freeze: FreezeInfo | None = None
 
 
 def manifest_to_dict(m: BundleManifest) -> dict[str, Any]:

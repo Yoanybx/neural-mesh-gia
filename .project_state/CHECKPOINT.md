@@ -1,7 +1,7 @@
-# CP-0024
+# CP-0025
 
 Phase: 5
-Module: mesh-packaging-single-node-bundle
-Reason: Cycle 20 Mesh Packaging Single-Node Bundle
-Next: DeepSeek M2M VERDICT on Cycle 20 / CP-0024 (Mesh Packaging Single-Node Bundle). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
-Tests: {'passed': 398, 'failed': 0}
+Module: mesh-packaging-rc-freeze
+Reason: Cycle 21 Clean-node smoke; manifest repro; RC freeze
+Next: DeepSeek M2M VERDICT on Cycle 21 / CP-0025. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
+Tests: {'passed': 411, 'failed': 0}

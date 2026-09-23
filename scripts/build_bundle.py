@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Build a reproducible single-node Neural Mesh bundle (CP-0024).
+"""Build a reproducible single-node Neural Mesh bundle (CP-0024 / CP-0025).
 
 Usage:
   python scripts/build_bundle.py [--root PATH] [--out DIR] [--ver VER] [--tip TIP]
+  python scripts/build_bundle.py --repro-check --ver 0.16.1 --tip deadbee
 
 Prefer repo .venv:
   .venv/bin/python scripts/build_bundle.py --out dist/
@@ -25,6 +26,7 @@ from neural_mesh.packaging import (  # noqa: E402
     DEFAULT_BUNDLE_NAME,
     build_bundle,
     manifest_to_dict,
+    repro_check,
 )
 
 
@@ -59,6 +61,16 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Override pytest failed count in manifest",
     )
+    p.add_argument(
+        "--no-freeze",
+        action="store_true",
+        help="Omit freeze{} metadata from manifest (default: embed 0.16.x freeze)",
+    )
+    p.add_argument(
+        "--repro-check",
+        action="store_true",
+        help="Build twice with identical overrides and compare checksums (P10)",
+    )
     p.add_argument("--json", action="store_true", help="Print manifest JSON to stdout")
     args = p.parse_args(argv)
 
@@ -69,6 +81,27 @@ def main(argv: list[str] | None = None) -> int:
             "failed": int(args.pytest_failed or 0),
         }
 
+    if args.repro_check:
+        result = repro_check(
+            args.root,
+            args.out / "repro",
+            name=args.name,
+            ver=args.ver,
+            tip=args.tip,
+            cp_range=args.cp_range,
+            pytest=pytest,
+            entrypoint=args.entrypoint,
+        )
+        status = "PASS" if result.ok else "FAIL"
+        print(f"REPRO: {status}")
+        print(f"SHA_A: {result.sha_a}")
+        print(f"SHA_B: {result.sha_b}")
+        for e in result.errors:
+            print(f"ERROR: {e}")
+        if args.json:
+            print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
+        return 0 if result.ok else 1
+
     manifest = build_bundle(
         args.root,
         args.out,
@@ -78,6 +111,7 @@ def main(argv: list[str] | None = None) -> int:
         cp_range=args.cp_range,
         pytest=pytest,
         entrypoint=args.entrypoint,
+        freeze=not args.no_freeze,
     )
     tar_name = f"{manifest.name}-{manifest.ver}.tar.gz"
     man_name = f"{manifest.name}-{manifest.ver}.manifest.json"
@@ -85,6 +119,11 @@ def main(argv: list[str] | None = None) -> int:
     print(f"MANIFEST: {args.out / man_name}")
     print(f"SHA256: {manifest.bundle_sha256}")
     print(f"VER: {manifest.ver} TIP: {manifest.tip} CP: {manifest.cp_range}")
+    if manifest.freeze:
+        print(
+            f"FREEZE: channel={manifest.freeze.channel} "
+            f"schema={manifest.freeze.schema_name}"
+        )
     if args.json:
         print(json.dumps(manifest_to_dict(manifest), indent=2, sort_keys=True))
     return 0

@@ -17,7 +17,9 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from .manifest import (
     SCHEMA_ID,
+    FREEZE_CHANNEL,
     BundleManifest,
+    FreezeInfo,
     PytestSummary,
     manifest_to_json,
 )
@@ -37,10 +39,22 @@ INCLUDE_PATHS: tuple[str, ...] = (
     "scripts/bootstrap.sh",
     "scripts/build_bundle.py",
     "scripts/verify_bundle.py",
+    "scripts/clean_node_smoke.py",
+    "scripts/repro_check.py",
     "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
     "docs/capabilities/MESH_PACKAGING_SINGLE_NODE_BUNDLE.md",
     ".project_state/CHECKPOINT.json",
 )
+
+# Name-based executable modes (avoid os.access flake across hosts).
+EXECUTABLE_NAMES = {
+    "audit.sh",
+    "bootstrap.sh",
+    "build_bundle.py",
+    "verify_bundle.py",
+    "clean_node_smoke.py",
+    "repro_check.py",
+}
 
 EXCLUDE_DIR_NAMES = {
     ".venv",
@@ -65,6 +79,7 @@ __all__ = [
     "FIXED_MTIME",
     "ARCHIVE_ROOT",
     "INCLUDE_PATHS",
+    "EXECUTABLE_NAMES",
     "build_bundle",
     "verify_bundle",
     "collect_bundle_files",
@@ -182,9 +197,10 @@ def _pytest_from_state(state: Mapping[str, Any]) -> PytestSummary:
 
 
 def _normalize_mode(path: Path) -> int:
+    """Deterministic mode: .sh / known scripts → 0755; else 0644 (no os.access)."""
     if path.is_dir():
         return 0o755
-    if os.access(path, os.X_OK) or path.suffix in {".sh"}:
+    if path.suffix == ".sh" or path.name in EXECUTABLE_NAMES:
         return 0o755
     return 0o644
 
@@ -243,6 +259,7 @@ def build_bundle(
     pytest: PytestSummary | Mapping[str, int] | None = None,
     entrypoint: str = DEFAULT_ENTRYPOINT,
     include_extra: Sequence[str] | None = None,
+    freeze: FreezeInfo | Mapping[str, str] | bool | None = True,
 ) -> BundleManifest:
     """Build a reproducible single-node bundle tarball + manifest.json.
 
@@ -302,6 +319,19 @@ def build_bundle(
     bundle_sha = _write_deterministic_tar(members, tar_path)
     checksums["bundle.tar.gz"] = bundle_sha
 
+    freeze_info: FreezeInfo | None
+    if freeze is False or freeze is None:
+        freeze_info = None
+    elif freeze is True:
+        freeze_info = FreezeInfo(channel=FREEZE_CHANNEL, schema_name=SCHEMA_ID)
+    elif isinstance(freeze, FreezeInfo):
+        freeze_info = freeze
+    else:
+        freeze_info = FreezeInfo(
+            channel=str(freeze.get("channel", FREEZE_CHANNEL)),
+            schema_name=str(freeze.get("schema", freeze.get("schema_name", SCHEMA_ID))),
+        )
+
     manifest = BundleManifest(
         name=name,
         ver=version,
@@ -314,6 +344,7 @@ def build_bundle(
         created_utc="1970-01-01T00:00:00+00:00",  # fixed for determinism
         files=file_list,
         bundle_sha256=bundle_sha,
+        freeze=freeze_info,
     )
 
     # Single write — checksums cover member files + bundle.tar.gz only
@@ -398,6 +429,14 @@ def verify_bundle(
 
     if manifest.schema_name != SCHEMA_ID:
         result.fail(f"schema mismatch: {manifest.schema_name!r} != {SCHEMA_ID!r}")
+
+    if manifest.freeze is not None:
+        if manifest.freeze.schema_name != SCHEMA_ID:
+            result.fail(
+                f"freeze.schema mismatch: {manifest.freeze.schema_name!r} != {SCHEMA_ID!r}"
+            )
+        if not manifest.freeze.channel:
+            result.fail("freeze.channel empty")
 
     for field in ("name", "ver", "cp_range", "entrypoint"):
         if not getattr(manifest, field):

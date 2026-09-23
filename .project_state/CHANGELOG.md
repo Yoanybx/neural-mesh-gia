@@ -1,3 +1,10 @@
+## Cycle 21 — 2026-09-23 — CP-0025 Packaging RC (clean-node / repro / freeze)
+- P9: scripts/clean_node_smoke.py + packaging.clean_node_smoke (isolated extract smoke).
+- P10: scripts/repro_check.py + build_bundle --repro-check; name-based modes; hash-lock.
+- P11: freeze{channel:0.16.x,schema:v1}; docs RC freeze; version 0.16.1 (DeepSeek gave no hard VER).
+- tests/test_packaging_rc_cycle21.py (13); packaging 25; pytest 411; CP-0025 VERIFIED.
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes.
+
 ## Cycle 20 — 2026-09-23 — CP-0024 Mesh Packaging Single-Node Bundle
 - schema mesh.bundle.manifest/v1 (name, ver, tip, cp_range, pytest, entrypoint, checksums).
 - scripts/build_bundle.py + scripts/verify_bundle.py; neural_mesh.packaging (deterministic tar).
