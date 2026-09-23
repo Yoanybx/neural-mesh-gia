@@ -2,6 +2,7 @@
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)
 **Repo:** `/workspace/neural-mesh-gia`
+**Git:** Cycle 3 code/seal pending · HEAD 
 **Directive:** Confirm A with reordering — Digital Twin Hardening BEFORE Phase 2 C-RAM (do NOT start C-RAM yet).
 
 ---
