@@ -1,7 +1,9 @@
 # STATUS FOR CHATGPT — Neural Mesh / GIA-COS Cycle 2
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)  
-**Repo:** `/workspace/neural-mesh-gia`  
+**Repo:**   
+**Git:** Cycle 2 code  · seal CP-0005`/workspace/neural-mesh-gia`  
+**Git:** code/seal pending update — HEAD at write time tracked below
 **Note:** Written while ChatGPT confirm on Cycle 1 NEXT_ACTION was still pending; Cycle 2 executed that NEXT_ACTION as authorized by the parallel Grok work order.
 
 ---

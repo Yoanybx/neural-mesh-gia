@@ -10,4 +10,4 @@ Begin Phase 2 C-RAM (Content-addressable / cognitive RAM layer) unless ChatGPT r
 READY — awaiting ChatGPT confirm/redirect (Cycle 2 work already applied)
 
 ## Checkpoint
-CP-0004
+CP-0005

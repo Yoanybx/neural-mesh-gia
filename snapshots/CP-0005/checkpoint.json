@@ -1,0 +1,27 @@
+{
+  "checkpoint_id": "CP-0005",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.5.0",
+  "status": "IN_PROGRESS",
+  "phase": 1,
+  "module": "digital_twin",
+  "reason": "Post-git seal Cycle 2: Phase 1 twin faults+topology+bench with commit hash",
+  "objective": "",
+  "next_action": "Begin Phase 2 C-RAM (unless ChatGPT redirects); keep Phase 1 twin as test bed",
+  "git_commit": "8e9f930ebfd9a713617077a3d6cb0664f903ac94",
+  "changed_files": [],
+  "tests": {
+    "passed": 15,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "pytest:15passed",
+    "git:8e9f930ebfd9a713617077a3d6cb0664f903ac94",
+    "CP-0004:VERIFIED"
+  ],
+  "created_at": "2026-09-23T14:01:25.147803+00:00",
+  "manifest_sha256": "9dca9c26d13f187d57acb1ed8db27bd27bda26106dcdaa37d23d2d497b52aa89"
+}
