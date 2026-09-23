@@ -1,13 +1,12 @@
 # CURRENT PROJECT STATE
 
-Status: IN_PROGRESS (Phase 0 VERIFIED; Phase 1 Digital Twin expanded Cycle 2)
+Status: VERIFIED (Phase 0 VERIFIED; Phase 1 Digital Twin Hardening Cycle 3 complete)
 Phase: 1
 Module: digital_twin
-Last checkpoint: CP-0005
-Completed phases: 0 (bootstrap+continuity) — evidence in CP-0001
-Phase 1 progress: faults (NODE_LOSS, PACKET_DROP) + topology JSON I/O + bench harness — evidence CP-0004/CP-0005
-Next action: Begin Phase 2 C-RAM (unless ChatGPT redirects); keep Phase 1 twin as test bed
-Git: 8e9f930ebfd9a713617077a3d6cb0664f903ac94
-Safety: SAFE
+Last checkpoint: CP-0006
+Completed phases: 0 (bootstrap+continuity)
+Phase 1 progress: P0 fault injection (NODE_LOSS/PACKET_DROP/PACKET_DELAY) + P1 Topology hash + P2 benchmark twin-basic + P3 git/safety gates — evidence CP-0006
+Next action: Begin Phase 2 C-RAM (content-addressable store) using Phase 1 twin as sandbox; confirm with ChatGPT
+Safety: SAFE (SAFETY_POLICY.json present)
 Humanity Core: no unilateral authority; reversible/auditable checkpoints only
 Updated: 2026-09-23 America/New_York

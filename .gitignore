@@ -8,3 +8,5 @@ __pycache__/
 htmlcov/
 *.tmp
 .DS_Store
+experiments/*
+!experiments/.gitkeep

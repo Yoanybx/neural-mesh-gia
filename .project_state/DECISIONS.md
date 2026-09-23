@@ -17,3 +17,10 @@ Use ADR files for major decisions.
 - PACKET_DROP: seeded SHA256 Bernoulli on placement-path hops (up to 3 retries/hop); total loss → task stays pending → `UNSCHEDULED`.
 - Topology JSON includes seed, nodes, links, tasks, faults; round-trip preserves digest.
 - BenchmarkMetrics: makespan, mean_wait, mean_latency, utilization, packet drop stats.
+
+## ADR-0004 — Twin package layout + ChatGPT interfaces (Cycle 3)
+- Prefer `src/neural_mesh/twin/{faults,events,schema,storage,simulator}.py`; `digital_twin.py` is a compatibility shim.
+- Canonical FaultEvent: event_id, fault_type, target_id, tick, seed, parameters (+ PACKET_DELAY).
+- Topology ChatGPT schema (network_id, nodes.id/cpu/memory, links.source/target); hash into report + experiment checkpoint.json.
+- Benchmark writes experiment-local checkpoint.json (does not auto-create snapshots/CP-*).
+- Git gate PASS iff clean working tree; Safety SAFE iff network+physical actions denied.

@@ -67,7 +67,7 @@ def test_node_loss_fails_running_and_blocks_placement():
     twin.add_task(TwinTask("long", cpu_need=1, duration_ticks=10, earliest_start=0))
     twin.add_task(TwinTask("late", cpu_need=1, duration_ticks=2, earliest_start=3))
     twin.inject_fault(
-        FaultEvent(fault_type=FAULT_NODE_LOSS, at_tick=2, target="a", duration_ticks=-1)
+        FaultEvent.create(FAULT_NODE_LOSS, "a", at_tick=2, duration_ticks=-1, seed=1)
     )
     report = twin.run(ticks=12)
     by_id = {r.task_id: r for r in report.schedule}
@@ -88,12 +88,13 @@ def _two_node_drop_twin(seed: int = 99) -> DigitalTwin:
     twin.add_link(TwinLink("a", "b"))
     twin.add_task(TwinTask("j", cpu_need=1, duration_ticks=2))
     twin.inject_fault(
-        FaultEvent(
-            fault_type=FAULT_PACKET_DROP,
+        FaultEvent.create(
+            FAULT_PACKET_DROP,
+            "a->b",
             at_tick=0,
-            target="a->b",
             drop_rate=0.5,
             duration_ticks=-1,
+            seed=seed,
         )
     )
     return twin
@@ -115,11 +116,12 @@ def test_packet_drop_total_blocks_remote_placement():
     twin.add_link(TwinLink("coord", "worker"))
     twin.add_task(TwinTask("heavy", cpu_need=4, duration_ticks=2))
     twin.inject_fault(
-        FaultEvent(
-            fault_type=FAULT_PACKET_DROP,
+        FaultEvent.create(
+            FAULT_PACKET_DROP,
+            "coord->worker",
             at_tick=0,
-            target="coord->worker",
             drop_rate=1.0,
+            seed=3,
         )
     )
     report = twin.run(ticks=5)
@@ -131,7 +133,7 @@ def test_packet_drop_total_blocks_remote_placement():
 def test_topology_json_roundtrip(tmp_path: Path):
     twin = DigitalTwin.build_demo(seed=42)
     twin.inject_fault(
-        FaultEvent(fault_type=FAULT_NODE_LOSS, at_tick=5, target="n1", duration_ticks=2)
+        FaultEvent.create(FAULT_NODE_LOSS, "n1", at_tick=5, duration_ticks=2, seed=42)
     )
     path = tmp_path / "topo.json"
     twin.save_topology(path)
@@ -157,7 +159,7 @@ def test_fault_digest_changes_when_fault_added():
     base = DigitalTwin.build_demo(seed=42).run(ticks=20)
     twin = DigitalTwin.build_demo(seed=42)
     twin.inject_fault(
-        FaultEvent(fault_type=FAULT_NODE_LOSS, at_tick=1, target="n0")
+        FaultEvent.create(FAULT_NODE_LOSS, "n0", at_tick=1, seed=42)
     )
     faulted = twin.run(ticks=20)
     assert base.digest != faulted.digest

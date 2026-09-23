@@ -1,0 +1,185 @@
+- generic [ref=f19e1067]:
+  - heading "ChatGPT said:" [level=4] [ref=f19e1068]
+  - generic [ref=f19e1070]:
+    - generic [ref=f19e1151]:
+      - paragraph [ref=f19e1152]:
+        - strong [ref=f19e1153]: A) Confirmo el NEXT_ACTION propuesto, con una pequeña reordenación de prioridades para mantener la arquitectura limpia.
+      - paragraph [ref=f19e1154]: El Ciclo 1 cumplió correctamente la función de crear la base de continuidad. Antes de pasar a C-RAM, conviene cerrar el Digital Twin como plataforma experimental reproducible. El objetivo del Ciclo 2 debe ser que cualquier agente pueda repetir un experimento de red/fallos y obtener el mismo resultado desde un checkpoint.
+      - heading "CICLO 2 — Digital Twin Experimental Hardening" [level=2] [ref=f19e1155]
+      - heading "Prioridad P0 — Fault Injection determinista" [level=3] [ref=f19e1156]
+      - paragraph [ref=f19e1157]: "Implementar:"
+      - generic [ref=f19e1166]:
+        - button "Copy" [ref=f19e1167] [cursor=pointer]
+        - code [ref=f19e1176]: src/neural_mesh/twin/ faults.py events.py simulator.py
+      - paragraph [ref=f19e1177]: "Interfaces:"
+      - generic [ref=f19e1183]:
+        - generic [ref=f19e1185]:
+          - generic [ref=f19e1186]: Python
+          - generic [ref=f19e1191]:
+            - button "Copy" [ref=f19e1192] [cursor=pointer]
+            - button "Run code" [ref=f19e1195] [cursor=pointer]:
+              - generic [ref=f19e1196]: Run
+        - code [ref=f19e1209]: "class FaultEvent: event_id: str fault_type: str target_id: str tick: int seed: int parameters: dict"
+      - paragraph [ref=f19e1212]: "Tipos iniciales:"
+      - generic [ref=f19e1218]:
+        - generic [ref=f19e1220]:
+          - generic [ref=f19e1221]: Python
+          - generic [ref=f19e1226]:
+            - button "Copy" [ref=f19e1227] [cursor=pointer]
+            - button "Run code" [ref=f19e1230] [cursor=pointer]:
+              - generic [ref=f19e1231]: Run
+        - code [ref=f19e1244]: NODE_LOSS PACKET_DROP PACKET_DELAY
+      - paragraph [ref=f19e1247]: "Ejemplo:"
+      - generic [ref=f19e1253]:
+        - generic [ref=f19e1255]:
+          - generic [ref=f19e1256]: JSON
+          - button "Copy" [ref=f19e1260] [cursor=pointer]
+        - code [ref=f19e1273]: "{ \"event_id\": \"fault-0001\", \"fault_type\": \"NODE_LOSS\", \"target_id\": \"node-03\", \"tick\": 100, \"seed\": 42 }"
+      - paragraph [ref=f19e1274]: "Requisito:"
+      - list [ref=f19e1275]:
+        - listitem [ref=f19e1276]:
+          - paragraph [ref=f19e1277]: Misma topología.
+        - listitem [ref=f19e1278]:
+          - paragraph [ref=f19e1279]: Mismo workload.
+        - listitem [ref=f19e1280]:
+          - paragraph [ref=f19e1281]: Mismo seed.
+        - listitem [ref=f19e1282]:
+          - paragraph [ref=f19e1283]: Mismo resultado.
+      - paragraph [ref=f19e1284]: "Debe existir:"
+      - generic [ref=f19e1293]:
+        - button "Copy" [ref=f19e1294] [cursor=pointer]
+        - code [ref=f19e1303]: mesh twin run \ --topology topology.json \ --workload workload.json \ --faults faults.json \ --seed 42
+      - paragraph [ref=f19e1304]: "Salida:"
+      - generic [ref=f19e1313]:
+        - button "Copy" [ref=f19e1314] [cursor=pointer]
+        - code [ref=f19e1323]: experiment_id seed events_executed nodes_alive packets_sent packets_dropped latency_avg checkpoint_id
+      - separator [ref=f19e1324]
+      - heading "Prioridad P1 — JSON Topology Persistence" [level=1] [ref=f19e1325]
+      - paragraph [ref=f19e1326]: "Crear:"
+      - generic [ref=f19e1335]:
+        - button "Copy" [ref=f19e1336] [cursor=pointer]
+        - code [ref=f19e1345]: src/neural_mesh/twin/schema.py src/neural_mesh/twin/storage.py
+      - paragraph [ref=f19e1346]: "Formato mínimo:"
+      - generic [ref=f19e1352]:
+        - generic [ref=f19e1354]:
+          - generic [ref=f19e1355]: JSON
+          - button "Copy" [ref=f19e1361] [cursor=pointer]
+        - code [ref=f19e1374]: "{ \"network_id\":\"test-net-001\", \"seed\":42, \"nodes\":[ { \"id\":\"node-01\", \"cpu\":8, \"memory\":32000, \"capabilities\":[\"compute\"] } ], \"links\":[ { \"source\":\"node-01\", \"target\":\"node-02\", \"latency_ms\":5, \"bandwidth_mbps\":1000 } ] }"
+      - paragraph [ref=f19e1377]: "Interfaces:"
+      - generic [ref=f19e1383]:
+        - generic [ref=f19e1385]:
+          - generic [ref=f19e1386]: Python
+          - generic [ref=f19e1391]:
+            - button "Copy" [ref=f19e1392] [cursor=pointer]
+            - button "Run code" [ref=f19e1395] [cursor=pointer]:
+              - generic [ref=f19e1396]: Run
+        - code [ref=f19e1409]: Topology.load(path) Topology.save(path) Topology.hash()
+      - paragraph [ref=f19e1412]: "Requisito:"
+      - paragraph [ref=f19e1413]: El hash de la topología debe entrar en el checkpoint.
+      - paragraph [ref=f19e1414]: "Ejemplo:"
+      - generic [ref=f19e1423]:
+        - button "Copy" [ref=f19e1424] [cursor=pointer]
+        - code [ref=f19e1433]: "CP-0004 topology_hash: 8af923... workload_hash: 92bd11... seed: 42"
+      - separator [ref=f19e1434]
+      - heading "Prioridad P2 — Benchmark Harness" [level=1] [ref=f19e1435]
+      - paragraph [ref=f19e1436]: "Crear:"
+      - generic [ref=f19e1445]:
+        - button "Copy" [ref=f19e1446] [cursor=pointer]
+        - code [ref=f19e1455]: src/neural_mesh/benchmark/ runner.py metrics.py
+      - paragraph [ref=f19e1456]: "Interface:"
+      - generic [ref=f19e1462]:
+        - generic [ref=f19e1464]:
+          - generic [ref=f19e1465]: Python
+          - generic [ref=f19e1470]:
+            - button "Copy" [ref=f19e1471] [cursor=pointer]
+            - button "Run code" [ref=f19e1474] [cursor=pointer]:
+              - generic [ref=f19e1475]: Run
+        - code [ref=f19e1488]: "class ExperimentResult: experiment_id:str duration_ms:int metrics:dict artifacts:list"
+      - paragraph [ref=f19e1491]: "Métricas iniciales:"
+      - generic [ref=f19e1500]:
+        - button "Copy" [ref=f19e1501] [cursor=pointer]
+        - code [ref=f19e1510]: simulation_time events_processed node_failures packet_loss latency throughput recovery_time checkpoint_overhead
+      - paragraph [ref=f19e1511]: "Comando:"
+      - generic [ref=f19e1520]:
+        - button "Copy" [ref=f19e1521] [cursor=pointer]
+        - code [ref=f19e1530]: mesh benchmark run twin-basic
+      - paragraph [ref=f19e1531]: "Debe generar:"
+      - generic [ref=f19e1540]:
+        - button "Copy" [ref=f19e1541] [cursor=pointer]
+        - code [ref=f19e1550]: experiments/ └── EXP-0001/ ├── result.json ├── topology.json ├── workload.json ├── faults.json └── checkpoint.json
+      - separator [ref=f19e1551]
+      - heading "Prioridad P3 — Cerrar Acceptance Part X" [level=1] [ref=f19e1552]
+      - paragraph [ref=f19e1553]: "Antes de Phase 2:"
+      - paragraph [ref=f19e1554]: "Añadir:"
+      - heading "Dirty tree gate" [level=2] [ref=f19e1555]
+      - paragraph [ref=f19e1556]: "Nuevo comando:"
+      - generic [ref=f19e1565]:
+        - button "Copy" [ref=f19e1566] [cursor=pointer]
+        - code [ref=f19e1575]: mesh audit git
+      - paragraph [ref=f19e1576]: "Debe detectar:"
+      - generic [ref=f19e1585]:
+        - button "Copy" [ref=f19e1586] [cursor=pointer]
+        - code [ref=f19e1595]: modified files untracked files branch commit hash
+      - paragraph [ref=f19e1596]: "Salida:"
+      - generic [ref=f19e1605]:
+        - button "Copy" [ref=f19e1606] [cursor=pointer]
+        - code [ref=f19e1615]: "GIT STATUS: PASS/FAIL"
+      - separator [ref=f19e1616]
+      - heading "Safety gate inicial" [level=2] [ref=f19e1617]
+      - paragraph [ref=f19e1618]: "Crear:"
+      - generic [ref=f19e1627]:
+        - button "Copy" [ref=f19e1628] [cursor=pointer]
+        - code [ref=f19e1637]: .project_state/SAFETY_POLICY.json
+      - paragraph [ref=f19e1638]: "Ejemplo:"
+      - generic [ref=f19e1644]:
+        - generic [ref=f19e1646]:
+          - generic [ref=f19e1647]: JSON
+          - button "Copy" [ref=f19e1651] [cursor=pointer]
+        - code [ref=f19e1664]: "{ \"allow_network_actions\":false, \"allow_physical_actions\":false, \"require_human_approval\":true }"
+      - paragraph [ref=f19e1665]: "CLI:"
+      - generic [ref=f19e1674]:
+        - button "Copy" [ref=f19e1675] [cursor=pointer]
+        - code [ref=f19e1684]: mesh safety status
+      - separator [ref=f19e1685]
+      - heading "Tests obligatorios antes de CP-0004" [level=1] [ref=f19e1686]
+      - paragraph [ref=f19e1687]: "Agregar mínimo:"
+      - generic [ref=f19e1696]:
+        - button "Copy" [ref=f19e1697] [cursor=pointer]
+        - code [ref=f19e1706]: tests/test_fault_injection.py tests/test_topology_serialization.py tests/test_benchmark.py tests/test_reproducibility.py tests/test_git_gate.py tests/test_safety_gate.py
+      - paragraph [ref=f19e1707]: "Acceptance:"
+      - generic [ref=f19e1716]:
+        - button "Copy" [ref=f19e1717] [cursor=pointer]
+        - code [ref=f19e1726]: pytest >=15 tests 0 failures audit.sh PASS CP-0004 VERIFIED
+      - separator [ref=f19e1727]
+      - heading "Después de CP-0004" [level=2] [ref=f19e1728]
+      - paragraph [ref=f19e1729]: "Entonces sí:"
+      - heading "Phase 2 — C-RAM" [level=1] [ref=f19e1730]
+      - paragraph [ref=f19e1731]: "No empezaría C-RAM antes de esto, porque C-RAM necesitará un entorno donde podamos probar:"
+      - list [ref=f19e1732]:
+        - listitem [ref=f19e1733]:
+          - paragraph [ref=f19e1734]: pérdida de nodos,
+        - listitem [ref=f19e1735]:
+          - paragraph [ref=f19e1736]: recuperación de estado,
+        - listitem [ref=f19e1737]:
+          - paragraph [ref=f19e1738]: snapshots,
+        - listitem [ref=f19e1739]:
+          - paragraph [ref=f19e1740]: migración,
+        - listitem [ref=f19e1741]:
+          - paragraph [ref=f19e1742]: consistencia,
+        - listitem [ref=f19e1743]:
+          - paragraph [ref=f19e1744]: rollback.
+      - paragraph [ref=f19e1745]: "El orden recomendado queda:"
+      - generic [ref=f19e1754]:
+        - button "Copy" [ref=f19e1755] [cursor=pointer]
+        - code [ref=f19e1764]: Phase 0 Continuidad ✅ Phase 1 Digital Twin ✅ parcial Cycle 2 Twin Hardening ← ahora Phase 2 C-RAM después
+      - paragraph [ref=f19e1765]: "Estado aceptado:"
+      - paragraph [ref=f19e1766]:
+        - strong [ref=f19e1767]: NEXT_ACTION = Ciclo 2 Digital Twin Hardening con Fault Injection + JSON Persistence + Benchmark Harness + cierre Acceptance Part X.
+    - generic [ref=f19e1768]:
+      - group "Response actions":
+        - button "Copy response"
+        - button "Rate response"
+        - button "Share"
+        - generic:
+          - button "Switch model"
+        - button "More actions"

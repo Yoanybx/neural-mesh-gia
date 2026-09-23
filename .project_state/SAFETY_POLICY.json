@@ -1,0 +1,5 @@
+{
+  "allow_network_actions": false,
+  "allow_physical_actions": false,
+  "require_human_approval": true
+}

@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "CP-0006",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.5.0",
+  "status": "VERIFIED",
+  "phase": 1,
+  "module": "digital_twin",
+  "reason": "Cycle 3 Digital Twin Hardening P0-P3 (faults/topology/benchmark/Part X)",
+  "objective": "",
+  "next_action": "Begin Phase 2 C-RAM (content-addressable store) using Phase 1 twin as sandbox; confirm with ChatGPT",
+  "git_commit": "1074dea1ada74eef1d7a9b8ae665fa4286f316b0",
+  "changed_files": [],
+  "tests": {
+    "passed": 30,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "STATUS_FOR_CHATGPT_CYCLE3.md",
+    "src/neural_mesh/twin/",
+    "src/neural_mesh/benchmark/",
+    "pytest:30passed"
+  ],
+  "created_at": "2026-09-23T14:09:00.875368+00:00",
+  "manifest_sha256": "8cbd4a8fe1762f2f02f247536a77d4e8cee9b88bf877bc6c169bc58fc35b79f1"
+}
