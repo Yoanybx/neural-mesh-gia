@@ -63,3 +63,6 @@ Bootstrap continuity system (shipped source).
 - C-RAM DecisionStore persistence + op_id idempotency
 - Safety fail-closed (≥8 cases) + saturation reject policy
 - pytest ≥130; routing p99 <5ms
+
+## 0.9.0 — Cycle 9 (2026-09-23)
+- R0 Hardening + Observability (CP-0013): persist-ack guard, crash frontier, audit/replay, strategy stubs, TLS expiry 2026-12-31.

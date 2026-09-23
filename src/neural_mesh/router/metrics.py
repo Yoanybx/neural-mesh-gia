@@ -1,4 +1,4 @@
-"""Router R0 metrics helpers (bench aggregation; no ML)."""
+"""Router R0 metrics helpers (bench aggregation; no ML) — Cycle 9 extensions."""
 
 from __future__ import annotations
 
@@ -30,18 +30,34 @@ def summarize_decisions(decisions: Sequence[RouteDecision]) -> dict[str, Any]:
         for d in decisions
         if d.metrics
     ]
+    qtime = [
+        float(d.metrics.get("queue_time_ms", 0.0))
+        for d in decisions
+        if d.metrics
+    ]
     dist = Counter(d.selected_node_id for d in accepted)
+    n = len(decisions)
+    reject_rate = (len(rejected) / n) if n else 0.0
     return {
-        "n": len(decisions),
+        "n": n,
         "accepted": len(accepted),
         "rejected": len(rejected),
+        "reject_rate": reject_rate,
         "distribution": dict(sorted(dist.items(), key=lambda kv: kv[0] or "")),
+        "node_distribution": dict(sorted(dist.items(), key=lambda kv: kv[0] or "")),
         "rejected_reasons": dict(Counter(d.reason for d in rejected)),
         "decision_latency_ms": {
             "p50": percentile(lat, 50),
             "p99": percentile(lat, 99),
             "mean": statistics.fmean(lat) if lat else 0.0,
         },
+        "queue_time_ms": {
+            "p50": percentile(qtime, 50),
+            "p99": percentile(qtime, 99),
+            "mean": statistics.fmean(qtime) if qtime else 0.0,
+        },
+        "policy_changes": 0,  # R0 single policy per router instance
+        "replay_success_rate": None,  # filled by bench when replay exercised
     }
 
 

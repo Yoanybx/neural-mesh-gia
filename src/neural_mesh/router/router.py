@@ -8,7 +8,8 @@ import uuid
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
-from .errors import UnknownPolicy
+from .audit import AuditTrail
+from .errors import CramPersistError, UnknownPolicy
 from .log import DecisionLog
 from .models import (
     DecisionStatus,
@@ -25,6 +26,8 @@ from .policy import (
     resolve_policy,
     safety_block_reason,
 )
+from .strategy import RoundRobinStrategy, RoutingStrategy
+from .trace import build_replay_envelope, ensure_trace_id
 
 
 def _has_capabilities(
@@ -42,12 +45,6 @@ def _default_op_id(task: TaskSpec, seed: int, p_hash: str) -> str:
     return hashlib.sha256(material.encode("utf-8")).hexdigest()[:32]
 
 
-def _default_trace_id(task: TaskSpec, op_id: str) -> str:
-    if task.trace_id:
-        return task.trace_id
-    return op_id
-
-
 class CognitiveRouterR0:
     """Phase 3 R0: Task → filters → deterministic Round-Robin → RouteDecision.
 
@@ -61,10 +58,14 @@ class CognitiveRouterR0:
     Unknown policy / no capable node / safety block / saturation ⇒ REJECTED
     with typed reason. Never silent fallback. Never executes network/physical.
 
-    C-RAM audit
-    -----------
+    C-RAM audit (Cycle 9 harden)
+    ----------------------------
     Every decision persisted with ``op_id + epoch + trace_id``. Same ``op_id``
     is idempotent (replay returns the stored decision; RR cursor unchanged).
+
+    **P1 Guard:** when a DecisionStore is configured, ``RouteDecision`` is
+    emitted only after a durable persist ACK. Persist failure ⇒ typed
+    ``CramPersistError`` (no phantom decision, RR cursor unchanged).
     """
 
     VERSION = "R0"
@@ -81,13 +82,14 @@ class CognitiveRouterR0:
         decision_log_path: str | Path | None = None,
         decision_store: DecisionStore | None = None,
         decision_store_root: str | Path | None = None,
+        audit_trail: AuditTrail | None = None,
+        strategy: RoutingStrategy | None = None,
         epoch: int = 0,
         queue_bound: int = DEFAULT_QUEUE_BOUND,
     ):
         ordered = sorted(list(candidates), key=lambda c: c.node_id)
         self._candidates: list[RouteCandidate] = ordered
         self.seed = int(seed)
-        self._rr_index = int(seed)
         self.epoch = int(epoch)
         self.queue_bound = int(queue_bound)
         self._inflight = 0  # accepted not yet completed
@@ -117,6 +119,16 @@ class CognitiveRouterR0:
             self.store = DecisionStore(decision_store_root)
         else:
             self.store = None
+
+        self.audit = audit_trail if audit_trail is not None else AuditTrail()
+
+        # R0 live strategy: RoundRobin. CapabilityAware must not be passed as live.
+        if strategy is None:
+            self.strategy: RoutingStrategy = RoundRobinStrategy(index=int(seed))
+        else:
+            self.strategy = strategy
+        # Back-compat attribute used by metrics / tests
+        self._rr_index = int(getattr(self.strategy, "index", seed))
 
         self._cand_fp = candidates_fingerprint(self._candidates)
 
@@ -156,14 +168,19 @@ class CognitiveRouterR0:
             self._inflight -= 1
 
     def route(self, task: TaskSpec) -> RouteDecision:
-        """Compute a RouteDecision for ``task`` (no side-effect execution)."""
+        """Compute a RouteDecision for ``task`` (no side-effect execution).
+
+        Raises ``CramPersistError`` when a store is configured and persist ack
+        fails — never returns a phantom decision in that case.
+        """
         t0 = time.perf_counter()
         considered = [c.node_id for c in self._candidates]
+        rr_before = int(getattr(self.strategy, "index", self._rr_index))
 
         # Fail-closed: unknown policy — never route under it.
         if self._policy_error is not None or self._policy is None:
             op_id = task.op_id or f"unknown-policy-{task.task_id}-{uuid.uuid4().hex[:8]}"
-            trace_id = _default_trace_id(task, op_id)
+            trace_id = ensure_trace_id(task, op_id)
             decision = self._make_decision(
                 task=task,
                 status=DecisionStatus.REJECTED,
@@ -176,16 +193,20 @@ class CognitiveRouterR0:
                 op_id=op_id,
                 trace_id=trace_id,
                 rr_pick=None,
+                rr_before=rr_before,
             )
-            return self._commit(decision, advance_rr=False)
+            return self._commit(decision, task=task, advance_rr=False, rr_before=rr_before)
 
         p_hash = self._policy_hash
         op_id = _default_op_id(task, self.seed, p_hash)
-        trace_id = _default_trace_id(task, op_id)
+        trace_id = ensure_trace_id(task, op_id)
 
         # Idempotency: same op_id → one decision (no RR advance).
         if self.store is not None:
-            prior = self.store.get_by_op_id(op_id)
+            try:
+                prior = self.store.get_by_op_id(op_id)
+            except CramPersistError:
+                raise
             if prior is not None:
                 return prior
 
@@ -204,8 +225,9 @@ class CognitiveRouterR0:
                 op_id=op_id,
                 trace_id=trace_id,
                 rr_pick=None,
+                rr_before=rr_before,
             )
-            return self._commit(decision, advance_rr=False)
+            return self._commit(decision, task=task, advance_rr=False, rr_before=rr_before)
 
         eligible: list[RouteCandidate] = []
         excluded: list[dict[str, str]] = []
@@ -234,8 +256,9 @@ class CognitiveRouterR0:
                 op_id=op_id,
                 trace_id=trace_id,
                 rr_pick=None,
+                rr_before=rr_before,
             )
-            return self._commit(decision, advance_rr=False)
+            return self._commit(decision, task=task, advance_rr=False, rr_before=rr_before)
 
         # Saturation: reject when inflight would exceed bound (no silent drop).
         if self._inflight >= self.queue_bound:
@@ -257,11 +280,12 @@ class CognitiveRouterR0:
                 op_id=op_id,
                 trace_id=trace_id,
                 rr_pick=None,
+                rr_before=rr_before,
             )
-            return self._commit(decision, advance_rr=False)
+            return self._commit(decision, task=task, advance_rr=False, rr_before=rr_before)
 
-        pick_idx = self._rr_index % len(eligible)
-        chosen = eligible[pick_idx]
+        chosen, pick_idx = self.strategy.select(task, eligible)
+        assert chosen is not None and pick_idx is not None
 
         decision = self._make_decision(
             task=task,
@@ -275,8 +299,9 @@ class CognitiveRouterR0:
             op_id=op_id,
             trace_id=trace_id,
             rr_pick=pick_idx,
+            rr_before=rr_before,
         )
-        return self._commit(decision, advance_rr=True)
+        return self._commit(decision, task=task, advance_rr=True, rr_before=rr_before)
 
     def route_many(self, tasks: Sequence[TaskSpec]) -> list[RouteDecision]:
         return [self.route(t) for t in tasks]
@@ -295,21 +320,22 @@ class CognitiveRouterR0:
         op_id: str,
         trace_id: str,
         rr_pick: int | None,
+        rr_before: int,
     ) -> RouteDecision:
         latency_ms = (time.perf_counter() - t0) * 1000.0
         metrics: dict[str, Any] = {
             "router_version": self.VERSION,
             "decision_latency_ms": latency_ms,
+            "queue_time_ms": 0.0,  # R0 in-process: no async queue wait
             "eligible_count": len(eligible),
-            "rr_index_before": (
-                self._rr_index if rr_pick is not None else self._rr_index
-            ),
+            "rr_index_before": rr_before,
             "rr_pick": rr_pick,
             "selected_node_id": selected,
             "seed": self.seed,
             "candidate_count": len(self._candidates),
             "inflight": self._inflight,
             "queue_bound": self.queue_bound,
+            "strategy": getattr(self.strategy, "name", "ROUND_ROBIN"),
         }
         return RouteDecision(
             task_id=task.task_id,
@@ -328,13 +354,63 @@ class CognitiveRouterR0:
             candidates_fingerprint=self._cand_fp,
         )
 
-    def _commit(self, decision: RouteDecision, *, advance_rr: bool) -> RouteDecision:
-        if advance_rr and decision.status == DecisionStatus.ACCEPTED:
-            self._rr_index += 1
-            self._inflight += 1
-        self.log.append(decision)
+    def _commit(
+        self,
+        decision: RouteDecision,
+        *,
+        task: TaskSpec,
+        advance_rr: bool,
+        rr_before: int,
+    ) -> RouteDecision:
+        """Persist-ack guard then mutate RR / log / audit (Cycle 9 P1).
+
+        Order:
+        1. Build replay envelope
+        2. If store configured → put() must ACK (else raise, no side effects)
+        3. Advance RR / inflight only after ACK
+        4. Append decision log + audit trail
+        5. Return decision
+        """
+        replay = build_replay_envelope(
+            task=task,
+            candidates=self._candidates,
+            policy=self._policy,
+            seed=self.seed,
+            epoch=self.epoch,
+            rr_index_before=rr_before,
+            decision=decision,
+        )
+
         if self.store is not None:
-            self.store.put(decision)
+            try:
+                ack = self.store.put(decision, replay=replay)
+            except CramPersistError:
+                # Fail-closed: do NOT advance RR, do NOT log as committed decision.
+                raise
+            except Exception as exc:  # noqa: BLE001
+                raise CramPersistError(
+                    "C-RAM persist ack failed",
+                    op_id=decision.op_id,
+                    trace_id=decision.trace_id,
+                    cause=str(exc),
+                ) from exc
+            if not ack:
+                raise CramPersistError(
+                    "C-RAM persist returned empty ack",
+                    op_id=decision.op_id,
+                    trace_id=decision.trace_id,
+                )
+
+        if advance_rr and decision.status == DecisionStatus.ACCEPTED:
+            if hasattr(self.strategy, "advance"):
+                self.strategy.advance()  # type: ignore[attr-defined]
+            else:
+                self._rr_index += 1
+            self._rr_index = int(getattr(self.strategy, "index", self._rr_index + 1))
+            self._inflight += 1
+
+        self.log.append(decision)
+        self.audit.record(decision)
         return decision
 
 
@@ -443,8 +519,63 @@ def explain_decision(decision: RouteDecision) -> dict[str, Any]:
     }
 
 
+def replay_from_store(
+    store: DecisionStore,
+    trace_id: str,
+) -> tuple[RouteDecision, RouteDecision]:
+    """Recompute RouteDecision from stored replay envelope; return (stored, recomputed).
+
+    Recomputed decision is produced without a store (pure function of envelope)
+    so idempotent lookup does not short-circuit the recompute path. Canonical
+    bytes exclude timestamp/latency and must match the stored decision.
+    """
+    env = store.get_envelope_by_trace_id(trace_id)
+    if env is None:
+        raise KeyError(f"no decision for trace_id={trace_id}")
+    stored = RouteDecision.from_dict(env["decision"])
+    replay = env.get("replay") or {}
+    if not replay:
+        return stored, stored
+
+    task = TaskSpec.from_dict(replay["task"])
+    cands = [RouteCandidate.from_dict(c) for c in replay.get("candidates", [])]
+    policy = replay.get("policy")
+    seed = int(replay.get("seed", stored.seed))
+    epoch = int(replay.get("epoch", stored.epoch))
+    rr_before = int(replay.get("rr_index_before", seed))
+
+    strategy = RoundRobinStrategy(index=rr_before)
+    router = CognitiveRouterR0(
+        cands,
+        seed=seed,
+        policy=policy,
+        epoch=epoch,
+        strategy=strategy,
+        decision_store=None,
+    )
+    # Restore inflight snapshot so saturation/metrics match the original commit.
+    router._inflight = int(stored.metrics.get("inflight", 0))
+    recompute_task = TaskSpec(
+        task_id=task.task_id,
+        required_capabilities=task.required_capabilities,
+        requires_network=task.requires_network,
+        requires_physical=task.requires_physical,
+        payload_hint=task.payload_hint,
+        objective=task.objective,
+        priority=task.priority,
+        resource_requirements=dict(task.resource_requirements),
+        safety_level=task.safety_level,
+        state_refs=task.state_refs,
+        op_id=stored.op_id,
+        trace_id=stored.trace_id,
+    )
+    recomputed = router.route(recompute_task)
+    return stored, recomputed
+
+
 __all__ = [
     "CognitiveRouterR0",
     "candidates_from_topology",
     "explain_decision",
+    "replay_from_store",
 ]

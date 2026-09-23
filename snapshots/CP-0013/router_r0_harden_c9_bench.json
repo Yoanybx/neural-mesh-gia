@@ -1,0 +1,65 @@
+{
+  "accepted": 900,
+  "decision_latency_ms": {
+    "mean": 1.8510153479874134,
+    "p50": 1.7259000014746562,
+    "p99": 3.0335581011604518
+  },
+  "distribution": {
+    "node-01": 300,
+    "node-02": 300,
+    "node-03": 300
+  },
+  "experiment": "router-r0-harden-c9",
+  "fail_closed_cram_down_ms": {
+    "n": 500,
+    "p50": 0.02373449387960136,
+    "p99": 0.043995490123052136
+  },
+  "n_tasks": 1000,
+  "node_distribution": {
+    "node-01": 300,
+    "node-02": 300,
+    "node-03": 300
+  },
+  "notes": "C9 R0 hardening \u2014 persist-ack guard, audit/replay, strategy stubs. No R1/Phase4/ML/Raft/N>2/TLS.",
+  "p99_fail_closed_under_10ms": true,
+  "p99_healthy_under_5ms": true,
+  "policy_changes": 0,
+  "queue_bound": 1000,
+  "queue_time_ms": {
+    "mean": 0.0,
+    "p50": 0.0,
+    "p99": 0.0
+  },
+  "reject_rate": 0.1,
+  "rejected": 100,
+  "rejected_classification": {
+    "NO_CAPABLE_NODE": {
+      "class": "intentional_bench_policy_5pct_quantum",
+      "count": 50
+    },
+    "SAFETY_POLICY_BLOCKS_NETWORK": {
+      "class": "intentional_bench_policy_5pct_network",
+      "count": 50
+    },
+    "SATURATION_QUEUE_FULL": {
+      "class": "bound_policy_inflight_ge_queue_bound",
+      "count": 0
+    },
+    "queue_bound": 1000,
+    "verdict": "100/1000 rejected is 100% justified by declared bench policy (not capacity leak)"
+  },
+  "rejected_reasons": {
+    "NO_CAPABLE_NODE": 50,
+    "SAFETY_POLICY_BLOCKS_NETWORK": 50
+  },
+  "replay_success_rate": 1.0,
+  "router_version": "R0",
+  "seed": 42,
+  "tls_debt": {
+    "expiry": "2026-12-31",
+    "status": "ACCEPTED_UNTIL_PHASE_4"
+  },
+  "wall_ms_total": 1851.8556500057457
+}

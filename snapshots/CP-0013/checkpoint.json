@@ -1,0 +1,31 @@
+{
+  "checkpoint_id": "CP-0013",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.8.0",
+  "status": "VERIFIED",
+  "phase": 3,
+  "module": "cognitive-router-r0-hardening",
+  "reason": "Cycle 9 R0 Hardening+Observability: persist-ack guard, kill-9 0 phantoms/100, audit+replay byte-identical, TLS debt expiry 2026-12-31, strategy stubs, CP-0013",
+  "objective": "",
+  "next_action": "Dual review of Cycle 9 / CP-0013. Then R1 capability-aware OR Phase 4 Network Fabric per council. No silent TLS; TLS expiry 2026-12-31.",
+  "git_commit": "3ea1cb27f1f9263a90c3ac7092a79e7fa6ecb23a",
+  "changed_files": [],
+  "tests": {
+    "passed": 160,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/cognitive_router_r0.md",
+    "docs/cognitive_router_r0_hardening_c9.md",
+    "experiments/router-r0-harden-c9/baseline.json",
+    "tests/test_router_hardening_c9.py",
+    "tests/test_router_audit_replay_c9.py"
+  ],
+  "created_at": "2026-09-23T17:02:47.511851+00:00",
+  "manifest_sha256": "6ba6ebe4dc9065e0ce5eaac6a35eff38013017a0fc4ddee146fa15c124b0cc57",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

@@ -25,9 +25,11 @@ from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
 from .router import (
     CognitiveRouterR0,
     DecisionLog,
+    DecisionStore,
     TaskSpec,
     candidates_from_topology,
     explain_decision,
+    replay_from_store,
 )
 from .cram.replica_cli import (
     cmd_replica_connect,
@@ -266,6 +268,13 @@ def main(argv: list[str] | None = None):
     rroute.add_argument("--requires-physical", action="store_true")
     rroute.add_argument("--log", type=str, default=None)
     rroute.add_argument("--json", action="store_true")
+    rroute.add_argument("--store", type=str, default=None, help="C-RAM DecisionStore root")
+    rreplay = router_subs.add_parser(
+        "replay", help="Replay RouteDecision by trace_id (byte-identical)"
+    )
+    rreplay.add_argument("trace_id")
+    rreplay.add_argument("--store", type=str, required=True, help="C-RAM DecisionStore root")
+    rreplay.add_argument("--json", action="store_true")
 
     a = parser.parse_args(argv)
     root = Path.cwd()
@@ -476,8 +485,13 @@ def main(argv: list[str] | None = None):
                 twin_obj = DigitalTwin.build_demo(seed=a.seed)
                 cands = candidates_from_topology(twin_obj)
             log = DecisionLog(a.log) if a.log else DecisionLog()
+            store = DecisionStore(a.store) if getattr(a, "store", None) else None
             router = CognitiveRouterR0(
-                cands, seed=int(a.seed), policy_root=root, decision_log=log
+                cands,
+                seed=int(a.seed),
+                policy_root=root,
+                decision_log=log,
+                decision_store=store,
             )
             task = TaskSpec(
                 task_id=a.task_id,
@@ -492,6 +506,28 @@ def main(argv: list[str] | None = None):
             else:
                 print(json.dumps(payload, indent=2, sort_keys=True))
             raise SystemExit(0 if decision.status.value == "ACCEPTED" else 3)
+        elif a.op == "replay":
+            store = DecisionStore(a.store)
+            try:
+                stored, recomputed = replay_from_store(store, a.trace_id)
+            except KeyError as exc:
+                print(json.dumps({"error": str(exc), "trace_id": a.trace_id}))
+                raise SystemExit(3)
+            identical = stored.canonical_bytes() == recomputed.canonical_bytes()
+            payload = {
+                "trace_id": a.trace_id,
+                "byte_identical": identical,
+                "stored": explain_decision(stored),
+                "recomputed": explain_decision(recomputed),
+                "stored_canonical_sha256": __import__("hashlib")
+                .sha256(stored.canonical_bytes())
+                .hexdigest(),
+                "recomputed_canonical_sha256": __import__("hashlib")
+                .sha256(recomputed.canonical_bytes())
+                .hexdigest(),
+            }
+            print(json.dumps(payload, indent=2, sort_keys=True))
+            raise SystemExit(0 if identical else 1)
         elif a.op == "explain":
             # Prefer log lookup; else live-route once for explain.
             found = None

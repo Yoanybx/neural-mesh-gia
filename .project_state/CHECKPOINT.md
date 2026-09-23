@@ -1,7 +1,7 @@
-# CP-0012
+# CP-0013
 
 Phase: 3
-Module: cognitive-router-r0
-Reason: Cycle 8 Phase 3 Cognitive Router R0 + DeepSeek: determinism contract, policy_hash fail-closed, C-RAM op_id idempotency, saturation, bench N=1000, CP-0012
-Next: Dual review of Cycle 8 / CP-0012. Evaluate R1 only with council approval. No R2/R3/Raft/N>2/ML/TLS.
-Tests: {'passed': 142, 'failed': 0}
+Module: cognitive-router-r0-hardening
+Reason: Cycle 9 R0 Hardening+Observability: persist-ack guard, kill-9 0 phantoms/100, audit+replay byte-identical, TLS debt expiry 2026-12-31, strategy stubs, CP-0013
+Next: Dual review of Cycle 9 / CP-0013. Then R1 capability-aware OR Phase 4 Network Fabric per council. No silent TLS; TLS expiry 2026-12-31.
+Tests: {'passed': 160, 'failed': 0}

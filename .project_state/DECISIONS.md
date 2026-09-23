@@ -59,3 +59,12 @@ Use ADR files for major decisions.
 - Saturation: `inflight >= queue_bound` ⇒ REJECT SATURATION_QUEUE_FULL (no drop/ML).
 - Every decision persisted in C-RAM via DecisionStore (`op_id`→hash); same op_id idempotent.
 - Doc freeze: `docs/cognitive_router_r0.md` is the merge gate.
+
+## ADR-0009 — R0 Hardening + Observability (Cycle 9)
+- Persist-ack guard: `RouteDecision` only after C-RAM `put` ACK; else `CramPersistError`.
+- Phantom = decision returned without durable ACK; acceptance 0/100 kill -9 mid-put.
+- TLS debt formally accepted until Phase 4 with expiry **2026-12-31** (no TLS in C9).
+- Rejected 100/1000 classified as intentional bench policy (50 network + 50 quantum), not saturation.
+- `RoutingStrategy` interface; `RoundRobinStrategy` live; `CapabilityAwareStrategy` STUB only (R1 not activated).
+- Audit trail + `mesh router replay <trace_id>` byte-identical canonical form.
+- Determinism contract of R0 unchanged.

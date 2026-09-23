@@ -79,7 +79,38 @@ class SaturationError(RouterError):
         super().__init__(message)
 
 
+class CramPersistError(RouterError):
+    """C-RAM persist ack missing/failed — no RouteDecision may be emitted (C9).
+
+    Phantom-decision guard: a decision returned to the caller without a durable
+    C-RAM ack is forbidden. Callers must treat this as typed fail-closed ERROR.
+    """
+
+    code = "ROUTER_CRAM_PERSIST_FAILED"
+
+    def __init__(
+        self,
+        message: str = "C-RAM persist ack failed",
+        *,
+        op_id: str | None = None,
+        trace_id: str | None = None,
+        cause: str | None = None,
+    ):
+        self.op_id = op_id
+        self.trace_id = trace_id
+        self.cause = cause
+        parts = [message]
+        if op_id:
+            parts.append(f"op_id={op_id}")
+        if trace_id:
+            parts.append(f"trace_id={trace_id}")
+        if cause:
+            parts.append(f"cause={cause}")
+        super().__init__("; ".join(parts))
+
+
 __all__ = [
+    "CramPersistError",
     "NoCapableNode",
     "RouterError",
     "SafetyPolicyBlocked",

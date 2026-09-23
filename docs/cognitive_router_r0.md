@@ -1,7 +1,8 @@
 # Cognitive Router R0 — Contract (Cycle 8 / Phase 3)
 
 **FROZEN for CP-0012** (ChatGPT A + DeepSeek B changes).  
-**No R1/R2/R3, Raft, N>2 expand, ML/adaptive, or TLS** in this cycle.
+**Cycle 9 hardening addendum:** `docs/cognitive_router_r0_hardening_c9.md` (persist-ack guard, phantom semantics, TLS expiry 2026-12-31). Determinism contract unchanged.
+**No R1/R2/R3, Raft, N>2 expand, ML/adaptive, or TLS** in Cycle 8/9.
 
 ## P0 — Determinism contract (falsable)
 
@@ -88,3 +89,14 @@ When `inflight_accepted >= queue_bound` and the next decision would be ACCEPTED:
 - R1 capability-aware / weighted / priority scoring
 - R2/R3, ML, embeddings, adaptive routing
 - Raft / consensus / N>2 mesh expand / TLS (TLS remains EXPLICIT DEBT)
+
+## TLS debt (Cycle 9 formal)
+
+Accepted until Phase 4. **Expiry: 2026-12-31.** See
+`docs/cognitive_router_r0_hardening_c9.md`. No TLS implementation in R0 cycles.
+
+## Persist-ack guard (Cycle 9)
+
+When `DecisionStore` is configured, `RouteDecision` is returned only after C-RAM
+persist ACK. Failure ⇒ `CramPersistError` — zero phantom decisions.
+
