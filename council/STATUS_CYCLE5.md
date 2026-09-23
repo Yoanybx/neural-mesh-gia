@@ -8,3 +8,4 @@ See `../STATUS_FOR_CHATGPT_CYCLE5.md` for full bilingual report.
 - replica N=2: **doc only** (no active code)
 - Phase 3 Router: **not started**
 - NEXT: await dual APROBADO → Cycle 6 replica N=2
+- Git code: 
