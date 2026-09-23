@@ -2,7 +2,7 @@
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)
 **Repo:** `/workspace/neural-mesh-gia`
-**Git:** Cycle 3 code/seal pending · HEAD 
+**Git:** Cycle 3 code `d78501ee8de421a89c37ef665042a0bedc9d52b9` · status seal `7d7fa0ae8c32842f253b7241ad9a386f5f966dbc`
 **Directive:** Confirm A with reordering — Digital Twin Hardening BEFORE Phase 2 C-RAM (do NOT start C-RAM yet).
 
 ---
@@ -89,6 +89,19 @@ mesh audit git                     # PASS after commit
 mesh checkpoint create ...         # CP-0006 / CP-0007
 bash scripts/audit.sh              # AUDIT PASS
 git commit (one-shot -c user.name/email; config not edited)
+```
+
+Code commit: `d78501ee8de421a89c37ef665042a0bedc9d52b9`
+Status seal commit: `7d7fa0ae8c32842f253b7241ad9a386f5f966dbc`
+
+Recent log:
+```
+7d7fa0a Cycle 3: seal CP-0007 + STATUS_FOR_CHATGPT_CYCLE3
+d78501e Cycle 3: Digital Twin Hardening P0-P3 before C-RAM
+1074dea Repair STATUS_FOR_CHATGPT_CYCLE2.md header and hashes.
+8ffc4e5 Fix Cycle 2 ChatGPT status header hashes after seal.
+203025f Record CP-0005 seal and refresh Cycle 2 status for ChatGPT.
+8e9f930 Cycle 2 Phase 1 expand: twin faults, topology I/O, bench harness.
 ```
 
 ## Files changed (Cycle 3)
