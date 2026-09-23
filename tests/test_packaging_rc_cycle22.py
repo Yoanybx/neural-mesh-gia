@@ -162,8 +162,8 @@ def test_rc_install_verify_success_real_bundle(tmp_path: Path):
         REPO,
         out,
         tip="c22inst",
-        ver="0.16.2",
-        cp_range="CP-0001..0026",
+        ver="0.16.3",
+        cp_range="CP-0001..0027",
         pytest={"passed": 411, "failed": 0},
     )
     tar = out / f"{m.name}-{m.ver}.tar.gz"
@@ -178,9 +178,9 @@ def test_rc_install_verify_success_real_bundle(tmp_path: Path):
     assert result.help_ok is True
     assert result.status_ok is True
     assert result.freeze_channel == FREEZE_CHANNEL
-    assert result.version == "0.16.2"
+    assert result.version == "0.16.3"
     marker = read_install_marker(tmp_path / "prefix")
-    assert marker.get("ver") == "0.16.2"
+    assert marker.get("ver") == "0.16.3"
     assert (tmp_path / "prefix" / "bin" / "mesh").is_file()
 
 
@@ -226,8 +226,8 @@ def test_rc_install_verify_script_cli(tmp_path: Path):
         REPO,
         out,
         tip="c22cli1",
-        ver="0.16.2",
-        cp_range="CP-0001..0026",
+        ver="0.16.3",
+        cp_range="CP-0001..0027",
         pytest={"passed": 1, "failed": 0},
     )
     tar = out / f"{m.name}-{m.ver}.tar.gz"
@@ -353,8 +353,8 @@ def test_release_checklist_pass_with_skips(tmp_path: Path):
     # by using marker + skip_pytest; still run freeze + version + no_held.
     result = run_release_checklist(
         REPO,
-        expect_version="0.16.2",
-        expect_cp="CP-0026",
+        expect_version="0.16.3",
+        expect_cp="CP-0027",
         out_dir=tmp_path / "chk",
         tip="chkpass",
         skip_repro=False,
@@ -364,7 +364,7 @@ def test_release_checklist_pass_with_skips(tmp_path: Path):
         require_freeze=True,
     )
     assert result.ok, result.errors
-    assert result.version == "0.16.2"
+    assert result.version == "0.16.3"
     assert result.freeze_channel == FREEZE_CHANNEL
     names = {g.name for g in result.gates}
     assert "version_match" in names
@@ -388,8 +388,8 @@ def test_release_checklist_fails_when_freeze_missing(tmp_path: Path):
     tar = out / f"{m.name}-{m.ver}.tar.gz"
     result = run_release_checklist(
         REPO,
-        expect_version="0.16.2",
-        expect_cp="CP-0026",
+        expect_version="0.16.3",
+        expect_cp="CP-0027",
         out_dir=tmp_path / "chk",
         skip_repro=True,
         skip_smoke=True,
@@ -406,7 +406,7 @@ def test_release_checklist_fails_version_mismatch(tmp_path: Path):
     result = run_release_checklist(
         REPO,
         expect_version="9.9.9",
-        expect_cp="CP-0026",
+        expect_cp="CP-0027",
         out_dir=tmp_path / "chk",
         tip="verfail",
         skip_repro=True,
@@ -429,9 +429,9 @@ def test_release_checklist_script_json(tmp_path: Path):
             "--out",
             str(tmp_path / "chk"),
             "--expect-version",
-            "0.16.2",
+            "0.16.3",
             "--expect-cp",
-            "CP-0026",
+            "CP-0027",
             "--skip-cp",
             "--skip-pytest",
             "--skip-smoke",
@@ -446,12 +446,13 @@ def test_release_checklist_script_json(tmp_path: Path):
     assert r.returncode == 0, r.stderr + r.stdout
     data = json.loads(r.stdout)
     assert data["ok"] is True
-    assert data["version"] == "0.16.2"
+    assert data["version"] == "0.16.3"
     assert data["freeze_channel"] == FREEZE_CHANNEL
 
 
 def test_version_gate_0162_files():
+    """Historical name; live repo is now 0.16.3 (Cycle 23)."""
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.16.2"' in pyproject
-    assert '__version__ = "0.16.2"' in init
+    assert 'version = "0.16.3"' in pyproject
+    assert '__version__ = "0.16.3"' in init

@@ -1,8 +1,8 @@
 # Mesh Packaging: Single-Node Bundle
 
 **Capability:** `MESH_PACKAGING_SINGLE_NODE_BUNDLE`  
-**Cycle / Checkpoint:** 22 / CP-0026 (extends Cycle 21 / CP-0025)  
-**Version:** 0.16.2  
+**Cycle / Checkpoint:** 23 / CP-0027 (extends Cycle 22 / CP-0026)  
+**Version:** 0.16.3  
 **Scope:** `capability_not_tags_not_SLO`  
 **Schema:** `mesh.bundle.manifest/v1` (**FROZEN** for 0.16.x)
 
@@ -16,6 +16,10 @@ This capability does **not** change tag schemas, chase SLOs, alter consensus, Ra
 
 DeepSeek Cycle 20 VERDICT did not specify a hard next semver. Council chose **0.16.1** (patch): packaging RC hardening (clean-node smoke, manifest repro, RC freeze) on top of **0.16.0**. Documented in `council/COUNCIL_AGREEMENT_CYCLE21.md`.
 
+## Semver note (Cycle 23)
+
+DeepSeek Cycle 22 VERDICT did not specify a hard next semver (`VER_NEXT: CYCLE_23_STATUS_AFTER_P15_P17`). Council chose **0.16.3** (patch): RC soak stability, final release audit, post-RC watch on the frozen 0.16.x channel. Documented in `council/COUNCIL_AGREEMENT_CYCLE23.md`.
+
 ## Semver note (Cycle 22)
 
 DeepSeek Cycle 21 VERDICT did not specify a hard next semver (`VER_NEXT: CYCLE_22_STATUS_AFTER_P12_P14`). Council chose **0.16.2** (patch): RC install verify, rollback smoke, release checklist on the frozen 0.16.x channel. Documented in `council/COUNCIL_AGREEMENT_CYCLE22.md`.
@@ -26,9 +30,9 @@ DeepSeek Cycle 21 VERDICT did not specify a hard next semver (`VER_NEXT: CYCLE_2
 {
   "schema": "mesh.bundle.manifest/v1",
   "name": "neural-mesh-gia-single-node",
-  "ver": "0.16.2",
+  "ver": "0.16.3",
   "tip": "<gitsha7 or override>",
-  "cp_range": "CP-0001..0026",
+  "cp_range": "CP-0001..0027",
   "pytest": {"passed": 406, "failed": 0},
   "entrypoint": "mesh",
   "checksums": {
@@ -36,7 +40,7 @@ DeepSeek Cycle 21 VERDICT did not specify a hard next semver (`VER_NEXT: CYCLE_2
     "pyproject.toml": "<sha256>",
     "src/neural_mesh/__init__.py": "<sha256>"
   },
-  "cp_tip": "CP-0026",
+  "cp_tip": "CP-0027",
   "created_utc": "1970-01-01T00:00:00+00:00",
   "files": ["pyproject.toml", "src/neural_mesh/..."],
   "bundle_sha256": "<same as checksums.bundle.tar.gz>",

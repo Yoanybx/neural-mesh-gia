@@ -1,3 +1,11 @@
+## Cycle 23 — 2026-09-23 — CP-0027 Packaging RC (soak / final audit / watch)
+- P15: scripts/rc_soak.py + packaging.rc_soak (N-iter install/status/verify[/smoke]; p50/p99; variance bound).
+- P16: scripts/final_release_audit.py + MESH_PACKAGING_FINAL_RELEASE_AUDIT.md; JSON M2M release-ready gate.
+- P17: scripts/post_rc_watch.py + MESH_PACKAGING_POST_RC_WATCH.md; --once watch report (no Grok Bot routine).
+- tests/test_packaging_rc_cycle23.py (15); packaging 53; pytest 439; CP-0027 VERIFIED.
+- Version 0.16.3 (DeepSeek gave no hard VER; final soak/audit on RC track).
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes.
+
 ## Cycle 22 — 2026-09-23 — CP-0026 Packaging RC (install / rollback / checklist)
 - P12: scripts/rc_install_verify.py + packaging.rc_install (clean prefix PYTHONPATH install).
 - P13: scripts/rollback_smoke.py + packaging.rollback (B→A filesystem rollback).

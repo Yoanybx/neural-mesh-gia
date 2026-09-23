@@ -1,8 +1,8 @@
 # Mesh Packaging: Single-Node RC Release Checklist
 
 **Capability:** `MESH_PACKAGING_RELEASE_CHECKLIST`  
-**Cycle / Checkpoint:** 22 / CP-0026  
-**Version:** 0.16.2  
+**Cycle / Checkpoint:** 23 / CP-0027 (extends Cycle 22 / CP-0026)  
+**Version:** 0.16.3  
 **Scope:** `capability_not_tags_not_SLO` (single-node RC packaging)  
 **Schema:** `mesh.bundle.manifest/v1` (**FROZEN** for 0.16.x)
 
@@ -56,3 +56,12 @@ print(r.to_json())
 
 No tag schema edits, no SLO chase, no Raft/N>2/consensus, no plaintext/GIA, no EVERY fsync optimization.
 Manifest schema v1 remains frozen for 0.16.x (additive fields OK).
+
+
+## Cycle 23 extensions (P15–P17)
+
+- **P15** `scripts/rc_soak.py` — deterministic RC soak stability
+- **P16** `scripts/final_release_audit.py` + `MESH_PACKAGING_FINAL_RELEASE_AUDIT.md`
+- **P17** `scripts/post_rc_watch.py` — post-RC watch `--once` (no Grok Bot routine)
+
+Version **0.16.3**; freeze channel `0.16.x` unchanged.

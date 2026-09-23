@@ -1,0 +1,42 @@
+{
+  "checkpoint_id": "CP-0027",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.16.3",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "mesh-packaging-rc-soak-audit-watch",
+  "reason": "Cycle 23 RC soak stability; final release audit; post-RC watch",
+  "objective": "",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 23 / CP-0027. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
+  "git_commit": null,
+  "changed_files": [
+    "src/neural_mesh/packaging/rc_soak.py",
+    "src/neural_mesh/packaging/final_release_audit.py",
+    "src/neural_mesh/packaging/post_rc_watch.py",
+    "scripts/rc_soak.py",
+    "scripts/final_release_audit.py",
+    "scripts/post_rc_watch.py",
+    "tests/test_packaging_rc_cycle23.py",
+    "pyproject.toml",
+    "src/neural_mesh/__init__.py"
+  ],
+  "tests": {
+    "passed": 439,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "scripts/rc_soak.py",
+    "scripts/final_release_audit.py",
+    "scripts/post_rc_watch.py",
+    "tests/test_packaging_rc_cycle23.py",
+    "docs/capabilities/MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
+    "docs/capabilities/MESH_PACKAGING_POST_RC_WATCH.md"
+  ],
+  "created_at": "2026-09-23T22:46:47.634257+00:00",
+  "manifest_sha256": "62487c2cfc1ba0f78f564598bbf358b82fd5fbb969b71c1bbca0cc18ad5ae9ab",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

@@ -336,15 +336,15 @@ def test_scripts_build_and_verify_cli(tmp_path: Path):
 
 
 def test_repo_version_is_0162_when_installed():
-    """Package version bump gate for CP-0026 (0.16.2 patch on 0.16.1)."""
+    """Package version bump gate for CP-0027 (0.16.3 patch on 0.16.2)."""
     import neural_mesh
 
     # Allow running mid-implement; assert file source of truth.
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.16.2"' in pyproject or "version = '0.16.2'" in pyproject
-    assert '__version__ = "0.16.2"' in init
+    assert 'version = "0.16.3"' in pyproject or "version = '0.16.3'" in pyproject
+    assert '__version__ = "0.16.3"' in init
     # If already imported older, still check file; prefer live if matches.
     if hasattr(neural_mesh, "__version__"):
         # May be stale if module imported before bump in same session — file is SoT.
-        assert neural_mesh.__version__ in {"0.15.0", "0.16.0", "0.16.1", "0.16.2"}
+        assert neural_mesh.__version__ in {"0.15.0", "0.16.0", "0.16.1", "0.16.2", "0.16.3"}

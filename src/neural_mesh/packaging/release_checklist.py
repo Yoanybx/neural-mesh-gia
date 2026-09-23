@@ -236,10 +236,12 @@ def _gate_packaging_pytest(root: Path, result: ChecklistResult, *, skip: bool, p
 def _gate_no_held(root: Path, result: ChecklistResult) -> None:
     """NO_HELD must be documented in council agreement and/or capability doc."""
     needles = [
+        root / "council" / "COUNCIL_AGREEMENT_CYCLE23.md",
         root / "council" / "COUNCIL_AGREEMENT_CYCLE22.md",
         root / "council" / "COUNCIL_AGREEMENT_CYCLE21.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_SINGLE_NODE_BUNDLE.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_CHECKLIST.md",
+        root / "docs" / "capabilities" / "MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
     ]
     required_tokens = ["Raft", "SLO_chase", "tag_schema", "EVERY_fsync", "N>2"]
     found_in: list[str] = []
@@ -259,8 +261,8 @@ def _gate_no_held(root: Path, result: ChecklistResult) -> None:
 def run_release_checklist(
     root: Path | str,
     *,
-    expect_version: str | None = "0.16.2",
-    expect_cp: str | None = "CP-0026",
+    expect_version: str | None = "0.16.3",
+    expect_cp: str | None = "CP-0027",
     out_dir: Path | str | None = None,
     tip: str | None = None,
     skip_repro: bool = False,
@@ -345,7 +347,7 @@ def run_release_checklist(
     _gate_no_held(root, result)
 
     result.summary = {
-        "cycle": 22,
+        "cycle": 23,
         "cp": result.cp_tip,
         "ver": result.version,
         "freeze": result.freeze_channel,

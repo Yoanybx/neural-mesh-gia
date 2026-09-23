@@ -44,9 +44,14 @@ INCLUDE_PATHS: tuple[str, ...] = (
     "scripts/rc_install_verify.py",
     "scripts/rollback_smoke.py",
     "scripts/release_checklist.py",
+    "scripts/rc_soak.py",
+    "scripts/final_release_audit.py",
+    "scripts/post_rc_watch.py",
     "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
     "docs/capabilities/MESH_PACKAGING_SINGLE_NODE_BUNDLE.md",
     "docs/capabilities/MESH_PACKAGING_RELEASE_CHECKLIST.md",
+    "docs/capabilities/MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
+    "docs/capabilities/MESH_PACKAGING_POST_RC_WATCH.md",
     ".project_state/CHECKPOINT.json",
 )
 
@@ -61,6 +66,9 @@ EXECUTABLE_NAMES = {
     "rc_install_verify.py",
     "rollback_smoke.py",
     "release_checklist.py",
+    "rc_soak.py",
+    "final_release_audit.py",
+    "post_rc_watch.py",
 }
 
 EXCLUDE_DIR_NAMES = {

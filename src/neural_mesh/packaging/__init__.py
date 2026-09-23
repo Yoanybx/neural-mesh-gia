@@ -1,4 +1,4 @@
-"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0026).
+"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0027).
 
 Capability packaging for a reproducible single-node tarball + manifest.
 Does **not** change tags, SLOs, consensus, Raft, or N>2.
@@ -41,6 +41,20 @@ from .release_checklist import (
     GateResult,
     run_release_checklist,
 )
+from .rc_soak import SoakResult, SoakIteration, run_rc_soak, percentile
+from .final_release_audit import (
+    EXPECTED_VERSION,
+    EXPECTED_CP,
+    AuditResult,
+    run_final_release_audit,
+)
+from .post_rc_watch import (
+    OBS_STABLE_FIELDS,
+    WATCH_CHECKLIST,
+    WatchResult,
+    WatchCheck,
+    run_post_rc_watch,
+)
 
 __all__ = [
     "SCHEMA_ID",
@@ -77,4 +91,17 @@ __all__ = [
     "ChecklistResult",
     "GateResult",
     "run_release_checklist",
+    "SoakResult",
+    "SoakIteration",
+    "run_rc_soak",
+    "percentile",
+    "EXPECTED_VERSION",
+    "EXPECTED_CP",
+    "AuditResult",
+    "run_final_release_audit",
+    "OBS_STABLE_FIELDS",
+    "WATCH_CHECKLIST",
+    "WatchResult",
+    "WatchCheck",
+    "run_post_rc_watch",
 ]
