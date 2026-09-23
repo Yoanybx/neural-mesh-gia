@@ -44,3 +44,18 @@ Use ADR files for major decisions.
 ## 2026-09-23 Cycle 7
 - Adopted DeepSeek short cycle (B): OOP replica harden before Phase 3 Router.
 - TLS/auth deferred as EXPLICIT DEBT on Unix socket transport.
+
+## ADR-0007 — Cognitive Router R0 (Cycle 8 / Phase 3)
+- Contract: `TaskSpec`, `RouteCandidate`, `RouteDecision` with reasons + metrics; seed-deterministic.
+- Pipeline: exclude UNAVAILABLE → capability ⊆ filter → SAFETY_POLICY → Round-Robin.
+- RR cursor initialized from `seed`; advances on accepted decisions only.
+- Router never executes physical/external-network actions; only refuses to route when policy denies.
+- Integration: Twin topology → candidates; C-RAM stores decision evidence on selected node.
+- Explicitly deferred: R1 capability-aware scoring, R2/R3, Raft, N>2 expand, ML, TLS.
+
+## ADR-0008 — Router R0 DeepSeek hardening (Cycle 8)
+- Determinism: `RouteDecision_canonical = f(policy_hash, seed, TaskSpec, candidates_fp)` byte-identical; volatile timestamp/latency excluded.
+- Fail-closed: unknown policy key/version ⇒ REJECTED UNKNOWN_POLICY; never silent fallback.
+- Saturation: `inflight >= queue_bound` ⇒ REJECT SATURATION_QUEUE_FULL (no drop/ML).
+- Every decision persisted in C-RAM via DecisionStore (`op_id`→hash); same op_id idempotent.
+- Doc freeze: `docs/cognitive_router_r0.md` is the merge gate.

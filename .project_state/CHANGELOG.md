@@ -50,3 +50,16 @@ Bootstrap continuity system (shipped source).
 - Real crash tests (kill -9, mid-frame cut); ≤1 writable primary
 - OOP overhead p99 <10×; CP-0011 VERIFIED; pytest ≥110
 - TLS/auth: EXPLICIT DEBT
+
+## 0.8.0 — Cycle 8 (2026-09-23 EDT)
+- Phase 3 Cognitive Router R0: TaskSpec / RouteCandidate / RouteDecision contract
+- Deterministic Round-Robin with seed; UNAVAILABLE + capability + SAFETY_POLICY filters
+- Decision log for every route; no physical/external-network execution
+- Bench N=1000 → experiments/router-r0-bench-c8/; Twin+C-RAM+R0 integration
+- Tests: 122 passed. CP-0012 VERIFIED. No R1/R2/R3, Raft, N>2 expand, ML, TLS.
+
+### Cycle 8 DeepSeek deltas
+- Frozen determinism contract (policy_hash + seed + TaskSpec)
+- C-RAM DecisionStore persistence + op_id idempotency
+- Safety fail-closed (≥8 cases) + saturation reject policy
+- pytest ≥130; routing p99 <5ms

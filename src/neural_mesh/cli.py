@@ -22,6 +22,13 @@ from .twin.simulator import DigitalTwin, TwinTask
 from .twin.storage import load_faults
 
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
+from .router import (
+    CognitiveRouterR0,
+    DecisionLog,
+    TaskSpec,
+    candidates_from_topology,
+    explain_decision,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -236,6 +243,30 @@ def main(argv: list[str] | None = None):
     rconn.add_argument("--get", type=str, default=None, help="GET content hash")
     rconn.add_argument("--ping", action="store_true")
 
+
+    router_cmd = sub.add_parser("router", help="Cognitive Router R0 (Phase 3)")
+    router_subs = router_cmd.add_subparsers(dest="op", required=True)
+    rex = router_subs.add_parser("explain", help="Explain last/logged decision for task_id")
+    rex.add_argument("task_id")
+    rex.add_argument("--log", type=str, default=None, help="Decision JSONL path")
+    rex.add_argument("--topology", type=str, default=None)
+    rex.add_argument("--seed", type=int, default=0)
+    rex.add_argument(
+        "--requires-network", action="store_true", help="Simulate network-requiring task"
+    )
+    rex.add_argument(
+        "--capability", action="append", default=[], help="Required capability (repeatable)"
+    )
+    rroute = router_subs.add_parser("route", help="Route a TaskSpec (demo/topology)")
+    rroute.add_argument("task_id")
+    rroute.add_argument("--topology", type=str, default=None)
+    rroute.add_argument("--seed", type=int, default=0)
+    rroute.add_argument("--capability", action="append", default=[])
+    rroute.add_argument("--requires-network", action="store_true")
+    rroute.add_argument("--requires-physical", action="store_true")
+    rroute.add_argument("--log", type=str, default=None)
+    rroute.add_argument("--json", action="store_true")
+
     a = parser.parse_args(argv)
     root = Path.cwd()
     mgr = CheckpointManager(root)
@@ -431,6 +462,65 @@ def main(argv: list[str] | None = None):
                         ping=bool(getattr(a, "ping", False)),
                     )
                 )
+
+    elif a.cmd == "router":
+        ensure_default_policy(root)
+        caps = tuple(a.capability) if getattr(a, "capability", None) else ("compute",)
+        if not caps:
+            caps = ("compute",)
+        if a.op == "route":
+            if a.topology:
+                topo = Topology.load(a.topology)
+                cands = candidates_from_topology(topo)
+            else:
+                twin_obj = DigitalTwin.build_demo(seed=a.seed)
+                cands = candidates_from_topology(twin_obj)
+            log = DecisionLog(a.log) if a.log else DecisionLog()
+            router = CognitiveRouterR0(
+                cands, seed=int(a.seed), policy_root=root, decision_log=log
+            )
+            task = TaskSpec(
+                task_id=a.task_id,
+                required_capabilities=caps,
+                requires_network=bool(a.requires_network),
+                requires_physical=bool(getattr(a, "requires_physical", False)),
+            )
+            decision = router.route(task)
+            payload = explain_decision(decision)
+            if a.json:
+                print(json.dumps(payload, indent=2, sort_keys=True))
+            else:
+                print(json.dumps(payload, indent=2, sort_keys=True))
+            raise SystemExit(0 if decision.status.value == "ACCEPTED" else 3)
+        elif a.op == "explain":
+            # Prefer log lookup; else live-route once for explain.
+            found = None
+            if a.log and Path(a.log).exists():
+                for row in DecisionLog(a.log).entries():
+                    if row.get("task_id") == a.task_id:
+                        found = row
+            if found is not None:
+                from neural_mesh.router.models import RouteDecision
+
+                decision = RouteDecision.from_dict(found)
+                print(json.dumps(explain_decision(decision), indent=2, sort_keys=True))
+                raise SystemExit(0)
+            if a.topology:
+                topo = Topology.load(a.topology)
+                cands = candidates_from_topology(topo)
+            else:
+                twin_obj = DigitalTwin.build_demo(seed=a.seed)
+                cands = candidates_from_topology(twin_obj)
+            router = CognitiveRouterR0(cands, seed=int(a.seed), policy_root=root)
+            task = TaskSpec(
+                task_id=a.task_id,
+                required_capabilities=caps,
+                requires_network=bool(a.requires_network),
+            )
+            decision = router.route(task)
+            print(json.dumps(explain_decision(decision), indent=2, sort_keys=True))
+            raise SystemExit(0)
+
     elif a.cmd == "twin":
         if a.op == "topology":
             if a.top_op == "save":

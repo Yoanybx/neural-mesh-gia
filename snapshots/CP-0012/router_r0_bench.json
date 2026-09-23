@@ -1,0 +1,77 @@
+{
+  "accepted": 900,
+  "candidates": [
+    {
+      "capabilities": [
+        "compute"
+      ],
+      "cpu": 4,
+      "memory": 16000,
+      "node_id": "node-01",
+      "status": "AVAILABLE"
+    },
+    {
+      "capabilities": [
+        "compute"
+      ],
+      "cpu": 4,
+      "memory": 16000,
+      "node_id": "node-02",
+      "status": "AVAILABLE"
+    },
+    {
+      "capabilities": [
+        "compute",
+        "gpu"
+      ],
+      "cpu": 8,
+      "memory": 16000,
+      "node_id": "node-03",
+      "status": "AVAILABLE"
+    },
+    {
+      "capabilities": [
+        "compute"
+      ],
+      "cpu": 2,
+      "memory": 16000,
+      "node_id": "node-04",
+      "status": "UNAVAILABLE"
+    }
+  ],
+  "control_noop_ms": {
+    "p50": 6.500340532511473e-05,
+    "p99": 0.00038123645936138543
+  },
+  "decision_latency_ms": {
+    "instrumented_p50": 0.027008492907043546,
+    "instrumented_p99": 0.0490093852567952,
+    "max": 7.549895002739504,
+    "mean": 1.5665550150733907,
+    "p50": 1.5369245011243038,
+    "p99": 2.5956329877953976
+  },
+  "determinism_contract": "docs/cognitive_router_r0.md",
+  "distribution": {
+    "node-01": 300,
+    "node-02": 300,
+    "node-03": 300
+  },
+  "experiment": "router-r0-bench-c8",
+  "n_tasks": 1000,
+  "notes": "R0 only \u2014 Round-Robin + capability/safety filters. No R1 scoring, Raft, N>2 expand, ML, TLS.",
+  "overhead_vs_noop_p50_x": 23643.753637788224,
+  "p99_under_5ms": true,
+  "policy_hash": "1babb92eca664af6968b304c302fbee5a08bd9e92f700507487825a3744fa172",
+  "queue_bound": 1000,
+  "rejected": 100,
+  "rejected_reasons": {
+    "NO_CAPABLE_NODE": 50,
+    "SAFETY_POLICY_BLOCKS_NETWORK": 50
+  },
+  "router_version": "R0",
+  "saturation_policy": "REJECT_SATURATION_QUEUE_FULL",
+  "seed": 42,
+  "unavailable_excluded": "node-04",
+  "wall_ms_total": 1567.57248500071
+}

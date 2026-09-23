@@ -1,7 +1,7 @@
 # NEXT ACTION
 
-1. Dual review (ChatGPT + DeepSeek) of Cycle 7 OOP replica harden / CP-0011.
-2. If P0/C7 consistency model still holds → Cycle 8 = Phase 3 Cognitive Router R0 → CP-0012.
-3. Do **not** start Raft, N>2, TLS, ML, or Router until council green-lights Cycle 8.
+1. Dual review (ChatGPT + DeepSeek) of Cycle 8 / CP-0012 with DeepSeek deltas applied.
+2. R1 capability-aware only if council approves with bench evidence.
+3. Do **not** start Raft, N>2, TLS, ML, R2/R3 without ADR.
 
-Blocked until review: Phase 3 Router implementation.
+Blocked until review: R1+ tiers.

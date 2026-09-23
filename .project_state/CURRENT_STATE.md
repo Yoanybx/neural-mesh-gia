@@ -1,12 +1,11 @@
 # CURRENT PROJECT STATE
 
-Status: VERIFIED (Phase 2 C-RAM Replica OOP Cycle 7 complete)
-Phase: 2
-Module: cram-replica-oop
-Last checkpoint: CP-0011
-Completed phases: 0 (bootstrap), 1 (digital twin hardening)
-Phase 2 progress: C-RAM Core (CP-0008) + Hardening (CP-0009) + Replica N=2 (CP-0010) + OOP harden (CP-0011) DONE
-Next action: Await dual review of Cycle 7; Cycle 8 reserved for Phase 3 Cognitive Router R0 (CP-0012). No Raft/N>2/TLS/ML.
-Safety: SAFE (SAFETY_POLICY.json present)
-Humanity Core: no unilateral authority; reversible/auditable checkpoints only
+Status: VERIFIED (Phase 3 Cognitive Router R0 Cycle 8 + DeepSeek deltas)
+Phase: 3
+Module: cognitive-router-r0
+Last checkpoint: CP-0012
+Completed phases: 0, 1, 2; Phase 3 R0 DONE (R1 not started)
+DeepSeek C8: determinism doc frozen; C-RAM decision audit; fail-closed; saturation defined
+Next action: Dual review of Cycle 8 / CP-0012. No R1/R2/R3/Raft/N>2/ML/TLS without council.
+Safety: SAFE (unknown policy rejected; network/physical denied by default)
 Updated: 2026-09-23 America/New_York (EDT)

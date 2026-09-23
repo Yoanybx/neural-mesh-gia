@@ -1,0 +1,32 @@
+{
+  "checkpoint_id": "CP-0012",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.8.0",
+  "status": "VERIFIED",
+  "phase": 3,
+  "module": "cognitive-router-r0",
+  "reason": "Cycle 8 Phase 3 Cognitive Router R0 + DeepSeek: determinism contract, policy_hash fail-closed, C-RAM op_id idempotency, saturation, bench N=1000, CP-0012",
+  "objective": "",
+  "next_action": "Dual review of Cycle 8 / CP-0012. Evaluate R1 only with council approval. No R2/R3/Raft/N>2/ML/TLS.",
+  "git_commit": "cd50ec6452e69f2558af519671fcdddfbcc72542",
+  "changed_files": [],
+  "tests": {
+    "passed": 142,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/cognitive_router_r0.md",
+    "experiments/router-r0-bench-c8/baseline.json",
+    "tests/test_cognitive_router_r0.py",
+    "tests/test_router_deepseek_c8.py",
+    "tests/test_router_integration.py",
+    "tests/test_router_cli.py"
+  ],
+  "created_at": "2026-09-23T16:51:01.708680+00:00",
+  "manifest_sha256": "4c1f76dbf7b04046bfe1cbded7f03ed4e59602837f933f79490bd0b58aae0987",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

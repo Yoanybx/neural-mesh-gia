@@ -3,7 +3,8 @@
   "blocked_tasks": [],
   "completed_phases": [
     0,
-    1
+    1,
+    2
   ],
   "completed_tasks": [
     "phase0_bootstrap",
@@ -23,29 +24,29 @@
     "phase2_cram_placement",
     "phase2_cram_checkpoint",
     "phase2_cram_node_loss_tests",
-    "phase2_cram_replica_oop"
+    "phase2_cram_replica_oop",
+    "phase3_cognitive_router_r0"
   ],
-  "current_module": "cram-replica-oop",
-  "current_phase": 2,
+  "current_module": "cognitive-router-r0",
+  "current_phase": 3,
   "decisions_pending": [],
-  "git_commit": "97c1bcd695248c00c130df3fad26bb88f436e7ec",
+  "git_commit": "cd50ec6452e69f2558af519671fcdddfbcc72542",
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0011",
+  "last_checkpoint": "CP-0012",
   "last_failed_test": null,
   "last_successful_test": "2026-09-23T14:17:39.492546+00:00",
-  "last_updated": "2026-09-23T15:29:06.394254+00:00",
+  "last_updated": "2026-09-23T16:51:01.709182+00:00",
   "modified_files": [],
-  "next_action": "Await dual review of Cycle 7; Cycle 8 = Phase 3 Cognitive Router R0 \u2192 CP-0012. No Raft/N>2/TLS/ML.",
+  "next_action": "Dual review of Cycle 8 / CP-0012. Evaluate R1 only with council approval. No R2/R3/Raft/N>2/ML/TLS.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
-  "project_version": "0.7.0",
+  "project_version": "0.8.0",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 111,
-    "skipped": 0
+    "passed": 142
   }
 }

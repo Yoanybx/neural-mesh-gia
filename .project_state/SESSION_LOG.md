@@ -30,3 +30,6 @@
 - Council agreement: Opción 2 DeepSeek (hooks+recovery_time before replica). ChatGPT ratified + DeepSeek nuances.
 - Implemented P0–P7: real recovery_time, ERROR on unresolved locate, typed errors, CLI, corruption, N=100 bench, replica N=2 doc only.
 - pytest: 74 passed; audit PASS; CP-0009 VERIFIED; p99 recovery_time ~0.19ms (target <150ms MET).
+
+## Cycle 8 — Cognitive Router R0 (2026-09-23 EDT)
+- Implemented R0; pytest 122; CP-0012; bench N=1000.
