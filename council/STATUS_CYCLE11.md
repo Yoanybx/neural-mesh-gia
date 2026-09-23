@@ -14,3 +14,6 @@ See `../STATUS_FOR_CHATGPT_CYCLE11.md` for full bilingual report.
 - NO Raft / N>2 / ML / Phase 5 / silent plaintext fallback / Vault-ACME
 - Version: **0.11.0**
 - NEXT: dual review; then Phase 5 candidate
+
+- Git tip: 9a223614578f79335fe144d8b04fc43fa7a4bb83
+- Implementation: 9a223614578f79335fe144d8b04fc43fa7a4bb83
