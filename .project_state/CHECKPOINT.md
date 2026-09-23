@@ -1,7 +1,7 @@
-# CP-0015
+# CP-0016
 
-Phase: 4
-Module: network-fabric-tls
-Reason: Cycle 11 Phase 4 Network Fabric + local mTLS: trust freeze, NodeSession mTLS, Router→Fabric→endpoint→C-RAM, faults, bench N=1000, TLS debt RESOLVED, CP-0015
-Next: Dual review of Cycle 11 / CP-0015. Candidate Cycle 12: Phase 5. No Raft/N>2/ML.
-Tests: {'passed': 217, 'failed': 0}
+Phase: 5
+Module: phase5a-replication-n2
+Reason: Cycle 12 Phase 5A: remote C-RAM API + N=2 active-passive replication over Fabric mTLS, feature flag, fencing/promote, faults, observability, bench N=1000, CP-0016
+Next: Dual review of Cycle 12 / CP-0016. Candidate Cycle 13: Phase 5B or ops hardening. Still blocked: Raft, N>2, multi-primary, ML, silent plaintext fallback.
+Tests: {'passed': 253, 'failed': 0}

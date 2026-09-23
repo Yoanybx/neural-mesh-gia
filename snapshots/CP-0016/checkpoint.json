@@ -1,0 +1,40 @@
+{
+  "checkpoint_id": "CP-0016",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.12.0",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "phase5a-replication-n2",
+  "reason": "Cycle 12 Phase 5A: remote C-RAM API + N=2 active-passive replication over Fabric mTLS, feature flag, fencing/promote, faults, observability, bench N=1000, CP-0016",
+  "objective": "",
+  "next_action": "Dual review of Cycle 12 / CP-0016. Candidate Cycle 13: Phase 5B or ops hardening. Still blocked: Raft, N>2, multi-primary, ML, silent plaintext fallback.",
+  "git_commit": "7e07e42a586cb7cd36964fd5fadc126bfb9b00fd",
+  "changed_files": [
+    "src/neural_mesh/cram/remote_protocol.py",
+    "src/neural_mesh/cram/remote_client.py",
+    "src/neural_mesh/cram/remote_store.py",
+    "src/neural_mesh/cram/observability.py",
+    "src/neural_mesh/cram/replication/fabric_replica.py",
+    "src/neural_mesh/network/protocol.py",
+    "src/neural_mesh/network/endpoint.py",
+    "docs/phase5_replication_n2.md",
+    "tests/test_phase5a_replication_c12.py",
+    "experiments/phase5a-replication-c12/run_bench.py"
+  ],
+  "tests": {
+    "passed": 253,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/phase5_replication_n2.md",
+    "docs/debt/PHASE5A.md",
+    "experiments/phase5a-replication-c12/baseline.json"
+  ],
+  "created_at": "2026-09-23T17:55:08.654198+00:00",
+  "manifest_sha256": "dd7b777bd9d6417552552c10cae4d9721b67c175cfe7586437f31b2fd6f4b31c",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

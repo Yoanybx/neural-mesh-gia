@@ -1,0 +1,48 @@
+{
+  "acceptance": {
+    "dual_writable_primary": 0,
+    "integrity": 1.0,
+    "plaintext_fallback": 0
+  },
+  "bench": "phase5a-replication-c12",
+  "cycle": 12,
+  "integrity": {
+    "ratio": 1.0,
+    "roundtrip_n": 100,
+    "roundtrip_ok": 100
+  },
+  "n": 1000,
+  "recovery_ms": {
+    "bound_lt_250ms": true,
+    "n": 50,
+    "p50": 2.560964501753915,
+    "p99": 3.2061138615244995
+  },
+  "remote_get_durable": {
+    "mean_ms": 0.18666050948377233,
+    "note": "persistent session + C-RAM read (informational)",
+    "p50_ms": 0.1749695002217777,
+    "p99_ms": 0.3130639871233143
+  },
+  "remote_put_durable": {
+    "mean_ms": 0.8328209470637375,
+    "note": "persistent session + C-RAM fsync (informational)",
+    "p50_ms": 0.7871334964875132,
+    "p99_ms": 1.6853342200920451
+  },
+  "replica_overhead": {
+    "bound_lt_1ms_or_lt_2x_c11": true,
+    "note": "primary SLO: HEARTBEAT RTT on primary\u2192standby mTLS link (C11 method)",
+    "p50_ms": 0.1148684968939051,
+    "p99_ms": 0.17628702888032396,
+    "replica_append_tiny_p99_ms": 2.0554762404935887,
+    "vs_c11_tls_persistent_p99_ratio": 0.9539341389627921
+  },
+  "throughput_msg_per_s": 9738.690862312042,
+  "throughput_vs_c11": {
+    "bound_ge_50pct": true,
+    "c11_tls_msg_per_s": 6616.8,
+    "note": "HEARTBEAT on replica mTLS link (C11 method)",
+    "ratio": 1.4718127890085904
+  }
+}
