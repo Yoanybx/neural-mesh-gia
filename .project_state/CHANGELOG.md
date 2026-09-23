@@ -1,3 +1,11 @@
+## Cycle 22 — 2026-09-23 — CP-0026 Packaging RC (install / rollback / checklist)
+- P12: scripts/rc_install_verify.py + packaging.rc_install (clean prefix PYTHONPATH install).
+- P13: scripts/rollback_smoke.py + packaging.rollback (B→A filesystem rollback).
+- P14: scripts/release_checklist.py + MESH_PACKAGING_RELEASE_CHECKLIST.md; JSON M2M.
+- tests/test_packaging_rc_cycle22.py (13); packaging 38; pytest 424; CP-0026 VERIFIED.
+- Version 0.16.2 (DeepSeek gave no hard VER; RC packaging track on 0.16.1).
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes.
+
 ## Cycle 21 — 2026-09-23 — CP-0025 Packaging RC (clean-node / repro / freeze)
 - P9: scripts/clean_node_smoke.py + packaging.clean_node_smoke (isolated extract smoke).
 - P10: scripts/repro_check.py + build_bundle --repro-check; name-based modes; hash-lock.

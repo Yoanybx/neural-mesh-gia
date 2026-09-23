@@ -1,4 +1,4 @@
-"""Mesh Packaging: Single-Node Bundle (CP-0024 / Cycle 20; RC harden CP-0025).
+"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0026).
 
 Capability packaging for a reproducible single-node tarball + manifest.
 Does **not** change tags, SLOs, consensus, Raft, or N>2.
@@ -27,6 +27,20 @@ from .bundle import (
 )
 from .clean_smoke import CleanSmokeResult, clean_node_smoke, assert_extract_isolation
 from .repro import ReproResult, repro_check
+from .rc_install import (
+    InstallResult,
+    rc_install,
+    rc_install_verify,
+    assert_entrypoint_present,
+    write_mesh_launcher,
+)
+from .rollback import RollbackResult, rollback_smoke, read_install_marker
+from .release_checklist import (
+    NO_HELD_DEFAULT,
+    ChecklistResult,
+    GateResult,
+    run_release_checklist,
+)
 
 __all__ = [
     "SCHEMA_ID",
@@ -51,4 +65,16 @@ __all__ = [
     "assert_extract_isolation",
     "ReproResult",
     "repro_check",
+    "InstallResult",
+    "rc_install",
+    "rc_install_verify",
+    "assert_entrypoint_present",
+    "write_mesh_launcher",
+    "RollbackResult",
+    "rollback_smoke",
+    "read_install_marker",
+    "NO_HELD_DEFAULT",
+    "ChecklistResult",
+    "GateResult",
+    "run_release_checklist",
 ]

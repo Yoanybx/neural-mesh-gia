@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "neural-mesh-gia"
-version = "0.16.1"
+version = "0.16.2"
 requires-python = ">=3.10"
 dependencies = ["pydantic>=2,<3", "networkx>=3,<4"]
 
@@ -24,4 +24,5 @@ where = ["src"]
 markers = [
     "packaging_single_node_bundle: CP-0024 single-node bundle packaging",
     "packaging_rc_cycle21: CP-0025 clean-node smoke / manifest repro / RC freeze",
+    "packaging_rc_cycle22: CP-0026 rc install / rollback / release checklist",
 ]

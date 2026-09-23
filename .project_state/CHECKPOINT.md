@@ -1,7 +1,7 @@
-# CP-0025
+# CP-0026
 
 Phase: 5
-Module: mesh-packaging-rc-freeze
-Reason: Cycle 21 Clean-node smoke; manifest repro; RC freeze
-Next: DeepSeek M2M VERDICT on Cycle 21 / CP-0025. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
-Tests: {'passed': 411, 'failed': 0}
+Module: mesh-packaging-rc-install-checklist
+Reason: Cycle 22 RC install verify; rollback smoke; release checklist
+Next: DeepSeek M2M VERDICT on Cycle 22 / CP-0026. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
+Tests: {'passed': 424, 'failed': 0}

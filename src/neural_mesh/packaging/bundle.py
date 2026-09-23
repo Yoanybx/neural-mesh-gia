@@ -1,4 +1,4 @@
-"""Build and verify reproducible single-node mesh bundles."""
+"""Build and verify reproducible single-node mesh bundles (CP-0024..CP-0026)."""
 
 from __future__ import annotations
 
@@ -41,8 +41,12 @@ INCLUDE_PATHS: tuple[str, ...] = (
     "scripts/verify_bundle.py",
     "scripts/clean_node_smoke.py",
     "scripts/repro_check.py",
+    "scripts/rc_install_verify.py",
+    "scripts/rollback_smoke.py",
+    "scripts/release_checklist.py",
     "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
     "docs/capabilities/MESH_PACKAGING_SINGLE_NODE_BUNDLE.md",
+    "docs/capabilities/MESH_PACKAGING_RELEASE_CHECKLIST.md",
     ".project_state/CHECKPOINT.json",
 )
 
@@ -54,6 +58,9 @@ EXECUTABLE_NAMES = {
     "verify_bundle.py",
     "clean_node_smoke.py",
     "repro_check.py",
+    "rc_install_verify.py",
+    "rollback_smoke.py",
+    "release_checklist.py",
 }
 
 EXCLUDE_DIR_NAMES = {

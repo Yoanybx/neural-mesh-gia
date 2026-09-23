@@ -166,8 +166,8 @@ def test_verify_accepts_freeze_and_rejects_bad_freeze_schema(tmp_path: Path):
 def test_version_gate_0161_files():
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.16.1"' in pyproject
-    assert '__version__ = "0.16.1"' in init
+    assert 'version = "0.16.2"' in pyproject
+    assert '__version__ = "0.16.2"' in init
     doc = (REPO / "docs" / "capabilities" / "MESH_PACKAGING_SINGLE_NODE_BUNDLE.md").read_text(
         encoding="utf-8"
     )
@@ -294,7 +294,7 @@ def test_clean_node_smoke_on_real_repo_bundle(tmp_path: Path):
         REPO,
         out,
         tip="c21smok",
-        ver="0.16.1",
+        ver="0.16.2",
         cp_range="CP-0001..0025",
         pytest={"passed": 406, "failed": 0},
     )
@@ -313,7 +313,7 @@ def test_clean_node_smoke_on_real_repo_bundle(tmp_path: Path):
     assert str(REPO / "src") not in result.neural_mesh_file.replace("\\", "/")
     assert result.status_snapshot is not None
     assert result.status_snapshot.get("schema") == "mesh.status.snapshot/v1"
-    assert result.version == "0.16.1"
+    assert result.version == "0.16.2"
 
 
 def test_clean_node_smoke_script_cli(tmp_path: Path):
@@ -322,7 +322,7 @@ def test_clean_node_smoke_script_cli(tmp_path: Path):
         REPO,
         out,
         tip="c21cli1",
-        ver="0.16.1",
+        ver="0.16.2",
         cp_range="CP-0001..0025",
         pytest={"passed": 1, "failed": 0},
     )
