@@ -2,7 +2,7 @@
 
 **CP-0014.** Extends R0 (`docs/cognitive_router_r0.md`, hardening C9). Activates
 `CapabilityAwareStrategy` (replaces Cycle 9 STUB). Does **not** start Phase 4,
-TLS, ML, Raft, or N>2.
+ML, Raft, or N>2. (TLS local mTLS closed Cycle 11.)
 
 ## P0 — Doc freeze
 
@@ -70,4 +70,4 @@ Routing decision p99 **< 8 ms** (relaxed vs R0 5 ms for capability lookup).
 
 ## Out of scope
 
-Phase 4 Network Fabric, TLS, ML/adaptive, Raft, N>2, silent RR fallback.
+ML/adaptive, Raft, N>2, silent RR fallback. (Phase 4 Network Fabric + local mTLS closed in Cycle 11 / CP-0015.)

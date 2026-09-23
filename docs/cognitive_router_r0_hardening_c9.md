@@ -34,10 +34,10 @@ a capacity leak. Saturation reject remains the bound policy when
 
 ### TLS debt (formal)
 
-- **Decision:** accept TLS/auth debt until **Phase 4 Network Fabric**.
-- **Expiry:** **2026-12-31**. If Phase 4 has not closed TLS by that date, council
-  must re-litigate before further transport expansion.
-- Cycle 9 does **not** implement TLS (no silent TLS work).
+- **Decision (Cycle 9):** accept TLS/auth debt until **Phase 4 Network Fabric**.
+- **Expiry:** **2026-12-31**.
+- **Cycle 11:** local mTLS **RESOLVED** (`docs/debt/TLS.md`). External PKI remains
+  optional **EXPLICIT DEBT**. Cycle 9 itself did not implement TLS.
 
 ## P1 — Persist-ack guard
 

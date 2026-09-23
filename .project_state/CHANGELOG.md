@@ -73,3 +73,13 @@ Bootstrap continuity system (shipped source).
 - CLI: `mesh router route --strategy rr|capability`; explain shows strategy/selected/score/factors.
 - Bench N=1000 RR vs capability (metrics only); routing p99 <8ms; pytest ≥185.
 - NO Phase 4 / TLS / ML / Raft / N>2.
+
+## 0.11.0 — Cycle 11 (2026-09-23)
+- Phase 4 Network Fabric v0 + local mTLS (trust model freeze).
+- `src/neural_mesh/network/`: transport, tls, protocol, session, endpoint, fabric.
+- Message types: TASK_REQUEST, STATE_QUERY/RESPONSE, HEARTBEAT, CAPABILITY_UPDATE, CHECKPOINT_NOTICE.
+- Router R1 → Fabric → execution stub → C-RAM checkpoint integration.
+- Faults: NETWORK_TIMEOUT, CONNECTION_DROP, INVALID_SESSION, MESSAGE_CORRUPTION; kill -9; dual-primary 0.
+- Local mTLS debt RESOLVED (`docs/debt/TLS.md`); external PKI optional EXPLICIT DEBT.
+- Bench N=1000 under experiments/network-fabric-tls-c11/.
+- Tests: 217 passed. CP-0015 VERIFIED.

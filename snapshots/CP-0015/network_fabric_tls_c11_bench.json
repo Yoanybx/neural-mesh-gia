@@ -1,0 +1,53 @@
+{
+  "acceptance": {
+    "dual_writable_primary": 0,
+    "local_mtls": "RESOLVED",
+    "plaintext_fallback": 0
+  },
+  "bench": "network-fabric-tls-c11",
+  "cycle": 11,
+  "integrity": {
+    "ratio": 1.0,
+    "roundtrip_n": 100,
+    "roundtrip_ok": 100
+  },
+  "n": 1000,
+  "recovery_ms": 100.13689300103579,
+  "tls_connect_heartbeat_close": {
+    "mean_ms": 48.32692043991119,
+    "n": 1000,
+    "note": "full mTLS session per message (handshake included); informational",
+    "p50_ms": 48.00601550232386,
+    "p99_ms": 52.103289183287416
+  },
+  "tls_overhead": {
+    "bound_vs_single_15x": true,
+    "c7_oop_overhead_p99_ratio": 6.752925695150269,
+    "c7_single_p99_ms": 2.609250712557696,
+    "handshake_included_vs_c7_single_p99_ratio": 19.96867872164481,
+    "note": "Primary: persistent TLS p99 vs C7 single-node put p99; bound <15\u00d7 (DeepSeek C10)",
+    "vs_c7_single_node_p99_ratio": 0.07083398379646974,
+    "vs_unix_persistent_p99_ratio": 1.5323916037078695
+  },
+  "tls_persistent_session": {
+    "n": 1000,
+    "note": "one mTLS session, N heartbeats \u2014 primary transport latency",
+    "p50_ms": 0.09877949923975393,
+    "p99_ms": 0.18482362269423896,
+    "throughput_msg_per_s": 6616.773985584944
+  },
+  "unix_af_unix_baseline": {
+    "connect_per_msg": {
+      "mean_ms": 0.12385291917598806,
+      "p50_ms": 0.1175439974758774,
+      "p99_ms": 0.18636861146660516
+    },
+    "n": 1000,
+    "note": "AF_UNIX framing, tls_required=False (test/local mode)",
+    "persistent_session": {
+      "mean_ms": 0.07578006532276049,
+      "p50_ms": 0.0737295049475506,
+      "p99_ms": 0.12061122120940124
+    }
+  }
+}

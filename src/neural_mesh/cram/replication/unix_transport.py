@@ -130,7 +130,7 @@ def listen_unix(path: str | Path, *, backlog: int = 1) -> socket.socket:
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(str(p))
-    # Restrict to owner when possible (local IPC; TLS still explicit debt).
+    # Restrict to owner when possible (local IPC; fabric mTLS is Cycle 11).
     try:
         os.chmod(str(p), 0o600)
     except OSError:

@@ -90,10 +90,10 @@ When `inflight_accepted >= queue_bound` and the next decision would be ACCEPTED:
 - R2/R3, ML, embeddings, adaptive routing
 - Raft / consensus / N>2 mesh expand / TLS (TLS remains EXPLICIT DEBT)
 
-## TLS debt (Cycle 9 formal)
+## TLS debt (Cycle 9 formal → Cycle 11 paid)
 
-Accepted until Phase 4. **Expiry: 2026-12-31.** See
-`docs/cognitive_router_r0_hardening_c9.md`. No TLS implementation in R0 cycles.
+Accepted until Phase 4; expiry was **2026-12-31**. **Cycle 11 RESOLVED local mTLS**
+(`docs/network_fabric_tls.md`, `docs/debt/TLS.md`). External PKI optional EXPLICIT DEBT.
 
 ## Persist-ack guard (Cycle 9)
 

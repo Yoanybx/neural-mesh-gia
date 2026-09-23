@@ -96,15 +96,20 @@ once the peer is reachable again.
 
 ## 6. Explicit debt — TLS / auth
 
-**NOT implemented in Cycle 7.** Unix sockets are intentional local-only IPC.
+**Cycle 7:** Unix sockets are intentional local-only IPC; TLS was **EXPLICIT DEBT**.
+
+**Cycle 11 update:** Local process↔process **mTLS** is **RESOLVED** in Phase 4 Network
+Fabric (`docs/network_fabric_tls.md`, `docs/debt/TLS.md`, `src/neural_mesh/network/`).
+AF_UNIX remains for local/test coexistence; fabric `mode="tls"` has **no plaintext fallback**.
 
 | Debt | Status |
 |------|--------|
-| TLS / mTLS on transport | **EXPLICIT DEBT** — document only; no silent TODO in code paths that claim security |
-| AuthN / AuthZ of peer | **EXPLICIT DEBT** |
-| Abstract AF_UNIX → TCP/WAN | Out of scope (would require TLS debt closed first) |
+| TLS / mTLS on transport (local CA, node identity) | **RESOLVED** (Cycle 11 / CP-0015) |
+| AuthN via cert CN/SAN = node_id | **RESOLVED** (Cycle 11) |
+| External / public PKI (Vault, ACME) | **EXPLICIT DEBT** (optional) |
+| Abstract AF_UNIX → WAN multi-host ops | **EXPLICIT DEBT** (optional; same code path) |
 
-Do not ship Cycle 7 claiming network-safe replication.
+Replica OOP Unix path itself stays local IPC; cross-host fabric uses TLS mode.
 
 ---
 
