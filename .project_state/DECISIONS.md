@@ -40,3 +40,7 @@ Use ADR files for major decisions.
 - If `expect_topology_hash` mismatches current `topology.hash()` ⇒ ERROR `CRAM_STALE_TOPOLOGY`, `located_node=None`.
 - CLI exit codes frozen: 0 PASS, 1 generic, 2 integrity/corrupt, 3 missing/unavailable. `fsck_schema: 1`.
 - Replica N=2 is interface/docs only until Cycle 6.
+
+## 2026-09-23 Cycle 7
+- Adopted DeepSeek short cycle (B): OOP replica harden before Phase 3 Router.
+- TLS/auth deferred as EXPLICIT DEBT on Unix socket transport.

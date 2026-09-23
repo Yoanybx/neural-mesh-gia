@@ -11,3 +11,7 @@ htmlcov/
 experiments/*
 !experiments/.gitkeep
 .cram/
+
+experiments/**/sandbox/
+*.sock
+

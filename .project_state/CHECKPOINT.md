@@ -1,7 +1,7 @@
-# CP-0010
+# CP-0011
 
 Phase: 2
-Module: cram-replica
-Reason: Cycle 6 C-RAM Replica N=2 (Controlled): consistency freeze, ReplicaManager, failover/split-brain, anti-entropy, CLI, bench, CP-0010
-Next: Await ChatGPT+DeepSeek review of Cycle 6; no Phase 3 Router / Raft / N>2
-Tests: {'passed': 95, 'failed': 0, 'skipped': 0}
+Module: cram-replica-oop
+Reason: Cycle 7 out-of-process C-RAM replica harden (Unix socket, framing, crash tests, CLI serve|connect, OOP bench)
+Next: Await dual review; Cycle 8 = Phase 3 Cognitive Router R0 (CP-0012)
+Tests: {'passed': 111, 'failed': 0, 'skipped': 0}

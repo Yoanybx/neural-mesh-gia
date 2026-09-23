@@ -57,3 +57,19 @@ See `docs/cram_replica_n2_consistency.md` (authoritative):
 - tie-breaker: lex node_id + `.cram/witness` on promote
 - anti-entropy Merkle-diff on rejoin
 - non-goals: Raft/Paxos/quorum/N>2/geo/ML/Router
+
+
+## Cycle 7 — OOP CLI
+
+```bash
+mesh cram replica serve --socket /tmp/cram.sock --root ./data --node-id node-02
+mesh cram replica connect --socket /tmp/cram.sock --root ./data --put 'hello' --ping
+```
+
+Python:
+
+```python
+mgr = ReplicaManager(root, topology, mode="oop", socket_path="/tmp/cram.sock")
+```
+
+TLS is **EXPLICIT_DEBT**. In-process `mode="inprocess"` is test-only.

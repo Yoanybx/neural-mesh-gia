@@ -43,3 +43,10 @@ Bootstrap continuity system (shipped source).
 - Bench N=100 → p50/p99 persisted; p99 << 150ms on this box.
 - Doc only: `docs/cram_replica_n2_interface.md` (no active replica). Exit codes frozen in `docs/cram_cli_exit_codes.md`.
 - Tests: 74 passed. CP-0009 VERIFIED. No Phase 3 Router. No real replication.
+
+## 0.7.0 — Cycle 7 (2026-09-23 EDT)
+- Out-of-process C-RAM replica: Unix socket + size-limited framing
+- `mesh cram replica serve|connect --socket`
+- Real crash tests (kill -9, mid-frame cut); ≤1 writable primary
+- OOP overhead p99 <10×; CP-0011 VERIFIED; pytest ≥110
+- TLS/auth: EXPLICIT DEBT

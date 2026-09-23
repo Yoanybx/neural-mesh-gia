@@ -2,7 +2,7 @@
 
 **Status:** FROZEN merge gate (DeepSeek P0 + council COUNCIL_AGREEMENT_CYCLE6).
 **Date:** 2026-09-23 America/New_York (EDT).
-**Scope:** Controlled in-process / sandbox replication only. NOT real multi-machine networking.
+**Scope:** Controlled N=2 replication. Cycle 6 = in-process (test-only). Cycle 7 = out-of-process Unix socket (see `docs/cram_replica_oop_transport.md`). NOT real multi-machine WAN / TLS.
 
 This document is the authoritative consistency contract for Cycle 6. Code must not
 diverge from these rules without a new council ADR.
@@ -141,3 +141,15 @@ Replica subcommands must not invent new exit codes.
 - [ ] op_id: 0 duplicates in 100 retries
 - [ ] pytest ≥ 90; audit PASS; **CP-0010 VERIFIED**
 - [ ] Historical CP-0001..0009 still verify
+
+
+---
+
+## 11. Cycle 7 amendment — out-of-process transport
+
+- Socket frontier / framing / backpressure / timeouts: **frozen** in
+  `docs/cram_replica_oop_transport.md`.
+- In-process mode remains available as **test-only**.
+- OOP overhead SLO: p99 **&lt; 10×** single-node (honest).
+- TLS / auth: **EXPLICIT DEBT** (not silent).
+- Consistency rules §§1–10 unchanged (W=1 R=1, T_conv, fencing, op_id, ≤1 writer).

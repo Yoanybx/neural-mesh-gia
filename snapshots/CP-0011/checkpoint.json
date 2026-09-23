@@ -1,0 +1,30 @@
+{
+  "checkpoint_id": "CP-0011",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.6.0",
+  "status": "VERIFIED",
+  "phase": 2,
+  "module": "cram-replica-oop",
+  "reason": "Cycle 7 out-of-process C-RAM replica harden: Unix socket framing, serve/connect CLI, real kill-9/mid-frame crash tests, OOP bench, CP-0011",
+  "objective": "",
+  "next_action": "Await dual review; Cycle 8 reserved for Phase 3 Cognitive Router R0 (CP-0012). No Raft/N>2/TLS/ML.",
+  "git_commit": null,
+  "changed_files": [],
+  "tests": {
+    "passed": 111,
+    "failed": 0,
+    "skipped": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/cram_replica_oop_transport.md",
+    "experiments/cram-replica-bench-c7/baseline.json",
+    "tests/test_cram_replica_oop.py"
+  ],
+  "created_at": "2026-09-23T15:28:05.156778+00:00",
+  "manifest_sha256": "aaad76601963cde1d2f93664662297184460cf864d43c00a5c62dfd3b4e72073",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

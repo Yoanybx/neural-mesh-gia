@@ -1,0 +1,58 @@
+{
+  "acceptance": {
+    "oop_overhead_p99_under_10x": true,
+    "recovery_p99_under_150ms": true,
+    "t_conv_under_5s": true
+  },
+  "apples_to_apples_oop_overhead": {
+    "bound": 10.0,
+    "comparison": "same size mix",
+    "oop_p99_ms": 17.620076181920012,
+    "overhead_p99_ratio": 6.752925695150269,
+    "overhead_p99_under_10x": true,
+    "single_p99_ms": 2.609250712557696
+  },
+  "bench": "cram-replica-oop-c7",
+  "cycle": 7,
+  "inprocess_replica_put_sync": {
+    "n": 90,
+    "note": "test-only mode; Cycle 6 SLO <5x still reference",
+    "overhead_p99_ratio": 3.5811184991826206,
+    "p50_ms": 5.815388991322834,
+    "p99_ms": 9.344035995745799
+  },
+  "oop_replica_put_sync": {
+    "mean_ms": 9.603773088181494,
+    "n": 90,
+    "note": "Unix socket + framing + fsync-before-ack secondary process",
+    "p50_ms": 8.959133498137817,
+    "p99_ms": 17.620076181920012
+  },
+  "recovery_baseline": {
+    "n": 100,
+    "p50_ms": 0.048450499889440835,
+    "p99_met": true,
+    "p99_ms": 0.17025416891556444,
+    "target_p99_ms": 150.0
+  },
+  "single_node_put": {
+    "mean_ms": 0.9180958002818644,
+    "n": 90,
+    "p50_ms": 0.7245015003718436,
+    "p99_ms": 2.609250712557696
+  },
+  "size_mix": {
+    "large_256KiB": 10,
+    "medium_4KiB": 40,
+    "small_64B": 40
+  },
+  "t_conv": {
+    "all_under_bound": true,
+    "bound_s": 5.0,
+    "max_s": 0.007280591002199799,
+    "n": 15,
+    "p50_s": 0.006206029007444158,
+    "p99_s": 0.0072705812825006435
+  },
+  "tls": "EXPLICIT_DEBT"
+}

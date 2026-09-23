@@ -288,3 +288,81 @@ def cmd_replica_verify_consistency(
     except Exception as exc:  # noqa: BLE001
         err.write(f"ERROR: {exc}\n")
         return EXIT_GENERIC
+
+
+def cmd_replica_serve(
+    *,
+    root: Path,
+    socket: str | Path,
+    node_id: str = "node-02",
+    ready_file: str | Path | None = None,
+    out: TextIO = sys.stdout,
+    err: TextIO = sys.stderr,
+) -> int:
+    """Run out-of-process secondary serve loop (blocks)."""
+    try:
+        from neural_mesh.cram.replication.replica_server import run_server
+
+        return run_server(
+            root=Path(root),
+            socket_path=Path(socket),
+            node_id=node_id,
+            ready_file=Path(ready_file) if ready_file else None,
+            out=out,
+        )
+    except Exception as exc:  # noqa: BLE001
+        err.write(f"ERROR: {exc}\n")
+        return EXIT_GENERIC
+
+
+def cmd_replica_connect(
+    *,
+    root: Path,
+    socket: str | Path,
+    put: bytes | None = None,
+    get_hash: str | None = None,
+    ping: bool = False,
+    out: TextIO = sys.stdout,
+    err: TextIO = sys.stderr,
+) -> int:
+    """Connect to a running serve; optional put/get/ping."""
+    try:
+        from neural_mesh.cram.hashing import content_hash
+        from neural_mesh.cram.replication.oop_client import OOPReplicaClient
+        from neural_mesh.cram.replication.unix_transport import TransportError
+        from neural_mesh.cram.store import CRAMStore
+
+        client = OOPReplicaClient(socket, local_node_id="cli-primary")
+        try:
+            hello = client.connect()
+            result: dict = {
+                "connected": True,
+                "hello": hello,
+                "tls": "EXPLICIT_DEBT",
+            }
+            if ping:
+                result["ping"] = client.ping()
+            if put is not None:
+                key = content_hash(put)
+                CRAMStore(Path(root) / "nodes" / "node-01").put(put)
+                ack = client.put(put, content_hash=key, op_id=None, epoch=0)
+                result["put"] = {"content_hash": key, "ack": ack}
+                if not ack.get("ok"):
+                    out.write(json.dumps(result, indent=2, sort_keys=True) + "\n")
+                    return EXIT_GENERIC
+            if get_hash is not None:
+                g = client.get(get_hash)
+                if g.get("data") is not None:
+                    g = dict(g)
+                    g["data_len"] = len(g.pop("data"))
+                result["get"] = g
+            out.write(json.dumps(result, indent=2, sort_keys=True) + "\n")
+            return EXIT_OK
+        finally:
+            client.close()
+    except TransportError as exc:
+        err.write(f"UNAVAILABLE: {exc}\n")
+        return EXIT_MISSING
+    except Exception as exc:  # noqa: BLE001
+        err.write(f"ERROR: {exc}\n")
+        return EXIT_GENERIC

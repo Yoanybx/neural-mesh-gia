@@ -22,29 +22,30 @@
     "phase2_cram_object_model",
     "phase2_cram_placement",
     "phase2_cram_checkpoint",
-    "phase2_cram_node_loss_tests"
+    "phase2_cram_node_loss_tests",
+    "phase2_cram_replica_oop"
   ],
-  "current_module": "cram-replica",
+  "current_module": "cram-replica-oop",
   "current_phase": 2,
   "decisions_pending": [],
-  "git_commit": "c9030f123bb12c3b814b1e122dc2ecac65efee45",
+  "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0010",
+  "last_checkpoint": "CP-0011",
   "last_failed_test": null,
   "last_successful_test": "2026-09-23T14:17:39.492546+00:00",
-  "last_updated": "2026-09-23T15:19:14.567028+00:00",
+  "last_updated": "2026-09-23T15:28:35.353063+00:00",
   "modified_files": [],
-  "next_action": "Await ChatGPT+DeepSeek review of Cycle 6; no Phase 3 Router / Raft / N>2",
+  "next_action": "Await dual review of Cycle 7; Cycle 8 = Phase 3 Cognitive Router R0 \u2192 CP-0012. No Raft/N>2/TLS/ML.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
-  "project_version": "0.6.0",
+  "project_version": "0.7.0",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 95,
+    "passed": 111,
     "skipped": 0
   }
 }

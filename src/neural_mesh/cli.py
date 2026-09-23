@@ -23,9 +23,11 @@ from .twin.storage import load_faults
 
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
 from .cram.replica_cli import (
+    cmd_replica_connect,
     cmd_replica_create,
     cmd_replica_promote,
     cmd_replica_repair,
+    cmd_replica_serve,
     cmd_replica_status,
     cmd_replica_verify,
     cmd_replica_verify_consistency,
@@ -216,6 +218,24 @@ def main(argv: list[str] | None = None):
     rvc.add_argument("--topology", type=str, default=None)
     rvc.add_argument("--seed", type=int, default=42)
 
+    rserve = repl_subs.add_parser(
+        "serve", help="Out-of-process secondary over Unix socket (Cycle 7)"
+    )
+    rserve.add_argument("--socket", type=str, required=True, help="Unix socket path")
+    rserve.add_argument("--root", type=str, default=None)
+    rserve.add_argument("--node-id", type=str, default="node-02")
+    rserve.add_argument("--ready-file", type=str, default=None)
+
+    rconn = repl_subs.add_parser(
+        "connect", help="Connect to replica serve (--socket)"
+    )
+    rconn.add_argument("--socket", type=str, required=True)
+    rconn.add_argument("--root", type=str, default=None)
+    rconn.add_argument("--put", type=str, default=None, help="Literal bytes to PUT")
+    rconn.add_argument("--file", type=str, default=None, help="File bytes to PUT")
+    rconn.add_argument("--get", type=str, default=None, help="GET content hash")
+    rconn.add_argument("--ping", action="store_true")
+
     a = parser.parse_args(argv)
     root = Path.cwd()
     mgr = CheckpointManager(root)
@@ -385,6 +405,30 @@ def main(argv: list[str] | None = None):
                         topology_path=topo,
                         seed=seed,
                         repair=bool(getattr(a, "repair", False)),
+                    )
+                )
+            elif a.replica_op == "serve":
+                raise SystemExit(
+                    cmd_replica_serve(
+                        root=rroot,
+                        socket=a.socket,
+                        node_id=getattr(a, "node_id", "node-02"),
+                        ready_file=getattr(a, "ready_file", None),
+                    )
+                )
+            elif a.replica_op == "connect":
+                content = None
+                if getattr(a, "file", None):
+                    content = Path(a.file).read_bytes()
+                elif getattr(a, "put", None) is not None:
+                    content = a.put.encode("utf-8")
+                raise SystemExit(
+                    cmd_replica_connect(
+                        root=rroot,
+                        socket=a.socket,
+                        put=content,
+                        get_hash=getattr(a, "get", None),
+                        ping=bool(getattr(a, "ping", False)),
                     )
                 )
     elif a.cmd == "twin":

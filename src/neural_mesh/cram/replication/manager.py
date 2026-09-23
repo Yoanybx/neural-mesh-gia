@@ -28,7 +28,14 @@ def _new_op_id() -> str:
 
 
 class ReplicaManager:
-    """Coordinate primary + secondary node-scoped stores (sandbox, not real net).
+    """Coordinate primary + secondary node-scoped stores.
+
+    Modes
+    -----
+    - ``inprocess`` (default): Cycle 6 sandbox — **test-only**. Secondary is a
+      local CRAMStore in the same process.
+    - ``oop``: Cycle 7 out-of-process — secondary sync goes over a Unix socket
+      to ``mesh cram replica serve`` (see docs/cram_replica_oop_transport.md).
 
     Layout under ``root``::
 
@@ -37,11 +44,23 @@ class ReplicaManager:
         replication/registry.json
     """
 
-    def __init__(self, root: str | Path, topology: Any, *, seed: int = 0):
+    def __init__(
+        self,
+        root: str | Path,
+        topology: Any,
+        *,
+        seed: int = 0,
+        mode: str = "inprocess",
+        socket_path: str | Path | None = None,
+    ):
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.topology = topology
         self.seed = int(seed)
+        self.mode = mode if mode in ("inprocess", "oop") else "inprocess"
+        self.socket_path = Path(socket_path) if socket_path else None
+        if self.mode == "oop" and self.socket_path is None:
+            raise ValueError("oop mode requires socket_path")
         self.placement = ReplicaPlacement(seed=self.seed)
         self.node_ids = list(_node_ids_from_topology(topology))
         if len(self.node_ids) < 2:
@@ -60,6 +79,7 @@ class ReplicaManager:
 
         self._partition: dict[str, int] = {nid: 0 for nid in self.node_ids}
         self._lost: set[str] = set()
+        self._oop_client = None  # lazy OOPReplicaClient
 
     # persistence --------------------------------------------------------------
     def _load_registry(self) -> None:
@@ -116,8 +136,35 @@ class ReplicaManager:
     def clear_partition(self) -> None:
         self._partition = {nid: 0 for nid in self.node_ids}
 
+
     def _can_communicate(self, a: str, b: str) -> bool:
         return self._partition.get(a, 0) == self._partition.get(b, 0)
+
+    def _get_oop_client(self):
+        if self.mode != "oop":
+            return None
+        if self._oop_client is None:
+            from .oop_client import OOPReplicaClient
+            from .unix_transport import TransportError
+
+            self._oop_client = OOPReplicaClient(
+                self.socket_path,  # type: ignore[arg-type]
+                local_node_id=self.node_ids[0],
+            )
+            try:
+                self._oop_client.connect()
+            except TransportError:
+                self._oop_client = None
+                raise
+        return self._oop_client
+
+    def _oop_reset(self) -> None:
+        if self._oop_client is not None:
+            try:
+                self._oop_client.close()
+            except Exception:
+                pass
+            self._oop_client = None
 
     # witness ------------------------------------------------------------------
     def _witness_path(self, node_id: str) -> Path:
@@ -220,23 +267,50 @@ class ReplicaManager:
             data = self._store(primary).get(content_hash_key)
             if content_hash(data) != content_hash_key:
                 raise CRAMCorrupt(content_hash_key)
-            sstore = self._store(secondary)
-            self._force_put(
-                secondary,
-                data,
-                metadata={
-                    "replica_of": primary,
-                    "epoch": epoch,
-                    "stored_at": utc_now(),
-                },
-            )
-            sstore.bind_to_node(content_hash_key, secondary)
-            if not sstore.verify(content_hash_key):
-                raise CRAMCorrupt(content_hash_key, message="secondary hash mismatch")
-            if content_hash(sstore.get(content_hash_key)) != content_hash_key:
-                raise CRAMCorrupt(
-                    content_hash_key, message="secondary re-hash mismatch"
-                )
+            meta = {
+                "replica_of": primary,
+                "epoch": epoch,
+                "stored_at": utc_now(),
+            }
+            if self.mode == "oop":
+                from .unix_transport import TransportError
+
+                try:
+                    client = self._get_oop_client()
+                    assert client is not None
+                    ack = client.put(
+                        data,
+                        content_hash=content_hash_key,
+                        op_id=op_id,
+                        epoch=epoch,
+                        metadata=meta,
+                    )
+                except TransportError as exc:
+                    self._oop_reset()
+                    raise OSError(str(exc)) from exc
+                if not ack.get("ok"):
+                    raise CRAMCorrupt(
+                        content_hash_key,
+                        message=str(ack.get("error") or "oop put failed"),
+                    )
+                self._oop_reset()
+                # Mirror secondary bytes locally for verify/failover helpers when
+                # peer is down later; authoritative apply already fsync'd remote.
+                sstore = self._store(secondary)
+                self._force_put(secondary, data, metadata=meta)
+                sstore.bind_to_node(content_hash_key, secondary)
+            else:
+                sstore = self._store(secondary)
+                self._force_put(secondary, data, metadata=meta)
+                sstore.bind_to_node(content_hash_key, secondary)
+                if not sstore.verify(content_hash_key):
+                    raise CRAMCorrupt(
+                        content_hash_key, message="secondary hash mismatch"
+                    )
+                if content_hash(sstore.get(content_hash_key)) != content_hash_key:
+                    raise CRAMCorrupt(
+                        content_hash_key, message="secondary re-hash mismatch"
+                    )
         except (ObjectMissing, CRAMCorrupt, OSError, KeyError) as exc:
             rec.status = ReplicaState.FAILED
             rec.verified = False
@@ -647,15 +721,46 @@ class ReplicaManager:
                 }
             data = self._store(primary).get(content_hash_key)
             epoch = rec.epoch
-            self._force_put(
-                secondary,
-                data,
-                metadata={
-                    "replica_of": primary,
-                    "epoch": epoch,
-                    "anti_entropy": True,
-                },
-            )
+            meta = {
+                "replica_of": primary,
+                "epoch": epoch,
+                "anti_entropy": True,
+            }
+            if self.mode == "oop":
+                from .unix_transport import TransportError
+
+                try:
+                    client = self._get_oop_client()
+                    assert client is not None
+                    ack = client.put(
+                        data,
+                        content_hash=content_hash_key,
+                        op_id=_new_op_id(),
+                        epoch=epoch,
+                        metadata=meta,
+                    )
+                    if not ack.get("ok"):
+                        elapsed = time.perf_counter() - t0
+                        return {
+                            "converged": False,
+                            "t_conv_seconds": elapsed,
+                            "t_conv_bound": T_CONV_SECONDS,
+                            "within_bound": elapsed < T_CONV_SECONDS,
+                            "reasons": reasons + [str(ack.get("error"))],
+                            "repaired": False,
+                        }
+                except TransportError as exc:
+                    self._oop_reset()
+                    elapsed = time.perf_counter() - t0
+                    return {
+                        "converged": False,
+                        "t_conv_seconds": elapsed,
+                        "t_conv_bound": T_CONV_SECONDS,
+                        "within_bound": elapsed < T_CONV_SECONDS,
+                        "reasons": reasons + [f"transport:{exc}"],
+                        "repaired": False,
+                    }
+            self._force_put(secondary, data, metadata=meta)
             self._store(secondary).bind_to_node(content_hash_key, secondary)
             rec.status = ReplicaState.SYNCED
             rec.verified = True
