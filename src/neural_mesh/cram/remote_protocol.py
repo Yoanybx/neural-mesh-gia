@@ -34,6 +34,13 @@ PHASE5A_MESSAGE_TYPES = (
     MessageType.CRAM_CHECKPOINT,
 )
 
+PHASE5B_MESSAGE_TYPES = (
+    MessageType.RECOVERY_REQUEST,
+    MessageType.RECOVERY_RESPONSE,
+    MessageType.RECOVERY_VERIFY,
+    MessageType.RECOVERY_COMMIT,
+)
+
 FEATURE_FLAG_ENV = "NEURAL_MESH_PHASE5A_REPLICATION"
 
 
@@ -276,6 +283,7 @@ def make_promote_request(
 __all__ = [
     "FEATURE_FLAG_ENV",
     "PHASE5A_MESSAGE_TYPES",
+    "PHASE5B_MESSAGE_TYPES",
     "RemoteOp",
     "ReplicaRole",
     "b64decode",

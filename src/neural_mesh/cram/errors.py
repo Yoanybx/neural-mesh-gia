@@ -63,6 +63,44 @@ class CRAMCorrupt(CRAMError):
         super().__init__(message or f"corrupt blob: {key}")
 
 
+class StaleEpoch(CRAMError):
+    """Incoming write carries a lesser epoch than the fenced current epoch."""
+
+    code = "REJECTED_STALE_EPOCH"
+
+    def __init__(
+        self,
+        message: str = "stale epoch rejected",
+        *,
+        object_id: str | None = None,
+        incoming_epoch: int | None = None,
+        current_epoch: int | None = None,
+    ):
+        self.object_id = object_id
+        self.incoming_epoch = incoming_epoch
+        self.current_epoch = current_epoch
+        super().__init__(message)
+
+
+class ConflictError(CRAMError):
+    """Explicit content conflict for same object_id with different hash."""
+
+    code = "CRAM_CONFLICT"
+
+    def __init__(self, message: str = "content conflict", *, object_id: str | None = None):
+        self.object_id = object_id
+        super().__init__(message)
+
+
+class PartitionFailClosed(CRAMError):
+    """N=2 partition: non-fenced minority may not write."""
+
+    code = "CRAM_PARTITION_FAIL_CLOSED"
+
+    def __init__(self, message: str = "partition fail-closed: write rejected"):
+        super().__init__(message)
+
+
 # Back-compat aliases used by Cycle 4 call sites / imports
 CRAMNodeUnavailable = NodeUnavailable
 CRAMKeyError = ObjectMissing
@@ -75,4 +113,7 @@ __all__ = [
     "NodeUnavailable",
     "ObjectMissing",
     "StaleTopology",
+    "StaleEpoch",
+    "ConflictError",
+    "PartitionFailClosed",
 ]

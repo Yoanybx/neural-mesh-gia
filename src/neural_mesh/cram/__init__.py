@@ -5,8 +5,11 @@ from .errors import (
     CRAMError,
     CRAMKeyError,
     CRAMNodeUnavailable,
+    ConflictError,
     NodeUnavailable,
     ObjectMissing,
+    PartitionFailClosed,
+    StaleEpoch,
     StaleTopology,
 )
 from .hashing import content_hash, root_hash, shard_dirs
@@ -18,6 +21,16 @@ from .recovery import (
     run_recovery_bench,
 )
 from .store import CRAMStore
+from .version import CRAMVersion, compare_versions
+from .conflict import ConflictOutcome, ConflictPolicy, ConflictRecord
+from .consistency import ConsistencyLayer, ConsistencyReport, WriteResult
+from .recovery_protocol import (
+    RecoveryFSM,
+    RecoveryFSMResult,
+    RecoveryMsgType,
+    RecoveryState,
+    run_recovery_test,
+)
 
 __all__ = [
     "CRAMCorrupt",
@@ -26,15 +39,31 @@ __all__ = [
     "CRAMNodeUnavailable",
     "CRAMObject",
     "CRAMStore",
+    "CRAMVersion",
+    "ConflictError",
+    "ConflictOutcome",
+    "ConflictPolicy",
+    "ConflictRecord",
+    "ConsistencyLayer",
+    "ConsistencyReport",
     "NodeUnavailable",
     "ObjectMissing",
+    "PartitionFailClosed",
+    "StaleEpoch",
     "StaleTopology",
     "ObjectType",
     "RecoveryBenchResult",
+    "RecoveryFSM",
+    "RecoveryFSMResult",
+    "RecoveryMsgType",
     "RecoveryResult",
+    "RecoveryState",
+    "WriteResult",
+    "compare_versions",
     "content_hash",
     "recover_after_node_loss",
     "root_hash",
     "run_recovery_bench",
+    "run_recovery_test",
     "shard_dirs",
 ]

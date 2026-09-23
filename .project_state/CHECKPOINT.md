@@ -1,7 +1,7 @@
-# CP-0016
+# CP-0017
 
 Phase: 5
-Module: phase5a-replication-n2
-Reason: Cycle 12 Phase 5A: remote C-RAM API + N=2 active-passive replication over Fabric mTLS, feature flag, fencing/promote, faults, observability, bench N=1000, CP-0016
-Next: Dual review of Cycle 12 / CP-0016. Candidate Cycle 13: Phase 5B or ops hardening. Still blocked: Raft, N>2, multi-primary, ML, silent plaintext fallback.
-Tests: {'passed': 253, 'failed': 0}
+Module: phase5b-consistency-recovery
+Reason: Cycle 13 Phase 5B: C-RAM consistency & recovery hardening — CRAMVersion, conflict policy, recovery FSM (REQUEST/RESPONSE/VERIFY/COMMIT), idempotency, fail-closed partition, CLI, fault matrix, bench 10k/1k/100, CP-0017
+Next: Dual review of Cycle 13 / CP-0017 (DeepSeek now; ChatGPT catch-up). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, silent plaintext fallback.
+Tests: {'passed': 283, 'failed': 0}

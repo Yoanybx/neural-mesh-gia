@@ -1,0 +1,41 @@
+{
+  "checkpoint_id": "CP-0017",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.13.0",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "phase5b-consistency-recovery",
+  "reason": "Cycle 13 Phase 5B: C-RAM consistency & recovery hardening — CRAMVersion, conflict policy, recovery FSM (REQUEST/RESPONSE/VERIFY/COMMIT), idempotency, fail-closed partition, CLI, fault matrix, bench 10k/1k/100, CP-0017",
+  "objective": "",
+  "next_action": "Dual review of Cycle 13 / CP-0017 (DeepSeek now; ChatGPT catch-up). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, silent plaintext fallback.",
+  "git_commit": "86d2a82b2ddea67b24f6d0d9f3133f1801147b40",
+  "changed_files": [
+    "docs/phase5b_consistency.md",
+    "src/neural_mesh/cram/version.py",
+    "src/neural_mesh/cram/consistency.py",
+    "src/neural_mesh/cram/conflict.py",
+    "src/neural_mesh/cram/recovery_protocol.py",
+    "src/neural_mesh/cram/consistency_cli.py",
+    "src/neural_mesh/cram/errors.py",
+    "src/neural_mesh/network/protocol.py",
+    "src/neural_mesh/cli.py",
+    "tests/test_phase5b_consistency_c13.py",
+    "experiments/phase5b-consistency-c13/run_bench.py"
+  ],
+  "tests": {
+    "passed": 283,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/phase5b_consistency.md",
+    "experiments/phase5b-consistency-c13/baseline.json",
+    "STATUS_FOR_CHATGPT_CYCLE13.md"
+  ],
+  "created_at": "2026-09-23T18:36:57.339784+00:00",
+  "manifest_sha256": "dc6ccb11a4c80993d3d5723d36bf40158fb45912d5eef6c0c3e1882f42321203",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

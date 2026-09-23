@@ -27,6 +27,11 @@ class MessageType(str, Enum):
     REPLICA_ACK = "REPLICA_ACK"
     ROLE_STATUS = "ROLE_STATUS"
     PROMOTE_REQUEST = "PROMOTE_REQUEST"
+    # Phase 5B — consistency / recovery protocol
+    RECOVERY_REQUEST = "RECOVERY_REQUEST"
+    RECOVERY_RESPONSE = "RECOVERY_RESPONSE"
+    RECOVERY_VERIFY = "RECOVERY_VERIFY"
+    RECOVERY_COMMIT = "RECOVERY_COMMIT"
 
 
 REQUIRED_MESSAGE_TYPES = (
@@ -47,6 +52,13 @@ PHASE5A_REQUIRED_MESSAGE_TYPES = (
     MessageType.REPLICA_ACK,
     MessageType.ROLE_STATUS,
     MessageType.PROMOTE_REQUEST,
+)
+
+PHASE5B_REQUIRED_MESSAGE_TYPES = (
+    MessageType.RECOVERY_REQUEST,
+    MessageType.RECOVERY_RESPONSE,
+    MessageType.RECOVERY_VERIFY,
+    MessageType.RECOVERY_COMMIT,
 )
 
 
@@ -147,6 +159,7 @@ __all__ = [
     "FabricMessage",
     "MessageType",
     "PHASE5A_REQUIRED_MESSAGE_TYPES",
+    "PHASE5B_REQUIRED_MESSAGE_TYPES",
     "REQUIRED_MESSAGE_TYPES",
     "make_ack",
     "make_error",

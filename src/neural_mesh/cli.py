@@ -23,6 +23,11 @@ from .twin.storage import load_faults
 
 from .cram.observability import cmd_trace
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
+from .cram.consistency_cli import (
+    cmd_consistency_check,
+    cmd_history,
+    cmd_recovery_test,
+)
 from .router import (
     CapabilityAwareStrategy,
     CapabilityRegistry,
@@ -230,6 +235,37 @@ def main(argv: list[str] | None = None):
     )
     cram_trace.add_argument("operation_id")
     cram_trace.add_argument("--root", type=str, default=None)
+
+    # Phase 5B — consistency / recovery / history
+    cram_cons = cram_subs.add_parser(
+        "consistency", help="C-RAM consistency check (Phase 5B)"
+    )
+    cons_subs = cram_cons.add_subparsers(dest="consistency_op", required=True)
+    cc = cons_subs.add_parser("check", help="Check object consistency / dual-primary")
+    cc.add_argument("object")
+    cc.add_argument("--root", type=str, default=None)
+    cc.add_argument("--topology", type=str, default=None)
+    cc.add_argument("--seed", type=int, default=42)
+
+    cram_rec = cram_subs.add_parser(
+        "recovery", help="C-RAM formal recovery protocol (Phase 5B)"
+    )
+    rec_subs = cram_rec.add_subparsers(dest="recovery_op", required=True)
+    rt = rec_subs.add_parser("test", help="Run recovery FSM test (DETECT→…→RESUME)")
+    rt.add_argument("object", nargs="?", default=None, help="Object hash (or use --put)")
+    rt.add_argument("--put", type=str, default=None, help="Seed literal bytes then recover")
+    rt.add_argument("--reason", type=str, default="primary_unavailable")
+    rt.add_argument("--root", type=str, default=None)
+    rt.add_argument("--topology", type=str, default=None)
+    rt.add_argument("--seed", type=int, default=42)
+
+    cram_hist = cram_subs.add_parser(
+        "history", help="Show version/conflict/replication history for object"
+    )
+    cram_hist.add_argument("object")
+    cram_hist.add_argument("--root", type=str, default=None)
+    cram_hist.add_argument("--topology", type=str, default=None)
+    cram_hist.add_argument("--seed", type=int, default=42)
 
     cram_repl = cram_subs.add_parser("replica", help="C-RAM N=2 controlled replica ops")
     repl_subs = cram_repl.add_subparsers(dest="replica_op", required=True)
@@ -454,6 +490,40 @@ def main(argv: list[str] | None = None):
             raise SystemExit(cmd_fsck(root=root, as_json=bool(a.json)))
         elif a.op == "trace":
             raise SystemExit(cmd_trace(a.operation_id, root=root))
+        elif a.op == "consistency":
+            rroot = Path(a.root) if getattr(a, "root", None) else root
+            if a.consistency_op == "check":
+                raise SystemExit(
+                    cmd_consistency_check(
+                        a.object,
+                        root=rroot,
+                        topology_path=getattr(a, "topology", None),
+                        seed=int(getattr(a, "seed", 42)),
+                    )
+                )
+        elif a.op == "recovery":
+            rroot = Path(a.root) if getattr(a, "root", None) else root
+            if a.recovery_op == "test":
+                raise SystemExit(
+                    cmd_recovery_test(
+                        root=rroot,
+                        object_id=getattr(a, "object", None),
+                        put=getattr(a, "put", None),
+                        reason=getattr(a, "reason", "primary_unavailable"),
+                        topology_path=getattr(a, "topology", None),
+                        seed=int(getattr(a, "seed", 42)),
+                    )
+                )
+        elif a.op == "history":
+            rroot = Path(a.root) if getattr(a, "root", None) else root
+            raise SystemExit(
+                cmd_history(
+                    a.object,
+                    root=rroot,
+                    topology_path=getattr(a, "topology", None),
+                    seed=int(getattr(a, "seed", 42)),
+                )
+            )
         elif a.op == "replica":
             rroot = Path(a.root) if getattr(a, "root", None) else root
             topo = getattr(a, "topology", None)

@@ -814,8 +814,11 @@ def test_fabric_heartbeat_helper(ca_pair, tmp_path: Path):
 def test_version_0120_in_package():
     import neural_mesh
 
-    # Bumped in Cycle 11 deliverable
-    assert neural_mesh.__version__ == "0.12.0"
+    # Historical C11/C12 pin relaxed: package advances each cycle (now 0.13.0 / CP-0017).
+    # Still require a semver 0.x.y string at or beyond the C12 baseline.
+    parts = neural_mesh.__version__.split(".")
+    assert len(parts) >= 2 and parts[0] == "0"
+    assert (int(parts[1]), int(parts[2]) if len(parts) > 2 else 0) >= (12, 0)
 
 
 def test_local_ca_bootstrap_deterministic_files(tmp_path: Path):
