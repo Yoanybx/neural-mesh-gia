@@ -1,0 +1,23 @@
+NM/M2M v1
+ROLE: GROK
+CYCLE: 18
+DIR: STATUS
+VER: 0.14.4
+TIP: d865061
+CP: CP-0022=VERIFIED
+CP_RANGE: CP-0001..0022=VERIFIED
+PYTEST: 372/0
+PYTEST_MIN: tags_checkpoint_every_floor=13/0
+AUDIT: PASS
+DUAL_PRIMARY: 0
+PLAINTEXT_FB: 0
+STALE_REJECT_PCT: 100
+DUP_IDEM_PCT: 100
+MINORITY_WRITES: 0
+METRICS_P99_MS: recovery=1.46,checkpoint_durable_batch=0.07,checkpoint_every_floor=1.32
+SLO: recovery<=2=MET,checkpoint_durable_batch<=0.1=MET,checkpoint_every_floor<=0.1=GAP
+DONE: P0_schema_gate_CHECKPOINT@floor,P1_tests_schema_gate+one_per_floor,P2_debt_SCHEMA_GATED_1.32ms_no_chase,CP0022,0.14.4
+NO_HELD: Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,refactor_outside_tags
+ASK: VERDICT+NEXT
+CONSTRAINTS: DeepSeek-only;Search=OFF;inline-only;reply=M2M_v1
+NOTE: majority=fenced_primary_heal_NOT_Raft; debt=docs/debt/CHECKPOINT_EVERY_FLOOR.md=SCHEMA-GATED; schema_gate=neural_mesh.tags.schema_gate_checkpoint_every_floor; slo_gap_ms=1.32; no_SLO_chase; version=0.14.4

@@ -1,4 +1,4 @@
-"""Floor checkpoint tag schema and invariant validator (CP-0021 / Cycle 17).
+"""Floor checkpoint tag schema gate (CP-0021 / Cycle 17 → CP-0022 / Cycle 18).
 
 Schema
 ------
@@ -13,7 +13,12 @@ Invariant
 For each declared floor ``n``, exactly one tag ``CHECKPOINT@floor:<n>`` must
 be present in the tag set (no missing, no duplicates).
 
-Scope is tags-only — not a broad checkpoint rewrite and not an SLO chase.
+Debt gate (CP-0022)
+-------------------
+``schema_gate_checkpoint_every_floor`` confirms the schema + one-per-floor
+invariant and records CHECKPOINT_EVERY_FLOOR debt as **SCHEMA-GATED**.
+Documented SLO gap (~1.32 ms p99 vs 0.1 ms target) is held honest — **no SLO
+chase**. Scope is tags-only.
 """
 
 from __future__ import annotations
@@ -24,14 +29,25 @@ from typing import Iterable, Mapping, Sequence
 FLOOR_CHECKPOINT_PREFIX = "CHECKPOINT@floor:"
 FLOOR_CHECKPOINT_RE = re.compile(r"^CHECKPOINT@floor:(\d+)$")
 
+# Debt / schema-gate constants (CP-0022). SLO numbers are documentation only.
+SCHEMA_GATE_STATUS = "SCHEMA-GATED"
+CHECKPOINT_EVERY_FLOOR_SLO_TARGET_MS = 0.1
+CHECKPOINT_EVERY_FLOOR_SLO_GAP_MS = 1.32  # measured primary overlay p99 (~1.325)
+CHECKPOINT_EVERY_FLOOR_SLO_CHASE = False
+
 __all__ = [
+    "CHECKPOINT_EVERY_FLOOR_SLO_CHASE",
+    "CHECKPOINT_EVERY_FLOOR_SLO_GAP_MS",
+    "CHECKPOINT_EVERY_FLOOR_SLO_TARGET_MS",
     "FLOOR_CHECKPOINT_PREFIX",
     "FLOOR_CHECKPOINT_RE",
     "FloorCheckpointTagError",
+    "SCHEMA_GATE_STATUS",
     "TagError",
     "is_floor_checkpoint_tag",
     "make_floor_checkpoint_tag",
     "parse_floor_checkpoint_tag",
+    "schema_gate_checkpoint_every_floor",
     "validate_one_checkpoint_tag_per_floor",
 ]
 
@@ -166,4 +182,33 @@ def validate_one_checkpoint_tag_per_floor(
         "floors": mapping,
         "schema": f"{FLOOR_CHECKPOINT_PREFIX}<n>",
         "count": len(mapping),
+    }
+
+
+def schema_gate_checkpoint_every_floor(
+    tags: Iterable[str],
+    floors: Sequence[int] | None = None,
+) -> Mapping[str, object]:
+    """SCHEMA-GATE for CHECKPOINT_EVERY_FLOOR debt (CP-0022).
+
+    Confirms ``CHECKPOINT@floor:<n>`` schema presence and the one-tag-per-floor
+    invariant, then returns a gate record marking the debt **SCHEMA-GATED**.
+    Documented SLO gap (~1.32 ms) is attached for honesty; ``slo_chase`` is
+    always False (no performance chase in this gate).
+    """
+    validated = validate_one_checkpoint_tag_per_floor(tags, floors)
+    return {
+        "ok": True,
+        "gate": SCHEMA_GATE_STATUS,
+        "status": SCHEMA_GATE_STATUS,
+        "schema": validated["schema"],
+        "schema_present": True,
+        "one_per_floor": True,
+        "floors": validated["floors"],
+        "count": validated["count"],
+        "slo_target_ms": CHECKPOINT_EVERY_FLOOR_SLO_TARGET_MS,
+        "slo_gap_ms": CHECKPOINT_EVERY_FLOOR_SLO_GAP_MS,
+        "slo_chase": CHECKPOINT_EVERY_FLOOR_SLO_CHASE,
+        "debt": "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
+        "cp": "CP-0022",
     }

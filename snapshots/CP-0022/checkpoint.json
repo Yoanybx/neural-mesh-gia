@@ -1,0 +1,33 @@
+{
+  "checkpoint_id": "CP-0022",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.14.4",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "tags-schema-gate",
+  "reason": "Cycle 18: CP-0022 tag schema gate for checkpoint_every_floor \u2014 schema_gate_checkpoint_every_floor SCHEMA-GATED; SLO gap ~1.32ms documented; no SLO chase; pytest 372; 0.14.4",
+  "objective": "",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 18 / CP-0022 (schema gate SCHEMA-GATED; SLO GAP ~1.32ms held). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
+  "git_commit": "d8650615ef1ab4f9a943b9bb728365c36638e012",
+  "changed_files": [],
+  "tests": {
+    "passed": 372,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
+    "src/neural_mesh/tags.py",
+    "tests/test_tags.py",
+    "STATUS_FOR_CHATGPT_CYCLE18.md",
+    "council/STATUS_CYCLE18.md",
+    "council/COUNCIL_AGREEMENT_CYCLE18.md",
+    "council/DEEPSEEK_REPLY_CYCLE17.md"
+  ],
+  "created_at": "2026-09-23T19:30:06.011052+00:00",
+  "manifest_sha256": "f7e393154b62f25413fb50fae7bc36fc4e5e31d19371fcac99a4861a6fa9a1d5",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

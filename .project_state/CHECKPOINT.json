@@ -35,35 +35,35 @@
     "phase5c_durability_partition",
     "phase5c_slo_close",
     "phase5c_every_opt",
-    "tags_floor_checkpoint"
+    "tags_floor_checkpoint",
+    "tags_schema_gate_cp0022"
   ],
-  "current_module": "tags-floor-checkpoint",
+  "current_module": "tags-schema-gate",
   "current_phase": 5,
   "decisions_pending": [],
-  "git_commit": "ff2a7e32239cbf2638d20eafb702ba2bbe1a0ad4",
+  "git_commit": "d8650615ef1ab4f9a943b9bb728365c36638e012",
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0021",
+  "last_checkpoint": "CP-0022",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-23T19:22:35.151237+00:00",
-  "last_updated": "2026-09-23T19:23:08.723329+00:00",
+  "last_successful_test": "2026-09-23T19:30:37.642815+00:00",
+  "last_updated": "2026-09-23T19:30:37.642837+00:00",
   "modified_files": [
     "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
     "src/neural_mesh/tags.py",
     "src/neural_mesh/__init__.py",
     "pyproject.toml",
-    "tests/test_tags.py",
-    "tests/test_phase5c_every_opt_c16.py"
+    "tests/test_tags.py"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 17 / CP-0021 (floor checkpoint tag invariant SCHEMA-GATED; SLO GAP held). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 18 / CP-0022 (tag schema gate SCHEMA-GATED; SLO GAP ~1.32ms held). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
-  "project_version": "0.14.3",
+  "project_version": "0.14.4",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 369
+    "passed": 372
   }
 }

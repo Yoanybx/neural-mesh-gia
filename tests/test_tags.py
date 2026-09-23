@@ -1,4 +1,4 @@
-"""Cycle 17 — CP-0021 floor checkpoint tag invariant / 0.14.3."""
+"""Cycle 18 — CP-0022 tag schema gate for checkpoint_every_floor / 0.14.4."""
 
 from __future__ import annotations
 
@@ -7,11 +7,16 @@ from pathlib import Path
 import pytest
 
 from neural_mesh.tags import (
+    CHECKPOINT_EVERY_FLOOR_SLO_CHASE,
+    CHECKPOINT_EVERY_FLOOR_SLO_GAP_MS,
+    CHECKPOINT_EVERY_FLOOR_SLO_TARGET_MS,
     FLOOR_CHECKPOINT_PREFIX,
     FloorCheckpointTagError,
+    SCHEMA_GATE_STATUS,
     is_floor_checkpoint_tag,
     make_floor_checkpoint_tag,
     parse_floor_checkpoint_tag,
+    schema_gate_checkpoint_every_floor,
     validate_one_checkpoint_tag_per_floor,
 )
 
@@ -34,11 +39,54 @@ def test_checkpoint_every_floor_schema_documented():
     assert p.is_file()
     text = p.read_text(encoding="utf-8")
     assert "CHECKPOINT@floor:<n>" in text or "CHECKPOINT@floor:" in text
-    assert "SCHEMA-GATED" in text or "schema" in text.lower()
-    assert "CP-0021" in text
+    assert "SCHEMA-GATED" in text
+    assert "CP-0022" in text
+    assert "schema_gate_checkpoint_every_floor" in text
     assert "validate_one_checkpoint_tag_per_floor" in text
+    assert "1.32" in text
+    assert "no SLO chase" in text.lower() or "No SLO chase" in text
     assert "EXPLICIT DEBT" in text or "SLO" in text
     assert "No Raft" in text or "NOT Raft" in text or "No Raft/Paxos" in text
+
+
+def test_checkpoint_every_floor_schema_gate_presence(checkpoint_every_floor_fixture):
+    """P1: schema gate is present and returns SCHEMA-GATED (CP-0022)."""
+    floors, tags = checkpoint_every_floor_fixture
+    assert SCHEMA_GATE_STATUS == "SCHEMA-GATED"
+    assert CHECKPOINT_EVERY_FLOOR_SLO_CHASE is False
+    assert CHECKPOINT_EVERY_FLOOR_SLO_GAP_MS == pytest.approx(1.32)
+    assert CHECKPOINT_EVERY_FLOOR_SLO_TARGET_MS == pytest.approx(0.1)
+    gate = schema_gate_checkpoint_every_floor(tags, floors)
+    assert gate["ok"] is True
+    assert gate["gate"] == "SCHEMA-GATED"
+    assert gate["status"] == "SCHEMA-GATED"
+    assert gate["schema_present"] is True
+    assert gate["one_per_floor"] is True
+    assert gate["schema"] == f"{FLOOR_CHECKPOINT_PREFIX}<n>"
+    assert gate["slo_gap_ms"] == pytest.approx(1.32)
+    assert gate["slo_chase"] is False
+    assert gate["cp"] == "CP-0022"
+    assert gate["debt"] == "docs/debt/CHECKPOINT_EVERY_FLOOR.md"
+
+
+def test_checkpoint_every_floor_schema_gate_one_per_floor(
+    checkpoint_every_floor_fixture,
+):
+    """P1: schema gate enforces exactly one tag per floor."""
+    floors, tags = checkpoint_every_floor_fixture
+    gate = schema_gate_checkpoint_every_floor(tags, floors)
+    assert gate["one_per_floor"] is True
+    assert gate["count"] == len(floors)
+    for n in floors:
+        assert gate["floors"][n] == make_floor_checkpoint_tag(n)
+
+    missing = [t for t in tags if t != "CHECKPOINT@floor:1"]
+    with pytest.raises(FloorCheckpointTagError, match="missing"):
+        schema_gate_checkpoint_every_floor(missing, floors)
+
+    dup = list(tags) + ["CHECKPOINT@floor:0"]
+    with pytest.raises(FloorCheckpointTagError, match="duplicate"):
+        schema_gate_checkpoint_every_floor(dup, floors)
 
 
 def test_checkpoint_every_floor_make_parse_roundtrip():
@@ -82,7 +130,6 @@ def test_checkpoint_every_floor_validator_ok(checkpoint_every_floor_fixture):
 
 def test_checkpoint_every_floor_missing_rejected(checkpoint_every_floor_fixture):
     floors, tags = checkpoint_every_floor_fixture
-    # Drop floor 1 tag
     tags = [t for t in tags if t != "CHECKPOINT@floor:1"]
     with pytest.raises(FloorCheckpointTagError, match="missing"):
         validate_one_checkpoint_tag_per_floor(tags, floors)
@@ -101,19 +148,33 @@ def test_checkpoint_every_floor_primary_floor_zero():
     result = validate_one_checkpoint_tag_per_floor(tags, floors=[0])
     assert result["ok"] is True
     assert result["floors"][0] == "CHECKPOINT@floor:0"
+    gate = schema_gate_checkpoint_every_floor(tags, floors=[0])
+    assert gate["gate"] == "SCHEMA-GATED"
+    assert gate["floors"][0] == "CHECKPOINT@floor:0"
 
 
-def test_checkpoint_every_floor_version_0143():
+def test_checkpoint_every_floor_slo_gap_no_chase():
+    """P2: documented SLO gap ~1.32ms; schema gate never chases SLO."""
+    assert CHECKPOINT_EVERY_FLOOR_SLO_GAP_MS == pytest.approx(1.32)
+    assert CHECKPOINT_EVERY_FLOOR_SLO_CHASE is False
+    p = ROOT / "docs" / "debt" / "CHECKPOINT_EVERY_FLOOR.md"
+    text = p.read_text(encoding="utf-8")
+    assert "1.32" in text
+    assert "SCHEMA-GATED" in text
+    assert "No SLO chase" in text or "no SLO chase" in text.lower()
+
+
+def test_checkpoint_every_floor_version_0144():
     from neural_mesh import __version__
 
     parts = [int(x) for x in __version__.split(".")[:3]]
-    assert parts >= [0, 14, 3]
+    assert parts >= [0, 14, 4]
 
 
 def test_checkpoint_every_floor_council_agreement():
-    p = ROOT / "council" / "COUNCIL_AGREEMENT_CYCLE17.md"
+    p = ROOT / "council" / "COUNCIL_AGREEMENT_CYCLE18.md"
     assert p.is_file()
     text = p.read_text(encoding="utf-8")
-    assert "CP-0021" in text
-    assert "0.14.3" in text
-    assert "CHECKPOINT@floor" in text or "floor checkpoint" in text.lower()
+    assert "CP-0022" in text
+    assert "0.14.4" in text
+    assert "CHECKPOINT@floor" in text or "schema gate" in text.lower()

@@ -1,5 +1,13 @@
 # Changelog
 
+## Cycle 18 — 2026-09-23 — CP-0022 tag schema gate
+- schema_gate_checkpoint_every_floor in neural_mesh.tags (SCHEMA-GATED debt gate).
+- Strengthened tests/test_tags.py -k checkpoint_every_floor (schema gate presence + one-per-floor).
+- docs/debt/CHECKPOINT_EVERY_FLOOR.md: SCHEMA-GATED ref, SLO gap ~1.32ms, No SLO chase.
+- pytest 372; audit PASS; version 0.14.4; CP-0022 VERIFIED.
+- No SLO chase; no refactor outside tags; no Raft/N>2/ML.
+
+
 ## Cycle 17 — 2026-09-23 — CP-0021 floor checkpoint tag invariant
 - Schema CHECKPOINT@floor:<n> in docs/debt/CHECKPOINT_EVERY_FLOOR.md.
 - Validator neural_mesh.tags.validate_one_checkpoint_tag_per_floor (one tag per floor).

@@ -54,3 +54,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## 2026-09-23 15:22 EDT — Cycle 17 CP-0021
 - Added floor checkpoint tag schema + validator; SCHEMA-GATED debt; pytest 369; version 0.14.3.
+
+## 2026-09-23 15:29 EDT — Cycle 18 CP-0022
+- Strengthened tag schema gate (schema_gate_checkpoint_every_floor); SCHEMA-GATED debt; SLO gap ~1.32ms; no chase; pytest 372; version 0.14.4.
