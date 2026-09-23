@@ -2,7 +2,7 @@
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)
 **Repo:** `/workspace/neural-mesh-gia`
-**Git HEAD:** `(seal after commit)`
+**Git HEAD:** `97c1bcd695248c00c130df3fad26bb88f436e7ec`
 **Directive:** Council Cycle 7 SHORT — out-of-process C-RAM replica harden (DeepSeek plan). NO Phase 3 Router / Raft / N>2 / ML / TLS.
 
 ---
