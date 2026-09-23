@@ -2,7 +2,7 @@
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)
 **Repo:** `/workspace/neural-mesh-gia`
-**Git:** code `4bc191e4e9abe9e3e14a5d85bfa873cddf6827fa` · status seal `3cd770475c29df1270f670ebf07eb800657773e5`
+**Git:** code `4bc191e4e9abe9e3e14a5d85bfa873cddf6827fa` · ratify `3cd770475c29df1270f670ebf07eb800657773e5` · finalize (this file seal commit follows)
 **Directive:** Council Cycle 5 — C-RAM hardening (Opción 2 DeepSeek) + ChatGPT P1/CLI tweaks + DeepSeek exit-code/stale-topology nuances. NO real replication. NO Phase 3 Router.
 
 ---
