@@ -14,7 +14,7 @@
       "ok": true
     },
     {
-      "detail": "tag=False marker=True archive_manifest=True tar=True",
+      "detail": "tag=True marker=True archive_manifest=True tar=True",
       "name": "tag_or_archive_marker",
       "ok": true
     },
@@ -56,6 +56,6 @@
     "hint": "Future: cron/CI may invoke scripts/post_release_monitor.py --once",
     "status": "documented_only"
   },
-  "tip": "9e681da",
+  "tip": "4b1a833",
   "version": "0.16.3"
 }

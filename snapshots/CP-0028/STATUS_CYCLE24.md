@@ -13,7 +13,7 @@
 | schema | `mesh.bundle.manifest/v1` **FROZEN** for 0.16.x |
 | freeze field | `{channel:"0.16.x", schema:"mesh.bundle.manifest/v1"}` |
 | release_signoff | **PASS** (`dist/releases/0.16.3/SIGNOFF.json`) |
-| release_tag_archive | **PASS** (archive + marker; tag after clean commit) |
+| release_tag_archive | **PASS** (archive + local tag **v0.16.3**) |
 | post_release_monitor --once | **PASS** (`MONITOR.json`) |
 | dual_primary | **0** |
 | peers | **0** |
