@@ -12,3 +12,6 @@ See `../STATUS_FOR_CHATGPT_CYCLE8.md` for full bilingual report.
 - Doc merge gate: `docs/cognitive_router_r0.md` FROZEN
 - NO R1/R2/R3 / Raft / N>2 / ML / TLS
 - NEXT: dual review of Cycle 8
+
+- Git tip: f5d42a11b9d3cd17dfc0db5deec12b3c79667883
+- Implementation: f5d42a11b9d3cd17dfc0db5deec12b3c79667883
