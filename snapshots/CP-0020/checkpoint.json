@@ -13,7 +13,7 @@
   ],
   "git_commit": "1f7d2e7c5d9dd72abe26e5be70bc71bb1ab26ff6",
   "known_bugs": [],
-  "manifest_sha256": "31eb2777e6287d1f8ecbd83e21c0c0372d14d1409a35ac204797c1cc9fa6ff05",
+  "manifest_sha256": "4076146b4f390d1163315b5956360dcb5c7ab2deb671f3465659705464ab700a",
   "module": "phase5c-every-opt",
   "next_action": "DeepSeek M2M VERDICT on Cycle 16 / CP-0020 (EVERY floor EXPLICIT DEBT; BATCH/recovery MET). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA.",
   "objective": "",
