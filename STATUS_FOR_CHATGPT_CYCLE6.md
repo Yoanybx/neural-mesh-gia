@@ -2,6 +2,7 @@
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)
 **Repo:** `/workspace/neural-mesh-gia`
+**Git HEAD:** `1d2b4639ef5108de44008bd53c0f6d6f12967bef`
 **Directive:** Council Cycle 6 — C-RAM Replica N=2 (Controlled). P0 consistency freeze (DeepSeek) then implementation (ChatGPT). NO Raft/Paxos/quorum/N>2/Phase 3 Router/ML. In-process sandbox only.
 
 ---
