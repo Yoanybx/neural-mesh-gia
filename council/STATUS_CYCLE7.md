@@ -11,3 +11,5 @@ See `../STATUS_FOR_CHATGPT_CYCLE7.md` for full bilingual report.
 - TLS: **EXPLICIT DEBT**
 - Phase 3 Router / Raft / N>2: **not started** (Cycle 8 reserved)
 - NEXT: dual review of Cycle 7 → then Router R0
+- Git tip: f92809ed5da0195d66a42957798399715e7eea8d
+- Implementation: 97c1bcd
