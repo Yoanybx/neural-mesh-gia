@@ -2,7 +2,7 @@
 
 **Fecha / Date:** 2026-09-23 America/New_York (EDT, UTC-4)
 **Repo:** `/workspace/neural-mesh-gia`
-**Git:** (filled after seal)
+**Git:** Cycle 4 code `0fa18c7d1c5e9c01702214b9dbe33726d4ea9009` (seal commit filled below)
 **Directive:** PHASE 2 C-RAM START per `CHATGPT_REPLY_CYCLE3.md` — C-RAM núcleo determinista, verificable y recuperable (NO memoria distribuida completa).
 
 ---
