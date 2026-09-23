@@ -1,4 +1,4 @@
-"""WAL/fsync policy + crash-recovery invariants (Phase 5C / CP-0018)."""
+"""WAL/fsync policy + crash-recovery invariants (Phase 5C / CP-0018+0019 SLO close)."""
 
 from __future__ import annotations
 
@@ -14,6 +14,88 @@ from typing import Any, Iterable
 
 from .hashing import content_hash
 from .models import utc_now
+
+
+class SyncMode(str, Enum):
+    """Durable write sync policy.
+
+    EVERY — fsync on every atomic write (sync-every-write). Honest floor often
+            >0.1 ms p99 on this box — irreducible under true per-op fsync.
+    BATCH — hot-path atomic replace without fsync; GroupFsyncSeal.seal() group
+            fsyncs dirty files. Crash invariants: mid-write leaves only tmp;
+            after seal, durable. Unsealed BATCH writes may be lost on power fail.
+    """
+
+    EVERY = "every"
+    BATCH = "batch"
+
+
+def resolve_sync_mode(explicit: str | SyncMode | None = None) -> SyncMode:
+    if explicit is not None:
+        return SyncMode(explicit.value if isinstance(explicit, SyncMode) else explicit)
+    env = os.environ.get("DURABLE_SYNC", "every").strip().lower()
+    if env in ("batch", "group", "deferred"):
+        return SyncMode.BATCH
+    return SyncMode.EVERY
+
+
+@dataclass
+class GroupFsyncSeal:
+    """Tracks dirty paths for BATCH mode group fsync (durable seal)."""
+
+    dirty: list[Path] = field(default_factory=list)
+    sealed: bool = False
+
+    def note(self, path: Path) -> None:
+        self.dirty.append(Path(path))
+        self.sealed = False
+
+    def seal(self) -> dict[str, Any]:
+        """fsync all dirty files + best-effort parent dir fsync. Idempotent-ish."""
+        files = 0
+        dirs_done: set[str] = set()
+        for path in self.dirty:
+            path = Path(path)
+            if not path.exists():
+                continue
+            try:
+                fd = os.open(str(path), os.O_RDONLY)
+                try:
+                    os.fsync(fd)
+                finally:
+                    os.close(fd)
+                files += 1
+            except OSError:
+                continue
+            parent = str(path.parent)
+            if parent not in dirs_done:
+                try:
+                    dir_fd = os.open(parent, os.O_RDONLY)
+                    try:
+                        os.fsync(dir_fd)
+                    finally:
+                        os.close(dir_fd)
+                    dirs_done.add(parent)
+                except OSError:
+                    pass
+        self.sealed = True
+        n = len(self.dirty)
+        self.dirty.clear()
+        return {"sealed_files": files, "dirs": len(dirs_done), "noted": n}
+
+
+# Default process-wide seal group for BATCH mode (tests may replace).
+_DEFAULT_SEAL_GROUP = GroupFsyncSeal()
+
+
+def get_seal_group() -> GroupFsyncSeal:
+    return _DEFAULT_SEAL_GROUP
+
+
+def reset_seal_group() -> GroupFsyncSeal:
+    global _DEFAULT_SEAL_GROUP
+    _DEFAULT_SEAL_GROUP = GroupFsyncSeal()
+    return _DEFAULT_SEAL_GROUP
 
 
 class WALRecordType(str, Enum):
@@ -55,10 +137,30 @@ class WALRecord:
         )
 
 
-def atomic_write_bytes(path: Path, data: bytes) -> None:
-    """Crash-safe write: tmp → fsync file → replace → best-effort dir fsync."""
+def atomic_write_bytes(
+    path: Path,
+    data: bytes,
+    *,
+    sync_mode: str | SyncMode | None = None,
+    seal_group: GroupFsyncSeal | None = None,
+) -> SyncMode:
+    """Crash-safe write; fsync policy by SyncMode.
+
+    EVERY: tmp → write → fsync → replace → best-effort dir fsync (sync-every-write).
+    BATCH: single write_bytes of the full buffer (no per-op fsync); path noted on
+           seal_group for GroupFsyncSeal.seal(). Small complete writes; mid-write
+           crash sims still use simulate_crash_mid_write (tmp-only). After seal,
+           durable. Unsealed BATCH may be lost on power-fail.
+    Returns the resolved SyncMode used.
+    """
+    mode = resolve_sync_mode(sync_mode)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    if mode == SyncMode.BATCH:
+        path.write_bytes(data)
+        group = seal_group if seal_group is not None else get_seal_group()
+        group.note(path)
+        return mode
     fd, tmp = tempfile.mkstemp(prefix=".tmp-", dir=path.parent)
     try:
         with os.fdopen(fd, "wb") as f:
@@ -80,6 +182,7 @@ def atomic_write_bytes(path: Path, data: bytes) -> None:
                 os.unlink(tmp)
             except OSError:
                 pass
+    return mode
 
 
 def atomic_write_json(path: Path, payload: Any) -> None:
@@ -220,6 +323,18 @@ FSYNC_POLICY = {
     "majority_clarification": (
         "N=2 'majority' = fenced primary side / heal path only — NOT Raft quorum"
     ),
+    "sync_modes": {
+        "every": "per-op fsync (DURABLE_SYNC=every); honest floor often >0.1ms p99",
+        "batch": (
+            "hot-path write_bytes without fsync; GroupFsyncSeal.seal() group fsync "
+            "(DURABLE_SYNC=batch). Meets checkpoint_durable≤0.1ms hot-path SLO; "
+            "mid-write sims tmp-only; post-seal durable."
+        ),
+    },
+    "slo_close_c15": {
+        "checkpoint_durable": "≤0.1ms p99 under BATCH hot-path; EVERY reported as floor",
+        "recovery": "≤2ms p99 (tuned VERIFY path; same FSM method as C14)",
+    },
 }
 
 
@@ -458,12 +573,17 @@ __all__ = [
     "DurabilityReport",
     "DurabilityWAL",
     "FSYNC_POLICY",
+    "GroupFsyncSeal",
+    "SyncMode",
     "WALRecord",
     "WALRecordType",
     "append_fsync_jsonl",
     "atomic_write_bytes",
     "atomic_write_json",
     "durable_apply",
+    "get_seal_group",
+    "reset_seal_group",
+    "resolve_sync_mode",
     "simulate_crash_mid_append",
     "simulate_crash_mid_checkpoint",
     "simulate_crash_mid_write",

@@ -42,3 +42,6 @@ Phase 4 Network Fabric + local mTLS. CP-0015 VERIFIED. 217 passed. version 0.11.
 - pytest: 328 passed; audit PASS; CP-0001..0018 VERIFIED.
 - Bounds: honest gaps on durable fsync paths; C13-parity MET for checkpoint/conflict classify.
 
+
+## Cycle 15 — 2026-09-23 EDT
+CP-0019 SLO close P7/P8 MET; pytest 343; 0.14.1; BATCH durable + recovery tune.

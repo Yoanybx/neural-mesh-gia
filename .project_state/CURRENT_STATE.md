@@ -1,10 +1,10 @@
 # CURRENT PROJECT STATE
 
 Phase: 5
-Module: phase5c-durability-partition
+Module: phase5c-slo-close
 Status: VERIFIED
-Last checkpoint: CP-0018
-Next action: DeepSeek review of Cycle 14 / CP-0018 (ChatGPT catch-up). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, silent plaintext fallback.
-Git: 1ad764aa0f01240bc4dd9b3d58c47916bfbf3f32
+Last checkpoint: CP-0019
+Next action: DeepSeek M2M VERDICT on Cycle 15 / CP-0019 (RELEASE held until P7/P8 MET — now claimed MET with honest EVERY floor). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA.
+Git: unknown
 Safety: SAFE
-Updated: 2026-09-23T18:47:05.710817+00:00
+Updated: 2026-09-23T18:59:01.576801+00:00

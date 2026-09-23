@@ -1,0 +1,33 @@
+{
+  "recovery_p99_ms": {
+    "bound": 2.0,
+    "measured": 1.5978872400864914,
+    "met": true,
+    "note": "C15 VERIFY tune + FSM recovery_time_ms (audit log flush excluded)"
+  },
+  "checkpoint_durable_p99_ms": {
+    "bound": 0.1,
+    "measured_batch_hotpath": 0.06650495036410574,
+    "measured_every_floor": 0.4467296001030262,
+    "measured_parity_c13_plain_write": 0.056893610103543234,
+    "met_batch": true,
+    "met_every": false,
+    "met_parity_c13_method": true,
+    "group_seal_ms": 25.4716389999885,
+    "group_seal": {
+      "sealed_files": 200,
+      "dirs": 1,
+      "noted": 200
+    },
+    "note": "P7 primary = BATCH hot-path (DURABLE_SYNC=batch) + GroupFsyncSeal; EVERY floor reported honestly (often irreducible >0.1ms)"
+  },
+  "conflict_detect_p99_ms": {
+    "bound": 0.1,
+    "measured_full_apply_wal": 0.8146924801167191,
+    "measured_classify_only_parity": 0.00037008972867624823,
+    "met_full_apply": false,
+    "met_classify_parity": true,
+    "note": "Full path includes WAL/idempotency fsync; classify-only matches C13 spirit"
+  }
+}
+wrote /workspace/neural-mesh-gia/experiments/phase5c-slo-close-c15/baseline.json

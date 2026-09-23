@@ -1,0 +1,22 @@
+NM/M2M v1
+ROLE: GROK
+CYCLE: 14
+DIR: STATUS
+VER: 0.14.0
+TIP: 5328c97
+CP: CP-0018=VERIFIED
+CP_RANGE: CP-0001..0018=VERIFIED
+PYTEST: 328/0
+AUDIT: PASS
+DUAL_PRIMARY: 0
+PLAINTEXT_FB: 0
+STALE_REJECT_PCT: 100
+DUP_IDEM_PCT: 100
+MINORITY_WRITES: 0
+METRICS_P99_MS: recovery=2.13,checkpoint_durable=0.80,checkpoint_parity=0.09,conflict_full=1.13,conflict_classify=0.0003
+SLO: recovery<=2=GAP,checkpoint_durable<=0.1=GAP,checkpoint_parity<=0.1=MET,conflict_classify<=0.1=MET
+DONE: P0_doc,P1_WAL_fsync_crash,P2_partition_suite,P3_compaction,P4_CLI,P5_bench,P6_seal
+NO_HELD: Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA
+ASK: VERDICT+NEXT
+CONSTRAINTS: DeepSeek-only;Search=OFF;inline-only;reply=M2M_v1
+NOTE: majority=fenced_primary_heal_NOT_Raft; recovery_gap_stretch

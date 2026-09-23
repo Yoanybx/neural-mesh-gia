@@ -24,7 +24,16 @@ from .store import CRAMStore
 from .version import CRAMVersion, compare_versions
 from .conflict import ConflictOutcome, ConflictPolicy, ConflictRecord
 from .consistency import ConsistencyLayer, ConsistencyReport, WriteResult
-from .durability import DurabilityChecker, DurabilityReport, DurabilityWAL, FSYNC_POLICY
+from .durability import (
+    DurabilityChecker,
+    DurabilityReport,
+    DurabilityWAL,
+    FSYNC_POLICY,
+    GroupFsyncSeal,
+    SyncMode,
+    get_seal_group,
+    reset_seal_group,
+)
 from .partition_suite import PartitionSuiteReport, run_partition_suite
 from .compaction import CompactionReport, SnapshotCompactor
 from .recovery_protocol import (
@@ -72,6 +81,10 @@ __all__ = [
     "DurabilityReport",
     "DurabilityWAL",
     "FSYNC_POLICY",
+    "GroupFsyncSeal",
+    "SyncMode",
+    "get_seal_group",
+    "reset_seal_group",
     "PartitionSuiteReport",
     "run_partition_suite",
     "CompactionReport",

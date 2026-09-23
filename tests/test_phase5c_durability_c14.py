@@ -42,18 +42,20 @@ def test_phase5c_doc_frozen():
     assert "N=2" in doc or "N≤2" in doc
     assert "dual-primary" in doc.lower() or "dual_primary" in doc.lower()
     assert "compaction" in doc.lower()
-    assert "CP-0018" in doc
+    assert "CP-0018" in doc or "CP-0019" in doc
 
 
-def test_version_is_0140():
+def test_version_is_at_least_0140():
     from neural_mesh import __version__
 
-    assert __version__ == "0.14.0"
+    # C15 bumped to 0.14.1; C14 floor remains ≥0.14.0
+    parts = [int(x) for x in __version__.split(".")]
+    assert parts >= [0, 14, 0]
 
 
-def test_pyproject_version_0140():
+def test_pyproject_version_014x():
     text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.14.0"' in text
+    assert 'version = "0.14.' in text
 
 
 def test_fsync_policy_clarifies_majority_not_raft():

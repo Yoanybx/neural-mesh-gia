@@ -4,10 +4,10 @@
 P0
 
 ## Action
-DeepSeek review of Cycle 14 / CP-0018 (ChatGPT catch-up). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, silent plaintext fallback.
+DeepSeek M2M VERDICT on Cycle 15 / CP-0019 (RELEASE held until P7/P8 MET — now claimed MET with honest EVERY floor). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA.
 
 ## Status
 READY
 
 ## Checkpoint
-CP-0018
+CP-0019

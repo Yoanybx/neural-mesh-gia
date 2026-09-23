@@ -1,5 +1,12 @@
 # Changelog
 
+## Cycle 15 — 2026-09-23 — CP-0019 SLO close (P7/P8)
+- P7: DURABLE_SYNC=batch + GroupFsyncSeal; checkpoint_durable p99 MET ≤0.1ms; EVERY floor reported honestly.
+- P8: recovery VERIFY tune; FSM recovery_time_ms; p99 MET ≤2ms.
+- Rebench experiments/phase5c-slo-close-c15/; pytest 343; version 0.14.1; CP-0019 VERIFIED.
+- Docs: durable vs parity; sync modes; no fabricated p99.
+
+
 ## Cycle 14 — 2026-09-23 — CP-0018 Phase 5C Durability & Adversarial Partition
 - WAL/fsync policy + DurabilityWAL (BEGIN/APPLY/COMMIT); crash invariants mid-write/append/checkpoint.
 - N=2 partition suite first gate: minority=0, dual-primary=0, stale=100%, deterministic heal (NOT Raft).

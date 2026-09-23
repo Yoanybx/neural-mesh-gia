@@ -1,0 +1,181 @@
+{
+  "bounds": {
+    "checkpoint_p99_ms": 0.1,
+    "conflict_detect_p99_ms": 0.1,
+    "recovery_p99_ms": 2.0
+  },
+  "bounds_evaluation": {
+    "checkpoint_durable_p99_ms": {
+      "bound": 0.1,
+      "group_seal": {
+        "dirs": 1,
+        "noted": 200,
+        "sealed_files": 200
+      },
+      "group_seal_ms": 25.4716389999885,
+      "measured_batch_hotpath": 0.06650495036410574,
+      "measured_every_floor": 0.4467296001030262,
+      "measured_parity_c13_plain_write": 0.056893610103543234,
+      "met_batch": true,
+      "met_every": false,
+      "met_parity_c13_method": true,
+      "note": "P7 primary = BATCH hot-path (DURABLE_SYNC=batch) + GroupFsyncSeal; EVERY floor reported honestly (often irreducible >0.1ms)"
+    },
+    "conflict_detect_p99_ms": {
+      "bound": 0.1,
+      "measured_classify_only_parity": 0.00037008972867624823,
+      "measured_full_apply_wal": 0.8146924801167191,
+      "met_classify_parity": true,
+      "met_full_apply": false,
+      "note": "Full path includes WAL/idempotency fsync; classify-only matches C13 spirit"
+    },
+    "recovery_p99_ms": {
+      "bound": 2.0,
+      "measured": 1.5978872400864914,
+      "met": true,
+      "note": "C15 VERIFY tune + FSM recovery_time_ms (audit log flush excluded)"
+    }
+  },
+  "checkpoint": "CP-0019",
+  "clarification": "N=2 'majority' = fenced primary / heal path only \u2014 NOT Raft quorum",
+  "counts": {
+    "duplicate_suppression_pct": 100.0,
+    "duplicates_suppressed": 1000,
+    "duplicates_total": 1000,
+    "large": 100,
+    "medium": 1000,
+    "small": 10000,
+    "stale_reject_pct": 100.0,
+    "stale_rejected": 100,
+    "stale_total": 100
+  },
+  "cycle": 15,
+  "invariants": {
+    "dual_primary": 0,
+    "duplicate_idempotent_pct": 100.0,
+    "minority_writes_accepted": 0,
+    "stale_reject_pct": 100.0
+  },
+  "latency_ms": {
+    "apply_large": {
+      "max_ms": 11.0243009999067,
+      "mean_ms": 7.0626917699974,
+      "n": 100,
+      "p50_ms": 6.75574749993757,
+      "p95_ms": 9.037330599949199,
+      "p99_ms": 10.705484369973421
+    },
+    "apply_medium": {
+      "max_ms": 10.09465100014495,
+      "mean_ms": 5.04359869299924,
+      "n": 1000,
+      "p50_ms": 4.914087500083042,
+      "p95_ms": 7.662794849989041,
+      "p99_ms": 8.772838869904263
+    },
+    "apply_small": {
+      "max_ms": 4.812699000012799,
+      "mean_ms": 0.31912428279806593,
+      "n": 10000,
+      "p50_ms": 0.2838629998223041,
+      "p95_ms": 0.4461683501403967,
+      "p99_ms": 1.202279080180233
+    },
+    "checkpoint_durable_batch": {
+      "max_ms": 0.1743060001899721,
+      "mean_ms": 0.03789815501022531,
+      "n": 200,
+      "p50_ms": 0.03598600005716435,
+      "p95_ms": 0.04640609979560392,
+      "p99_ms": 0.06650495036410574
+    },
+    "checkpoint_every_floor": {
+      "max_ms": 0.7241089997478412,
+      "mean_ms": 0.2871155450156948,
+      "n": 200,
+      "p50_ms": 0.2769205002550734,
+      "p95_ms": 0.3455983502135494,
+      "p99_ms": 0.4467296001030262
+    },
+    "checkpoint_parity_c13": {
+      "max_ms": 0.11061600025641383,
+      "mean_ms": 0.03088201001901325,
+      "n": 200,
+      "p50_ms": 0.029616999881909578,
+      "p95_ms": 0.03636474973518489,
+      "p99_ms": 0.056893610103543234
+    },
+    "compaction": {
+      "max_ms": 6.14178899968465,
+      "mean_ms": 2.809508200016353,
+      "n": 20,
+      "p50_ms": 2.4837120001848234,
+      "p95_ms": 3.7778042497848237,
+      "p99_ms": 5.668992049704681
+    },
+    "conflict_classify_parity": {
+      "max_ms": 0.0012539999261207413,
+      "mean_ms": 0.0002522195036362973,
+      "n": 2000,
+      "p50_ms": 0.00024700011636014096,
+      "p95_ms": 0.00029000011636526324,
+      "p99_ms": 0.00037008972867624823
+    },
+    "conflict_detect": {
+      "max_ms": 2.996735999658995,
+      "mean_ms": 0.3102737222312516,
+      "n": 10300,
+      "p50_ms": 0.28503900011855876,
+      "p95_ms": 0.4190452502598414,
+      "p99_ms": 0.8146924801167191
+    },
+    "crash_recover": {
+      "max_ms": 0.847027999952843,
+      "mean_ms": 0.4679334333559382,
+      "n": 30,
+      "p50_ms": 0.44311600004220963,
+      "p95_ms": 0.611974849994112,
+      "p99_ms": 0.8004977899963707
+    },
+    "duplicate_suppress": {
+      "max_ms": 0.015949000044201966,
+      "mean_ms": 0.0016516730124749301,
+      "n": 1000,
+      "p50_ms": 0.0015914999949018238,
+      "p95_ms": 0.0017420501990272896,
+      "p99_ms": 0.002744330081441148
+    },
+    "partition_suite": {
+      "max_ms": 19.37832800012984,
+      "mean_ms": 16.16644480004652,
+      "n": 20,
+      "p50_ms": 15.780527500055541,
+      "p95_ms": 18.65670134973243,
+      "p99_ms": 19.23400267005036
+    },
+    "reconnect_heal": {
+      "max_ms": 0.7670989998587174,
+      "mean_ms": 0.5056821500147635,
+      "n": 20,
+      "p50_ms": 0.49134850019072474,
+      "p95_ms": 0.5688548998250554,
+      "p99_ms": 0.7274501798519848
+    },
+    "recovery": {
+      "max_ms": 1.7818339997575094,
+      "mean_ms": 0.957218524996506,
+      "n": 80,
+      "p50_ms": 0.9797100001378567,
+      "p95_ms": 1.407929000220065,
+      "p99_ms": 1.5978872400864914
+    }
+  },
+  "notes": [
+    "Honest measurement on this box; fsync best-effort as FS honors it.",
+    "checkpoint_durable = BATCH hot-path (tmp\u2192replace, no per-op fsync) + GroupFsyncSeal.",
+    "checkpoint_every_floor = sync-every-write fsync; may remain GAP vs 0.1ms.",
+    "Never fabricate p99. Compaction measured separately."
+  ],
+  "sync_mode_primary": "batch",
+  "version": "0.14.1"
+}

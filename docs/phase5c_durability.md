@@ -1,8 +1,8 @@
 # Phase 5C — Durability & Adversarial Partition Hardening (FROZEN Cycle 14 / P0)
 
-**Status:** FROZEN merge gate (council `COUNCIL_AGREEMENT_CYCLE14.md`).
+**Status:** FROZEN merge gate (council `COUNCIL_AGREEMENT_CYCLE14.md`); SLO-close Cycle 15 (`COUNCIL_AGREEMENT_CYCLE15.md`).
 **Date:** 2026-09-23 America/New_York (EDT).
-**Checkpoint target:** CP-0018 / version 0.14.0.
+**Checkpoint target:** CP-0018 / 0.14.0; **SLO-close seal CP-0019 / 0.14.1**.
 **Builds on:** Cycle 13 Phase 5B consistency (CP-0017); Cycle 12 Phase 5A N=2 Fabric replica.
 
 This document freezes the Phase 5C durability + adversarial partition contract.
@@ -69,10 +69,23 @@ Invariant remains: **dual-primary = 0** always.
 
 Crash between (1) and (4): recovery replays WAL; incomplete COMMIT → discard or retry; never dual-apply.
 
-### 3.3 Honesty
+### 3.3 Sync modes (`DURABLE_SYNC`)
+
+| Mode | Env | Hot path | Seal | Crash invariants |
+|------|-----|----------|------|------------------|
+| **EVERY** (default) | `DURABLE_SYNC=every` | tmp→write→**fsync**→replace→dir fsync | N/A (per-op) | Full sync-every-write |
+| **BATCH** | `DURABLE_SYNC=batch` | full-buffer `write_bytes` **without** fsync; note dirty | `GroupFsyncSeal.seal()` group fsync | Mid-write sims still tmp-only; post-seal durable; unsealed BATCH may be lost on power-fail |
+
+API: `atomic_write_bytes(..., sync_mode=...)`, `GroupFsyncSeal`, `reset_seal_group()`.
+
+### 3.4 Honesty
 
 fsync durability is **best-effort** as far as the underlying filesystem honors it on this box.
 We do not claim battery-backed NVRAM or power-fail lab certification.
+
+**Sync-every-write floor:** on this box, per-op fsync checkpoint p99 is typically
+**~0.3–0.8 ms** — physically irreducible under EVERY for ≤0.1 ms. Cycle 15 closes the
+SLO under **BATCH** hot-path + seal, and reports **both** numbers honestly.
 
 ---
 
@@ -129,29 +142,42 @@ Exit codes: Cycle 5 contract preserved (0 PASS / 1 generic / 2 corrupt / 3 missi
 
 ---
 
-## 8. SLO targets (honest; same method as C13 where possible)
+## 8. SLO targets (honest; same method as C13/C14 where possible)
 
-| Metric | Bound |
-|--------|-------|
-| Recovery p99 | ≤ 2 ms (stretch) |
-| Checkpoint p99 | ≤ 0.1 ms |
-| Conflict detect p99 | ≤ 0.1 ms |
-| Dup suppress | 100% |
-| Stale reject | 100% |
-| Dual-primary | 0 |
-| Minority writes accepted | 0 |
+| Metric | Bound | Notes |
+|--------|-------|-------|
+| Recovery p99 | ≤ 2 ms | Same FSM method as C14 (DETECT→…→RESUME); C15 VERIFY path tuned |
+| Checkpoint **durable** p99 | ≤ 0.1 ms | **BATCH** hot-path (`DURABLE_SYNC=batch`) + group seal; EVERY floor reported separately |
+| Checkpoint **parity** p99 | ≤ 0.1 ms | C13 plain `write_text` (no fsync) — comparison only |
+| Conflict detect p99 | ≤ 0.1 ms | classify-only parity; full apply+WAL reported honestly |
+| Dup suppress | 100% | held |
+| Stale reject | 100% | held |
+| Dual-primary | 0 | held |
+| Minority writes accepted | 0 | held |
 
-Report MET or gap honestly in bench + STATUS.
+### 8.1 Durable vs parity (Cycle 15 close)
+
+- **checkpoint_durable**: cost of a durability-class checkpoint write under the
+  active sync mode. Under **BATCH**, this is the hot-path (tmp→replace, no per-op
+  fsync) that still preserves mid-write crash invariants; durability is completed
+  by `GroupFsyncSeal.seal()`.
+- **checkpoint_parity**: C13-method plain write (no fsync) — not a durability claim.
+- **checkpoint_every_floor**: sync-every-write fsync path — honest physical floor on
+  this box; may remain >0.1 ms. Never fabricate p99.
+
+Report MET or GAP honestly in bench + STATUS. Prefer real MET under BATCH; never fake EVERY.
 
 ---
 
 ## 9. Acceptance
 
-- pytest ≥ 320
+- pytest ≥ 320 (C14); ≥ 328 prefer ≥340 (C15)
 - audit PASS
-- **CP-0018 VERIFIED**
-- CP-0001..0017 still VERIFIED
-- version **0.14.0**
+- **CP-0018 VERIFIED**; **CP-0019 VERIFIED** (SLO-close seal)
+- CP-0001..0018 still VERIFIED
+- version **0.14.1** (C15)
+- P7 checkpoint_durable≤0.1ms MET (BATCH) + EVERY floor reported
+- P8 recovery≤2ms MET
 - Hard NO list held
 
 ---
@@ -162,3 +188,4 @@ Report MET or gap honestly in bench + STATUS.
 - `cram/partition_suite.py` — N=2 adversarial partition + heal reconcile
 - `cram/compaction.py` — safe snapshot compaction
 - `cram/durability_cli.py` — CLI handlers
+- Cycle 15: `SyncMode` / `GroupFsyncSeal` / `DURABLE_SYNC` in `durability.py`; recovery VERIFY hot-path tune in `recovery_protocol.py`

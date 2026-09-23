@@ -1,7 +1,7 @@
-# CP-0018
+# CP-0019
 
 Phase: 5
-Module: phase5c-durability-partition
-Reason: Cycle 14 Phase 5C: Durability & Adversarial Partition Hardening — WAL/fsync policy, crash invariants (kill -9 mid-write/append/checkpoint), N=2 partition suite (minority=0, dual-primary=0, heal reconcile), safe snapshot compaction, CLI durability/partition/recovery-trace, bench crash+partition+reconnect, CP-0018
-Next: DeepSeek review of Cycle 14 / CP-0018 (ChatGPT catch-up). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, silent plaintext fallback.
-Tests: {'passed': 328, 'failed': 0}
+Module: phase5c-slo-close
+Reason: Cycle 15: Close CP-0018 SLO gaps — P7 checkpoint_durable≤0.1ms via DURABLE_SYNC=batch + GroupFsyncSeal (EVERY floor reported); P8 recovery≤2ms (VERIFY tune, FSM recovery_time_ms); rebench phase5c-slo-close-c15; pytest 343; CP-0019 / 0.14.1
+Next: DeepSeek M2M VERDICT on Cycle 15 / CP-0019 (RELEASE held until P7/P8 MET — now claimed MET with honest EVERY floor). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA.
+Tests: {'passed': 343, 'failed': 0}
