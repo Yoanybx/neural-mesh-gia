@@ -26,4 +26,5 @@ markers = [
     "packaging_rc_cycle21: CP-0025 clean-node smoke / manifest repro / RC freeze",
     "packaging_rc_cycle22: CP-0026 rc install / rollback / release checklist",
     "packaging_rc_cycle23: CP-0027 rc soak / final audit / post-RC watch",
+    "packaging_rc_cycle24: CP-0028 release signoff / tag archive / post-release monitor",
 ]

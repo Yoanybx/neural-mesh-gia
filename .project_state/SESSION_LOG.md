@@ -57,3 +57,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## 2026-09-23 15:29 EDT — Cycle 18 CP-0022
 - Strengthened tag schema gate (schema_gate_checkpoint_every_floor); SCHEMA-GATED debt; SLO gap ~1.32ms; no chase; pytest 372; version 0.14.4.
+## Cycle 24 / CP-0028 — 2026-09-23 EDT
+- Release closeout of 0.16.3: P18 signoff, P19 tag/archive, P20 post-release monitor.
+- pytest 452; packaging 66; CP-0028 VERIFIED; archive dist/releases/0.16.3/.

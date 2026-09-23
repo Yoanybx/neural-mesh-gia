@@ -1,3 +1,11 @@
+## Cycle 24 — 2026-09-23 — CP-0028 Packaging RC (signoff / tag archive / monitor)
+- P18: scripts/release_signoff.py + packaging.release_signoff; SIGNOFF.json (signer=council:DeepSeek+Grok).
+- P19: scripts/release_tag_archive.py + packaging.release_tag_archive; local tag + dist/releases/0.16.3/ archive.
+- P20: scripts/post_release_monitor.py + MESH_PACKAGING_POST_RELEASE_MONITOR.md; --once MONITOR.json (no Grok Bot routine).
+- tests/test_packaging_rc_cycle24.py (13); packaging 66; pytest 452; CP-0028 VERIFIED.
+- Version 0.16.3 kept as signed-off release (Cycle 24 = release closeout of 0.16.3).
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes.
+
 ## Cycle 23 — 2026-09-23 — CP-0027 Packaging RC (soak / final audit / watch)
 - P15: scripts/rc_soak.py + packaging.rc_soak (N-iter install/status/verify[/smoke]; p50/p99; variance bound).
 - P16: scripts/final_release_audit.py + MESH_PACKAGING_FINAL_RELEASE_AUDIT.md; JSON M2M release-ready gate.

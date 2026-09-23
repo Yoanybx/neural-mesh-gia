@@ -1,0 +1,378 @@
+"""Post-release monitor for single-node RC (CP-0028 / P20).
+
+Extends/complements post_rc_watch: --once checks after release signoff/tag/archive.
+Writes MONITOR.json under dist/releases/0.16.3/.
+Schedule stub only — do NOT create Grok Bot routines.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import subprocess
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+from .bundle import build_bundle, load_manifest
+from .manifest import FREEZE_CHANNEL, SCHEMA_ID
+from .post_rc_watch import OBS_STABLE_FIELDS, _check_debt_schema_gated, _check_obs_fields_stable, _check_no_tag_schema_drift
+from .release_checklist import NO_HELD_DEFAULT, GateResult
+from .release_signoff import RELEASE_VERSION, SEAL_CP
+
+__all__ = [
+    "MONITOR_CHECKLIST",
+    "MonitorCheck",
+    "MonitorResult",
+    "run_post_release_monitor",
+]
+
+MONITOR_CHECKLIST = (
+    "signoff_present",
+    "tag_or_archive_marker",
+    "freeze_intact",
+    "debt_schema_gated",
+    "obs_stable_fields",
+    "no_forbidden_drift",
+)
+
+
+@dataclass
+class MonitorCheck:
+    name: str
+    ok: bool
+    detail: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"name": self.name, "ok": self.ok, "detail": self.detail}
+
+
+@dataclass
+class MonitorResult:
+    ok: bool = True
+    errors: list[str] = field(default_factory=list)
+    checks: list[MonitorCheck] = field(default_factory=list)
+    checklist: tuple[str, ...] = MONITOR_CHECKLIST
+    version: str | None = None
+    tip: str | None = None
+    freeze_channel: str | None = None
+    report_path: str | None = None
+    mode: str = "once"
+    no_held: str = NO_HELD_DEFAULT
+    notes: list[str] = field(default_factory=list)
+
+    def add(self, name: str, ok: bool, detail: str = "") -> None:
+        self.checks.append(MonitorCheck(name=name, ok=ok, detail=detail))
+        if not ok:
+            self.ok = False
+            self.errors.append(f"{name}: {detail or 'FAIL'}")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "ok": self.ok,
+            "errors": list(self.errors),
+            "mode": self.mode,
+            "checklist": list(self.checklist),
+            "checks": [c.to_dict() for c in self.checks],
+            "version": self.version,
+            "tip": self.tip,
+            "freeze_channel": self.freeze_channel,
+            "report_path": self.report_path,
+            "no_held": self.no_held,
+            "notes": list(self.notes),
+            "cp": SEAL_CP,
+            "cycle": 24,
+            "scheduled_routine": {
+                "status": "documented_only",
+                "create_grok_bot_routine": False,
+                "hint": (
+                    "Future: cron/CI may invoke "
+                    "scripts/post_release_monitor.py --once"
+                ),
+            },
+        }
+
+    def to_json(self, *, indent: int = 2) -> str:
+        return json.dumps(self.to_dict(), indent=indent, sort_keys=True) + "\n"
+
+
+def _check_signoff(root: Path, result: MonitorResult, version: str, release_dir: Path) -> None:
+    candidates = [
+        release_dir / "SIGNOFF.json",
+        root / ".project_state" / f"RELEASE_SIGNOFF_{version}.json",
+    ]
+    found = None
+    for p in candidates:
+        if p.is_file():
+            found = p
+            break
+    if found is None:
+        result.add("signoff_present", False, "SIGNOFF.json missing")
+        return
+    try:
+        data = json.loads(found.read_text(encoding="utf-8"))
+        ok = bool(data.get("ok")) and str(data.get("ver")) == version
+        result.version = str(data.get("ver") or version)
+        result.tip = data.get("tip")
+        result.add(
+            "signoff_present",
+            ok,
+            f"path={found.name} ok={data.get('ok')} ver={data.get('ver')}",
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        result.add("signoff_present", False, str(exc))
+
+
+def _tag_exists(root: Path, name: str) -> bool:
+    if not (root / ".git").exists():
+        return False
+    proc = subprocess.run(
+        ["git", "rev-parse", "-q", "--verify", f"refs/tags/{name}"],
+        cwd=str(root),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return proc.returncode == 0
+
+
+def _check_tag_or_marker(
+    root: Path, result: MonitorResult, version: str, release_dir: Path
+) -> None:
+    tags = [f"v{version}", f"release-{version}"]
+    tag_hit = any(_tag_exists(root, t) for t in tags)
+    marker = release_dir / "TAG_MARKER.json"
+    archive_manifest = release_dir / "ARCHIVE_MANIFEST.json"
+    release_tar = release_dir / f"neural-mesh-gia-release-{version}.tar.gz"
+    marker_ok = marker.is_file() or archive_manifest.is_file() or release_tar.is_file()
+    ok = tag_hit or marker_ok
+    result.add(
+        "tag_or_archive_marker",
+        ok,
+        f"tag={tag_hit} marker={marker.is_file()} "
+        f"archive_manifest={archive_manifest.is_file()} tar={release_tar.is_file()}",
+    )
+
+
+def _check_freeze(
+    root: Path,
+    result: MonitorResult,
+    *,
+    out_dir: Path,
+    tip: str | None,
+    ver: str | None,
+    prebuilt_manifest: Path | None,
+) -> None:
+    if prebuilt_manifest and prebuilt_manifest.is_file():
+        m = load_manifest(prebuilt_manifest)
+    else:
+        # Prefer existing release manifest
+        release_mans = list(
+            (root / "dist" / "releases" / (ver or RELEASE_VERSION)).glob(
+                "*.manifest.json"
+            )
+        )
+        if release_mans:
+            m = load_manifest(release_mans[0])
+        else:
+            m = build_bundle(
+                root,
+                out_dir / "monitor_probe",
+                tip=tip or "mon01",
+                ver=ver,
+                freeze=True,
+            )
+    result.version = result.version or m.ver
+    result.freeze_channel = m.freeze.channel if m.freeze else None
+    ok = (
+        m.freeze is not None
+        and m.freeze.channel == FREEZE_CHANNEL
+        and m.freeze.schema_name == SCHEMA_ID
+        and m.schema_name == SCHEMA_ID
+    )
+    result.add(
+        "freeze_intact",
+        ok,
+        f"freeze={m.freeze.model_dump(by_alias=True) if m.freeze else None}",
+    )
+
+
+def _check_no_forbidden_drift(root: Path, result: MonitorResult) -> None:
+    """Refuse drift into Raft / N>2 / multi-primary / ML / plaintext / GIA / SLO chase."""
+    # Only flag *activation* of forbidden features, not detection/docs strings.
+    forbidden_markers = [
+        (r"ENABLE_RAFT\s*=\s*True", "Raft enabled"),
+        (r"N_GT_2\s*=\s*True", "N>2 enabled"),
+        (r"MULTI_PRIMARY\s*=\s*True", "multi-primary"),
+        (r"SLO_CHASE\s*=\s*True", "SLO chase"),
+        (r"ENABLE_TAG_SCHEMA_V2\s*=\s*True", "tag schema v2"),
+        (r"EVERY_FSYNC_CHASE\s*=\s*True", "EVERY fsync chase"),
+    ]
+    scan_paths = [
+        root / "src" / "neural_mesh",
+        root / "docs" / "debt",
+        root / ".project_state" / "CURRENT_STATE.md",
+        root / ".project_state" / "NEXT_ACTION.md",
+    ]
+    # Skip packaging watch/monitor modules (they mention forbidden tokens as detectors)
+    skip_names = {
+        "post_rc_watch.py",
+        "post_release_monitor.py",
+        "release_signoff.py",
+        "release_tag_archive.py",
+        "final_release_audit.py",
+        "release_checklist.py",
+    }
+    hits: list[str] = []
+    for path in scan_paths:
+        files: list[Path]
+        if path.is_dir():
+            files = list(path.rglob("*.py")) + list(path.rglob("*.md"))
+        elif path.is_file():
+            files = [path]
+        else:
+            continue
+        for f in files:
+            if "__pycache__" in str(f):
+                continue
+            if f.name in skip_names:
+                continue
+            try:
+                text = f.read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError):
+                continue
+            for pat, label in forbidden_markers:
+                if re.search(pat, text):
+                    hits.append(f"{f.name}:{label}")
+    # Also require NO_HELD still documented somewhere recent
+    no_held_docs = [
+        root / "docs" / "capabilities" / "MESH_PACKAGING_POST_RELEASE_MONITOR.md",
+        root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_SIGNOFF.md",
+        root / "docs" / "capabilities" / "MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
+        root / "council" / "COUNCIL_AGREEMENT_CYCLE24.md",
+        root / "council" / "COUNCIL_AGREEMENT_CYCLE23.md",
+    ]
+    no_held_ok = False
+    for d in no_held_docs:
+        if d.is_file() and "NO_HELD" in d.read_text(encoding="utf-8"):
+            no_held_ok = True
+            break
+    ok = not hits and no_held_ok
+    result.add(
+        "no_forbidden_drift",
+        ok,
+        f"hits={hits or 'none'} no_held_doc={no_held_ok}",
+    )
+
+
+def run_post_release_monitor(
+    root: Path | str,
+    *,
+    once: bool = True,
+    version: str = RELEASE_VERSION,
+    out_dir: Path | str | None = None,
+    report_path: Path | str | None = None,
+    tip: str | None = None,
+    prebuilt_manifest: Path | str | None = None,
+    force_fail: str | None = None,
+) -> MonitorResult:
+    """Run post-release --once checks. Not a long-lived daemon."""
+    root = Path(root).resolve()
+    result = MonitorResult(mode="once" if once else "once")
+    result.notes.append(
+        "Scheduled routine stub: document-only; do NOT create Grok Bot routines."
+    )
+    release_dir = root / "dist" / "releases" / version
+    out = Path(out_dir) if out_dir else release_dir
+    out.mkdir(parents=True, exist_ok=True)
+
+    # Adapt debt/obs/tag checks via a thin WatchResult-compatible shim
+    class _Shim:
+        def __init__(self) -> None:
+            self.checks: list[Any] = []
+            self.ok = True
+            self.errors: list[str] = []
+            self.notes: list[str] = []
+
+        def add(self, name: str, ok: bool, detail: str = "") -> None:
+            self.checks.append(type("C", (), {"name": name, "ok": ok, "detail": detail})())
+            if not ok:
+                self.ok = False
+                self.errors.append(f"{name}: {detail or 'FAIL'}")
+
+    if force_fail == "signoff_present":
+        result.add("signoff_present", False, "forced fail")
+    else:
+        _check_signoff(root, result, version, release_dir)
+
+    if force_fail == "tag_or_archive_marker":
+        result.add("tag_or_archive_marker", False, "forced fail")
+    else:
+        _check_tag_or_marker(root, result, version, release_dir)
+
+    if force_fail == "freeze_intact":
+        result.add("freeze_intact", False, "forced fail")
+    else:
+        _check_freeze(
+            root,
+            result,
+            out_dir=out,
+            tip=tip,
+            ver=version,
+            prebuilt_manifest=Path(prebuilt_manifest) if prebuilt_manifest else None,
+        )
+
+    if force_fail == "debt_schema_gated":
+        result.add("debt_schema_gated", False, "forced fail")
+    else:
+        shim = _Shim()
+        _check_debt_schema_gated(root, shim)  # type: ignore[arg-type]
+        # Map name
+        for c in shim.checks:
+            result.add(
+                "debt_schema_gated",
+                c.ok,
+                c.detail,
+            )
+
+    if force_fail == "obs_stable_fields":
+        result.add("obs_stable_fields", False, "forced fail")
+    else:
+        shim = _Shim()
+        _check_obs_fields_stable(root, shim)  # type: ignore[arg-type]
+        for c in shim.checks:
+            # rename
+            result.add("obs_stable_fields", c.ok, c.detail)
+        # ensure OBS_STABLE_FIELDS referenced
+        result.notes.append(f"obs_fields={len(OBS_STABLE_FIELDS)}")
+
+    if force_fail == "no_forbidden_drift":
+        result.add("no_forbidden_drift", False, "forced fail")
+    else:
+        # Also run tag drift as part of forbidden
+        shim = _Shim()
+        _check_no_tag_schema_drift(root, shim)  # type: ignore[arg-type]
+        tag_ok = all(c.ok for c in shim.checks) if shim.checks else False
+        _check_no_forbidden_drift(root, result)
+        # Fold tag drift into last check if it failed
+        if not tag_ok:
+            # Amend no_forbidden_drift if it passed but tag drifted
+            for c in result.checks:
+                if c.name == "no_forbidden_drift" and c.ok:
+                    c.ok = False
+                    c.detail += f" tag_drift={shim.errors}"
+                    result.ok = False
+                    result.errors.append(f"no_forbidden_drift: tag drift")
+                    break
+
+    result.ok = all(c.ok for c in result.checks)
+    if not result.ok:
+        result.errors = [
+            f"{c.name}: {c.detail or 'FAIL'}" for c in result.checks if not c.ok
+        ]
+
+    rp = Path(report_path) if report_path else (release_dir / "MONITOR.json")
+    rp.parent.mkdir(parents=True, exist_ok=True)
+    rp.write_text(result.to_json(), encoding="utf-8")
+    result.report_path = str(rp)
+    return result

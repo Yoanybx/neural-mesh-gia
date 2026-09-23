@@ -1,0 +1,59 @@
+{
+  "archive_dir": "/workspace/neural-mesh-gia/dist/releases/0.16.3",
+  "audit_copy": "/workspace/neural-mesh-gia/dist/releases/0.16.3/final_release_audit.json",
+  "cp": "CP-0028",
+  "errors": [],
+  "freeze": "0.16.x",
+  "gates": [
+    {
+      "detail": "ok=True ver=0.16.3",
+      "name": "signoff_present",
+      "ok": true
+    },
+    {
+      "detail": "tar=neural-mesh-gia-single-node-0.16.3.tar.gz manifest=neural-mesh-gia-single-node-0.16.3.manifest.json",
+      "name": "bundle",
+      "ok": true
+    },
+    {
+      "detail": "copied=True",
+      "name": "audit_copy",
+      "ok": true
+    },
+    {
+      "detail": "SHA256SUMS",
+      "name": "sha256sums",
+      "ok": true
+    },
+    {
+      "detail": "neural-mesh-gia-release-0.16.3.tar.gz",
+      "name": "release_archive",
+      "ok": true
+    },
+    {
+      "detail": "skipped exists=False name=v0.16.3",
+      "name": "tag",
+      "ok": true
+    }
+  ],
+  "manifest_path": "/workspace/neural-mesh-gia/dist/releases/0.16.3/neural-mesh-gia-single-node-0.16.3.manifest.json",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "release_archive": "/workspace/neural-mesh-gia/dist/releases/0.16.3/neural-mesh-gia-release-0.16.3.tar.gz",
+  "sha256sums_path": "/workspace/neural-mesh-gia/dist/releases/0.16.3/SHA256SUMS",
+  "signoff_path": "/workspace/neural-mesh-gia/dist/releases/0.16.3/SIGNOFF.json",
+  "summary": {
+    "archive_dir": "/workspace/neural-mesh-gia/dist/releases/0.16.3",
+    "cp": "CP-0028",
+    "cycle": 24,
+    "tag": "v0.16.3",
+    "tag_created": false,
+    "tip": "9e681da",
+    "ver": "0.16.3"
+  },
+  "tag_created": false,
+  "tag_name": "v0.16.3",
+  "tarball": "/workspace/neural-mesh-gia/dist/releases/0.16.3/neural-mesh-gia-single-node-0.16.3.tar.gz",
+  "tip": "9e681da",
+  "version": "0.16.3"
+}

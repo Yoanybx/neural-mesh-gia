@@ -72,14 +72,18 @@ class AuditResult:
 def _gate_dual_primary(root: Path, result: AuditResult) -> None:
     """dual_primary must be documented as 0 in council/status docs."""
     needles = [
+        root / "council" / "STATUS_CYCLE24.md",
         root / "council" / "STATUS_CYCLE23.md",
         root / "council" / "STATUS_CYCLE22.md",
+        root / "council" / "PASTE_CYCLE24_M2M.md",
         root / "council" / "PASTE_CYCLE23_M2M.md",
         root / "council" / "PASTE_CYCLE22_M2M.md",
+        root / "STATUS_FOR_CHATGPT_CYCLE24.md",
         root / "STATUS_FOR_CHATGPT_CYCLE23.md",
         root / "STATUS_FOR_CHATGPT_CYCLE22.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_CHECKLIST.md",
+        root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_SIGNOFF.md",
     ]
     blob = ""
     found = False
@@ -136,11 +140,14 @@ def _gate_packaging_pytest(
 
 def _gate_no_held(root: Path, result: AuditResult) -> None:
     needles = [
+        root / "council" / "COUNCIL_AGREEMENT_CYCLE24.md",
         root / "council" / "COUNCIL_AGREEMENT_CYCLE23.md",
         root / "council" / "COUNCIL_AGREEMENT_CYCLE22.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_CHECKLIST.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_SINGLE_NODE_BUNDLE.md",
+        root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_SIGNOFF.md",
+        root / "docs" / "capabilities" / "MESH_PACKAGING_POST_RELEASE_MONITOR.md",
     ]
     required = ["Raft", "SLO_chase", "tag_schema", "EVERY_fsync", "N>2"]
     found_in: list[str] = []

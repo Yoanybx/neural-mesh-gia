@@ -40,30 +40,31 @@
     "mesh_observability_status_snapshot_cp0023",
     "mesh_packaging_single_node_bundle_cp0024",
     "mesh_packaging_rc_freeze_cp0025",
-    "mesh_packaging_rc_install_rollback_checklist_cp0026"
+    "mesh_packaging_rc_install_rollback_checklist_cp0026",
+    "mesh_packaging_rc_soak_audit_watch_cp0027",
+    "mesh_packaging_rc_release_closeout_cp0028"
   ],
-  "current_module": "mesh-packaging-rc-soak-audit-watch",
+  "current_module": "mesh-packaging-rc-release-closeout",
   "current_phase": 5,
   "decisions_pending": [],
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0027",
+  "last_checkpoint": "CP-0028",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-23T19:30:37.642815+00:00",
-  "last_updated": "2026-09-23T22:46:47.634626+00:00",
+  "last_successful_test": "2026-09-23T22:54:40.950445+00:00",
+  "last_updated": "2026-09-23T22:54:40.950445+00:00",
   "modified_files": [
-    "src/neural_mesh/packaging/rc_soak.py",
-    "src/neural_mesh/packaging/final_release_audit.py",
-    "src/neural_mesh/packaging/post_rc_watch.py",
-    "scripts/rc_soak.py",
-    "scripts/final_release_audit.py",
-    "scripts/post_rc_watch.py",
-    "tests/test_packaging_rc_cycle23.py",
-    "pyproject.toml",
-    "src/neural_mesh/__init__.py"
+    "src/neural_mesh/packaging/release_signoff.py",
+    "src/neural_mesh/packaging/release_tag_archive.py",
+    "src/neural_mesh/packaging/post_release_monitor.py",
+    "scripts/release_signoff.py",
+    "scripts/release_tag_archive.py",
+    "scripts/post_release_monitor.py",
+    "tests/test_packaging_rc_cycle24.py",
+    "pyproject.toml"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 23 / CP-0027. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 24 / CP-0028 (release signoff; tag archive; post-release monitor). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.16.3",
@@ -72,6 +73,6 @@
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 439
+    "passed": 452
   }
 }

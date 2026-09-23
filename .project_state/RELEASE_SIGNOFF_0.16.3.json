@@ -1,0 +1,51 @@
+{
+  "audit_hashes": {
+    "final_release_audit": "d18ea8f9ab15a52d258d03866e853ea560342cdc008016e658d8bc8fba5122fd"
+  },
+  "audit_ok": true,
+  "cp": "CP-0028",
+  "cycle": 24,
+  "freeze": "0.16.x",
+  "freeze_schema": "mesh.bundle.manifest/v1",
+  "gates": [
+    {
+      "detail": "re-run ok=True hash=d18ea8f9ab15",
+      "name": "final_release_audit",
+      "ok": true
+    },
+    {
+      "detail": "pyproject=0.16.3 init=0.16.3 expected=0.16.3",
+      "name": "version_0163",
+      "ok": true
+    },
+    {
+      "detail": "channel=0.16.x schema=mesh.bundle.manifest/v1",
+      "name": "freeze_016x",
+      "ok": true
+    },
+    {
+      "detail": "snap=True last=CP-0027 status=VERIFIED",
+      "name": "cp_0027_verified",
+      "ok": true
+    },
+    {
+      "detail": "seal=CP-0028",
+      "name": "cp_0028_seal",
+      "ok": true
+    },
+    {
+      "detail": "injected count=66",
+      "name": "pytest_packaging",
+      "ok": true
+    }
+  ],
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "packaging_count": 66,
+  "prior_cp": "CP-0027",
+  "schema": "mesh.release.signoff/v1",
+  "signer": "council:DeepSeek+Grok",
+  "timestamp": "2026-09-23T23:00:00Z",
+  "tip": "9e681da",
+  "ver": "0.16.3"
+}

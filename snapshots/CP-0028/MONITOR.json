@@ -1,0 +1,61 @@
+{
+  "checklist": [
+    "signoff_present",
+    "tag_or_archive_marker",
+    "freeze_intact",
+    "debt_schema_gated",
+    "obs_stable_fields",
+    "no_forbidden_drift"
+  ],
+  "checks": [
+    {
+      "detail": "path=SIGNOFF.json ok=True ver=0.16.3",
+      "name": "signoff_present",
+      "ok": true
+    },
+    {
+      "detail": "tag=False marker=True archive_manifest=True tar=True",
+      "name": "tag_or_archive_marker",
+      "ok": true
+    },
+    {
+      "detail": "freeze={'channel': '0.16.x', 'schema': 'mesh.bundle.manifest/v1'}",
+      "name": "freeze_intact",
+      "ok": true
+    },
+    {
+      "detail": "SCHEMA-GATED present=True chase_on=False",
+      "name": "debt_schema_gated",
+      "ok": true
+    },
+    {
+      "detail": "missing=none schema_ok=True",
+      "name": "obs_stable_fields",
+      "ok": true
+    },
+    {
+      "detail": "hits=none no_held_doc=True",
+      "name": "no_forbidden_drift",
+      "ok": true
+    }
+  ],
+  "cp": "CP-0028",
+  "cycle": 24,
+  "errors": [],
+  "freeze_channel": "0.16.x",
+  "mode": "once",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "notes": [
+    "Scheduled routine stub: document-only; do NOT create Grok Bot routines.",
+    "obs_fields=12"
+  ],
+  "ok": true,
+  "report_path": null,
+  "scheduled_routine": {
+    "create_grok_bot_routine": false,
+    "hint": "Future: cron/CI may invoke scripts/post_release_monitor.py --once",
+    "status": "documented_only"
+  },
+  "tip": "9e681da",
+  "version": "0.16.3"
+}

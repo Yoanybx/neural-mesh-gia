@@ -1,4 +1,4 @@
-"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0027).
+"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0028).
 
 Capability packaging for a reproducible single-node tarball + manifest.
 Does **not** change tags, SLOs, consensus, Raft, or N>2.
@@ -55,6 +55,28 @@ from .post_rc_watch import (
     WatchCheck,
     run_post_rc_watch,
 )
+from .release_signoff import (
+    RELEASE_VERSION,
+    PRIOR_CP,
+    SEAL_CP,
+    DEFAULT_SIGNER,
+    SignoffResult,
+    run_release_signoff,
+)
+from .release_tag_archive import (
+    TAG_AUTHOR_NAME,
+    TAG_AUTHOR_EMAIL,
+    ArchiveResult,
+    run_release_tag_archive,
+    preferred_tag_name,
+    create_annotated_tag,
+)
+from .post_release_monitor import (
+    MONITOR_CHECKLIST,
+    MonitorCheck,
+    MonitorResult,
+    run_post_release_monitor,
+)
 
 __all__ = [
     "SCHEMA_ID",
@@ -104,4 +126,20 @@ __all__ = [
     "WatchResult",
     "WatchCheck",
     "run_post_rc_watch",
+    "RELEASE_VERSION",
+    "PRIOR_CP",
+    "SEAL_CP",
+    "DEFAULT_SIGNER",
+    "SignoffResult",
+    "run_release_signoff",
+    "TAG_AUTHOR_NAME",
+    "TAG_AUTHOR_EMAIL",
+    "ArchiveResult",
+    "run_release_tag_archive",
+    "preferred_tag_name",
+    "create_annotated_tag",
+    "MONITOR_CHECKLIST",
+    "MonitorCheck",
+    "MonitorResult",
+    "run_post_release_monitor",
 ]

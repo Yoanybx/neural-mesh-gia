@@ -47,11 +47,16 @@ INCLUDE_PATHS: tuple[str, ...] = (
     "scripts/rc_soak.py",
     "scripts/final_release_audit.py",
     "scripts/post_rc_watch.py",
+    "scripts/release_signoff.py",
+    "scripts/release_tag_archive.py",
+    "scripts/post_release_monitor.py",
     "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
     "docs/capabilities/MESH_PACKAGING_SINGLE_NODE_BUNDLE.md",
     "docs/capabilities/MESH_PACKAGING_RELEASE_CHECKLIST.md",
     "docs/capabilities/MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
     "docs/capabilities/MESH_PACKAGING_POST_RC_WATCH.md",
+    "docs/capabilities/MESH_PACKAGING_RELEASE_SIGNOFF.md",
+    "docs/capabilities/MESH_PACKAGING_POST_RELEASE_MONITOR.md",
     ".project_state/CHECKPOINT.json",
 )
 
@@ -69,6 +74,9 @@ EXECUTABLE_NAMES = {
     "rc_soak.py",
     "final_release_audit.py",
     "post_rc_watch.py",
+    "release_signoff.py",
+    "release_tag_archive.py",
+    "post_release_monitor.py",
 }
 
 EXCLUDE_DIR_NAMES = {
