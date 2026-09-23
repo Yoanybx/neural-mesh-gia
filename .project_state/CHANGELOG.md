@@ -1,5 +1,12 @@
 # Changelog
 
+## Cycle 19 — 2026-09-23 — CP-0023 Mesh Observability Status Snapshot
+- schema mesh.status.snapshot/v1 (node_id, cycle, ver, cp_range, pytest, slo_state, debt_gates, peers, local).
+- API neural_mesh.status.snapshot / status_snapshot; CLI mesh status --snapshot/--m2m; format_obs_m2m.
+- tests/test_observability_status_snapshot.py (≥12; 14 passed); docs/capabilities/MESH_OBSERVABILITY_STATUS_SNAPSHOT.md.
+- pytest 386; audit PASS; version 0.15.0; CP-0023 VERIFIED.
+- No SLO chase; no tag-schema; no Raft/N>2/consensus writes; peers injected/mock only.
+
 ## Cycle 18 — 2026-09-23 — CP-0022 tag schema gate
 - schema_gate_checkpoint_every_floor in neural_mesh.tags (SCHEMA-GATED debt gate).
 - Strengthened tests/test_tags.py -k checkpoint_every_floor (schema gate presence + one-per-floor).

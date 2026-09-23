@@ -1,0 +1,37 @@
+{
+  "checkpoint_id": "CP-0023",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.15.0",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "mesh-observability-status-snapshot",
+  "reason": "Cycle 19 Mesh Observability Status Snapshot",
+  "objective": "",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 19 / CP-0023 (Mesh Observability Status Snapshot; SLO GAP ~1.32ms SCHEMA-GATED held). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
+  "git_commit": "64590188085377b0a8cedcf033af94b1ba3e3e96",
+  "changed_files": [
+    "src/neural_mesh/status_snapshot.py",
+    "src/neural_mesh/status.py",
+    "src/neural_mesh/cli.py",
+    "src/neural_mesh/__init__.py",
+    "pyproject.toml",
+    "tests/test_observability_status_snapshot.py",
+    "docs/capabilities/MESH_OBSERVABILITY_STATUS_SNAPSHOT.md"
+  ],
+  "tests": {
+    "passed": 386,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/capabilities/MESH_OBSERVABILITY_STATUS_SNAPSHOT.md",
+    "tests/test_observability_status_snapshot.py",
+    "council/STATUS_CYCLE19.md"
+  ],
+  "created_at": "2026-09-23T20:36:15.835179+00:00",
+  "manifest_sha256": "1f62797465bc01eddc995cad0bbb1088a25a59ccf9211097511018c4a25d6ae5",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

@@ -11,6 +11,7 @@ from .checkpoint import CheckpointManager
 from .git_audit import audit_git
 from .obsidian import ObsidianSync
 from .safety import ensure_default_policy, safety_status
+from .status_snapshot import format_obs_m2m, snapshot, snapshot_to_json
 from .twin.events import FaultEvent
 from .twin.faults import (
     FAULT_NODE_LOSS,
@@ -146,7 +147,27 @@ def main(argv: list[str] | None = None):
 
     sub.add_parser("init")
     sub.add_parser("resume")
-    sub.add_parser("status")
+    status_p = sub.add_parser("status")
+    status_p.add_argument(
+        "--snapshot",
+        action="store_true",
+        help="Print read-only mesh observability status snapshot (JSON)",
+    )
+    status_p.add_argument(
+        "--json",
+        action="store_true",
+        help="JSON output (default for --snapshot)",
+    )
+    status_p.add_argument(
+        "--m2m",
+        action="store_true",
+        help="With --snapshot: print compact OBS: one-liner for council STATUS",
+    )
+    status_p.add_argument(
+        "--node-id",
+        default=None,
+        help="Override snapshot node_id (default: local)",
+    )
     sub.add_parser("agent-context")
 
     cp = sub.add_parser("checkpoint")
@@ -411,7 +432,15 @@ def main(argv: list[str] | None = None):
         ensure_default_policy(root)
         print("initialized")
     elif a.cmd == "status":
-        print(mgr.load_state().model_dump_json(indent=2))
+        if getattr(a, "snapshot", False):
+            snap = snapshot(root, node_id=getattr(a, "node_id", None))
+            if getattr(a, "m2m", False):
+                print(format_obs_m2m(snap))
+            else:
+                # --json is default for snapshot; keep flag for explicit callers
+                print(snapshot_to_json(snap), end="")
+        else:
+            print(mgr.load_state().model_dump_json(indent=2))
     elif a.cmd == "resume":
         s = mgr.load_state()
         print("NEURAL MESH RECOVERY")
