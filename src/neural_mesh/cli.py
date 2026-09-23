@@ -22,6 +22,14 @@ from .twin.simulator import DigitalTwin, TwinTask
 from .twin.storage import load_faults
 
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
+from .cram.replica_cli import (
+    cmd_replica_create,
+    cmd_replica_promote,
+    cmd_replica_repair,
+    cmd_replica_status,
+    cmd_replica_verify,
+    cmd_replica_verify_consistency,
+)
 
 
 def _git_commit(root: Path) -> str | None:
@@ -169,6 +177,45 @@ def main(argv: list[str] | None = None):
     cram_fsck.add_argument("--root", type=str, default=None)
     cram_fsck.add_argument("--json", action="store_true")
 
+    cram_repl = cram_subs.add_parser("replica", help="C-RAM N=2 controlled replica ops")
+    repl_subs = cram_repl.add_subparsers(dest="replica_op", required=True)
+    rc = repl_subs.add_parser("create", help="Create+sync replica (hash or --put)")
+    rc.add_argument("hash", nargs="?", default=None)
+    rc.add_argument("--put", type=str, default=None, help="Literal bytes to put_replicated")
+    rc.add_argument("--file", type=str, default=None, help="File bytes to put_replicated")
+    rc.add_argument("--root", type=str, default=None)
+    rc.add_argument("--topology", type=str, default=None)
+    rc.add_argument("--seed", type=int, default=42)
+    rs = repl_subs.add_parser("status", help="Replica status JSON")
+    rs.add_argument("hash")
+    rs.add_argument("--root", type=str, default=None)
+    rs.add_argument("--topology", type=str, default=None)
+    rs.add_argument("--seed", type=int, default=42)
+    rv = repl_subs.add_parser("verify", help="Verify replica integrity")
+    rv.add_argument("hash")
+    rv.add_argument("--root", type=str, default=None)
+    rv.add_argument("--topology", type=str, default=None)
+    rv.add_argument("--seed", type=int, default=42)
+    rr = repl_subs.add_parser("repair", help="Repair / re-sync replica")
+    rr.add_argument("hash")
+    rr.add_argument("--root", type=str, default=None)
+    rr.add_argument("--topology", type=str, default=None)
+    rr.add_argument("--seed", type=int, default=42)
+    rp = repl_subs.add_parser("promote", help="Promote secondary with fencing")
+    rp.add_argument("hash")
+    rp.add_argument("--node", type=str, default=None)
+    rp.add_argument("--root", type=str, default=None)
+    rp.add_argument("--topology", type=str, default=None)
+    rp.add_argument("--seed", type=int, default=42)
+    rvc = repl_subs.add_parser(
+        "verify-consistency", help="Merkle-diff consistency (optional --repair)"
+    )
+    rvc.add_argument("hash")
+    rvc.add_argument("--repair", action="store_true")
+    rvc.add_argument("--root", type=str, default=None)
+    rvc.add_argument("--topology", type=str, default=None)
+    rvc.add_argument("--seed", type=int, default=42)
+
     a = parser.parse_args(argv)
     root = Path.cwd()
     mgr = CheckpointManager(root)
@@ -283,6 +330,63 @@ def main(argv: list[str] | None = None):
             raise SystemExit(cmd_verify(a.key, root=root))
         elif a.op == "fsck":
             raise SystemExit(cmd_fsck(root=root, as_json=bool(a.json)))
+        elif a.op == "replica":
+            rroot = Path(a.root) if getattr(a, "root", None) else root
+            topo = getattr(a, "topology", None)
+            seed = int(getattr(a, "seed", 42))
+            if a.replica_op == "create":
+                content = None
+                if getattr(a, "file", None):
+                    content = Path(a.file).read_bytes()
+                elif getattr(a, "put", None) is not None:
+                    content = a.put.encode("utf-8")
+                raise SystemExit(
+                    cmd_replica_create(
+                        a.hash,
+                        content=content,
+                        root=rroot,
+                        topology_path=topo,
+                        seed=seed,
+                    )
+                )
+            elif a.replica_op == "status":
+                raise SystemExit(
+                    cmd_replica_status(
+                        a.hash, root=rroot, topology_path=topo, seed=seed
+                    )
+                )
+            elif a.replica_op == "verify":
+                raise SystemExit(
+                    cmd_replica_verify(
+                        a.hash, root=rroot, topology_path=topo, seed=seed
+                    )
+                )
+            elif a.replica_op == "repair":
+                raise SystemExit(
+                    cmd_replica_repair(
+                        a.hash, root=rroot, topology_path=topo, seed=seed
+                    )
+                )
+            elif a.replica_op == "promote":
+                raise SystemExit(
+                    cmd_replica_promote(
+                        a.hash,
+                        root=rroot,
+                        node_id=getattr(a, "node", None),
+                        topology_path=topo,
+                        seed=seed,
+                    )
+                )
+            elif a.replica_op == "verify-consistency":
+                raise SystemExit(
+                    cmd_replica_verify_consistency(
+                        a.hash,
+                        root=rroot,
+                        topology_path=topo,
+                        seed=seed,
+                        repair=bool(getattr(a, "repair", False)),
+                    )
+                )
     elif a.cmd == "twin":
         if a.op == "topology":
             if a.top_op == "save":
