@@ -13,3 +13,5 @@ See `../STATUS_FOR_CHATGPT_CYCLE9.md` for full bilingual report.
 - NO R1 active / Phase 4 / ML / Raft / N>2 / TLS impl / R0 determinism change
 - Audit: **PASS**
 - NEXT: dual review of Cycle 9; then R1 or Phase 4
+
+- Git tip: e16e30a235b78369c4055a2b016ef9de788d39a4
