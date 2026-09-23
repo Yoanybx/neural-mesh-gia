@@ -1,8 +1,4 @@
-"""RoutingStrategy interface — RoundRobin live; CapabilityAware STUB (Cycle 9).
-
-R1 is NOT activated. CapabilityAwareStrategy exists only as a typed stub so
-Cycle 10+ can plug in without changing the R0 determinism contract.
-"""
+"""RoutingStrategy interface — RoundRobin + CapabilityAware (R1 live, Cycle 10)."""
 
 from __future__ import annotations
 
@@ -21,7 +17,7 @@ class RoutingStrategy(ABC):
     def select(
         self, task: TaskSpec, candidates: Sequence[RouteCandidate]
     ) -> tuple[RouteCandidate | None, int | None]:
-        """Return (chosen, pick_index) or (None, None) if empty."""
+        """Return (chosen, pick_index) or (None, None) if empty / no-match."""
 
 
 class RoundRobinStrategy(RoutingStrategy):
@@ -44,19 +40,8 @@ class RoundRobinStrategy(RoutingStrategy):
         self.index += 1
 
 
-class CapabilityAwareStrategy(RoutingStrategy):
-    """STUB — R1 capability-aware scoring is NOT implemented / NOT activated."""
-
-    name = "CAPABILITY_AWARE_STUB"
-    STUB = True
-
-    def select(
-        self, task: TaskSpec, candidates: Sequence[RouteCandidate]
-    ) -> tuple[RouteCandidate | None, int | None]:
-        raise NotImplementedError(
-            "CapabilityAwareStrategy is a Cycle 9 STUB only; R1 not activated"
-        )
-
+# R1 live implementation (Cycle 10) — imported below to keep ABC local.
+from .strategy_capability import CapabilityAwareStrategy  # noqa: E402
 
 __all__ = [
     "CapabilityAwareStrategy",

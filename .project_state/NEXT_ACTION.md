@@ -4,10 +4,10 @@
 P0
 
 ## Action
-Dual review of Cycle 9 / CP-0013. Then R1 capability-aware OR Phase 4 Network Fabric per council. No silent TLS; TLS expiry 2026-12-31.
+Dual review of Cycle 10 / CP-0014. Then Phase 4 Network Fabric + TLS (expiry 2026-12-31). No ML/Raft/N>2.
 
 ## Status
 READY
 
 ## Checkpoint
-CP-0013
+CP-0014

@@ -1,10 +1,10 @@
 # CURRENT PROJECT STATE
 
 Phase: 3
-Module: cognitive-router-r0-hardening
+Module: cognitive-router-r1-capability
 Status: VERIFIED
-Last checkpoint: CP-0013
-Next action: Dual review of Cycle 9 / CP-0013. Then R1 capability-aware OR Phase 4 Network Fabric per council. No silent TLS; TLS expiry 2026-12-31.
-Git: 3ea1cb27f1f9263a90c3ac7092a79e7fa6ecb23a
+Last checkpoint: CP-0014
+Next action: Dual review of Cycle 10 / CP-0014. Then Phase 4 Network Fabric + TLS (expiry 2026-12-31). No ML/Raft/N>2.
+Git: 0da4822172f23efe1cfb35120ca15f521cbc05f5
 Safety: SAFE
-Updated: 2026-09-23T17:02:47.512102+00:00
+Updated: 2026-09-23T17:15:57.553162+00:00

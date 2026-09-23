@@ -151,6 +151,7 @@ class RouteDecision:
     epoch: int = 0
     trace_id: str = ""
     candidates_fingerprint: str = ""
+    cap_state_fp: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -171,6 +172,7 @@ class RouteDecision:
             "epoch": int(self.epoch),
             "trace_id": self.trace_id,
             "candidates_fingerprint": self.candidates_fingerprint,
+            "cap_state_fp": self.cap_state_fp,
         }
 
     def canonical_dict(self) -> dict[str, Any]:
@@ -210,6 +212,7 @@ class RouteDecision:
             epoch=int(data.get("epoch", 0)),
             trace_id=str(data.get("trace_id", "")),
             candidates_fingerprint=str(data.get("candidates_fingerprint", "")),
+            cap_state_fp=str(data.get("cap_state_fp", "")),
         )
 
 

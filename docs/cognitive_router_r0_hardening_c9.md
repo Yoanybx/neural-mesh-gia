@@ -60,3 +60,8 @@ compute decision → C-RAM put → ACK → advance RR / log / audit → return
 ## Out of scope (still)
 
 R1 active, Phase 4, ML, Raft, N>2, change R0 determinism contract, implement TLS.
+
+
+## Superseded note (Cycle 10)
+
+`CapabilityAwareStrategy` STUB was replaced by live R1 in Cycle 10 — see `docs/cognitive_router_r1_capability.md` / CP-0014.

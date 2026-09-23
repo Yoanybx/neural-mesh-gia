@@ -23,14 +23,20 @@ from .twin.storage import load_faults
 
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
 from .router import (
+    CapabilityAwareStrategy,
+    CapabilityRegistry,
     CognitiveRouterR0,
     DecisionLog,
     DecisionStore,
+    NodeCapability,
+    RoundRobinStrategy,
     TaskSpec,
     candidates_from_topology,
     explain_decision,
     replay_from_store,
 )
+from .router.capabilities import DEFAULT_CAP_TTL_MS
+import time as _time
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -91,6 +97,36 @@ def _load_twin(
         for f in load_faults(faults):
             twin.inject_fault(f)
     return twin
+
+
+def _build_router_strategy(a, cands, root):
+    """Build strategy + capability registry from CLI args."""
+    strat = getattr(a, "strategy", "rr") or "rr"
+    cap_root = getattr(a, "cap_store", None)
+    registry = CapabilityRegistry(cap_root) if cap_root else CapabilityRegistry()
+    now_ms = int(_time.time() * 1000)
+    # Seed registry from candidates so capability strategy has advertisements.
+    for i, c in enumerate(cands):
+        if registry.get(c.node_id) is None:
+            cap = NodeCapability(
+                node_id=c.node_id,
+                cpu=int(c.cpu),
+                memory=int(c.memory),
+                accelerators=tuple(x for x in c.capabilities if x != "compute"),
+                supported_tasks=tuple(c.capabilities) or ("compute",),
+                health=1.0,
+                advertised_at_ms=now_ms,
+                ttl_ms=DEFAULT_CAP_TTL_MS,
+            )
+            registry.upsert(
+                cap,
+                op_id=f"cli-seed-{c.node_id}-{now_ms}-{i}",
+                epoch=0,
+                trace_id=f"cli-seed-{c.node_id}",
+            )
+    if strat == "capability":
+        return CapabilityAwareStrategy(registry), registry
+    return RoundRobinStrategy(index=int(getattr(a, "seed", 0))), registry
 
 
 def main(argv: list[str] | None = None):
@@ -246,7 +282,7 @@ def main(argv: list[str] | None = None):
     rconn.add_argument("--ping", action="store_true")
 
 
-    router_cmd = sub.add_parser("router", help="Cognitive Router R0 (Phase 3)")
+    router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
     rex = router_subs.add_parser("explain", help="Explain last/logged decision for task_id")
     rex.add_argument("task_id")
@@ -259,6 +295,13 @@ def main(argv: list[str] | None = None):
     rex.add_argument(
         "--capability", action="append", default=[], help="Required capability (repeatable)"
     )
+    rex.add_argument(
+        "--strategy",
+        choices=("rr", "capability"),
+        default="rr",
+        help="Routing strategy when live-routing for explain",
+    )
+    rex.add_argument("--cap-store", type=str, default=None)
     rroute = router_subs.add_parser("route", help="Route a TaskSpec (demo/topology)")
     rroute.add_argument("task_id")
     rroute.add_argument("--topology", type=str, default=None)
@@ -269,6 +312,18 @@ def main(argv: list[str] | None = None):
     rroute.add_argument("--log", type=str, default=None)
     rroute.add_argument("--json", action="store_true")
     rroute.add_argument("--store", type=str, default=None, help="C-RAM DecisionStore root")
+    rroute.add_argument(
+        "--strategy",
+        choices=("rr", "capability"),
+        default="rr",
+        help="Routing strategy: rr (R0) or capability (R1)",
+    )
+    rroute.add_argument(
+        "--cap-store",
+        type=str,
+        default=None,
+        help="C-RAM CapabilityRegistry root (R1)",
+    )
     rreplay = router_subs.add_parser(
         "replay", help="Replay RouteDecision by trace_id (byte-identical)"
     )
@@ -486,12 +541,15 @@ def main(argv: list[str] | None = None):
                 cands = candidates_from_topology(twin_obj)
             log = DecisionLog(a.log) if a.log else DecisionLog()
             store = DecisionStore(a.store) if getattr(a, "store", None) else None
+            strategy, registry = _build_router_strategy(a, cands, root)
             router = CognitiveRouterR0(
                 cands,
                 seed=int(a.seed),
                 policy_root=root,
                 decision_log=log,
                 decision_store=store,
+                strategy=strategy,
+                capability_registry=registry,
             )
             task = TaskSpec(
                 task_id=a.task_id,
@@ -547,7 +605,14 @@ def main(argv: list[str] | None = None):
             else:
                 twin_obj = DigitalTwin.build_demo(seed=a.seed)
                 cands = candidates_from_topology(twin_obj)
-            router = CognitiveRouterR0(cands, seed=int(a.seed), policy_root=root)
+            strategy, registry = _build_router_strategy(a, cands, root)
+            router = CognitiveRouterR0(
+                cands,
+                seed=int(a.seed),
+                policy_root=root,
+                strategy=strategy,
+                capability_registry=registry,
+            )
             task = TaskSpec(
                 task_id=a.task_id,
                 required_capabilities=caps,

@@ -19,8 +19,11 @@ ALLOWED_POLICY_KEYS = frozenset(
         "allow_network_actions",
         "allow_physical_actions",
         "require_human_approval",
+        "routing_strategy",  # Cycle 10: optional "rr" | "capability"
     }
 )
+
+ALLOWED_ROUTING_STRATEGIES = frozenset({"rr", "capability", "ROUND_ROBIN", "CAPABILITY_AWARE"})
 
 
 def resolve_policy(
@@ -58,6 +61,15 @@ def normalize_policy(policy: dict[str, Any]) -> dict[str, Any]:
         "allow_physical_actions": bool(policy.get("allow_physical_actions", False)),
         "require_human_approval": bool(policy.get("require_human_approval", True)),
     }
+    if "routing_strategy" in policy:
+        rs = str(policy.get("routing_strategy", "rr"))
+        if rs not in ALLOWED_ROUTING_STRATEGIES:
+            raise UnknownPolicy(detail=f"unknown routing_strategy: {rs!r}")
+        # Canonicalize for stable hashing
+        if rs in ("ROUND_ROBIN", "rr"):
+            out["routing_strategy"] = "rr"
+        else:
+            out["routing_strategy"] = "capability"
     return out
 
 
@@ -91,6 +103,7 @@ def safety_block_reason(
 
 __all__ = [
     "ALLOWED_POLICY_KEYS",
+    "ALLOWED_ROUTING_STRATEGIES",
     "POLICY_SCHEMA_VERSION",
     "normalize_policy",
     "policy_hash",

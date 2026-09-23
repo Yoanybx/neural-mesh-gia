@@ -1,7 +1,7 @@
-# CP-0013
+# CP-0014
 
 Phase: 3
-Module: cognitive-router-r0-hardening
-Reason: Cycle 9 R0 Hardening+Observability: persist-ack guard, kill-9 0 phantoms/100, audit+replay byte-identical, TLS debt expiry 2026-12-31, strategy stubs, CP-0013
-Next: Dual review of Cycle 9 / CP-0013. Then R1 capability-aware OR Phase 4 Network Fabric per council. No silent TLS; TLS expiry 2026-12-31.
-Tests: {'passed': 160, 'failed': 0}
+Module: cognitive-router-r1-capability
+Reason: Cycle 10 R1 Capability-aware: schema+TTL, CapabilityRegistry C-RAM, real CapabilityAwareStrategy, CLI --strategy, stale reject, CP-0014
+Next: Dual review of Cycle 10 / CP-0014. Then Phase 4 Network Fabric + TLS (expiry 2026-12-31). No ML/Raft/N>2.
+Tests: {'passed': 186, 'failed': 0}

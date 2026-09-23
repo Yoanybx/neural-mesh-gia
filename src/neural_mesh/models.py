@@ -37,7 +37,7 @@ class Checkpoint(BaseModel):
 class ProjectState(BaseModel):
     project: str = "Neural Mesh / GIA-COS"
     schema_version: str = "1.0"
-    project_version: str = "0.8.0"
+    project_version: str = "0.10.0"
     last_checkpoint: str | None = None
     status: Status = Status.IN_PROGRESS
     current_phase: int = 0

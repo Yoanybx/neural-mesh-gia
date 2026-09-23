@@ -66,3 +66,10 @@ Bootstrap continuity system (shipped source).
 
 ## 0.9.0 — Cycle 9 (2026-09-23)
 - R0 Hardening + Observability (CP-0013): persist-ack guard, crash frontier, audit/replay, strategy stubs, TLS expiry 2026-12-31.
+
+## 0.10.0 — Cycle 10 (2026-09-23 EDT)
+- Cognitive Router R1 Capability-aware (CP-0014): versioned NodeCapability schema, TTL/staleness, CapabilityRegistry in C-RAM, real CapabilityAwareStrategy (replaces STUB).
+- Determinism extends with `cap_state_fp`; no-match = CAPABILITY_NO_MATCH (never silent RR).
+- CLI: `mesh router route --strategy rr|capability`; explain shows strategy/selected/score/factors.
+- Bench N=1000 RR vs capability (metrics only); routing p99 <8ms; pytest ≥185.
+- NO Phase 4 / TLS / ML / Raft / N>2.

@@ -109,11 +109,72 @@ class CramPersistError(RouterError):
         super().__init__("; ".join(parts))
 
 
+
+
+class CapabilityNoMatch(RouterError):
+    """No node matched capability requirements (R1 fail-closed; never silent RR)."""
+
+    code = "ROUTER_CAPABILITY_NO_MATCH"
+
+    def __init__(
+        self,
+        message: str = "capability no match",
+        *,
+        task_id: str | None = None,
+    ):
+        self.task_id = task_id
+        detail = message
+        if task_id:
+            detail = f"capability no match for task {task_id}"
+        super().__init__(detail)
+
+
+class StaleCapability(RouterError):
+    """Capability advertisement expired past TTL — must not be routed to."""
+
+    code = "ROUTER_STALE_CAPABILITY"
+
+    def __init__(
+        self,
+        message: str = "stale capability",
+        *,
+        node_id: str | None = None,
+        advertised_at_ms: int | None = None,
+        ttl_ms: int | None = None,
+        now_ms: int | None = None,
+    ):
+        self.node_id = node_id
+        self.advertised_at_ms = advertised_at_ms
+        self.ttl_ms = ttl_ms
+        self.now_ms = now_ms
+        parts = [message]
+        if node_id:
+            parts.append(f"node_id={node_id}")
+        super().__init__("; ".join(parts))
+
+
+class UnknownCapabilitySchema(RouterError):
+    """Capability schema version/key unknown — fail-closed."""
+
+    code = "ROUTER_UNKNOWN_CAPABILITY_SCHEMA"
+
+    def __init__(
+        self,
+        message: str = "unknown capability schema",
+        *,
+        detail: str | None = None,
+    ):
+        self.detail = detail
+        super().__init__(detail or message)
+
 __all__ = [
+    "CapabilityNoMatch",
     "CramPersistError",
     "NoCapableNode",
     "RouterError",
     "SafetyPolicyBlocked",
     "SaturationError",
+    "StaleCapability",
+    "UnknownCapabilitySchema",
     "UnknownPolicy",
 ]

@@ -36,8 +36,16 @@ def build_replay_envelope(
     epoch: int,
     rr_index_before: int,
     decision: RouteDecision,
+    strategy_name: str = "ROUND_ROBIN",
+    capabilities: list[Any] | None = None,
 ) -> dict[str, Any]:
     """Inputs required to recompute RouteDecision byte-identically."""
+    caps_payload = []
+    for c in capabilities or []:
+        if hasattr(c, "to_dict"):
+            caps_payload.append(c.to_dict())
+        elif isinstance(c, dict):
+            caps_payload.append(dict(c))
     return {
         "task": task.to_dict(),
         "candidates": [c.to_dict() for c in candidates],
@@ -45,6 +53,9 @@ def build_replay_envelope(
         "seed": int(seed),
         "epoch": int(epoch),
         "rr_index_before": int(rr_index_before),
+        "strategy": str(strategy_name),
+        "capabilities": caps_payload,
+        "cap_state_fp": getattr(decision, "cap_state_fp", "") or "",
         "decision_canonical_hash": hashlib.sha256(
             decision.canonical_bytes()
         ).hexdigest(),

@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "CP-0014",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.10.0",
+  "status": "VERIFIED",
+  "phase": 3,
+  "module": "cognitive-router-r1-capability",
+  "reason": "Cycle 10 R1 Capability-aware: schema+TTL, CapabilityRegistry C-RAM, real CapabilityAwareStrategy, CLI --strategy, stale reject, CP-0014",
+  "objective": "",
+  "next_action": "Dual review of Cycle 10 / CP-0014. Then Phase 4 Network Fabric + TLS (expiry 2026-12-31). No ML/Raft/N>2.",
+  "git_commit": "0da4822172f23efe1cfb35120ca15f521cbc05f5",
+  "changed_files": [],
+  "tests": {
+    "passed": 186,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/cognitive_router_r1_capability.md",
+    "/tmp/router_r1_capability_c10_bench.json"
+  ],
+  "created_at": "2026-09-23T17:15:57.552949+00:00",
+  "manifest_sha256": "d768e09b2e7417fa261e6e2a65deaefc365604cf2aa34637247cd1dfdbc2b635",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

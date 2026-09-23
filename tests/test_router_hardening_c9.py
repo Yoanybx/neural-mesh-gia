@@ -255,22 +255,21 @@ def test_healthy_store_latency_still_under_5ms(tmp_path: Path):
     assert percentile(lat, 99) < 5.0
 
 
-def test_round_robin_strategy_live_capability_aware_stub_only():
+def test_round_robin_strategy_live_capability_aware_r1_activated():
+    """Cycle 9 asserted STUB; Cycle 10 activates real CapabilityAwareStrategy."""
     assert issubclass(RoundRobinStrategy, RoutingStrategy)
     assert issubclass(CapabilityAwareStrategy, RoutingStrategy)
     rr = RoundRobinStrategy(index=0)
     cands = _nodes("a", "b")
     chosen, idx = rr.select(TaskSpec(task_id="x"), cands)
     assert chosen is not None and idx == 0
-    stub = CapabilityAwareStrategy()
-    assert getattr(stub, "STUB", False) is True
-    with pytest.raises(NotImplementedError):
-        stub.select(TaskSpec(task_id="x"), cands)
-    # Router must not activate stub
-    with pytest.raises(NotImplementedError):
-        CognitiveRouterR0(
-            cands, seed=0, strategy=CapabilityAwareStrategy()
-        ).route(TaskSpec(task_id="nope", op_id="op-nope"))
+    # R1 live (Cycle 10): STUB flag cleared; select no longer raises.
+    strat = CapabilityAwareStrategy()
+    assert getattr(strat, "STUB", True) is False
+    # Empty registry ⇒ no-match (None), never NotImplementedError / silent RR.
+    picked, pidx = strat.select(TaskSpec(task_id="x"), cands)
+    assert picked is None and pidx is None
+    assert strat.last_reason == "CAPABILITY_NO_MATCH"
 
 
 def test_metrics_include_c9_fields(tmp_path: Path):

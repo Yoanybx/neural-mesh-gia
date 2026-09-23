@@ -25,28 +25,29 @@
     "phase2_cram_checkpoint",
     "phase2_cram_node_loss_tests",
     "phase2_cram_replica_oop",
-    "phase3_cognitive_router_r0"
+    "phase3_cognitive_router_r0",
+    "phase3_cognitive_router_r1"
   ],
-  "current_module": "cognitive-router-r0-hardening",
+  "current_module": "cognitive-router-r1-capability",
   "current_phase": 3,
   "decisions_pending": [],
-  "git_commit": "3ea1cb27f1f9263a90c3ac7092a79e7fa6ecb23a",
+  "git_commit": "0da4822172f23efe1cfb35120ca15f521cbc05f5",
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0013",
+  "last_checkpoint": "CP-0014",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-23T14:17:39.492546+00:00",
-  "last_updated": "2026-09-23T17:02:47.512638+00:00",
+  "last_successful_test": "2026-09-23T17:15:57.286134+00:00",
+  "last_updated": "2026-09-23T17:15:57.553505+00:00",
   "modified_files": [],
-  "next_action": "Dual review of Cycle 9 / CP-0013. Then R1 capability-aware OR Phase 4 Network Fabric per council. No silent TLS; TLS expiry 2026-12-31.",
+  "next_action": "Dual review of Cycle 10 / CP-0014. Then Phase 4 Network Fabric + TLS (expiry 2026-12-31). No ML/Raft/N>2.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
-  "project_version": "0.8.0",
+  "project_version": "0.10.0",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 160
+    "passed": 186
   }
 }

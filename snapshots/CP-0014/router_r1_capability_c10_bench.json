@@ -1,0 +1,70 @@
+{
+  "capability": {
+    "accepted": 900,
+    "latency_ms": {
+      "mean": 2.0320351880509406,
+      "p50": 1.9799235014943406,
+      "p99": 3.3733023429522286
+    },
+    "node_distribution": {
+      "node-02": 100,
+      "node-03": 800
+    },
+    "reject_rate": 0.1,
+    "rejected": 100,
+    "rejected_reasons": {
+      "NO_CAPABLE_NODE": 50,
+      "SAFETY_POLICY_BLOCKS_NETWORK": 50
+    },
+    "score_distribution": {
+      "mean": 100.0,
+      "n": 998,
+      "p50": 100.0,
+      "p99": 100.0
+    }
+  },
+  "capability_update_propagation_s": 0.20615866300067864,
+  "comparison": {
+    "capability_accept": 900,
+    "capability_p99_ms": 3.3733023429522286,
+    "rr_accept": 900,
+    "rr_p99_ms": 3.3049297690740786,
+    "winner_declared": false
+  },
+  "determinism_1000": {
+    "divergences": 0,
+    "status": "MET"
+  },
+  "experiment": "router-r1-capability-c10",
+  "n_tasks": 1000,
+  "note": "Metrics only \u2014 do NOT declare RR vs capability winner",
+  "propagation_status": "MET",
+  "replay_success_rate": 1.0,
+  "router_version": "R1",
+  "routes_to_expired_caps": 0,
+  "routing_p99_bound_ms": 8.0,
+  "routing_p99_status": "MET",
+  "rr": {
+    "accepted": 900,
+    "latency_ms": {
+      "mean": 1.7551756468892563,
+      "p50": 1.6860164978425018,
+      "p99": 3.3049297690740786
+    },
+    "node_distribution": {
+      "node-01": 175,
+      "node-02": 325,
+      "node-03": 175,
+      "node-04": 225
+    },
+    "reject_rate": 0.1,
+    "rejected": 100,
+    "rejected_reasons": {
+      "NO_CAPABLE_NODE": 50,
+      "SAFETY_POLICY_BLOCKS_NETWORK": 50
+    }
+  },
+  "seed": 42,
+  "stale_reject_status": "MET",
+  "t_conv_bound_s": 5.0
+}

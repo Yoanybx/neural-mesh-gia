@@ -1,4 +1,4 @@
-"""Cognitive Router R0 — deterministic Round-Robin with capability/safety filters."""
+"""Cognitive Router R0/R1 — Round-Robin + Capability-aware (Cycle 10)."""
 
 from __future__ import annotations
 
@@ -26,7 +26,8 @@ from .policy import (
     resolve_policy,
     safety_block_reason,
 )
-from .strategy import RoundRobinStrategy, RoutingStrategy
+from .capabilities import CapabilityRegistry
+from .strategy import CapabilityAwareStrategy, RoundRobinStrategy, RoutingStrategy
 from .trace import build_replay_envelope, ensure_trace_id
 
 
@@ -84,6 +85,7 @@ class CognitiveRouterR0:
         decision_store_root: str | Path | None = None,
         audit_trail: AuditTrail | None = None,
         strategy: RoutingStrategy | None = None,
+        capability_registry: CapabilityRegistry | None = None,
         epoch: int = 0,
         queue_bound: int = DEFAULT_QUEUE_BOUND,
     ):
@@ -101,9 +103,28 @@ class CognitiveRouterR0:
         self._policy_error: str | None = None
         self._policy: dict[str, Any] | None = None
         self._policy_hash: str = ""
+
+        self.capability_registry = (
+            capability_registry
+            if capability_registry is not None
+            else CapabilityRegistry()
+        )
+
+        # Strategy first so we can fold routing_strategy into policy_hash (C10).
+        if strategy is None:
+            self.strategy: RoutingStrategy = RoundRobinStrategy(index=int(seed))
+        else:
+            self.strategy = strategy
+        self._rr_index = int(getattr(self.strategy, "index", seed))
+
         try:
-            self._policy = normalize_policy(raw_policy)
-            self._policy_hash = policy_hash(raw_policy)
+            hash_policy = dict(raw_policy)
+            sname = getattr(self.strategy, "name", "ROUND_ROBIN")
+            if sname in ("CAPABILITY_AWARE", "capability"):
+                hash_policy["routing_strategy"] = "capability"
+            # RR keeps R0 hash (no routing_strategy key) for Cycle 8/9 back-compat.
+            self._policy = normalize_policy(hash_policy)
+            self._policy_hash = policy_hash(hash_policy)
         except UnknownPolicy as exc:
             self._policy_error = str(exc.detail or exc)
             self._policy_hash = ""
@@ -122,15 +143,8 @@ class CognitiveRouterR0:
 
         self.audit = audit_trail if audit_trail is not None else AuditTrail()
 
-        # R0 live strategy: RoundRobin. CapabilityAware must not be passed as live.
-        if strategy is None:
-            self.strategy: RoutingStrategy = RoundRobinStrategy(index=int(seed))
-        else:
-            self.strategy = strategy
-        # Back-compat attribute used by metrics / tests
-        self._rr_index = int(getattr(self.strategy, "index", seed))
-
         self._cand_fp = candidates_fingerprint(self._candidates)
+        self._cap_fp = self.capability_registry.fingerprint(fresh_only=True)
 
     @property
     def policy_hash(self) -> str:
@@ -285,12 +299,42 @@ class CognitiveRouterR0:
             return self._commit(decision, task=task, advance_rr=False, rr_before=rr_before)
 
         chosen, pick_idx = self.strategy.select(task, eligible)
-        assert chosen is not None and pick_idx is not None
+        # R1: CapabilityAware may return (None, None) ⇒ typed no-match (never silent RR).
+        if chosen is None or pick_idx is None:
+            reason = getattr(self.strategy, "last_reason", None) or "CAPABILITY_NO_MATCH"
+            if reason not in (
+                "CAPABILITY_NO_MATCH",
+                "NO_CAPABLE_NODE",
+                "STALE_CAPABILITY",
+            ):
+                # Empty eligible already handled; treat as no-match fail-closed.
+                reason = "CAPABILITY_NO_MATCH" if isinstance(
+                    self.strategy, CapabilityAwareStrategy
+                ) else "NO_CAPABLE_NODE"
+            decision = self._make_decision(
+                task=task,
+                status=DecisionStatus.REJECTED,
+                reason=reason,
+                selected=None,
+                considered=considered,
+                eligible=eligible_ids,
+                excluded=excluded
+                + [{"node_id": "*", "reason": reason}],
+                t0=t0,
+                op_id=op_id,
+                trace_id=trace_id,
+                rr_pick=None,
+                rr_before=rr_before,
+            )
+            return self._commit(decision, task=task, advance_rr=False, rr_before=rr_before)
+
+        sname = getattr(self.strategy, "name", "ROUND_ROBIN")
+        reason = "CAPABILITY_AWARE" if sname == "CAPABILITY_AWARE" else "ROUND_ROBIN"
 
         decision = self._make_decision(
             task=task,
             status=DecisionStatus.ACCEPTED,
-            reason="ROUND_ROBIN",
+            reason=reason,
             selected=chosen.node_id,
             considered=considered,
             eligible=eligible_ids,
@@ -323,10 +367,22 @@ class CognitiveRouterR0:
         rr_before: int,
     ) -> RouteDecision:
         latency_ms = (time.perf_counter() - t0) * 1000.0
+        sname = getattr(self.strategy, "name", "ROUND_ROBIN")
+        # Refresh cap fingerprint from registry (deterministic over fresh set).
+        self._cap_fp = self.capability_registry.fingerprint(fresh_only=True)
+        if hasattr(self.strategy, "last_cap_state_fp") and getattr(
+            self.strategy, "last_cap_state_fp", ""
+        ):
+            self._cap_fp = str(self.strategy.last_cap_state_fp)
+
+        score = getattr(self.strategy, "last_score", None)
+        factors = list(getattr(self.strategy, "last_factors", []) or [])
+        score_table = dict(getattr(self.strategy, "last_scores", {}) or {})
+
         metrics: dict[str, Any] = {
-            "router_version": self.VERSION,
+            "router_version": "R1" if sname == "CAPABILITY_AWARE" else self.VERSION,
             "decision_latency_ms": latency_ms,
-            "queue_time_ms": 0.0,  # R0 in-process: no async queue wait
+            "queue_time_ms": 0.0,  # R0/R1 in-process: no async queue wait
             "eligible_count": len(eligible),
             "rr_index_before": rr_before,
             "rr_pick": rr_pick,
@@ -335,7 +391,11 @@ class CognitiveRouterR0:
             "candidate_count": len(self._candidates),
             "inflight": self._inflight,
             "queue_bound": self.queue_bound,
-            "strategy": getattr(self.strategy, "name", "ROUND_ROBIN"),
+            "strategy": sname,
+            "score": score,
+            "factors": factors,
+            "score_table": score_table,
+            "cap_state_fp": self._cap_fp,
         }
         return RouteDecision(
             task_id=task.task_id,
@@ -352,6 +412,7 @@ class CognitiveRouterR0:
             epoch=self.epoch,
             trace_id=trace_id,
             candidates_fingerprint=self._cand_fp,
+            cap_state_fp=self._cap_fp,
         )
 
     def _commit(
@@ -379,6 +440,8 @@ class CognitiveRouterR0:
             epoch=self.epoch,
             rr_index_before=rr_before,
             decision=decision,
+            strategy_name=getattr(self.strategy, "name", "ROUND_ROBIN"),
+            capabilities=self.capability_registry.list_all(),
         )
 
         if self.store is not None:
@@ -402,11 +465,10 @@ class CognitiveRouterR0:
                 )
 
         if advance_rr and decision.status == DecisionStatus.ACCEPTED:
+            # Only RoundRobin advances a cursor; CapabilityAware is stateless.
             if hasattr(self.strategy, "advance"):
                 self.strategy.advance()  # type: ignore[attr-defined]
-            else:
-                self._rr_index += 1
-            self._rr_index = int(getattr(self.strategy, "index", self._rr_index + 1))
+                self._rr_index = int(getattr(self.strategy, "index", self._rr_index))
             self._inflight += 1
 
         self.log.append(decision)
@@ -496,14 +558,41 @@ def candidates_from_topology(
 
 
 def explain_decision(decision: RouteDecision) -> dict[str, Any]:
-    """JSON shape for `mesh router explain` (Cycle 7 ChatGPT P3)."""
+    """JSON shape for `mesh router explain` (Cycle 7 + Cycle 10 factors)."""
+    metrics = dict(decision.metrics or {})
+    strategy_name = metrics.get("strategy") or "ROUND_ROBIN"
+    # CLI-friendly alias: capability | rr (from live strategy, not reject reason)
+    if strategy_name == "CAPABILITY_AWARE":
+        strategy_alias = "capability"
+    elif strategy_name == "ROUND_ROBIN":
+        strategy_alias = "rr"
+    else:
+        strategy_alias = str(strategy_name)
+    # Back-compat: historical explain used decision.reason as "strategy"
+    # (ROUND_ROBIN on accept; SAFETY_POLICY_* / NO_CAPABLE_NODE on reject).
+    status_val = (
+        decision.status.value
+        if hasattr(decision.status, "value")
+        else str(decision.status)
+    )
+    if status_val == "ACCEPTED":
+        strategy_display = (
+            strategy_name if strategy_name in ("ROUND_ROBIN", "CAPABILITY_AWARE")
+            else decision.reason
+        )
+    else:
+        strategy_display = decision.reason
+    score = metrics.get("score")
+    factors = list(metrics.get("factors") or [])
     return {
         "task_id": decision.task_id,
         "decision": decision.selected_node_id,
-        "status": decision.status.value
-        if hasattr(decision.status, "value")
-        else str(decision.status),
-        "strategy": decision.reason,
+        "selected": decision.selected_node_id,
+        "status": status_val,
+        "strategy": strategy_display,
+        "strategy_alias": strategy_alias,
+        "score": score,
+        "factors": factors,
         "reason": decision.reason,
         "excluded_nodes": [
             {"node": e.get("node_id", e.get("node")), "reason": e.get("reason")}
@@ -515,7 +604,9 @@ def explain_decision(decision: RouteDecision) -> dict[str, Any]:
         "op_id": decision.op_id,
         "epoch": decision.epoch,
         "trace_id": decision.trace_id,
-        "metrics": dict(decision.metrics),
+        "candidates_fingerprint": decision.candidates_fingerprint,
+        "cap_state_fp": getattr(decision, "cap_state_fp", "") or "",
+        "metrics": metrics,
     }
 
 
@@ -544,17 +635,38 @@ def replay_from_store(
     epoch = int(replay.get("epoch", stored.epoch))
     rr_before = int(replay.get("rr_index_before", seed))
 
-    strategy = RoundRobinStrategy(index=rr_before)
+    strategy_name = str(replay.get("strategy") or stored.metrics.get("strategy") or "ROUND_ROBIN")
+    registry = CapabilityRegistry()
+    for cap_raw in replay.get("capabilities") or []:
+        from .capabilities import NodeCapability
+
+        cap = NodeCapability.from_dict(cap_raw)
+        registry.upsert(
+            cap,
+            op_id=f"replay-cap-{cap.node_id}-{stored.op_id}",
+            epoch=epoch,
+            trace_id=stored.trace_id,
+        )
+
+    if strategy_name == "CAPABILITY_AWARE":
+        strategy: RoutingStrategy = CapabilityAwareStrategy(registry)
+    else:
+        strategy = RoundRobinStrategy(index=rr_before)
+
     router = CognitiveRouterR0(
         cands,
         seed=seed,
         policy=policy,
         epoch=epoch,
         strategy=strategy,
+        capability_registry=registry,
         decision_store=None,
     )
-    # Restore inflight snapshot so saturation/metrics match the original commit.
+    # Restore inflight + rr cursor snapshot so metrics match the original commit.
     router._inflight = int(stored.metrics.get("inflight", 0))
+    router._rr_index = rr_before
+    if hasattr(router.strategy, "index"):
+        router.strategy.index = rr_before  # type: ignore[attr-defined]
     recompute_task = TaskSpec(
         task_id=task.task_id,
         required_capabilities=task.required_capabilities,

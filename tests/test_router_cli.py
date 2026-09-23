@@ -58,3 +58,59 @@ def test_mesh_router_explain_safety_block(tmp_path: Path):
     out = json.loads(r.stdout)
     assert out["strategy"] == "SAFETY_POLICY_BLOCKS_NETWORK"
     assert out["decision"] is None
+
+
+def test_mesh_router_route_strategy_capability(tmp_path: Path):
+    from neural_mesh.safety import ensure_default_policy
+
+    ensure_default_policy(tmp_path)
+    r = _run(
+        [
+            "router",
+            "route",
+            "task-cap-1",
+            "--seed",
+            "0",
+            "--strategy",
+            "capability",
+            "--json",
+        ],
+        cwd=tmp_path,
+    )
+    assert r.returncode == 0, r.stderr + r.stdout
+    data = json.loads(r.stdout)
+    assert data["strategy"] == "CAPABILITY_AWARE"
+    assert data["strategy_alias"] == "capability"
+    assert data["selected"] or data["decision"]
+    assert "factors" in data
+    assert "score" in data
+
+
+def test_mesh_router_explain_strategy_capability(tmp_path: Path):
+    from neural_mesh.safety import ensure_default_policy
+
+    ensure_default_policy(tmp_path)
+    log = tmp_path / "dec.jsonl"
+    r = _run(
+        [
+            "router",
+            "route",
+            "task-cap-ex",
+            "--seed",
+            "1",
+            "--strategy",
+            "capability",
+            "--log",
+            str(log),
+        ],
+        cwd=tmp_path,
+    )
+    assert r.returncode == 0, r.stderr
+    e = _run(
+        ["router", "explain", "task-cap-ex", "--log", str(log)],
+        cwd=tmp_path,
+    )
+    assert e.returncode == 0, e.stderr
+    exp = json.loads(e.stdout)
+    assert exp["strategy"] == "CAPABILITY_AWARE"
+    assert isinstance(exp.get("factors"), list)
