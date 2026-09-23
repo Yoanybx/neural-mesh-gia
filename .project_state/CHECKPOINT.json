@@ -34,38 +34,36 @@
     "phase5b_consistency_recovery",
     "phase5c_durability_partition",
     "phase5c_slo_close",
-    "phase5c_every_opt"
+    "phase5c_every_opt",
+    "tags_floor_checkpoint"
   ],
-  "current_module": "phase5c-every-opt",
+  "current_module": "tags-floor-checkpoint",
   "current_phase": 5,
   "decisions_pending": [],
-  "git_commit": "b3e45ac21848828ea00b3095958c7e51b6ceb903",
+  "git_commit": "8a47bc693f010d6c8459fc1c50006c221da860ab",
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0020",
+  "last_checkpoint": "CP-0021",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-23T18:36:34.960192+00:00",
-  "last_updated": "2026-09-23T19:13:46.705295+00:00",
+  "last_successful_test": "2026-09-23T19:22:35.151237+00:00",
+  "last_updated": "2026-09-23T19:22:35.151263+00:00",
   "modified_files": [
-    "docs/phase5c_durability.md",
     "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
-    "src/neural_mesh/cram/durability.py",
-    "src/neural_mesh/cram/__init__.py",
+    "src/neural_mesh/tags.py",
     "src/neural_mesh/__init__.py",
     "pyproject.toml",
-    "tests/test_phase5c_every_opt_c16.py",
-    "tests/test_phase5c_slo_close_c15.py",
-    "experiments/phase5c-every-opt-c16/run_bench.py"
+    "tests/test_tags.py",
+    "tests/test_phase5c_every_opt_c16.py"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 16 / CP-0020 (EVERY floor EXPLICIT DEBT; BATCH/recovery MET). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 17 / CP-0021 (floor checkpoint tag invariant SCHEMA-GATED; SLO GAP held). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
-  "project_version": "0.14.2",
+  "project_version": "0.14.3",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 359
+    "passed": 369
   }
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## Cycle 17 — 2026-09-23 — CP-0021 floor checkpoint tag invariant
+- Schema CHECKPOINT@floor:<n> in docs/debt/CHECKPOINT_EVERY_FLOOR.md.
+- Validator neural_mesh.tags.validate_one_checkpoint_tag_per_floor (one tag per floor).
+- tests/test_tags.py -k checkpoint_every_floor; debt SCHEMA-GATED; pytest 369; 0.14.3.
+- No SLO chase; no refactor outside tags; no Raft/N>2/ML.
+
 ## Cycle 16 — 2026-09-23 — CP-0020 EVERY floor opt (GAP-with-debt)
 - EVERY hot-path: os.write + fdatasync|fsync; DirFsyncCoalescer; compact_checkpoint_bytes.
 - Rebench phase5c-every-opt-c16; EVERY primary GAP; BATCH+recovery MET; EXPLICIT DEBT.

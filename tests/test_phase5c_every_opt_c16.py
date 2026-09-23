@@ -45,15 +45,17 @@ def _topo(seed: int = 42) -> Topology:
     )
 
 
-def test_version_is_0142():
+def test_version_is_at_least_0142():
     from neural_mesh import __version__
 
-    assert __version__ == "0.14.2"
+    # C16 introduced 0.14.2; C17 may bump to 0.14.3+
+    parts = [int(x) for x in __version__.split(".")[:3]]
+    assert parts >= [0, 14, 2]
 
 
-def test_pyproject_version_0142():
+def test_pyproject_version_014x():
     text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.14.2"' in text
+    assert 'version = "0.14.' in text or 'version = "0.15.' in text
 
 
 def test_doc_every_opt_c16():

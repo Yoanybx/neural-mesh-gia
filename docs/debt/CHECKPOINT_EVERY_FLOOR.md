@@ -1,16 +1,42 @@
-# EXPLICIT DEBT — checkpoint_every_floor (CP-0020 / Cycle 16)
+# EXPLICIT DEBT — checkpoint_every_floor (CP-0020 / Cycle 16 → CP-0021 schema)
 
 **Date:** 2026-09-23 America/New_York (EDT)
-**Status:** OPEN — EXPLICIT DEBT (honest GAP)
-**Owner:** durability / Phase 5C
-**Checkpoint:** CP-0020 / version 0.14.2
+**Status:** SCHEMA-GATED (CP-0021) — tag invariant enforced; SLO GAP remains honest (no chase)
+**Owner:** durability / Phase 5C / tags
+**Checkpoint:** CP-0021 / version 0.14.3 (schema); CP-0020 / 0.14.2 (EVERY opt GAP)
 
-## Claim
+## Tag schema (CP-0021)
+
+Canonical floor checkpoint tag::
+
+    CHECKPOINT@floor:<n>
+
+- `<n>` — non-negative integer floor id
+- Floor **0** — primary EVERY overlay floor (this box `/workspace`)
+- Additional floors may be declared for isolation notes (e.g. tmpfs) but are
+  never substituted for the primary claim
+
+**Invariant:** for each declared floor `n`, exactly **one** tag
+`CHECKPOINT@floor:<n>` must be present (no missing, no duplicates).
+
+**Validator:** `neural_mesh.tags.validate_one_checkpoint_tag_per_floor`
+**Helpers:** `make_floor_checkpoint_tag`, `parse_floor_checkpoint_tag`,
+`is_floor_checkpoint_tag`
+**Tests:** `pytest -q tests/test_tags.py -k checkpoint_every_floor`
+
+Example floor fixture tags::
+
+    CHECKPOINT@floor:0
+    CHECKPOINT@floor:1
+
+## Claim (SLO — still GAP)
 
 `checkpoint_every_floor` p99 ≤ **0.1 ms** under true EVERY-mode durable
 checkpoint (content fdatasync/fsync per op + dir fsync policy) is **not MET**
 on this box's primary bench filesystem (`/workspace` overlay).
 
+Cycle 17 does **not** chase this SLO. Debt tracking is **SCHEMA-GATED**: the
+tag invariant above is enforced; the performance GAP remains documented.
 
 ## Measured (Cycle 16 primary run)
 
@@ -47,13 +73,17 @@ checkpoint (mkstemp → write → fdatasync → replace → dir fsync) remains ~
 - **BATCH** mode (`DURABLE_SYNC=batch` + `GroupFsyncSeal`) meets checkpoint_durable ≤0.1 ms (P7 / CP-0019 MET).
 - EVERY remains available for callers that need sync-every-write; floor reported honestly.
 - Crash invariants for EVERY still hold (mid-write tmp-only).
+- **CP-0021:** `CHECKPOINT@floor:<n>` schema + one-tag-per-floor validator (tags scope).
 
 ## Exit criteria
 
-Close this debt only when primary-FS EVERY p99 ≤0.1 ms is **honestly** measured
-(same method), or council redefines the SLO to BATCH-primary with EVERY as
-best-effort.
+- **Schema gate (MET / CP-0021):** schema documented; validator requires one
+  checkpoint tag per floor; `tests/test_tags.py -k checkpoint_every_floor` green.
+- **SLO gate (OPEN):** close only when primary-FS EVERY p99 ≤0.1 ms is **honestly**
+  measured (same method), or council redefines the SLO to BATCH-primary with
+  EVERY as best-effort. **No SLO chase** unless council orders it.
 
 ## Non-claims
 
 No Raft/Paxos, N>2, multi-primary, ML, fabricated p99, or silent plaintext.
+No broad checkpoint rewrite outside the tag invariant.

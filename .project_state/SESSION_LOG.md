@@ -51,3 +51,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## Cycle 16 — 2026-09-23 EDT
 CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; pytest 359; 0.14.2.
+
+## 2026-09-23 15:22 EDT — Cycle 17 CP-0021
+- Added floor checkpoint tag schema + validator; SCHEMA-GATED debt; pytest 369; version 0.14.3.
