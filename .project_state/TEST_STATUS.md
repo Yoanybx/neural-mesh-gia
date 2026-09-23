@@ -7,3 +7,4 @@ New suites: test_cram_store, test_cram_hash, test_cram_integrity, test_cram_chec
 Prior: test_checkpoint, test_digital_twin, test_fault_injection, test_topology_serialization, test_benchmark, test_reproducibility, test_git_gate, test_safety_gate
 Audit: bash scripts/audit.sh → AUDIT PASS (post seal)
 Checkpoints: CP-0001..CP-0008 VERIFIED
+Git: 0fa18c7d1c5e9c01702214b9dbe33726d4ea9009 (code) / 75b137bd32b16e3f80a05278e7829a4018b6b8fb (status seal)
