@@ -24,9 +24,9 @@
     "tests/test_packaging_rc_cycle21.py",
     "council/STATUS_CYCLE21.md"
   ],
-  "git_commit": null,
+  "git_commit": "b3a25b5829c1347e1d960ab1a42b2b2aade38e25",
   "known_bugs": [],
-  "manifest_sha256": "f78330c6e753f96e63a538e76a615b5d1516b6ae5e28e9a2275b080df6025ebc",
+  "manifest_sha256": "6c9229ac4ef1dcb3e0447f4a910e5781c5356ce9d7eaed31a4883f2bb1d0256f",
   "module": "mesh-packaging-rc-freeze",
   "next_action": "DeepSeek M2M VERDICT on Cycle 21 / CP-0025. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
   "objective": "",
