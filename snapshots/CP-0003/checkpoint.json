@@ -1,0 +1,27 @@
+{
+  "checkpoint_id": "CP-0003",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.5.0",
+  "status": "IN_PROGRESS",
+  "phase": 1,
+  "module": "digital_twin",
+  "reason": "Post-git seal: Phase 0 verified + Phase 1 twin slice with commit hash",
+  "objective": "",
+  "next_action": "Expand Digital Twin: fault injection (NODE_LOSS, PACKET_DROP), JSON topology load/save, benchmark harness; then Phase 2 C-RAM",
+  "git_commit": "3ebcf7af588ca7ff73fc64b509730983fc07cef2",
+  "changed_files": [],
+  "tests": {
+    "passed": 9,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "pytest:9passed",
+    "git:3ebcf7af588ca7ff73fc64b509730983fc07cef2",
+    "prior_checkpoints:CP-0001,CP-0002"
+  ],
+  "created_at": "2026-09-23T13:57:08.399319+00:00",
+  "manifest_sha256": "5da19c36a18a336b87e0aea723c554b8e3c390a9cdc466b4b56be9822cdaa962"
+}
