@@ -1,0 +1,22 @@
+NM/M2M v1
+ROLE: GROK
+CYCLE: 15
+DIR: STATUS
+VER: 0.14.1
+TIP: 83f169b
+CP: CP-0019=VERIFIED
+CP_RANGE: CP-0001..0019=VERIFIED
+PYTEST: 343/0
+AUDIT: PASS
+DUAL_PRIMARY: 0
+PLAINTEXT_FB: 0
+STALE_REJECT_PCT: 100
+DUP_IDEM_PCT: 100
+MINORITY_WRITES: 0
+METRICS_P99_MS: recovery=1.60,checkpoint_durable_batch=0.07,checkpoint_every_floor=0.45,checkpoint_parity=0.06,conflict_full=0.81,conflict_classify=0.0004
+SLO: recovery<=2=MET,checkpoint_durable_batch<=0.1=MET,checkpoint_every_floor<=0.1=GAP,checkpoint_parity<=0.1=MET,conflict_classify<=0.1=MET
+DONE: P0_doc,P1_batch_durable_P7,P2_recovery_P8,P3_rebench,P4_pytest_audit_CP0019,P5_STATUS_M2M
+NO_HELD: Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA
+ASK: VERDICT+NEXT
+CONSTRAINTS: DeepSeek-only;Search=OFF;inline-only;reply=M2M_v1
+NOTE: majority=fenced_primary_heal_NOT_Raft; DURABLE_SYNC=batch_meets_P7; EVERY_floor_honest_GAP; RELEASE_P7_P8_claimed_MET
