@@ -12,6 +12,7 @@ from .errors import (
 from .fabric import DispatchResult, NetworkFabric, default_tls_endpoint
 from .endpoint import ExecutionEndpoint
 from .protocol import (
+    PHASE5A_REQUIRED_MESSAGE_TYPES,
     REQUIRED_MESSAGE_TYPES,
     FabricMessage,
     MessageType,
@@ -62,6 +63,7 @@ __all__ = [
     "NodeSession",
     "PlaintextForbidden",
     "PrimaryWitness",
+    "PHASE5A_REQUIRED_MESSAGE_TYPES",
     "REQUIRED_MESSAGE_TYPES",
     "TransportMode",
     "accept_tls",

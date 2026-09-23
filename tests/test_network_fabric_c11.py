@@ -811,11 +811,11 @@ def test_fabric_heartbeat_helper(ca_pair, tmp_path: Path):
         ep.stop()
 
 
-def test_version_0110_in_package():
+def test_version_0120_in_package():
     import neural_mesh
 
     # Bumped in Cycle 11 deliverable
-    assert neural_mesh.__version__ == "0.11.0"
+    assert neural_mesh.__version__ == "0.12.0"
 
 
 def test_local_ca_bootstrap_deterministic_files(tmp_path: Path):

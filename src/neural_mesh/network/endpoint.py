@@ -98,10 +98,15 @@ class ExecutionEndpoint:
                 # ConnectionDrop on closed listen socket during stop
                 self.last_error = str(exc)
                 continue
-            try:
-                self._handle_conn(stream)
-            finally:
-                stream.close()
+            # Thread-per-connection so a persistent peer session does not
+            # block concurrent clients (Cycle 12 Phase 5A requirement).
+            def _run(s=stream):
+                try:
+                    self._handle_conn(s)
+                finally:
+                    s.close()
+
+            threading.Thread(target=_run, daemon=True).start()
 
     def _handle_conn(self, stream: FrameStream) -> None:
         peer = stream.peer_node_id

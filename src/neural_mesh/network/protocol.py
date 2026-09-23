@@ -18,6 +18,15 @@ class MessageType(str, Enum):
     CHECKPOINT_NOTICE = "CHECKPOINT_NOTICE"
     ACK = "ACK"
     ERROR = "ERROR"
+    # Phase 5A — remote C-RAM + N=2 replica over Fabric
+    CRAM_PUT = "CRAM_PUT"
+    CRAM_GET = "CRAM_GET"
+    CRAM_VERIFY = "CRAM_VERIFY"
+    CRAM_CHECKPOINT = "CRAM_CHECKPOINT"
+    REPLICA_APPEND = "REPLICA_APPEND"
+    REPLICA_ACK = "REPLICA_ACK"
+    ROLE_STATUS = "ROLE_STATUS"
+    PROMOTE_REQUEST = "PROMOTE_REQUEST"
 
 
 REQUIRED_MESSAGE_TYPES = (
@@ -27,6 +36,17 @@ REQUIRED_MESSAGE_TYPES = (
     MessageType.HEARTBEAT,
     MessageType.CAPABILITY_UPDATE,
     MessageType.CHECKPOINT_NOTICE,
+)
+
+PHASE5A_REQUIRED_MESSAGE_TYPES = (
+    MessageType.CRAM_PUT,
+    MessageType.CRAM_GET,
+    MessageType.CRAM_VERIFY,
+    MessageType.CRAM_CHECKPOINT,
+    MessageType.REPLICA_APPEND,
+    MessageType.REPLICA_ACK,
+    MessageType.ROLE_STATUS,
+    MessageType.PROMOTE_REQUEST,
 )
 
 
@@ -126,6 +146,7 @@ def make_error(
 __all__ = [
     "FabricMessage",
     "MessageType",
+    "PHASE5A_REQUIRED_MESSAGE_TYPES",
     "REQUIRED_MESSAGE_TYPES",
     "make_ack",
     "make_error",

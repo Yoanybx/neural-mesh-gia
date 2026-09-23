@@ -21,6 +21,7 @@ from .twin.schema import Topology, Workload
 from .twin.simulator import DigitalTwin, TwinTask
 from .twin.storage import load_faults
 
+from .cram.observability import cmd_trace
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
 from .router import (
     CapabilityAwareStrategy,
@@ -223,6 +224,12 @@ def main(argv: list[str] | None = None):
     cram_fsck = cram_subs.add_parser("fsck", help="Filesystem check; report orphans/corrupt")
     cram_fsck.add_argument("--root", type=str, default=None)
     cram_fsck.add_argument("--json", action="store_true")
+
+    cram_trace = cram_subs.add_parser(
+        "trace", help="Reconstruct Task→Router→Network→C-RAM→Checkpoint for operation_id"
+    )
+    cram_trace.add_argument("operation_id")
+    cram_trace.add_argument("--root", type=str, default=None)
 
     cram_repl = cram_subs.add_parser("replica", help="C-RAM N=2 controlled replica ops")
     repl_subs = cram_repl.add_subparsers(dest="replica_op", required=True)
@@ -445,6 +452,8 @@ def main(argv: list[str] | None = None):
             raise SystemExit(cmd_verify(a.key, root=root))
         elif a.op == "fsck":
             raise SystemExit(cmd_fsck(root=root, as_json=bool(a.json)))
+        elif a.op == "trace":
+            raise SystemExit(cmd_trace(a.operation_id, root=root))
         elif a.op == "replica":
             rroot = Path(a.root) if getattr(a, "root", None) else root
             topo = getattr(a, "topology", None)
