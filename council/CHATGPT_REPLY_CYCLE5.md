@@ -1,0 +1,129 @@
+- generic [ref=f44e1754]:
+  - heading "ChatGPT said:" [level=4] [ref=f44e1755]
+  - generic [ref=f44e1757]:
+    - generic [ref=f44e2285]:
+      - paragraph [ref=f44e2286]:
+        - strong [ref=f44e2287]: B) APROBADO CON CAMBIOS.
+      - paragraph [ref=f44e2288]:
+        - text: "El Ciclo 5 cerró correctamente los prerrequisitos: integridad, diagnóstico, recuperación medida y separación de errores. Sí procede implementar réplica N=2, pero como"
+        - strong [ref=f44e2289]: replicación controlada de C-RAM v0
+        - text: ", no como sistema distribuido definitivo."
+      - heading "CICLO 6 — C-RAM Replica N=2 (Controlled)" [level=2] [ref=f44e2291]
+      - heading "P0 — Implementar interfaz de réplica (basada en el DOC existente)" [level=3] [ref=f44e2292]
+      - paragraph [ref=f44e2293]: "Mantener el contrato:"
+      - generic [ref=f44e2302]:
+        - button "Copy" [ref=f44e2303] [cursor=pointer]
+        - code [ref=f44e2312]: ReplicaManager ├── create_replica() ├── sync_object() ├── verify_replica() ├── remove_replica() └── replica_status()
+      - paragraph [ref=f44e2313]: "Modelo:"
+      - generic [ref=f44e2322]:
+        - button "Copy" [ref=f44e2323] [cursor=pointer]
+        - code [ref=f44e2332]: CRAMObject | +-- primary_node | +-- replica_nodes[] | +-- version | +-- content_hash
+      - separator [ref=f44e2333]
+      - heading "P1 — Replica placement determinista" [level=3] [ref=f44e2334]
+      - paragraph [ref=f44e2335]: "Crear:"
+      - generic [ref=f44e2344]:
+        - button "Copy" [ref=f44e2345] [cursor=pointer]
+        - code [ref=f44e2354]: src/neural_mesh/cram/replication/ manager.py placement.py models.py
+      - paragraph [ref=f44e2355]: "Regla inicial:"
+      - generic [ref=f44e2364]:
+        - button "Copy" [ref=f44e2365] [cursor=pointer]
+        - code [ref=f44e2374]: primary != replica primary healthy replica eligible
+      - paragraph [ref=f44e2375]: No usar todavía aprendizaje ni optimización.
+      - paragraph [ref=f44e2376]: "Test:"
+      - generic [ref=f44e2385]:
+        - button "Copy" [ref=f44e2386] [cursor=pointer]
+        - code [ref=f44e2395]: test_replica_not_same_node_as_primary test_replica_selection_reproducible_with_seed
+      - separator [ref=f44e2396]
+      - heading "P2 — Sync v1" [level=3] [ref=f44e2397]
+      - paragraph [ref=f44e2398]: "Flujo:"
+      - generic [ref=f44e2407]:
+        - button "Copy" [ref=f44e2408] [cursor=pointer]
+        - code [ref=f44e2417]: PUT object ↓ store primary ↓ calculate hash ↓ copy replica ↓ verify hash ↓ mark VERIFIED
+      - paragraph [ref=f44e2418]: "Estados:"
+      - generic [ref=f44e2427]:
+        - button "Copy" [ref=f44e2428] [cursor=pointer]
+        - code [ref=f44e2437]: CREATED SYNCING SYNCED FAILED
+      - paragraph [ref=f44e2438]: "Tests:"
+      - generic [ref=f44e2447]:
+        - button "Copy" [ref=f44e2448] [cursor=pointer]
+        - code [ref=f44e2457]: test_sync_success test_sync_hash_mismatch test_sync_failure_state
+      - separator [ref=f44e2458]
+      - heading "P3 — Failover controlado" [level=3] [ref=f44e2459]
+      - paragraph [ref=f44e2460]: "Caso:"
+      - generic [ref=f44e2469]:
+        - button "Copy" [ref=f44e2470] [cursor=pointer]
+        - code [ref=f44e2479]: Node A (primary) | X NODE_LOSS Node B (replica)
+      - paragraph [ref=f44e2480]: "Resultado esperado:"
+      - generic [ref=f44e2489]:
+        - button "Copy" [ref=f44e2490] [cursor=pointer]
+        - code [ref=f44e2499]: primary unavailable replica verified = FAILOVER_AVAILABLE
+      - paragraph [ref=f44e2500]: "Importante:"
+      - paragraph [ref=f44e2501]: "No declarar recuperación si la réplica no pasa:"
+      - generic [ref=f44e2510]:
+        - button "Copy" [ref=f44e2511] [cursor=pointer]
+        - code [ref=f44e2520]: hash verification version check integrity check
+      - paragraph [ref=f44e2521]: "Tests:"
+      - generic [ref=f44e2530]:
+        - button "Copy" [ref=f44e2531] [cursor=pointer]
+        - code [ref=f44e2540]: test_primary_loss_replica_available test_replica_corruption_blocks_failover
+      - separator [ref=f44e2541]
+      - heading "P4 — CLI" [level=3] [ref=f44e2542]
+      - paragraph [ref=f44e2543]: "Añadir:"
+      - generic [ref=f44e2549]:
+        - generic [ref=f44e2551]:
+          - generic [ref=f44e2552]: Bash
+          - button "Copy" [ref=f44e2558] [cursor=pointer]
+        - code [ref=f44e2571]: mesh cram replica create <hash> mesh cram replica status <hash> mesh cram replica verify <hash> mesh cram replica repair <hash>
+      - paragraph [ref=f44e2574]: "Salida JSON:"
+      - generic [ref=f44e2580]:
+        - generic [ref=f44e2582]:
+          - generic [ref=f44e2583]: JSON
+          - button "Copy" [ref=f44e2587] [cursor=pointer]
+        - code [ref=f44e2600]: "{ \"object_hash\":\"abc123\", \"primary\":\"node01\", \"replica\":\"node02\", \"status\":\"SYNCED\", \"verified\":true }"
+      - separator [ref=f44e2601]
+      - heading "P5 — Benchmark réplica" [level=3] [ref=f44e2602]
+      - paragraph [ref=f44e2603]: "Medir:"
+      - generic [ref=f44e2612]:
+        - button "Copy" [ref=f44e2613] [cursor=pointer]
+        - code [ref=f44e2622]: replication_latency sync_bytes verification_time failover_detection_time recovery_time
+      - paragraph [ref=f44e2623]: "N mínimo:"
+      - generic [ref=f44e2632]:
+        - button "Copy" [ref=f44e2633] [cursor=pointer]
+        - code [ref=f44e2642]: 100 objetos pequeños 100 objetos medianos 10 objetos grandes
+      - separator [ref=f44e2643]
+      - heading "P6 — Mantener fuera de alcance" [level=3] [ref=f44e2645]
+      - paragraph [ref=f44e2646]: "Todavía NO:"
+      - list [ref=f44e2647]:
+        - listitem [ref=f44e2648]:
+          - paragraph [ref=f44e2649]: consenso distribuido
+        - listitem [ref=f44e2650]:
+          - paragraph [ref=f44e2651]: quorum
+        - listitem [ref=f44e2652]:
+          - paragraph [ref=f44e2653]: replicación >2 nodos
+        - listitem [ref=f44e2654]:
+          - paragraph [ref=f44e2655]: replicación geográfica
+        - listitem [ref=f44e2656]:
+          - paragraph [ref=f44e2657]: aprendizaje del placement
+        - listitem [ref=f44e2658]:
+          - paragraph [ref=f44e2659]: auto-replicación
+      - paragraph [ref=f44e2660]: Eso pertenece a fases posteriores.
+      - separator [ref=f44e2661]
+      - heading "Tests de aceptación" [level=2] [ref=f44e2662]
+      - paragraph [ref=f44e2663]: "Objetivo:"
+      - generic [ref=f44e2673]:
+        - button "Copy" [ref=f44e2674] [cursor=pointer]
+        - code [ref=f44e2683]: pytest >=90 total 0 failures audit PASS CP-0010 VERIFIED
+      - paragraph [ref=f44e2684]: "Checkpoint:"
+      - generic [ref=f44e2693]:
+        - button "Copy" [ref=f44e2694] [cursor=pointer]
+        - code [ref=f44e2703]: "CP-0010 phase: C-RAM Replica N2 includes: - replica interface - sync evidence - failover tests - benchmark results - integrity proofs"
+      - paragraph [ref=f44e2704]:
+        - strong [ref=f44e2705]: "Decisión final: APROBADO CON CAMBIOS → Ciclo 6 C-RAM Replica N=2 controlada."
+    - generic [ref=f44e2706]:
+      - group "Response actions":
+        - button "Copy response"
+        - button "Rate response"
+        - button "Share"
+        - generic:
+          - button "Switch model"
+        - button "More actions"

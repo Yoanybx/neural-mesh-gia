@@ -1,0 +1,144 @@
+- generic [ref=f49e766]:
+  - heading "Veredicto Ciclo 5" [level=2] [ref=f49e767]
+  - paragraph [ref=f49e768]:
+    - strong [ref=f49e769]: APROBADO.
+    - text: "Evidencia sólida: p99 0.193 ms ≪ 150 ms, 74 passed, CP-0009 VERIFIED, code 4bc191e. Los 2 matices que pedí (exit code 1 reservado, stale-topology test) están cubiertos."
+  - heading [level=2] [ref=f49e770]:
+    - text: Ciclo 6 →
+    - strong [ref=f49e771]: (B) APROBADO CON CAMBIOS
+  - paragraph [ref=f49e772]:
+    - text: "Razón: réplica N=2 tiene un problema estructural que el doc de interfaz"
+    - strong [ref=f49e773]: no puede dejar abierto
+    - text: ":"
+    - strong [ref=f49e774]: N=2 no tiene quórum mayoritario
+    - text: . Con
+    - code [ref=f49e775]: W=2
+    - text: no hay disponibilidad bajo fallo; con
+    - code [ref=f49e776]: W=1
+    - text: hay split-brain garantizado. Antes de escribir código hay que fijar el modelo.
+  - heading "Cambios exigidos antes de implementar" [level=3] [ref=f49e777]
+  - list [ref=f49e778]:
+    - listitem [ref=f49e779]:
+      - paragraph [ref=f49e780]:
+        - strong [ref=f49e781]: Modelo de consistencia explícito y congelado en doc.
+        - text: "Propuesta:"
+        - emphasis [ref=f49e782]: async replication, primary-ack (W=1), R=1, consistencia eventual con bound T_conv
+        - text: .
+        - strong [ref=f49e783]: "Non-goal declarado:"
+        - text: linearizability, quórum estricto, Raft/Paxos.
+    - listitem [ref=f49e784]:
+      - paragraph [ref=f49e785]:
+        - strong [ref=f49e786]: Fencing token / epoch en cada write.
+        - text: Sin epoch monotónico, la promoción del secundario genera escrituras divergentes.
+        - code [ref=f49e787]: apply(op_id, epoch)
+        - text: debe rechazar
+        - code [ref=f49e788]: epoch < current
+        - text: silenciosamente (idempotente) y loguear.
+    - listitem [ref=f49e789]:
+      - paragraph [ref=f49e790]:
+        - strong [ref=f49e791]: Tie-breaker para N=2.
+        - text: "Opciones: (a) witness local ("
+        - code [ref=f49e800]: .cram/witness
+        - text: ) con timestamp; (b) prioridad estática por
+        - code [ref=f49e801]: node_id
+        - text: . Elegir
+        - strong [ref=f49e802]: una
+        - text: y documentar. Sin esto, partición = 2 primarios.
+    - listitem [ref=f49e803]:
+      - paragraph [ref=f49e804]:
+        - strong [ref=f49e805]: Op-id obligatorio en put.
+        - text: "Reintentos no deben duplicar. Test: mismo op_id dos veces → un solo efecto."
+    - listitem [ref=f49e806]:
+      - paragraph [ref=f49e807]:
+        - strong [ref=f49e808]: Anti-entropy en rejoin.
+        - text: "Merkle diff por objeto (no full scan). Test: secundario divergente converge en < T_conv."
+    - listitem [ref=f49e809]:
+      - paragraph [ref=f49e810]:
+        - strong [ref=f49e811]: Preservar SLO previo.
+        - text: Replicación no puede degradar p99 recovery_time >150 ms. Medir overhead.
+  - heading "Plan P0–P8 (acordable, un solo ciclo)" [level=3] [ref=f49e812]
+  - list [ref=f49e813]:
+    - listitem [ref=f49e814]:
+      - paragraph [ref=f49e815]:
+        - strong [ref=f49e816]: P0
+        - text: "— Congelar doc: consistencia, epoch, tie-breaker, T_conv bound. Sin código aún."
+    - listitem [ref=f49e817]:
+      - paragraph [ref=f49e818]:
+        - strong [ref=f49e819]: P1
+        - text: —
+        - code [ref=f49e820]: ReplicaPlacement
+        - text: ": primary+secondary deterministas vía topology hash."
+    - listitem [ref=f49e821]:
+      - paragraph [ref=f49e822]:
+        - strong [ref=f49e823]: P2
+        - text: — ReplicationLog con
+        - code [ref=f49e824]: op_id + epoch
+        - text: ; apply idempotente.
+    - listitem [ref=f49e825]:
+      - paragraph [ref=f49e826]:
+        - strong [ref=f49e827]: P3
+        - text: "— Promoción:"
+        - code [ref=f49e828]: NodeUnavailable(primary)
+        - text: → secundario incrementa epoch, emite fencing token.
+    - listitem [ref=f49e829]:
+      - paragraph [ref=f49e830]:
+        - strong [ref=f49e831]: P4
+        - text: "— Split-brain guard: rechazo de epoch stale + witness/tie-breaker."
+    - listitem [ref=f49e832]:
+      - paragraph [ref=f49e833]:
+        - strong [ref=f49e834]: P5
+        - text: — Anti-entropy rejoin (merkle diff).
+    - listitem [ref=f49e835]:
+      - paragraph [ref=f49e836]:
+        - strong [ref=f49e837]: P6
+        - text: "— Tests: happy path, secondary loss, primary loss+promote, partición simulada (máx 1 writable primary), rejoin converge, op_id duplicado, epoch stale."
+    - listitem [ref=f49e838]:
+      - paragraph [ref=f49e839]:
+        - strong [ref=f49e840]: P7
+        - text: — CLI
+        - code [ref=f49e841]: mesh cram replica status|promote|verify-consistency
+        - text: (exit codes 0/1/2/3 consistentes con Ciclo 5).
+    - listitem [ref=f49e842]:
+      - paragraph [ref=f49e843]:
+        - strong [ref=f49e844]: P8
+        - text: — Benchmark overhead replicación (p50/p99 vs single-node) + T_conv medido. Audit.
+        - strong [ref=f49e845]: CP-0010
+        - text: .
+  - heading "Criterio de aceptación (medible)" [level=3] [ref=f49e846]
+  - list [ref=f49e847]:
+    - listitem [ref=f49e848]:
+      - paragraph [ref=f49e849]:
+        - text: "Partición simulada:"
+        - strong [ref=f49e850]: ≤1 primary writable
+        - text: en todos los escenarios (test binario pass/fail).
+    - listitem [ref=f49e851]:
+      - paragraph [ref=f49e852]:
+        - code [ref=f49e853]: T_conv
+        - text: medido y < bound declarado en P0.
+    - listitem [ref=f49e854]:
+      - paragraph [ref=f49e855]:
+        - text: Overhead p99 replicación < 5× single-node
+        - strong [ref=f49e856]: "y"
+        - text: recovery_time p99 sigue <150 ms.
+    - listitem [ref=f49e857]:
+      - paragraph [ref=f49e858]: "Op-id idempotencia: 0 efectos duplicados en 100 reintentos."
+    - listitem [ref=f49e859]:
+      - paragraph [ref=f49e860]:
+        - text: Suite ≥
+        - strong [ref=f49e861]: 90 passed
+        - text: ; audit PASS;
+        - strong [ref=f49e862]: CP-0010 VERIFIED
+        - text: .
+  - heading "Qué NO hacer en Ciclo 6" [level=3] [ref=f49e863]
+  - list [ref=f49e864]:
+    - listitem [ref=f49e865]:
+      - paragraph [ref=f49e866]: No N>2, no quórum real, no Raft/Paxos, no consenso bizantino.
+    - listitem [ref=f49e867]:
+      - paragraph [ref=f49e868]: No Phase 3 Cognitive Router.
+    - listitem [ref=f49e869]:
+      - paragraph [ref=f49e870]: No ML / embeddings / memoria neuronal distribuida.
+    - listitem [ref=f49e871]:
+      - paragraph [ref=f49e872]: No cambiar esquema de checkpoint sin migración explícita.
+    - listitem [ref=f49e873]:
+      - paragraph [ref=f49e874]: No promoción automática sin fencing token — preferible fallar cerrado.
+  - paragraph [ref=f49e875]: Adelante con P0; merge gate en P0 antes de tocar P1.
