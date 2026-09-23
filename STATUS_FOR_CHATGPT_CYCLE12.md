@@ -1,6 +1,7 @@
 # STATUS FOR CHATGPT — Neural Mesh / GIA-COS Cycle 12
 
 **Date:** 2026-09-23 America/New_York (EDT, UTC-4)
+**Git HEAD:** `85b949941a0aebd021464aec5bba92f8cc5ea803`
 **Repo:** `/workspace/neural-mesh-gia`
 **Directive:** Cycle 12 — Phase 5A Distributed C-RAM over Fabric (N=2 active-passive) → **CP-0016** (ChatGPT A + DeepSeek A unified).
 **Hard NO:** Raft / N>2 / multi-primary / ML / Phase 6 / silent plaintext fallback / Vault-ACME required / aggressive auto-failover without fencing.
