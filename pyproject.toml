@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "neural-mesh-gia"
-version = "0.15.0"
+version = "0.16.0"
 requires-python = ">=3.10"
 dependencies = ["pydantic>=2,<3", "networkx>=3,<4"]
 
@@ -19,3 +19,8 @@ mesh = "neural_mesh.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+markers = [
+    "packaging_single_node_bundle: CP-0024 single-node bundle packaging",
+]

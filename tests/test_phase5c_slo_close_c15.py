@@ -51,7 +51,11 @@ def test_version_is_at_least_0141():
 
 def test_pyproject_version_014x():
     text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.14.' in text or 'version = "0.15.' in text
+    assert (
+        'version = "0.14.' in text
+        or 'version = "0.15.' in text
+        or 'version = "0.16.' in text
+    )
 
 
 def test_doc_slo_close_durable_vs_parity():

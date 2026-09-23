@@ -56,7 +56,11 @@ def test_version_is_at_least_0140():
 def test_pyproject_version_014x():
     text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     # C14 introduced 0.14.x; later cycles may bump (C19 → 0.15.0)
-    assert 'version = "0.14.' in text or 'version = "0.15.' in text
+    assert (
+        'version = "0.14.' in text
+        or 'version = "0.15.' in text
+        or 'version = "0.16.' in text
+    )
 
 
 def test_fsync_policy_clarifies_majority_not_raft():

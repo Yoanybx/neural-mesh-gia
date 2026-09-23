@@ -1,7 +1,7 @@
-# CP-0023
+# CP-0024
 
 Phase: 5
-Module: mesh-observability-status-snapshot
-Reason: Cycle 19 Mesh Observability Status Snapshot
-Next: DeepSeek M2M VERDICT on Cycle 19 / CP-0023 (Mesh Observability Status Snapshot; SLO GAP ~1.32ms SCHEMA-GATED held). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
-Tests: {'passed': 386, 'failed': 0}
+Module: mesh-packaging-single-node-bundle
+Reason: Cycle 20 Mesh Packaging Single-Node Bundle
+Next: DeepSeek M2M VERDICT on Cycle 20 / CP-0024 (Mesh Packaging Single-Node Bundle). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.
+Tests: {'passed': 398, 'failed': 0}

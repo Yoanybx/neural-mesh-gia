@@ -1,3 +1,10 @@
+## Cycle 20 — 2026-09-23 — CP-0024 Mesh Packaging Single-Node Bundle
+- schema mesh.bundle.manifest/v1 (name, ver, tip, cp_range, pytest, entrypoint, checksums).
+- scripts/build_bundle.py + scripts/verify_bundle.py; neural_mesh.packaging (deterministic tar).
+- tests/test_packaging_single_node_bundle.py (≥10; 12 passed); docs/capabilities/MESH_PACKAGING_SINGLE_NODE_BUNDLE.md.
+- pytest 398; audit PASS; version 0.16.0; CP-0024 VERIFIED.
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes.
+
 # Changelog
 
 ## Cycle 19 — 2026-09-23 — CP-0023 Mesh Observability Status Snapshot
