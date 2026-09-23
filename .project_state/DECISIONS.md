@@ -10,3 +10,10 @@ Use ADR files for major decisions.
 ## ADR-0002 — Digital Twin Phase 1 slice
 - Pure Python + networkx public API; no Ray/torch required.
 - Deterministic discrete-time scheduler; digest mixes seed + schedule for replay identity.
+
+## ADR-0003 — Phase 1 fault injection + topology I/O + bench (Cycle 2)
+- Faults: only `NODE_LOSS` and `PACKET_DROP` in Phase 1 (other codebook faults deferred to Phase 6).
+- NODE_LOSS: node ineligible from `at_tick`; mid-flight tasks → `FAILED`.
+- PACKET_DROP: seeded SHA256 Bernoulli on placement-path hops (up to 3 retries/hop); total loss → task stays pending → `UNSCHEDULED`.
+- Topology JSON includes seed, nodes, links, tasks, faults; round-trip preserves digest.
+- BenchmarkMetrics: makespan, mean_wait, mean_latency, utilization, packet drop stats.

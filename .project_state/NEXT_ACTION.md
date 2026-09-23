@@ -4,10 +4,10 @@
 P0
 
 ## Action
-Expand Phase 1 Digital Twin: (1) fault injection hooks for NODE_LOSS and PACKET_DROP, (2) JSON topology load/save, (3) simple benchmark harness (schedule latency / utilization). Then checkpoint and proceed toward Phase 2 C-RAM unless ChatGPT redirects.
+Begin Phase 2 C-RAM (Content-addressable / cognitive RAM layer) unless ChatGPT redirects. Use Phase 1 Digital Twin as the sandbox test bed for C-RAM placement and fault recovery scenarios.
 
 ## Status
-READY — awaiting ChatGPT confirm/redirect
+READY — awaiting ChatGPT confirm/redirect (Cycle 2 work already applied)
 
 ## Checkpoint
-CP-0003
+CP-0004
