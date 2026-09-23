@@ -86,10 +86,12 @@ def test_phase5b_message_types_present():
         assert MessageType[need].value == need
 
 
-def test_version_is_0130():
+def test_version_is_0130_or_newer():
     from neural_mesh import __version__
 
-    assert __version__ == "0.13.0"
+    # C13 introduced 0.13.0; later cycles may bump (C14 → 0.14.0)
+    parts = tuple(int(x) for x in __version__.split(".")[:3])
+    assert parts >= (0, 13, 0)
 
 
 # ----- P1 versioning / conflict -----

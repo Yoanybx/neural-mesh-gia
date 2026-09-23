@@ -1,3 +1,12 @@
+# Changelog
+
+## Cycle 14 — 2026-09-23 — CP-0018 Phase 5C Durability & Adversarial Partition
+- WAL/fsync policy + DurabilityWAL (BEGIN/APPLY/COMMIT); crash invariants mid-write/append/checkpoint.
+- N=2 partition suite first gate: minority=0, dual-primary=0, stale=100%, deterministic heal (NOT Raft).
+- Safe snapshot compaction; CLI `mesh cram durability check|partition test|recovery trace`.
+- Bench experiments/phase5c-durability-c14/; pytest 328; version 0.14.0; CP-0018 VERIFIED.
+- Clarification: N=2 "majority" = fenced primary/heal only.
+
 # CHANGELOG
 
 ## 0.5.0

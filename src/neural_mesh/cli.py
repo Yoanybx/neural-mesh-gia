@@ -23,6 +23,11 @@ from .twin.storage import load_faults
 
 from .cram.observability import cmd_trace
 from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
+from .cram.durability_cli import (
+    cmd_durability_check,
+    cmd_partition_test,
+    cmd_recovery_trace,
+)
 from .cram.consistency_cli import (
     cmd_consistency_check,
     cmd_history,
@@ -266,6 +271,28 @@ def main(argv: list[str] | None = None):
     cram_hist.add_argument("--root", type=str, default=None)
     cram_hist.add_argument("--topology", type=str, default=None)
     cram_hist.add_argument("--seed", type=int, default=42)
+
+    # Phase 5C — durability / partition / recovery trace
+    cram_dur = cram_subs.add_parser(
+        "durability", help="C-RAM durability / WAL / crash invariants (Phase 5C)"
+    )
+    dur_subs = cram_dur.add_subparsers(dest="durability_op", required=True)
+    dc = dur_subs.add_parser("check", help="WAL/fsync + crash-invariant report")
+    dc.add_argument("--root", type=str, default=None)
+
+    cram_part = cram_subs.add_parser(
+        "partition", help="N=2 adversarial partition suite (Phase 5C)"
+    )
+    part_subs = cram_part.add_subparsers(dest="partition_op", required=True)
+    pt = part_subs.add_parser("test", help="Run partition suite (minority=0, dual=0, heal)")
+    pt.add_argument("--root", type=str, default=None)
+
+    # Extend recovery with trace subcommand (keep existing test)
+    rt_trace = rec_subs.add_parser(
+        "trace", help="Trace WAL + recovery evidence (Phase 5C)"
+    )
+    rt_trace.add_argument("object", nargs="?", default=None)
+    rt_trace.add_argument("--root", type=str, default=None)
 
     cram_repl = cram_subs.add_parser("replica", help="C-RAM N=2 controlled replica ops")
     repl_subs = cram_repl.add_subparsers(dest="replica_op", required=True)
@@ -514,6 +541,13 @@ def main(argv: list[str] | None = None):
                         seed=int(getattr(a, "seed", 42)),
                     )
                 )
+            elif a.recovery_op == "trace":
+                raise SystemExit(
+                    cmd_recovery_trace(
+                        root=rroot,
+                        object_id=getattr(a, "object", None),
+                    )
+                )
         elif a.op == "history":
             rroot = Path(a.root) if getattr(a, "root", None) else root
             raise SystemExit(
@@ -524,6 +558,14 @@ def main(argv: list[str] | None = None):
                     seed=int(getattr(a, "seed", 42)),
                 )
             )
+        elif a.op == "durability":
+            rroot = Path(a.root) if getattr(a, "root", None) else root
+            if a.durability_op == "check":
+                raise SystemExit(cmd_durability_check(root=rroot))
+        elif a.op == "partition":
+            rroot = Path(a.root) if getattr(a, "root", None) else root
+            if a.partition_op == "test":
+                raise SystemExit(cmd_partition_test(root=rroot))
         elif a.op == "replica":
             rroot = Path(a.root) if getattr(a, "root", None) else root
             topo = getattr(a, "topology", None)

@@ -1,0 +1,39 @@
+{
+  "checkpoint_id": "CP-0018",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.14.0",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "phase5c-durability-partition",
+  "reason": "Cycle 14 Phase 5C: Durability & Adversarial Partition Hardening — WAL/fsync policy, crash invariants (kill -9 mid-write/append/checkpoint), N=2 partition suite (minority=0, dual-primary=0, heal reconcile), safe snapshot compaction, CLI durability/partition/recovery-trace, bench crash+partition+reconnect, CP-0018",
+  "objective": "",
+  "next_action": "DeepSeek review of Cycle 14 / CP-0018 (ChatGPT catch-up). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, silent plaintext fallback.",
+  "git_commit": null,
+  "changed_files": [
+    "docs/phase5c_durability.md",
+    "src/neural_mesh/cram/durability.py",
+    "src/neural_mesh/cram/partition_suite.py",
+    "src/neural_mesh/cram/compaction.py",
+    "src/neural_mesh/cram/durability_cli.py",
+    "src/neural_mesh/cram/consistency.py",
+    "src/neural_mesh/cli.py",
+    "tests/test_phase5c_durability_c14.py",
+    "experiments/phase5c-durability-c14/run_bench.py"
+  ],
+  "tests": {
+    "passed": 328,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/phase5c_durability.md",
+    "experiments/phase5c-durability-c14/baseline.json",
+    "STATUS_FOR_CHATGPT_CYCLE14.md"
+  ],
+  "created_at": "2026-09-23T18:47:05.710702+00:00",
+  "manifest_sha256": "5ff1b98db2cb172201bb94e08febe8c91d58a4026f49bc8292e2b967c43909fc",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

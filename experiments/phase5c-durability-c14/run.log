@@ -1,0 +1,25 @@
+{
+  "recovery_p99_ms": {
+    "bound": 2.0,
+    "measured": 2.1324721401606426,
+    "met": false,
+    "note": "stretch vs prior path; WAL fsync in apply may add cost"
+  },
+  "checkpoint_p99_ms": {
+    "bound": 0.1,
+    "measured_durable_fsync": 0.7968215897199121,
+    "measured_parity_c13_plain_write": 0.09017845966354808,
+    "met_durable": false,
+    "met_parity_c13_method": true,
+    "note": "Primary claim uses durable fsync; parity uses C13 plain write_text"
+  },
+  "conflict_detect_p99_ms": {
+    "bound": 0.1,
+    "measured_full_apply_wal": 1.133219929852204,
+    "measured_classify_only_parity": 0.00034504998893680744,
+    "met_full_apply": false,
+    "met_classify_parity": true,
+    "note": "Full path includes WAL/idempotency fsync; classify-only matches C13 spirit"
+  }
+}
+wrote /workspace/neural-mesh-gia/experiments/phase5c-durability-c14/baseline.json

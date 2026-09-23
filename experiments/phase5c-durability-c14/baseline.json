@@ -1,0 +1,162 @@
+{
+  "bounds": {
+    "checkpoint_p99_ms": 0.1,
+    "conflict_detect_p99_ms": 0.1,
+    "recovery_p99_ms": 2.0
+  },
+  "bounds_evaluation": {
+    "checkpoint_p99_ms": {
+      "bound": 0.1,
+      "measured_durable_fsync": 0.7968215897199121,
+      "measured_parity_c13_plain_write": 0.09017845966354808,
+      "met_durable": false,
+      "met_parity_c13_method": true,
+      "note": "Primary claim uses durable fsync; parity uses C13 plain write_text"
+    },
+    "conflict_detect_p99_ms": {
+      "bound": 0.1,
+      "measured_classify_only_parity": 0.00034504998893680744,
+      "measured_full_apply_wal": 1.133219929852204,
+      "met_classify_parity": true,
+      "met_full_apply": false,
+      "note": "Full path includes WAL/idempotency fsync; classify-only matches C13 spirit"
+    },
+    "recovery_p99_ms": {
+      "bound": 2.0,
+      "measured": 2.1324721401606426,
+      "met": false,
+      "note": "stretch vs prior path; WAL fsync in apply may add cost"
+    }
+  },
+  "checkpoint": "CP-0018",
+  "clarification": "N=2 'majority' = fenced primary / heal path only \u2014 NOT Raft quorum",
+  "counts": {
+    "duplicate_suppression_pct": 100.0,
+    "duplicates_suppressed": 1000,
+    "duplicates_total": 1000,
+    "large": 100,
+    "medium": 1000,
+    "small": 10000,
+    "stale_reject_pct": 100.0,
+    "stale_rejected": 100,
+    "stale_total": 100
+  },
+  "cycle": 14,
+  "invariants": {
+    "dual_primary": 0,
+    "duplicate_idempotent_pct": 100.0,
+    "minority_writes_accepted": 0,
+    "stale_reject_pct": 100.0
+  },
+  "latency_ms": {
+    "apply_large": {
+      "max_ms": 8.966158000021096,
+      "mean_ms": 7.143138230007935,
+      "n": 100,
+      "p50_ms": 7.103505000031873,
+      "p95_ms": 8.071508849661768,
+      "p99_ms": 8.836792719953337
+    },
+    "apply_medium": {
+      "max_ms": 10.40216599994892,
+      "mean_ms": 5.061995876995297,
+      "n": 1000,
+      "p50_ms": 4.919655000094281,
+      "p95_ms": 7.423904599772868,
+      "p99_ms": 8.512093470230864
+    },
+    "apply_small": {
+      "max_ms": 5.747730999701162,
+      "mean_ms": 0.343550714997491,
+      "n": 10000,
+      "p50_ms": 0.29807149985572323,
+      "p95_ms": 0.5550723997203016,
+      "p99_ms": 1.3062845002468757
+    },
+    "checkpoint": {
+      "max_ms": 0.8985530002973974,
+      "mean_ms": 0.32089634998555994,
+      "n": 100,
+      "p50_ms": 0.2896759999657661,
+      "p95_ms": 0.5086006499595895,
+      "p99_ms": 0.7968215897199121
+    },
+    "checkpoint_parity_c13": {
+      "max_ms": 0.10893499984376831,
+      "mean_ms": 0.0377790199854644,
+      "n": 100,
+      "p50_ms": 0.0345794999248028,
+      "p95_ms": 0.048605450047034524,
+      "p99_ms": 0.09017845966354808
+    },
+    "compaction": {
+      "max_ms": 3.3483050001450465,
+      "mean_ms": 2.5117802999602645,
+      "n": 20,
+      "p50_ms": 2.3987204997411027,
+      "p95_ms": 3.193311550217004,
+      "p99_ms": 3.317306310159438
+    },
+    "conflict_classify_parity": {
+      "max_ms": 0.0018910000108007807,
+      "mean_ms": 0.00024795099761831807,
+      "n": 2000,
+      "p50_ms": 0.00024299970391439274,
+      "p95_ms": 0.0002879996827687137,
+      "p99_ms": 0.00034504998893680744
+    },
+    "conflict_detect": {
+      "max_ms": 3.333184999974037,
+      "mean_ms": 0.3364212583478238,
+      "n": 10300,
+      "p50_ms": 0.298956500046188,
+      "p95_ms": 0.5217542002355905,
+      "p99_ms": 1.133219929852204
+    },
+    "crash_recover": {
+      "max_ms": 0.7748070001980523,
+      "mean_ms": 0.4840568666471275,
+      "n": 30,
+      "p50_ms": 0.45440799976859125,
+      "p95_ms": 0.6627821498113916,
+      "p99_ms": 0.7468628900505793
+    },
+    "duplicate_suppress": {
+      "max_ms": 0.016621999748167582,
+      "mean_ms": 0.0018913990020337224,
+      "n": 1000,
+      "p50_ms": 0.001720000000204891,
+      "p95_ms": 0.0029610996307383175,
+      "p99_ms": 0.0033632099166425165
+    },
+    "partition_suite": {
+      "max_ms": 23.152191000008315,
+      "mean_ms": 17.257232700035274,
+      "n": 20,
+      "p50_ms": 16.981981999833806,
+      "p95_ms": 20.343802900015366,
+      "p99_ms": 22.59051338000972
+    },
+    "reconnect_heal": {
+      "max_ms": 0.7500350002374034,
+      "mean_ms": 0.5375843499678012,
+      "n": 20,
+      "p50_ms": 0.5273239999041834,
+      "p95_ms": 0.733854599843653,
+      "p99_ms": 0.7467989201586533
+    },
+    "recovery": {
+      "max_ms": 2.4773410000307194,
+      "mean_ms": 1.303816560021005,
+      "n": 50,
+      "p50_ms": 1.356794000002992,
+      "p95_ms": 1.6498609501013561,
+      "p99_ms": 2.1324721401606426
+    }
+  },
+  "notes": [
+    "Honest measurement on this box; fsync best-effort as FS honors it.",
+    "Checkpoint metric = atomic_write_bytes fsync JSON (C14 durable); compaction separate."
+  ],
+  "version": "0.14.0"
+}

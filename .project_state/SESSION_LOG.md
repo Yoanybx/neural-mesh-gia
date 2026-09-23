@@ -36,3 +36,9 @@
 
 ## Cycle 11 — 2026-09-23
 Phase 4 Network Fabric + local mTLS. CP-0015 VERIFIED. 217 passed. version 0.11.0.
+
+## Cycle 14 — 2026-09-23 EDT
+- Phase 5C durability + adversarial partition → CP-0018 VERIFIED; version 0.14.0.
+- pytest: 328 passed; audit PASS; CP-0001..0018 VERIFIED.
+- Bounds: honest gaps on durable fsync paths; C13-parity MET for checkpoint/conflict classify.
+

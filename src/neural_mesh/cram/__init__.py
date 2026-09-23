@@ -24,6 +24,9 @@ from .store import CRAMStore
 from .version import CRAMVersion, compare_versions
 from .conflict import ConflictOutcome, ConflictPolicy, ConflictRecord
 from .consistency import ConsistencyLayer, ConsistencyReport, WriteResult
+from .durability import DurabilityChecker, DurabilityReport, DurabilityWAL, FSYNC_POLICY
+from .partition_suite import PartitionSuiteReport, run_partition_suite
+from .compaction import CompactionReport, SnapshotCompactor
 from .recovery_protocol import (
     RecoveryFSM,
     RecoveryFSMResult,
@@ -65,5 +68,13 @@ __all__ = [
     "root_hash",
     "run_recovery_bench",
     "run_recovery_test",
+    "DurabilityChecker",
+    "DurabilityReport",
+    "DurabilityWAL",
+    "FSYNC_POLICY",
+    "PartitionSuiteReport",
+    "run_partition_suite",
+    "CompactionReport",
+    "SnapshotCompactor",
     "shard_dirs",
 ]

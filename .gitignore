@@ -15,3 +15,6 @@ experiments/*
 experiments/**/sandbox/
 *.sock
 
+
+# Experiment scratch
+experiments/*/work/

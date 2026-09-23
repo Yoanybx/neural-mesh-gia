@@ -20,6 +20,12 @@ from .conflict import (
 from .hashing import content_hash
 from .models import utc_now
 from .version import CRAMVersion
+from .durability import (
+    DurabilityWAL,
+    WALRecordType,
+    append_fsync_jsonl,
+    atomic_write_json,
+)
 
 
 def _new_op_id() -> str:
@@ -88,8 +94,7 @@ class IdempotencyStore:
     def put(self, operation_id: str, result: dict[str, Any]) -> None:
         payload = {"operation_id": operation_id, **result, "recorded_at": utc_now()}
         self._cache[operation_id] = payload
-        with self.path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(payload, sort_keys=True) + "\n")
+        append_fsync_jsonl(self.path, payload)
 
 
 class VersionStore:
@@ -113,9 +118,7 @@ class VersionStore:
 
     def _save_heads(self) -> None:
         payload = {k: v.to_dict() for k, v in sorted(self._heads.items())}
-        tmp = self._heads_path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
-        tmp.replace(self._heads_path)
+        atomic_write_json(self._heads_path, payload)
 
     def head(self, object_id: str) -> CRAMVersion | None:
         return self._heads.get(object_id)
@@ -134,8 +137,7 @@ class VersionStore:
         return out
 
     def append_history(self, version: CRAMVersion) -> None:
-        with self._history_path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(version.to_dict(), sort_keys=True) + "\n")
+        append_fsync_jsonl(self._history_path, version.to_dict())
 
     def set_head(self, version: CRAMVersion) -> None:
         self._heads[version.object_id] = version
@@ -143,8 +145,7 @@ class VersionStore:
         self.append_history(version)
 
     def record_conflict(self, conflict: ConflictRecord) -> None:
-        with self._conflicts_path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(conflict.to_dict(), sort_keys=True) + "\n")
+        append_fsync_jsonl(self._conflicts_path, conflict.to_dict())
 
     def conflicts(self, object_id: str | None = None) -> list[ConflictRecord]:
         if not self._conflicts_path.exists():
@@ -194,6 +195,7 @@ class ConsistencyLayer:
         cons.mkdir(parents=True, exist_ok=True)
         self.versions = VersionStore(cons / "versions")
         self.idempotency = IdempotencyStore(cons / "idempotency.jsonl")
+        self.wal = DurabilityWAL(cons / "durability" / "wal.jsonl")
         self._partitioned = False
         self._writable = True  # fail-closed when partitioned without fence
         self._fenced_primary: str | None = node_id
@@ -369,8 +371,29 @@ class ConsistencyLayer:
             )
             return result
 
-        # ACCEPTED
+        # ACCEPTED — WAL BEGIN → heads → COMMIT (Phase 5C durability)
+        self.wal.append(
+            op_id=op_id,
+            record_type=WALRecordType.BEGIN,
+            object_id=object_id,
+            epoch=incoming.epoch,
+            content_hash=incoming.hash,
+        )
+        self.wal.append(
+            op_id=op_id,
+            record_type=WALRecordType.APPLY,
+            object_id=object_id,
+            epoch=incoming.epoch,
+            content_hash=incoming.hash,
+        )
         self.versions.set_head(incoming)
+        self.wal.append(
+            op_id=op_id,
+            record_type=WALRecordType.COMMIT,
+            object_id=object_id,
+            epoch=incoming.epoch,
+            content_hash=incoming.hash,
+        )
         ms = (time.perf_counter() - t0) * 1000.0
         result = WriteResult(
             status="APPLIED",
