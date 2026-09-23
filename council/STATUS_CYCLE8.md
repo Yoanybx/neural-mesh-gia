@@ -13,5 +13,5 @@ See `../STATUS_FOR_CHATGPT_CYCLE8.md` for full bilingual report.
 - NO R1/R2/R3 / Raft / N>2 / ML / TLS
 - NEXT: dual review of Cycle 8
 
-- Git tip: 768d92fa166c6322b304ff440218d9c04f2382f4
+- Git tip: c76868badf97f504a7e550fdfe72fbff94688a31
 - Implementation: f5d42a11b9d3cd17dfc0db5deec12b3c79667883
