@@ -8,7 +8,7 @@
   "reason": "Cycle 17: CP-0021 Add floor checkpoint tag invariant — schema CHECKPOINT@floor:<n>; validator one tag per floor; debt SCHEMA-GATED; pytest 369; 0.14.3",
   "objective": "",
   "next_action": "DeepSeek M2M VERDICT on Cycle 17 / CP-0021. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
-  "git_commit": "8a47bc693f010d6c8459fc1c50006c221da860ab",
+  "git_commit": "ff2a7e32239cbf2638d20eafb702ba2bbe1a0ad4",
   "changed_files": [],
   "tests": {
     "failed": 0,
@@ -27,7 +27,7 @@
     "council/DEEPSEEK_REPLY_CYCLE17_SCOPE.md"
   ],
   "created_at": "2026-09-23T19:22:27.589990+00:00",
-  "manifest_sha256": "f7a1210f5ae632c61910696e73ac51d631524c4711bca875d04280c7d95b8596",
+  "manifest_sha256": "69853db435e01417f694309b4fdb1e143bc04964831b680bd0cf5e002c90b29a",
   "cram_root_hash": null,
   "cram_objects": []
 }
