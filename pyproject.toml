@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neural-mesh-gia"
+version = "0.5.0"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2,<3", "networkx>=3,<4"]
+
+[project.optional-dependencies]
+distributed = ["ray>=2.58,<3"]
+ml = ["torch>=2.14,<3"]
+telemetry = ["opentelemetry-api>=1.37", "opentelemetry-sdk>=1.37"]
+dev = ["pytest>=8", "pytest-cov>=6", "ruff>=0.13"]
+
+[project.scripts]
+mesh = "neural_mesh.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
