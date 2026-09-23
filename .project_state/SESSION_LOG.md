@@ -25,3 +25,8 @@
 - Implemented C-RAM CAS + object model + twin placement + checkpoint fields + NODE_LOSS recovery tests.
 - Explicitly deferred: distributed neural memory, ML-on-C-RAM, global replication, complex consensus, auto-organizing nodes.
 - pytest: 51 passed; audit PASS; CP-0008 VERIFIED.
+
+## 2026-09-23 America/New_York (EDT / UTC-4) (Cycle 5)
+- Council agreement: Opción 2 DeepSeek (hooks+recovery_time before replica). ChatGPT ratified + DeepSeek nuances.
+- Implemented P0–P7: real recovery_time, ERROR on unresolved locate, typed errors, CLI, corruption, N=100 bench, replica N=2 doc only.
+- pytest: 74 passed; audit PASS; CP-0009 VERIFIED; p99 recovery_time ~0.19ms (target <150ms MET).

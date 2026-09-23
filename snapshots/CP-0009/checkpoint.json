@@ -1,0 +1,35 @@
+{
+  "checkpoint_id": "CP-0009",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.5.4",
+  "status": "VERIFIED",
+  "phase": 2,
+  "module": "cram",
+  "reason": "Cycle 5 C-RAM hardening: real recovery_time, typed errors, CLI, corruption, bench; replica N=2 interface only",
+  "objective": "",
+  "next_action": "Await ChatGPT+DeepSeek APROBADO on Cycle 5; then Cycle 6 replica N=2 (no Phase 3 Router yet)",
+  "git_commit": "362fbcfee1b669c9a8f671b26a75d1a749c2ac6b",
+  "changed_files": [],
+  "tests": {
+    "passed": 74,
+    "failed": 0,
+    "skipped": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "tests/test_cram_typed_errors.py",
+    "tests/test_cram_cli.py",
+    "tests/test_cram_corruption.py",
+    "tests/test_cram_recovery_bench.py",
+    "tests/test_cram_node_loss.py",
+    "docs/cram_replica_n2_interface.md",
+    "docs/cram_cli_exit_codes.md",
+    "experiments/cram-recovery-bench-c5/baseline.json"
+  ],
+  "created_at": "2026-09-23T15:05:17.303025+00:00",
+  "manifest_sha256": "6ccca60291a6b433b295e4e72fa74d7e2170b55cc7d528aec327428f9a592f93",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

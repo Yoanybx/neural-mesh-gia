@@ -4,10 +4,10 @@
 P0
 
 ## Action
-Await ChatGPT confirm on C-RAM v0 (CP-0008). Proposed follow-ups (do NOT start until confirmed): C-RAM replication lite (N=2 mirror), twin workload hooks that emit STATE/EVIDENCE into C-RAM, or measurable recovery_time metric — still NOT full distributed neural memory / ML / consensus.
+Await ChatGPT + DeepSeek APROBADO (or APROBADO CON CAMBIOS menores) on Cycle 5. If both approve, open Cycle 6: implement replica N=2 per docs/cram_replica_n2_interface.md. Do NOT start Phase 3 Cognitive Router. Do NOT add consensus/ML.
 
 ## Status
-READY — awaiting ChatGPT confirm (Cycle 4 C-RAM Core complete)
+READY — awaiting council confirm (Cycle 5 complete, CP-0009)
 
 ## Checkpoint
-CP-0008
+CP-0009

@@ -24,7 +24,9 @@ def test_twin_basic_writes_artifacts(tmp_path: Path):
     assert "packet_loss" in result.metrics
     assert "latency" in result.metrics
     assert "throughput" in result.metrics
-    assert result.metrics["recovery_time"]["status"] == "STUB"
+    assert result.metrics["recovery_time"]["status"] == "MEASURED"
+    assert result.metrics["recovery_time"]["value"] is not None
+    assert result.metrics["recovery_time"]["value"] >= 0
     assert result.metrics["checkpoint_overhead"]["status"] == "STUB"
     assert result.metrics["topology_hash"]
     assert result.metrics["checkpoint_id"]

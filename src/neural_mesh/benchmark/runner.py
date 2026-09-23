@@ -14,6 +14,9 @@ from neural_mesh.twin.simulator import DigitalTwin
 from neural_mesh.twin.storage import save_faults, save_json
 
 from .metrics import build_metrics
+from neural_mesh.cram import CRAMStore, ObjectType
+from neural_mesh.cram.recovery import recover_after_node_loss
+from neural_mesh.twin.placement import CRAMPlacement
 
 
 @dataclass
@@ -111,7 +114,30 @@ def run_twin_basic(
         encoding="utf-8",
     )
 
-    metrics = build_metrics(report, duration_ms=duration_ms)
+    # Cycle 5 P0: real recovery_time (locate+get) — not STUB
+    cram_root = exp_dir / "cram"
+    store = CRAMStore(cram_root)
+    place = CRAMPlacement()
+    topo_model = topology
+    sample_key = store.put_object(
+        b"twin-basic-recovery-sample", ObjectType.EVIDENCE
+    ).content_hash
+    owner = place.locate(sample_key, topo_model)
+    store.bind_to_node(sample_key, owner)
+    # Lose a non-owner when possible so locate resolves (measured RECOVERABLE path)
+    node_ids = sorted(n.id for n in topo_model.nodes)
+    others = [n for n in node_ids if n != owner]
+    lost = others[0] if others else owner
+    store.mark_node_lost(lost)
+    recovery = recover_after_node_loss(
+        store, place, topo_model, sample_key, lost_nodes=[lost]
+    )
+    recovery_ms = recovery.recovery_time_ms
+
+    metrics = build_metrics(
+        report, duration_ms=duration_ms, recovery_time_ms=recovery_ms
+    )
+    metrics["recovery_detail"] = recovery.to_dict()
     metrics["digest"] = report.digest
     metrics["topology_hash"] = topo_hash
     metrics["workload_hash"] = work_hash

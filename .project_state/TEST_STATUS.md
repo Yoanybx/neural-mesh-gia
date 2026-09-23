@@ -2,9 +2,9 @@
 
 Last run: 2026-09-23 America/New_York (EDT / UTC-4)
 Command: pytest -q
-Result: 51 passed in ~0.39s (0 failed, 0 skipped)
-New suites: test_cram_store, test_cram_hash, test_cram_integrity, test_cram_checkpoint, test_cram_node_loss, test_cram_reproducibility
-Prior: test_checkpoint, test_digital_twin, test_fault_injection, test_topology_serialization, test_benchmark, test_reproducibility, test_git_gate, test_safety_gate
-Audit: bash scripts/audit.sh → AUDIT PASS (post seal)
-Checkpoints: CP-0001..CP-0008 VERIFIED
-Git: 0fa18c7d1c5e9c01702214b9dbe33726d4ea9009 (code) / 75b137bd32b16e3f80a05278e7829a4018b6b8fb (status seal)
+Result: 74 passed in ~3.4s (0 failed, 0 skipped)
+New Cycle 5 suites: test_cram_typed_errors, test_cram_cli, test_cram_corruption, test_cram_recovery_bench; expanded test_cram_node_loss
+Prior: cram store/hash/integrity/checkpoint/reproducibility + twin/benchmark/git/safety
+Audit: bash scripts/audit.sh → (pending post-commit seal)
+Checkpoints: CP-0001..CP-0009 VERIFIED
+Recovery bench: N=100 p50≈0.045ms p99≈0.193ms (p99_met=true, target 150ms)

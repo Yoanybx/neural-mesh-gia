@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 import json
 import subprocess
 from pathlib import Path
@@ -19,6 +20,8 @@ from .twin.faults import (
 from .twin.schema import Topology, Workload
 from .twin.simulator import DigitalTwin, TwinTask
 from .twin.storage import load_faults
+
+from .cram.cli_ops import cmd_fsck, cmd_get, cmd_put, cmd_verify
 
 
 def _git_commit(root: Path) -> str | None:
@@ -147,6 +150,25 @@ def main(argv: list[str] | None = None):
     safety_subs = safety_cmd.add_subparsers(dest="op", required=True)
     safety_subs.add_parser("status")
 
+
+    cram_cmd = sub.add_parser("cram", help="C-RAM put/get/verify/fsck")
+    cram_subs = cram_cmd.add_subparsers(dest="op", required=True)
+    cram_put = cram_subs.add_parser("put", help="Store content; print content hash")
+    cram_put.add_argument("--root", type=str, default=None)
+    cram_put.add_argument(
+        "--file", type=str, default=None, help="Read bytes from file (default: stdin)"
+    )
+    cram_put.add_argument("data", nargs="?", default=None, help="Literal string payload")
+    cram_get = cram_subs.add_parser("get", help="Fetch object bytes by key")
+    cram_get.add_argument("key")
+    cram_get.add_argument("--root", type=str, default=None)
+    cram_ver = cram_subs.add_parser("verify", help="Verify blob integrity")
+    cram_ver.add_argument("key")
+    cram_ver.add_argument("--root", type=str, default=None)
+    cram_fsck = cram_subs.add_parser("fsck", help="Filesystem check; report orphans/corrupt")
+    cram_fsck.add_argument("--root", type=str, default=None)
+    cram_fsck.add_argument("--json", action="store_true")
+
     a = parser.parse_args(argv)
     root = Path.cwd()
     mgr = CheckpointManager(root)
@@ -244,6 +266,23 @@ def main(argv: list[str] | None = None):
                     f"topology_hash={result.metrics.get('topology_hash')} "
                     f"checkpoint_id={result.metrics.get('checkpoint_id')}"
                 )
+
+    elif a.cmd == "cram":
+        root = Path(a.root) if getattr(a, "root", None) else root
+        if a.op == "put":
+            if a.file:
+                content = Path(a.file).read_bytes()
+            elif a.data is not None:
+                content = a.data.encode("utf-8")
+            else:
+                content = sys.stdin.buffer.read()
+            raise SystemExit(cmd_put(content, root=root))
+        elif a.op == "get":
+            raise SystemExit(cmd_get(a.key, root=root))
+        elif a.op == "verify":
+            raise SystemExit(cmd_verify(a.key, root=root))
+        elif a.op == "fsck":
+            raise SystemExit(cmd_fsck(root=root, as_json=bool(a.json)))
     elif a.cmd == "twin":
         if a.op == "topology":
             if a.top_op == "save":

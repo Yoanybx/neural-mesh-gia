@@ -32,3 +32,11 @@ Use ADR files for major decisions.
 - Placement: `int(key_hex[:16], 16) % len(sorted_nodes)` — deterministic, no consensus.
 - Checkpoint fields `cram_root_hash` / `cram_objects` are optional with defaults so CP-0001..0007 remain verifiable.
 - NODE_LOSS recovery: node-local view may fail; durable CAS + checkpoint refs ⇒ RECOVERABLE. No replication/consensus yet.
+
+## ADR-0006 — C-RAM hardening Cycle 5 (recovery SLO + typed errors)
+- `recovery_time` measured around locate+get; never STUB when C-RAM path runs.
+- NODE_LOSS placement recovery: locate on declared topology; valid live route + successful get ⇒ RECOVERABLE with proof; otherwise ERROR. No optimistic RECOVERABLE.
+- Do not re-hash over filtered live node sets (silent remap = stale location).
+- If `expect_topology_hash` mismatches current `topology.hash()` ⇒ ERROR `CRAM_STALE_TOPOLOGY`, `located_node=None`.
+- CLI exit codes frozen: 0 PASS, 1 generic, 2 integrity/corrupt, 3 missing/unavailable. `fsck_schema: 1`.
+- Replica N=2 is interface/docs only until Cycle 6.

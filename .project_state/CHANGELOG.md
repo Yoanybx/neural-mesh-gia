@@ -32,3 +32,14 @@ Bootstrap continuity system (shipped source).
 - Checkpoint schema: optional `cram_root_hash` + `cram_objects` (historical CP-0001..0007 still verify).
 - NODE_LOSS: node-local get fails; durable store + checkpoint → RECOVERABLE.
 - Tests: +6 suites; total 51 passed. CP-0008 VERIFIED.
+
+## 0.5.5 — Cycle 5 (2026-09-23)
+- Real `recovery_time` instrumentation (t0/t1 locate+get); twin-basic MEASURED (no STUB).
+- P1: NODE_LOSS → locate valid route OK; no route → ERROR (no optimistic RECOVERABLE).
+- Stale topology hash guard (`CRAM_STALE_TOPOLOGY`); refuse silent stale location.
+- Typed errors: `NodeUnavailable` vs `ObjectMissing` (+ `CRAMCorrupt`, `StaleTopology`).
+- CLI: `mesh cram put|get|verify|fsck` — exit 0 PASS / 1 generic / 2 corrupt / 3 missing; `fsck --json` with `fsck_schema: 1`.
+- Blob corruption + fsck orphans + fsync durability tests.
+- Bench N=100 → p50/p99 persisted; p99 << 150ms on this box.
+- Doc only: `docs/cram_replica_n2_interface.md` (no active replica). Exit codes frozen in `docs/cram_cli_exit_codes.md`.
+- Tests: 74 passed. CP-0009 VERIFIED. No Phase 3 Router. No real replication.
