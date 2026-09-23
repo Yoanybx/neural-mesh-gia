@@ -1,0 +1,86 @@
+{
+  "acceptance": {
+    "recovery_p99_under_150ms": true,
+    "repl_overhead_p99_under_5x": true,
+    "t_conv_under_5s": true
+  },
+  "apples_to_apples_overhead": {
+    "comparison": "same size mix",
+    "note": "Replica path includes primary put + secondary sync + verify; in-process sandbox.",
+    "overhead_p99_ratio": 4.1831721409698535,
+    "overhead_p99_under_5x": true,
+    "replica_p50_ms": 5.644448006933089,
+    "replica_p99_ms": 10.369412025902419,
+    "single_p50_ms": 0.944029503443744,
+    "single_p99_ms": 2.4788394253118895,
+    "size_mix": {
+      "large_256KiB": 10,
+      "medium_4KiB": 100,
+      "small_64B": 100
+    }
+  },
+  "bench": "cram-replica-n2-controlled",
+  "cycle": 6,
+  "failover_detection": {
+    "label": "failover_detection",
+    "max_ms": 1.7587879992788658,
+    "mean_ms": 1.7587879992788658,
+    "min_ms": 1.7587879992788658,
+    "n": 1,
+    "p50_ms": 1.7587879992788658,
+    "p99_ms": 1.7587879992788658
+  },
+  "overhead_p99_ratio_vs_single": 4.1831721409698535,
+  "overhead_p99_under_5x": true,
+  "recovery_baseline": {
+    "error_count": 20,
+    "n": 100,
+    "p50_ms": 0.03938000008929521,
+    "p99_met": true,
+    "p99_ms": 0.09413450417923748,
+    "recoverable_count": 80,
+    "target_p99_ms": 150.0
+  },
+  "replica_put_sync": {
+    "label": "replica_put_sync",
+    "max_ms": 13.97729899326805,
+    "mean_ms": 6.226461981437058,
+    "min_ms": 3.5212340008001775,
+    "n": 210,
+    "p50_ms": 6.086444001994096,
+    "p99_ms": 11.329661232884973,
+    "size_mix": {
+      "large_256KiB": 10,
+      "medium_4KiB": 100,
+      "small_64B": 100
+    },
+    "sync_bytes_total": 3037440
+  },
+  "single_node_put": {
+    "label": "single_node_put",
+    "max_ms": 2.857914994820021,
+    "mean_ms": 0.9449701714038383,
+    "min_ms": 0.6696260097669438,
+    "n": 100,
+    "p50_ms": 0.8774355010245927,
+    "p99_ms": 1.7260252291453129
+  },
+  "t_conv": {
+    "all_under_bound": true,
+    "bound_s": 5.0,
+    "max_s": 0.0042640650062821805,
+    "mean_s": 0.003596466199087445,
+    "n": 20,
+    "p50_s": 0.003574854497855995,
+    "p99_s": 0.0042460746645519975
+  },
+  "verify_replica": {
+    "label": "verify_replica",
+    "max_ms": 2.416461007669568,
+    "mean_ms": 0.9595426521541196,
+    "min_ms": 0.19286299357190728,
+    "n": 210,
+    "p50_ms": 0.9200629938277416,
+    "p99_ms": 2.3130521336861416
+  }
+}

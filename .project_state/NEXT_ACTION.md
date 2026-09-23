@@ -4,10 +4,10 @@
 P0
 
 ## Action
-Await ChatGPT + DeepSeek APROBADO (or APROBADO CON CAMBIOS menores) on Cycle 5. If both approve, open Cycle 6: implement replica N=2 per docs/cram_replica_n2_interface.md. Do NOT start Phase 3 Cognitive Router. Do NOT add consensus/ML.
+Await ChatGPT+DeepSeek review of Cycle 6 Replica N=2; do not start Phase 3 Router, Raft/Paxos, or N>2 without new council ADR
 
 ## Status
-READY — awaiting council confirm (Cycle 5 complete, CP-0009)
+READY
 
 ## Checkpoint
-CP-0009
+CP-0010

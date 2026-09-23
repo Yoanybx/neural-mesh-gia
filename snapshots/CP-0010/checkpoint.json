@@ -1,0 +1,34 @@
+{
+  "checkpoint_id": "CP-0010",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.6.0",
+  "status": "VERIFIED",
+  "phase": 2,
+  "module": "cram-replica",
+  "reason": "Cycle 6 C-RAM Replica N=2 (Controlled): consistency freeze, ReplicaManager, failover/split-brain, anti-entropy, CLI, bench, CP-0010",
+  "objective": "",
+  "next_action": "Await ChatGPT+DeepSeek review of Cycle 6; no Phase 3 Router / Raft / N>2",
+  "git_commit": "c9030f123bb12c3b814b1e122dc2ecac65efee45",
+  "changed_files": [],
+  "tests": {
+    "passed": 95,
+    "failed": 0,
+    "skipped": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/cram_replica_n2_consistency.md",
+    "docs/cram_replica_n2_interface.md",
+    "src/neural_mesh/cram/replication/",
+    "src/neural_mesh/cram/replica_cli.py",
+    "tests/test_cram_replica_n2.py",
+    "experiments/cram-replica-bench-c6/baseline.json",
+    "council/COUNCIL_AGREEMENT_CYCLE6.md"
+  ],
+  "created_at": "2026-09-23T15:19:14.566423+00:00",
+  "manifest_sha256": "4701c6f601dc8cab38b5192af690701692c86b7545c9b39c74241042500ee5ac",
+  "cram_root_hash": null,
+  "cram_objects": []
+}
