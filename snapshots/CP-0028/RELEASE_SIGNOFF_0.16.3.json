@@ -45,7 +45,7 @@
   "prior_cp": "CP-0027",
   "schema": "mesh.release.signoff/v1",
   "signer": "council:DeepSeek+Grok",
-  "timestamp": "2026-09-23T23:10:00Z",
-  "tip": "4b1a833",
+  "timestamp": "2026-09-23T23:20:00Z",
+  "tip": "72dd92f",
   "ver": "0.16.3"
 }

@@ -56,6 +56,6 @@
     "hint": "Future: cron/CI may invoke scripts/post_release_monitor.py --once",
     "status": "documented_only"
   },
-  "tip": "4b1a833",
+  "tip": "72dd92f",
   "version": "0.16.3"
 }
