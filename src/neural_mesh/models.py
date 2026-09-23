@@ -30,11 +30,14 @@ class Checkpoint(BaseModel):
     evidence: list[str] = Field(default_factory=list)
     created_at: str = Field(default_factory=utc_now)
     manifest_sha256: str | None = None
+    # Phase 2 C-RAM (optional; absent/empty on historical CP-0001..0007)
+    cram_root_hash: str | None = None
+    cram_objects: list[str] = Field(default_factory=list)
 
 class ProjectState(BaseModel):
     project: str = "Neural Mesh / GIA-COS"
     schema_version: str = "1.0"
-    project_version: str = "0.5.3"
+    project_version: str = "0.5.4"
     last_checkpoint: str | None = None
     status: Status = Status.IN_PROGRESS
     current_phase: int = 0

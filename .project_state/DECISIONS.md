@@ -24,3 +24,11 @@ Use ADR files for major decisions.
 - Topology ChatGPT schema (network_id, nodes.id/cpu/memory, links.source/target); hash into report + experiment checkpoint.json.
 - Benchmark writes experiment-local checkpoint.json (does not auto-create snapshots/CP-*).
 - Git gate PASS iff clean working tree; Safety SAFE iff network+physical actions denied.
+
+## ADR-0005 — C-RAM v0 core (Cycle 4)
+- Content identity = SHA-256 of raw bytes; metadata is sidecar and does not affect key.
+- On-disk: `.cram/<first2>/<remainder>`; atomic writes.
+- Object types limited to STATE/MEMORY/TASK/PLAN/EVIDENCE/CHECKPOINT; no free-text private thoughts.
+- Placement: `int(key_hex[:16], 16) % len(sorted_nodes)` — deterministic, no consensus.
+- Checkpoint fields `cram_root_hash` / `cram_objects` are optional with defaults so CP-0001..0007 remain verifiable.
+- NODE_LOSS recovery: node-local view may fail; durable CAS + checkpoint refs ⇒ RECOVERABLE. No replication/consensus yet.

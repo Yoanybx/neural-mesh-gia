@@ -24,3 +24,11 @@ Bootstrap continuity system (shipped source).
 - Benchmark harness `mesh benchmark run twin-basic` → experiments/EXP-XXXX/.
 - Part X: `mesh audit git`, `.project_state/SAFETY_POLICY.json`, `mesh safety status`.
 - Tests: +15 new required suites; total 30 passed.
+
+## 0.5.4 — Cycle 4 (2026-09-23)
+- Phase 2 C-RAM Core: CAS under `.cram/<aa>/<rest>` (`put/get/exists/verify`).
+- CRAMObject model (STATE/MEMORY/TASK/PLAN/EVIDENCE/CHECKPOINT); rejects private-thought metadata.
+- Twin `CRAMPlacement.locate(cram_key, topology)` deterministic hash→node.
+- Checkpoint schema: optional `cram_root_hash` + `cram_objects` (historical CP-0001..0007 still verify).
+- NODE_LOSS: node-local get fails; durable store + checkpoint → RECOVERABLE.
+- Tests: +6 suites; total 51 passed. CP-0008 VERIFIED.

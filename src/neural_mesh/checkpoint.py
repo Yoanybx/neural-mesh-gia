@@ -87,6 +87,8 @@ class CheckpointManager:
         tests: dict | None = None,
         evidence: list[str] | None = None,
         status: str | None = None,
+        cram_root_hash: str | None = None,
+        cram_objects: list[str] | None = None,
     ) -> Checkpoint:
         state = self.load_state()
         cid = self._next_id()
@@ -101,6 +103,8 @@ class CheckpointManager:
             changed_files=changed_files or [],
             tests=tests or {},
             evidence=evidence or [],
+            cram_root_hash=cram_root_hash,
+            cram_objects=list(cram_objects or []),
         )
         if status is not None:
             from .models import Status

@@ -17,6 +17,7 @@ from .simulator import (
     TwinNode,
     TwinTask,
 )
+from .placement import CRAMPlacement
 from .storage import load_faults, load_json, save_json
 
 __all__ = [
@@ -25,6 +26,7 @@ __all__ = [
     "FAULT_PACKET_DROP",
     "SUPPORTED_FAULTS",
     "BenchmarkMetrics",
+    "CRAMPlacement",
     "DigitalTwin",
     "FaultEvent",
     "SimulationReport",

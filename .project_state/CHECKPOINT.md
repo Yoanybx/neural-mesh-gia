@@ -1,7 +1,7 @@
-# CP-0007
+# CP-0008
 
-Phase: 1
-Module: digital_twin
-Reason: Cycle 3 post-git seal
-Next: Begin Phase 2 C-RAM (content-addressable store) using Phase 1 twin as sandbox; confirm with ChatGPT
-Tests: {'passed': 30, 'failed': 0}
+Phase: 2
+Module: cram
+Reason: Cycle 4 Phase 2 C-RAM Core (CAS + object model + placement + NODE_LOSS)
+Next: Await ChatGPT confirm on C-RAM v0; next likely C-RAM replication lite or twin-C-RAM workload hooks — NOT full distributed neural memory
+Tests: {'passed': 51, 'failed': 0}
