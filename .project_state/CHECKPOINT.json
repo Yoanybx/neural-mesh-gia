@@ -31,7 +31,7 @@
   "current_module": "cognitive-router-r1-capability",
   "current_phase": 3,
   "decisions_pending": [],
-  "git_commit": "0da4822172f23efe1cfb35120ca15f521cbc05f5",
+  "git_commit": "794914a8b686a36382bef057e3ad36be05303e9d",
   "human_approval_required": false,
   "known_bugs": [],
   "last_checkpoint": "CP-0014",
