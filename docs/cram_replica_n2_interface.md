@@ -1,69 +1,59 @@
-# C-RAM Replica N=2 — Interface Only (Cycle 5 / P6)
+# C-RAM Replica N=2 — Interface (Cycle 6 Implemented)
 
-**Status:** Signature / documentation only. **No active replica code** in Cycle 5.
-**Unlocks:** Cycle 6+ implementation after council APROBADO on Cycle 5.
+**Status:** Active controlled sandbox implementation (Cycle 6). See also
+`docs/cram_replica_n2_consistency.md` (FROZEN consistency model).
+**Unlocks:** CP-0010 after tests + bench + audit.
 
 ## Purpose
 
-Describe the minimum API surface for a two-copy mirror of selected C-RAM keys so that
-`NODE_LOSS` of one placement node can still resolve `locate()` to a live peer and
-complete real recovery proof (`get` from the surviving replica).
+Two-copy mirror of selected C-RAM keys so that `NODE_LOSS` of the primary can
+still resolve to a live secondary and complete real recovery proof (`get` from
+the surviving replica), under the frozen async W=1 / R=1 model.
 
-## Proposed types (not implemented)
+## Implemented API
 
 ```python
-from typing import Protocol, Sequence
+from neural_mesh.cram.replication import ReplicaManager, ReplicaPlacement
 
-class ReplicaPlan(Protocol):
-    """Deterministic N=2 placement plan for a content key."""
-
-    def primary(self, cram_key: str, topology) -> str:
-        """Primary node id (same rule as CRAMPlacement.locate today)."""
-        ...
-
-    def secondary(self, cram_key: str, topology) -> str:
-        """Mirror node id ≠ primary; stable under node-set permutation rules TBD."""
-        ...
-
-    def replicas(self, cram_key: str, topology) -> Sequence[str]:
-        """Return (primary, secondary). Length always 2 when topology has ≥2 live nodes."""
-        ...
-
-
-class ReplicaStore(Protocol):
-    """Put/get that maintains N=2 bindings. Cycle 6 implements; Cycle 5 does not."""
-
-    def put_replicated(self, content: bytes, *, topology) -> str:
-        """CAS put + bind primary and secondary. Returns content hash."""
-        ...
-
-    def get_replicated(self, cram_key: str, *, topology, lost_nodes: Sequence[str] = ()) -> bytes:
-        """locate among live replicas; raise NodeUnavailable / ObjectMissing typed errors."""
-        ...
-
-    def repair(self, cram_key: str, *, topology) -> dict:
-        """Re-mirror if only one live copy remains. Returns status dict."""
-        ...
+mgr = ReplicaManager(root, topology, seed=42)
+key = mgr.put_replicated(b"...", op_id="...")
+mgr.create_replica(key)          # CREATED
+mgr.sync_object(key, op_id="...")  # SYNCING → SYNCED | FAILED
+mgr.verify_replica(key)
+mgr.replica_status(key)
+mgr.remove_replica(key)
+mgr.check_failover(key)          # FAILOVER_AVAILABLE | FAILOVER_BLOCKED | PRIMARY_HEALTHY
+mgr.promote(key, node_id=..., op_id="...")  # epoch++ + witness
+mgr.anti_entropy_rejoin(key)     # Merkle-diff; returns seconds
 ```
 
-## Recovery contract (Cycle 6 target)
+## Types
 
-1. `NODE_LOSS(node)` → filter live topology.
-2. `locate` / replica plan → if **no valid route** among live replicas ⇒ **ERROR**
-   (`NodeUnavailable` or `ObjectMissing`).
-3. If valid route ⇒ return **location**; **RECOVERABLE** only after successful `get`
-   (real recovery proof). Never optimistic RECOVERABLE.
+- `ReplicaPlan` / `ReplicaPlacement`: deterministic primary ≠ secondary.
+- `ReplicaStore` semantics via `ReplicaManager` (node-scoped `CRAMStore` roots).
+- Object descriptor fields: `primary_node`, `replica_nodes[]`, `version`/`epoch`,
+  `content_hash`, sync `status`.
 
-## Explicit non-goals (Cycle 5)
+## Recovery contract
 
-- No Raft/Paxos/quorum consensus.
-- No automatic background repair loop.
-- No change to CAS content identity (SHA-256 of raw bytes).
-- No Phase 3 Cognitive Router dependency.
+1. `NODE_LOSS(primary)` → filter live topology.
+2. If secondary verified (hash+version+integrity) ⇒ `FAILOVER_AVAILABLE`.
+3. Corrupt / missing secondary ⇒ `FAILOVER_BLOCKED` (never optimistic recoverable).
+4. Promote requires fencing (`epoch` increment + `.cram/witness`); fail-closed
+   without fencing.
 
-## Acceptance when Cycle 6 starts
+## Explicit non-goals
 
-- Implement `ReplicaPlan` + `ReplicaStore` behind feature flag / explicit API.
-- Bench: owner loss with N=2 ⇒ p99 recovery_time still measured; status RECOVERABLE
-  with proof.
-- Existing N=1 ERROR-on-owner-loss tests remain valid when replication is disabled.
+See consistency doc §2. No Raft/Paxos/quorum, no N>2, no geo, no ML placement,
+no Phase 3 Router, no real multi-machine network.
+
+
+## Consistency (Cycle 6 freeze)
+
+See `docs/cram_replica_n2_consistency.md` (authoritative):
+
+- async W=1 R=1, T_conv=5.0s
+- epoch fencing + op_id idempotency
+- tie-breaker: lex node_id + `.cram/witness` on promote
+- anti-entropy Merkle-diff on rejoin
+- non-goals: Raft/Paxos/quorum/N>2/geo/ML/Router
