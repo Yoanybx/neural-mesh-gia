@@ -68,3 +68,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 ## Cycle 26 — 2026-09-23 EDT
 - CP-0030: 0.17 scope FROZEN; SCHEMA-GATED ACCEPT_AND_CARRY; package 0.17.0 bootstrap.
 - pytest 477; packaging 91; release 0.16.3 closed; tag v0.16.3 untouched.
+
+## Cycle 27 / CP-0031 — 2026-09-24T01:09:20.965706+00:00
+- Implemented N=2 packaging P27–P29; pytest 491; packaging_n2 14.

@@ -1,3 +1,11 @@
+## Cycle 27 — 2026-09-23 — CP-0031 N=2 multi-node packaging
+- P27: docs/capabilities/MESH_PACKAGING_N2_MULTI_NODE.md (schema v1-n2; fenced heal NOT Raft; dual_primary=0).
+- P28: manifest_n2 + bundle_n2; build_n2_bundle/verify_n2_bundle; core parity vs single-node; N2 stubs/scripts.
+- P29: n2_install_dual + n2_install_rollback_smoke (node-a/node-b prefixes; replica mock OOB).
+- tests/test_packaging_n2_cycle27.py (14); packaging_n2 14; packaging ~105; pytest 491; CP-0031 VERIFIED.
+- Version 0.17.0 held; 0.16.3 CLOSED; single-node v1 frozen untouched.
+- No Raft/N>2/multi-primary; no SLO chase; no tag-schema; no EVERY_fsync.
+
 ## Cycle 26 — 2026-09-23 — CP-0030 0.17 scope freeze / schema gate / bootstrap
 - P24: docs/planning/0.17_SCOPE_FROZEN.md + council/SCOPE_0.17_FROZEN.md; PLAN marked FROZEN.
 - P25: docs/debt/SCHEMA_GATE_RESOLUTION_0.17.md resolution=ACCEPT_AND_CARRY; debt_gate_status helper.

@@ -1,0 +1,14 @@
+{
+  "schema": "mesh.n2.node_stub/v1",
+  "node_id": "node-a",
+  "role": "primary",
+  "topology": "n2",
+  "peer": "node-b",
+  "loopback": {
+    "socket": "/tmp/neural-mesh-n2-node-a.sock",
+    "data_root": "./data/node-a"
+  },
+  "dual_primary": 0,
+  "majority": "fenced_primary_heal",
+  "notes": "Stub config for N=2 packaging smoke. Full replica serve is out-of-band."
+}

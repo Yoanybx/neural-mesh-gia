@@ -1,7 +1,7 @@
-"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0030).
+"""Mesh Packaging: Single-Node + N=2 Multi-Node Bundle (CP-0024..CP-0031).
 
-Capability packaging for a reproducible single-node tarball + manifest.
-Does **not** change tags, SLOs, consensus, Raft, or N>2.
+Capability packaging for reproducible single-node and N=2 tarball + manifests.
+Does **not** change tags, SLOs, consensus, Raft, or N>2 beyond packaging.
 """
 
 from .manifest import (
@@ -80,6 +80,41 @@ from .post_release_monitor import (
     run_post_release_monitor,
     append_monitor_history,
 )
+
+from .manifest_n2 import (
+    SCHEMA_ID_N2,
+    SCHEMA_ID_SINGLE_FROZEN,
+    FREEZE_CHANNEL_N2,
+    DEFAULT_BUNDLE_NAME_N2,
+    TOPOLOGY_N2,
+    ROLES_N2,
+    MAJORITY_FENCED,
+    N2EntrypointPair,
+    N2FreezeInfo,
+    N2BundleManifest,
+    n2_manifest_to_dict,
+    n2_manifest_to_json,
+)
+from .bundle_n2 import (
+    N2_ONLY_INCLUDE,
+    CORE_PARITY_CANDIDATES,
+    build_n2_bundle,
+    verify_n2_bundle,
+    collect_n2_bundle_files,
+    load_n2_manifest,
+    core_parity_checksums,
+    list_n2_extras,
+    N2VerifyResult,
+)
+from .n2_install import (
+    N2InstallResult,
+    N2RollbackResult,
+    n2_install_dual,
+    n2_install_rollback_smoke,
+    replica_status_mock,
+    read_n2_install_marker,
+)
+
 from .debt_gate_review import (
     DEBT_FLOOR_DOC,
     RESOLUTION_DOC,
@@ -164,4 +199,32 @@ __all__ = [
     "GateStatus",
     "debt_gate_status",
     "run_debt_gate_review",
+
+    "SCHEMA_ID_N2",
+    "SCHEMA_ID_SINGLE_FROZEN",
+    "FREEZE_CHANNEL_N2",
+    "DEFAULT_BUNDLE_NAME_N2",
+    "TOPOLOGY_N2",
+    "ROLES_N2",
+    "MAJORITY_FENCED",
+    "N2EntrypointPair",
+    "N2FreezeInfo",
+    "N2BundleManifest",
+    "n2_manifest_to_dict",
+    "n2_manifest_to_json",
+    "N2_ONLY_INCLUDE",
+    "CORE_PARITY_CANDIDATES",
+    "build_n2_bundle",
+    "verify_n2_bundle",
+    "collect_n2_bundle_files",
+    "load_n2_manifest",
+    "core_parity_checksums",
+    "list_n2_extras",
+    "N2VerifyResult",
+    "N2InstallResult",
+    "N2RollbackResult",
+    "n2_install_dual",
+    "n2_install_rollback_smoke",
+    "replica_status_mock",
+    "read_n2_install_marker",
 ]

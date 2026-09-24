@@ -1,0 +1,33 @@
+{
+  "checkpoint": "CP-0031",
+  "created_utc": "2026-09-24T01:09:25.870331+00:00",
+  "cycle": 27,
+  "dual_primary": 0,
+  "files": [
+    "CHECKPOINT.json",
+    "COUNCIL_AGREEMENT_CYCLE27.md",
+    "MESH_PACKAGING_N2_MULTI_NODE.md",
+    "PASTE_CYCLE27_M2M.md",
+    "STATUS_CYCLE27.md",
+    "STATUS_FOR_CHATGPT_CYCLE27.md",
+    "build_n2_bundle.py",
+    "bundle_n2.py",
+    "manifest_n2.py",
+    "n2_install.py",
+    "n2_install_rollback_smoke.py",
+    "node_a_primary.json",
+    "node_b_secondary.json",
+    "test_packaging_n2_cycle27.py",
+    "verify_n2_bundle.py",
+    "manifest.sha256"
+  ],
+  "majority": "fenced_primary_heal",
+  "packaging_n2": 14,
+  "pytest": {
+    "failed": 0,
+    "passed": 491
+  },
+  "schema_n2": "mesh.bundle.manifest/v1-n2",
+  "status": "VERIFIED",
+  "version": "0.17.0"
+}

@@ -29,4 +29,5 @@ markers = [
     "packaging_rc_cycle24: CP-0028 release signoff / tag archive / post-release monitor",
     "packaging_rc_cycle25: CP-0029 post-release monitor continue / 0.17 planning / debt gate review",
     "packaging_rc_cycle26: CP-0030 0.17 scope freeze / schema gate resolution / bootstrap",
+    "packaging_n2: CP-0031 N=2 multi-node packaging design / manifest parity / install rollback",
 ]
