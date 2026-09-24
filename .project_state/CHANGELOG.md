@@ -1,3 +1,11 @@
+## Cycle 25 — 2026-09-23 — CP-0029 Post-release ops + 0.17 planning
+- P21: scripts/post_release_monitor.py --continue; monitor_history.jsonl append/roll; fail if signoff/archive missing.
+- P22: docs/planning/0.17_SCOPE.md + 0.17_NON_GOALS.md + council/PLAN_0.17_DRAFT.md (planning only; no 0.17 features).
+- P23: scripts/debt_gate_review.py + docs/debt/DEBT_GATE_REVIEW_CP0029.md; SCHEMA-GATED consistency; JSON M2M; no rebenchmark.
+- tests/test_packaging_rc_cycle25.py (12); packaging 78; pytest 464; CP-0029 VERIFIED.
+- Version 0.16.3 held (signed-off); next_line=0.17.x note only.
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes.
+
 ## Cycle 24 — 2026-09-23 — CP-0028 Packaging RC (signoff / tag archive / monitor)
 - P18: scripts/release_signoff.py + packaging.release_signoff; SIGNOFF.json (signer=council:DeepSeek+Grok).
 - P19: scripts/release_tag_archive.py + packaging.release_tag_archive; local tag + dist/releases/0.16.3/ archive.

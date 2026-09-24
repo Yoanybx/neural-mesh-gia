@@ -1,6 +1,7 @@
-"""Post-release monitor for single-node RC (CP-0028 / P20).
+"""Post-release monitor for single-node RC (CP-0028 / P20; CP-0029 / P21 continue).
 
 Extends/complements post_rc_watch: --once checks after release signoff/tag/archive.
+--continue re-runs --once, appends monitor_history.jsonl, exits 0 if still healthy.
 Writes MONITOR.json under dist/releases/0.16.3/.
 Schedule stub only — do NOT create Grok Bot routines.
 """
@@ -11,20 +12,28 @@ import json
 import re
 import subprocess
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from .bundle import build_bundle, load_manifest
 from .manifest import FREEZE_CHANNEL, SCHEMA_ID
-from .post_rc_watch import OBS_STABLE_FIELDS, _check_debt_schema_gated, _check_obs_fields_stable, _check_no_tag_schema_drift
-from .release_checklist import NO_HELD_DEFAULT, GateResult
+from .post_rc_watch import (
+    OBS_STABLE_FIELDS,
+    _check_debt_schema_gated,
+    _check_obs_fields_stable,
+    _check_no_tag_schema_drift,
+)
+from .release_checklist import NO_HELD_DEFAULT
 from .release_signoff import RELEASE_VERSION, SEAL_CP
 
 __all__ = [
     "MONITOR_CHECKLIST",
+    "HISTORY_BASENAME",
     "MonitorCheck",
     "MonitorResult",
     "run_post_release_monitor",
+    "append_monitor_history",
 ]
 
 MONITOR_CHECKLIST = (
@@ -35,6 +44,10 @@ MONITOR_CHECKLIST = (
     "obs_stable_fields",
     "no_forbidden_drift",
 )
+
+HISTORY_BASENAME = "monitor_history.jsonl"
+# Soft roll: keep last N entries when rewriting (rare; append-first).
+HISTORY_ROLL_MAX = 500
 
 
 @dataclass
@@ -57,9 +70,11 @@ class MonitorResult:
     tip: str | None = None
     freeze_channel: str | None = None
     report_path: str | None = None
+    history_path: str | None = None
     mode: str = "once"
     no_held: str = NO_HELD_DEFAULT
     notes: list[str] = field(default_factory=list)
+    history_appended: bool = False
 
     def add(self, name: str, ok: bool, detail: str = "") -> None:
         self.checks.append(MonitorCheck(name=name, ok=ok, detail=detail))
@@ -78,22 +93,37 @@ class MonitorResult:
             "tip": self.tip,
             "freeze_channel": self.freeze_channel,
             "report_path": self.report_path,
+            "history_path": self.history_path,
+            "history_appended": self.history_appended,
             "no_held": self.no_held,
             "notes": list(self.notes),
-            "cp": SEAL_CP,
-            "cycle": 24,
+            "cp": "CP-0029" if self.mode == "continue" else SEAL_CP,
+            "cycle": 25 if self.mode == "continue" else 24,
             "scheduled_routine": {
                 "status": "documented_only",
                 "create_grok_bot_routine": False,
                 "hint": (
                     "Future: cron/CI may invoke "
-                    "scripts/post_release_monitor.py --once"
+                    "scripts/post_release_monitor.py --once "
+                    "or --continue"
                 ),
             },
         }
 
     def to_json(self, *, indent: int = 2) -> str:
         return json.dumps(self.to_dict(), indent=indent, sort_keys=True) + "\n"
+
+    def history_record(self) -> dict[str, Any]:
+        """Compact JSONL record for continue-mode history."""
+        return {
+            "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "ok": self.ok,
+            "mode": self.mode,
+            "version": self.version,
+            "tip": self.tip,
+            "errors": list(self.errors),
+            "checks": {c.name: c.ok for c in self.checks},
+        }
 
 
 def _check_signoff(root: Path, result: MonitorResult, version: str, release_dir: Path) -> None:
@@ -222,6 +252,7 @@ def _check_no_forbidden_drift(root: Path, result: MonitorResult) -> None:
         "release_tag_archive.py",
         "final_release_audit.py",
         "release_checklist.py",
+        "debt_gate_review.py",
     }
     hits: list[str] = []
     for path in scan_paths:
@@ -249,6 +280,8 @@ def _check_no_forbidden_drift(root: Path, result: MonitorResult) -> None:
         root / "docs" / "capabilities" / "MESH_PACKAGING_POST_RELEASE_MONITOR.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_RELEASE_SIGNOFF.md",
         root / "docs" / "capabilities" / "MESH_PACKAGING_FINAL_RELEASE_AUDIT.md",
+        root / "docs" / "planning" / "0.17_NON_GOALS.md",
+        root / "council" / "COUNCIL_AGREEMENT_CYCLE25.md",
         root / "council" / "COUNCIL_AGREEMENT_CYCLE24.md",
         root / "council" / "COUNCIL_AGREEMENT_CYCLE23.md",
     ]
@@ -265,23 +298,53 @@ def _check_no_forbidden_drift(root: Path, result: MonitorResult) -> None:
     )
 
 
+def append_monitor_history(
+    history_path: Path,
+    record: dict[str, Any],
+    *,
+    roll_max: int = HISTORY_ROLL_MAX,
+) -> Path:
+    """Append one JSONL record; roll file if it exceeds roll_max lines."""
+    history_path.parent.mkdir(parents=True, exist_ok=True)
+    line = json.dumps(record, sort_keys=True) + "\n"
+    if history_path.is_file():
+        existing = history_path.read_text(encoding="utf-8").splitlines(keepends=True)
+        if len(existing) >= roll_max:
+            # Keep the last (roll_max - 1) and append the new line.
+            kept = existing[-(roll_max - 1) :]
+            history_path.write_text("".join(kept) + line, encoding="utf-8")
+        else:
+            with history_path.open("a", encoding="utf-8") as fh:
+                fh.write(line)
+    else:
+        history_path.write_text(line, encoding="utf-8")
+    return history_path
+
+
 def run_post_release_monitor(
     root: Path | str,
     *,
     once: bool = True,
+    continue_mode: bool = False,
     version: str = RELEASE_VERSION,
     out_dir: Path | str | None = None,
     report_path: Path | str | None = None,
+    history_path: Path | str | None = None,
     tip: str | None = None,
     prebuilt_manifest: Path | str | None = None,
     force_fail: str | None = None,
 ) -> MonitorResult:
-    """Run post-release --once checks. Not a long-lived daemon."""
+    """Run post-release --once checks. With continue_mode, also append history JSONL."""
     root = Path(root).resolve()
-    result = MonitorResult(mode="once" if once else "once")
+    mode = "continue" if continue_mode else ("once" if once else "once")
+    result = MonitorResult(mode=mode)
     result.notes.append(
         "Scheduled routine stub: document-only; do NOT create Grok Bot routines."
     )
+    if continue_mode:
+        result.notes.append(
+            "Continue mode: re-run once checks and append monitor_history.jsonl."
+        )
     release_dir = root / "dist" / "releases" / version
     out = Path(out_dir) if out_dir else release_dir
     out.mkdir(parents=True, exist_ok=True)
@@ -375,4 +438,17 @@ def run_post_release_monitor(
     rp.parent.mkdir(parents=True, exist_ok=True)
     rp.write_text(result.to_json(), encoding="utf-8")
     result.report_path = str(rp)
+
+    if continue_mode:
+        hp = (
+            Path(history_path)
+            if history_path
+            else (release_dir / HISTORY_BASENAME)
+        )
+        append_monitor_history(hp, result.history_record())
+        result.history_path = str(hp)
+        result.history_appended = True
+        # Refresh MONITOR.json with history fields
+        rp.write_text(result.to_json(), encoding="utf-8")
+
     return result

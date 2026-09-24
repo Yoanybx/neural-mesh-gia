@@ -1,0 +1,1 @@
+{"checks": {"debt_schema_gated": true, "freeze_intact": true, "no_forbidden_drift": true, "obs_stable_fields": true, "signoff_present": true, "tag_or_archive_marker": true}, "errors": [], "mode": "continue", "ok": true, "tip": "718b910", "ts": "2026-09-24T00:46:24Z", "version": "0.16.3"}

@@ -60,3 +60,7 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 ## Cycle 24 / CP-0028 — 2026-09-23 EDT
 - Release closeout of 0.16.3: P18 signoff, P19 tag/archive, P20 post-release monitor.
 - pytest 452; packaging 66; CP-0028 VERIFIED; archive dist/releases/0.16.3/.
+
+## Cycle 25 / CP-0029 — 2026-09-23 EDT
+- P21 monitor --continue + history JSONL; P22 0.17 planning docs; P23 debt_gate_review.
+- pytest 464; packaging 78; CP-0029 VERIFIED; ver 0.16.3 held; next_line=0.17.x.

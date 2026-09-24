@@ -1,12 +1,11 @@
-# CURRENT STATE
+# CURRENT PROJECT STATE
 
-**Cycle:** 24
-**Checkpoint:** CP-0028 VERIFIED
-**Version:** 0.16.3
-**Module:** mesh-packaging-rc-release-closeout
-**pytest:** 452 passed
-**Audit:** PASS
-**SLO:** BATCH durable MET; recovery MET; EVERY floor GAP ~1.32ms (SCHEMA-GATED; reported; no chase)
-**Packaging:** mesh.bundle.manifest/v1 FROZEN 0.16.x; release_signoff; release_tag_archive; post_release_monitor
-**Release:** 0.16.3 signed off (Cycle 24 = release closeout); archive dist/releases/0.16.3/
-**Invariants:** dual-primary=0; minority=0; stale/dup 100%; no consensus writes; no tag-schema; no SLO chase; peers=0
+Phase: 5
+Module: mesh-packaging-post-release-ops-planning
+Status: VERIFIED
+Last checkpoint: CP-0029
+Next action: DeepSeek M2M VERDICT on Cycle 25 / CP-0029 (monitor continue; 0.17 planning; debt gate review). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered. Do not ship 0.17.0 until planning ratified.
+Git: unknown
+Safety: SAFE
+Updated: 2026-09-24T00:49:00.480484+00:00
+next_line: 0.17.x

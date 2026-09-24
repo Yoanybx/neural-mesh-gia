@@ -42,29 +42,33 @@
     "mesh_packaging_rc_freeze_cp0025",
     "mesh_packaging_rc_install_rollback_checklist_cp0026",
     "mesh_packaging_rc_soak_audit_watch_cp0027",
-    "mesh_packaging_rc_release_closeout_cp0028"
+    "mesh_packaging_rc_release_closeout_cp0028",
+    "mesh_packaging_post_release_ops_planning_cp0029"
   ],
-  "current_module": "mesh-packaging-rc-release-closeout",
+  "current_module": "mesh-packaging-post-release-ops-planning",
   "current_phase": 5,
   "decisions_pending": [],
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0028",
+  "last_checkpoint": "CP-0029",
   "last_failed_test": null,
   "last_successful_test": "2026-09-23T22:54:40.950445+00:00",
-  "last_updated": "2026-09-23T22:54:40.950445+00:00",
+  "last_updated": "2026-09-24T00:49:00.480708+00:00",
   "modified_files": [
-    "src/neural_mesh/packaging/release_signoff.py",
-    "src/neural_mesh/packaging/release_tag_archive.py",
     "src/neural_mesh/packaging/post_release_monitor.py",
-    "scripts/release_signoff.py",
-    "scripts/release_tag_archive.py",
+    "src/neural_mesh/packaging/debt_gate_review.py",
     "scripts/post_release_monitor.py",
-    "tests/test_packaging_rc_cycle24.py",
+    "scripts/debt_gate_review.py",
+    "tests/test_packaging_rc_cycle25.py",
+    "docs/planning/0.17_SCOPE.md",
+    "docs/planning/0.17_NON_GOALS.md",
+    "council/PLAN_0.17_DRAFT.md",
+    "docs/debt/DEBT_GATE_REVIEW_CP0029.md",
+    "docs/capabilities/MESH_PACKAGING_POST_RELEASE_MONITOR.md",
     "pyproject.toml"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 24 / CP-0028 (release signoff; tag archive; post-release monitor). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 25 / CP-0029 (monitor continue; 0.17 planning; debt gate review). Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase unless ordered. Do not ship 0.17.0 until planning ratified.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.16.3",
@@ -73,6 +77,6 @@
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 452
+    "passed": 464
   }
 }

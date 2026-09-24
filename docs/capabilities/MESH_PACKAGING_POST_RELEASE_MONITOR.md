@@ -1,7 +1,7 @@
 # Mesh Packaging: Post-Release Monitor
 
 **Capability:** `MESH_PACKAGING_POST_RELEASE_MONITOR`  
-**Cycle / Checkpoint:** 24 / CP-0028  
+**Cycle / Checkpoint:** 25 / CP-0029 (extends 24 / CP-0028)  
 **Version:** 0.16.3  
 **Scope:** single-node RC; peers=0
 
@@ -9,7 +9,8 @@
 
 Lightweight **post-release** monitor (complements Cycle 23 `post_rc_watch`).
 Run once after signoff / tag / archive to confirm release artifacts and
-invariants remain intact.
+invariants remain intact. Cycle 25 adds **continue** mode for repeated
+healthy checks with JSONL history.
 
 ## Monitor checklist
 
@@ -27,20 +28,27 @@ invariants remain intact.
 ```bash
 .venv/bin/python scripts/post_release_monitor.py --once
 .venv/bin/python scripts/post_release_monitor.py --once --json
+.venv/bin/python scripts/post_release_monitor.py --continue
+.venv/bin/python scripts/post_release_monitor.py --continue --json
 ```
 
-Writes `dist/releases/0.16.3/MONITOR.json`.
+Writes `dist/releases/0.16.3/MONITOR.json`.  
+Continue mode also appends `dist/releases/0.16.3/monitor_history.jsonl`
+(rolls at 500 entries). Exits 0 if still healthy; fails if signoff/archive
+missing or other checklist gates fail.
 
 ## Scheduled routine (document only)
 
-Future CI/cron may invoke `scripts/post_release_monitor.py --once`.
-**Do NOT create Grok Bot routines** for this monitor.
+Future CI/cron may invoke `scripts/post_release_monitor.py --once` or
+`--continue`. **Do NOT create Grok Bot routines** for this monitor.
 
 ## Related
 
 - **P17** `post_rc_watch` — pre-signoff RC watch checklist
 - **P18** `release_signoff` — SIGNOFF.json
 - **P19** `release_tag_archive` — tag + archive under `dist/releases/0.16.3/`
+- **P21** continue mode + history JSONL (CP-0029)
+- **P23** `debt_gate_review` — SCHEMA-GATED consistency (CP-0029)
 
 ## NO_HELD
 

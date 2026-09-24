@@ -1,4 +1,4 @@
-"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0028).
+"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0029).
 
 Capability packaging for a reproducible single-node tarball + manifest.
 Does **not** change tags, SLOs, consensus, Raft, or N>2.
@@ -73,9 +73,17 @@ from .release_tag_archive import (
 )
 from .post_release_monitor import (
     MONITOR_CHECKLIST,
+    HISTORY_BASENAME,
     MonitorCheck,
     MonitorResult,
     run_post_release_monitor,
+    append_monitor_history,
+)
+from .debt_gate_review import (
+    DEBT_FLOOR_DOC,
+    DebtGateReviewResult,
+    GateStatus,
+    run_debt_gate_review,
 )
 
 __all__ = [
@@ -139,7 +147,13 @@ __all__ = [
     "preferred_tag_name",
     "create_annotated_tag",
     "MONITOR_CHECKLIST",
+    "HISTORY_BASENAME",
     "MonitorCheck",
     "MonitorResult",
     "run_post_release_monitor",
+    "append_monitor_history",
+    "DEBT_FLOOR_DOC",
+    "DebtGateReviewResult",
+    "GateStatus",
+    "run_debt_gate_review",
 ]
