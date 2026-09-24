@@ -1,10 +1,10 @@
 {
   "cp": "CP-0036",
-  "created": false,
-  "exists": false,
+  "created": true,
+  "exists": true,
   "freeze": "0.17.x-n2",
-  "note": "tag not requested (--tag to create when clean)",
+  "note": "local annotated tag v0.17.0 created after Cycle 32 feature commit",
   "tag": "v0.17.0",
-  "tip": "1d1125e",
+  "tip": "241d570",
   "ver": "0.17.0"
 }
