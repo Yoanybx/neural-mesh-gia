@@ -68,6 +68,12 @@ from .identity import (
     cmd_id_status,
     cmd_id_tier,
 )
+from .recovery import (
+    cmd_recover_rebuild,
+    cmd_recover_restore,
+    cmd_recover_snapshot,
+    cmd_recover_status,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -499,6 +505,39 @@ def main(argv: list[str] | None = None):
     id_rev.add_argument("--reason", type=str, default="revoked")
     id_rev.add_argument("--json", action="store_true")
 
+    recover_cmd = sub.add_parser(
+        "recover",
+        help="Recovery + rebuild (H2): status/snapshot/restore/rebuild; ABORT→snapshot restore",
+    )
+    recover_subs = recover_cmd.add_subparsers(dest="recover_op", required=True)
+    rec_stat = recover_subs.add_parser("status", help="Show durable/WAL/abort_restore status")
+    rec_stat.add_argument("--data-root", type=str, required=True, help="Recovery data root")
+    rec_stat.add_argument("--json", action="store_true")
+    rec_snap = recover_subs.add_parser(
+        "snapshot", help="Create / list / verify content-hashed recovery snapshot"
+    )
+    rec_snap.add_argument("--data-root", type=str, required=True)
+    rec_snap.add_argument("--reason", type=str, default="manual")
+    rec_snap.add_argument("--list", dest="snap_list", action="store_true")
+    rec_snap.add_argument("--verify", type=str, default=None, help="Verify SNAP-id integrity")
+    rec_snap.add_argument("--json", action="store_true")
+    rec_rest = recover_subs.add_parser(
+        "restore", help="Restore durable state from verified snapshot (fail-closed)"
+    )
+    rec_rest.add_argument("--data-root", type=str, required=True)
+    rec_rest.add_argument("--snapshot", type=str, default=None, help="SNAP-id (default: last_good)")
+    rec_rest.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (local only; plaintext forbidden)"
+    )
+    rec_rest.add_argument("--json", action="store_true")
+    rec_reb = recover_subs.add_parser(
+        "rebuild", help="Rebuild from last good snapshot + WAL; ABORT→snapshot restore"
+    )
+    rec_reb.add_argument("--data-root", type=str, required=True)
+    rec_reb.add_argument("--snapshot", type=str, default=None)
+    rec_reb.add_argument("--mode", type=str, default="local")
+    rec_reb.add_argument("--json", action="store_true")
+
 
     router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
@@ -921,6 +960,40 @@ def main(argv: list[str] | None = None):
                     fabric_root=fr,
                     node_id=nid,
                     reason=str(getattr(a, "reason", "revoked") or "revoked"),
+                    as_json=as_json,
+                )
+            )
+
+    elif a.cmd == "recover":
+        dr = a.data_root
+        as_json = bool(getattr(a, "json", False))
+        if a.recover_op == "status":
+            raise SystemExit(cmd_recover_status(data_root=dr, as_json=as_json))
+        elif a.recover_op == "snapshot":
+            raise SystemExit(
+                cmd_recover_snapshot(
+                    data_root=dr,
+                    reason=str(getattr(a, "reason", "manual") or "manual"),
+                    list_only=bool(getattr(a, "snap_list", False)),
+                    verify=getattr(a, "verify", None),
+                    as_json=as_json,
+                )
+            )
+        elif a.recover_op == "restore":
+            raise SystemExit(
+                cmd_recover_restore(
+                    data_root=dr,
+                    snapshot_id=getattr(a, "snapshot", None),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+        elif a.recover_op == "rebuild":
+            raise SystemExit(
+                cmd_recover_rebuild(
+                    data_root=dr,
+                    snapshot_id=getattr(a, "snapshot", None),
+                    mode=str(getattr(a, "mode", "local")),
                     as_json=as_json,
                 )
             )
