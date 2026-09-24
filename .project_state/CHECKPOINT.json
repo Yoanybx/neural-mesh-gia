@@ -48,28 +48,29 @@
     "mesh_017_n2_multi_node_packaging_cp0031",
     "mesh_017_n2_rc_hardening_cp0032",
     "mesh_017_fabric_ops_ux_cp0033",
-    "mesh_017_obs_peers_cp0034"
+    "mesh_017_obs_peers_cp0034",
+    "mesh_017_external_quickstart_cp0035"
   ],
-  "current_module": "mesh-017-obs-peers",
+  "current_module": "mesh-017-external-quickstart",
   "current_phase": 5,
   "decisions_pending": [],
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0034",
+  "last_checkpoint": "CP-0035",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-24T02:08:10.484428+00:00",
-  "last_updated": "2026-09-24T02:08:10.484428+00:00",
+  "last_successful_test": "2026-09-24T02:13:00.906324+00:00",
+  "last_updated": "2026-09-24T02:13:00.906324+00:00",
   "modified_files": [
-    "src/neural_mesh/network/ops.py",
-    "src/neural_mesh/network/__init__.py",
-    "src/neural_mesh/cli.py",
-    "docs/capabilities/MESH_FABRIC_OPS_UX.md",
-    "tests/test_fabric_ops_cycle29.py",
-    "council/COUNCIL_AGREEMENT_CYCLE29.md",
+    "docs/quickstart/QUICKSTART_0.16.3.md",
+    "docs/quickstart/QUICKSTART_0.17_STUB.md",
+    "scripts/quickstart_0.16.3.sh",
+    "docs/capabilities/MESH_EXTERNAL_QUICKSTART.md",
+    "tests/test_quickstart_cycle31.py",
+    "council/STATUS_CYCLE31.md",
     "pyproject.toml"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 29 / CP-0033. Next frozen 0.17 theme: richer_OBS_peers. Do not reopen 0.16.3. NO_HELD unchanged.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 31 / CP-0035. Next: 0.17_signoff. Do not reopen 0.16.3. NO_HELD unchanged.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
   "safety_status": "SAFE",
@@ -77,6 +78,6 @@
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 539
+    "passed": 554
   }
 }

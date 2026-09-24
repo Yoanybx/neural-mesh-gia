@@ -1,0 +1,29 @@
+{
+  "checkpoint": "CP-0035",
+  "created_utc": "2026-09-24T02:13:00.906324+00:00",
+  "cycle": 31,
+  "dual_primary": 0,
+  "files": [
+    "CHECKPOINT.json",
+    "CHECKPOINT_STATE.json",
+    "COUNCIL_AGREEMENT_CYCLE31.md.snap",
+    "MESH_EXTERNAL_QUICKSTART.md.snap",
+    "PASTE_CYCLE31_M2M.md.snap",
+    "QUICKSTART_0.16.3.md.snap",
+    "QUICKSTART_0.17_STUB.md.snap",
+    "STATUS_CYCLE31.md.snap",
+    "STATUS_FOR_CHATGPT_CYCLE31.md.snap",
+    "checkpoint.json",
+    "quickstart_0.16.3.sh.snap",
+    "test_quickstart_cycle31.py.snap"
+  ],
+  "plaintext_fallback": 0,
+  "pytest": {
+    "failed": 0,
+    "passed": 554
+  },
+  "quickstart_cycle31": 15,
+  "status": "VERIFIED",
+  "theme": "external_quickstart",
+  "version": "0.17.0"
+}

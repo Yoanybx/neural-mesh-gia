@@ -87,3 +87,9 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Theme 3 of 0.17 frozen scope: MESH_OBS_PEERS
 - pytest 539/0; obs_peers_cycle30=19; dual_primary=0
 - PREFERRED_NEXT: external_quickstart
+
+## Cycle 31 / CP-0035 — external_quickstart (2026-09-24T02:13:00.906324+00:00)
+
+- Theme 4 of 0.17 frozen scope: MESH_EXTERNAL_QUICKSTART
+- pytest 554/0; quickstart_cycle31=15; dual_primary=0
+- PREFERRED_NEXT: 0.17_signoff
