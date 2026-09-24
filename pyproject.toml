@@ -38,5 +38,6 @@ markers = [
     "signoff_cycle32: CP-0036 0.17 theme-set signoff closeout",
     "quickstart_cycle31: CP-0035 external quickstart 0.16.3 + 0.17 stub",
     "bootstrap_cycle33: CP-0037 0.18 bootstrap / GOV.7 entry waiver",
+    "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
 ]
 

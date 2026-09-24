@@ -61,6 +61,13 @@ from .network.ops import (
     cmd_fabric_reconnect,
     cmd_fabric_status,
 )
+from .identity import (
+    cmd_id_attest,
+    cmd_id_revoke,
+    cmd_id_rotate,
+    cmd_id_status,
+    cmd_id_tier,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -457,6 +464,42 @@ def main(argv: list[str] | None = None):
         default=True,
     )
 
+
+    id_cmd = sub.add_parser(
+        "id", help="Identity + attestation + trust tiers (H1): status/attest/tier/rotate/revoke"
+    )
+    id_subs = id_cmd.add_subparsers(dest="id_op", required=True)
+    id_stat = id_subs.add_parser("status", help="Show local identity record + pinned-only state")
+    id_stat.add_argument("--fabric-root", type=str, required=True, help="LocalCA / fabric root")
+    id_stat.add_argument("--node-id", type=str, required=True)
+    id_stat.add_argument("--json", action="store_true")
+    id_att = id_subs.add_parser("attest", help="Attest leaf under local CA (fail-closed)")
+    id_att.add_argument("--fabric-root", type=str, required=True)
+    id_att.add_argument("--node-id", type=str, required=True)
+    id_att.add_argument("--expected", type=str, default=None, help="Expected node_id (default: --node-id)")
+    id_att.add_argument("--mode", type=str, default="tls", help="Transport mode (tls only; plaintext forbidden)")
+    id_att.add_argument("--json", action="store_true")
+    id_tier = id_subs.add_parser("tier", help="Read/assign/downgrade trust tier T0..T3")
+    id_tier.add_argument("--fabric-root", type=str, required=True)
+    id_tier.add_argument("--node-id", type=str, required=True)
+    id_tier.add_argument("--set", dest="tier_set", type=str, default=None, help="Set tier T0..T3")
+    id_tier.add_argument("--pin", action="store_true", help="Operator pin (required for T3 upgrade)")
+    id_tier.add_argument("--downgrade", action="store_true", help="One-step downgrade T3→…→T0")
+    id_tier.add_argument("--reason", type=str, default="")
+    id_tier.add_argument("--json", action="store_true")
+    id_rot = id_subs.add_parser("rotate", help="Rotate leaf cert (no silent identity downgrade)")
+    id_rot.add_argument("--fabric-root", type=str, required=True)
+    id_rot.add_argument("--node-id", type=str, required=True)
+    id_rot.add_argument("--days", type=int, default=825)
+    id_rot.add_argument("--no-keep-tier", action="store_true", help="Do not preserve prior tier")
+    id_rot.add_argument("--json", action="store_true")
+    id_rev = id_subs.add_parser("revoke", help="Revoke identity (force T0 + pinned-only abort)")
+    id_rev.add_argument("--fabric-root", type=str, required=True)
+    id_rev.add_argument("--node-id", type=str, required=True)
+    id_rev.add_argument("--reason", type=str, default="revoked")
+    id_rev.add_argument("--json", action="store_true")
+
+
     router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
     rex = router_subs.add_parser("explain", help="Explain last/logged decision for task_id")
@@ -830,6 +873,55 @@ def main(argv: list[str] | None = None):
                     as_json=as_json,
                     attempts=int(getattr(a, "attempts", 2)),
                     tls_required=tls_req,
+                )
+            )
+
+
+    elif a.cmd == "id":
+        fr = a.fabric_root
+        nid = a.node_id
+        as_json = bool(getattr(a, "json", False))
+        if a.id_op == "status":
+            raise SystemExit(cmd_id_status(fabric_root=fr, node_id=nid, as_json=as_json))
+        elif a.id_op == "attest":
+            raise SystemExit(
+                cmd_id_attest(
+                    fabric_root=fr,
+                    node_id=nid,
+                    expected=getattr(a, "expected", None),
+                    as_json=as_json,
+                    mode=str(getattr(a, "mode", "tls")),
+                )
+            )
+        elif a.id_op == "tier":
+            raise SystemExit(
+                cmd_id_tier(
+                    fabric_root=fr,
+                    node_id=nid,
+                    tier=getattr(a, "tier_set", None),
+                    pin=bool(getattr(a, "pin", False)),
+                    downgrade=bool(getattr(a, "downgrade", False)),
+                    reason=str(getattr(a, "reason", "") or ""),
+                    as_json=as_json,
+                )
+            )
+        elif a.id_op == "rotate":
+            raise SystemExit(
+                cmd_id_rotate(
+                    fabric_root=fr,
+                    node_id=nid,
+                    days=int(getattr(a, "days", 825)),
+                    keep_tier=not bool(getattr(a, "no_keep_tier", False)),
+                    as_json=as_json,
+                )
+            )
+        elif a.id_op == "revoke":
+            raise SystemExit(
+                cmd_id_revoke(
+                    fabric_root=fr,
+                    node_id=nid,
+                    reason=str(getattr(a, "reason", "revoked") or "revoked"),
+                    as_json=as_json,
                 )
             )
 

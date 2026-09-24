@@ -1,0 +1,16 @@
+{
+  "checkpoint": "CP-0038",
+  "cycle": 34,
+  "dual_primary": 0,
+  "identity_cycle34": 17,
+  "plaintext_fallback": 0,
+  "preferred_next": "0.18_H2_recovery",
+  "pytest": {
+    "failed": 0,
+    "passed": 596
+  },
+  "status": "VERIFIED",
+  "theme": "0.18_H1_identity",
+  "vault_acme_required": 0,
+  "version": "0.18.0"
+}

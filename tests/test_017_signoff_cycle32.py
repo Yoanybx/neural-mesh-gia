@@ -243,7 +243,12 @@ def test_capability_doc_present():
 
 
 def test_no_0163_reopen_and_no_h_impl():
-    """0.16.3 remains closed; this cycle does not ship H1..H8 modules."""
+    """0.16.3 remains closed; Cycle 32 signoff itself did not ship H1..H8.
+
+    Later 0.18 cycles (CP-0038+) may add ``identity/``; that must not reopen
+    0.16.3 archives/tags. The Cycle 32 capability stub name MESH_H1_IDENTITY
+    was never used (H1 ships as MESH_IDENTITY_ATTESTATION).
+    """
     assert (REPO / "dist" / "releases" / "0.16.3" / "SIGNOFF.json").is_file()
     # local tag v0.16.3 must still exist
     proc = subprocess.run(
@@ -254,9 +259,12 @@ def test_no_0163_reopen_and_no_h_impl():
         check=False,
     )
     assert proc.returncode == 0
-    # no H1 identity implementation module yet
-    assert not (REPO / "src" / "neural_mesh" / "identity").exists()
+    # Cycle 32 stub name never minted; 0.17 signoff still documents no H1 in that cycle
     assert not (REPO / "docs" / "capabilities" / "MESH_H1_IDENTITY.md").exists()
+    signoff = (REPO / "docs" / "capabilities" / "MESH_0.17_SIGNOFF.md").read_text(
+        encoding="utf-8"
+    ).lower()
+    assert "do not implement h1" in signoff or "signoff/closeout only" in signoff
 
 
 def test_post_signoff_monitor_once(tmp_path: Path):
