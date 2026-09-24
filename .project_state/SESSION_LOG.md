@@ -81,3 +81,9 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## Cycle 29 / CP-0033 — 2026-09-24T02:01:48.296766+00:00
 - Fabric ops UX: FabricOps + mesh fabric CLI + 16 tests; pytest 520; CP-0033 VERIFIED; ver 0.17.0 held.
+
+## Cycle 30 / CP-0034 — richer OBS peers (2026-09-24T02:08:10.484428+00:00)
+
+- Theme 3 of 0.17 frozen scope: MESH_OBS_PEERS
+- pytest 539/0; obs_peers_cycle30=19; dual_primary=0
+- PREFERRED_NEXT: external_quickstart

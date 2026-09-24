@@ -1,0 +1,13 @@
+{
+  "checkpoint": "CP-0034",
+  "cycle": 30,
+  "dual_primary": 0,
+  "obs_peers_cycle30": 19,
+  "pytest": {
+    "failed": 0,
+    "passed": 539
+  },
+  "status": "VERIFIED",
+  "theme": "richer_OBS_peers",
+  "version": "0.17.0"
+}

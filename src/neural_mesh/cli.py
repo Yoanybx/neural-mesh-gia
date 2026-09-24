@@ -11,7 +11,14 @@ from .checkpoint import CheckpointManager
 from .git_audit import audit_git
 from .obsidian import ObsidianSync
 from .safety import ensure_default_policy, safety_status
-from .status_snapshot import format_obs_m2m, snapshot, snapshot_to_json
+from .status_snapshot import (
+    format_obs_m2m,
+    load_peers_json,
+    merge_peer_summaries,
+    parse_peers_json,
+    snapshot,
+    snapshot_to_json,
+)
 from .twin.events import FaultEvent
 from .twin.faults import (
     FAULT_NODE_LOSS,
@@ -172,6 +179,36 @@ def main(argv: list[str] | None = None):
         "--node-id",
         default=None,
         help="Override snapshot node_id (default: local)",
+    )
+    status_p.add_argument(
+        "--peers-file",
+        default=None,
+        help="With --snapshot: inject peer summaries from JSON file (read-only)",
+    )
+    status_p.add_argument(
+        "--peers-json",
+        default=None,
+        help="With --snapshot: inject peer summaries from JSON string (read-only)",
+    )
+    status_p.add_argument(
+        "--probe-peer",
+        action="append",
+        default=None,
+        dest="probe_peers",
+        help=(
+            "With --snapshot: optional RO TLS heartbeat probe of peer id "
+            "(repeatable, max 2). Requires --fabric-root. Fail-closed; no writes."
+        ),
+    )
+    status_p.add_argument(
+        "--fabric-root",
+        default=None,
+        help="Fabric root for --probe-peer (LocalCA layout)",
+    )
+    status_p.add_argument(
+        "--endpoints",
+        default=None,
+        help="Optional endpoints.json for --probe-peer",
     )
     sub.add_parser("agent-context")
 
@@ -480,7 +517,38 @@ def main(argv: list[str] | None = None):
         print("initialized")
     elif a.cmd == "status":
         if getattr(a, "snapshot", False):
-            snap = snapshot(root, node_id=getattr(a, "node_id", None))
+            injected = []
+            peers_file = getattr(a, "peers_file", None)
+            peers_json = getattr(a, "peers_json", None)
+            if peers_file:
+                injected = merge_peer_summaries(injected, load_peers_json(peers_file))
+            if peers_json:
+                injected = merge_peer_summaries(injected, parse_peers_json(peers_json))
+            probe_ids = getattr(a, "probe_peers", None) or []
+            if probe_ids:
+                from .obs_peers import MAX_OBS_PEER_PROBES, probe_peers_readonly
+
+                if len(probe_ids) > MAX_OBS_PEER_PROBES:
+                    raise SystemExit(
+                        f"--probe-peer refuses N>{MAX_OBS_PEER_PROBES} "
+                        "(no Raft / N>2 / multi-primary)"
+                    )
+                fabric_root = getattr(a, "fabric_root", None)
+                if not fabric_root:
+                    raise SystemExit("--probe-peer requires --fabric-root")
+                local_id = getattr(a, "node_id", None) or "local"
+                probed = probe_peers_readonly(
+                    local_node_id=local_id,
+                    peers=list(probe_ids),
+                    fabric_root=fabric_root,
+                    endpoints_path=getattr(a, "endpoints", None),
+                )
+                injected = merge_peer_summaries(injected, probed)
+            snap = snapshot(
+                root,
+                node_id=getattr(a, "node_id", None),
+                peers=injected or None,
+            )
             if getattr(a, "m2m", False):
                 print(format_obs_m2m(snap))
             else:

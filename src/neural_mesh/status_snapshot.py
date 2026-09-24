@@ -1,8 +1,12 @@
-"""Mesh Observability: Status Snapshot (CP-0023 / Cycle 19).
+"""Mesh Observability: Status Snapshot (CP-0023 / Cycle 19; peers CP-0034 / C30).
 
-Read-only local (+ optional injected peer) status snapshot for council M2M OBS
-and ``mesh status --snapshot``. Does **not** write consensus, Raft, tags schema,
-or re-benchmark SLOs.
+Read-only local (+ optional injected / optionally RO-probed peer) status
+snapshot for council M2M OBS and ``mesh status --snapshot``. Does **not** write
+consensus, Raft, tags schema, or re-benchmark SLOs.
+
+Cycle 30 / CP-0034 extends peer summary fields and injection ergonomics
+(``normalize_peer_summaries``, ``load_peers_json``, ``merge_peer_summaries``).
+Live probe lives in ``neural_mesh.obs_peers`` (fail-closed, N≤2, no writes).
 """
 
 from __future__ import annotations
@@ -34,6 +38,11 @@ __all__ = [
     "PytestSummary",
     "StatusSnapshot",
     "format_obs_m2m",
+    "load_peers_json",
+    "merge_peer_summaries",
+    "normalize_peer_summaries",
+    "parse_peers_json",
+    "peer_summary_from_mapping",
     "snapshot",
     "snapshot_to_dict",
     "snapshot_to_json",
@@ -56,11 +65,31 @@ class DebtGate(BaseModel):
 
 
 class PeerSummary(BaseModel):
+    """Peer row for ``mesh.status.snapshot/v1`` (richer fields since CP-0034).
+
+    Backward compatible with Cycle 19 ``{node_id, reachable, summary}``.
+    Optional OBS fields (ver/tip/cp_tip/latency/tls/error/host/port/role/source)
+    support injection ergonomics and fail-closed RO fabric probes.
+    """
+
     model_config = ConfigDict(extra="forbid")
 
     node_id: str
     reachable: bool = False
     summary: dict[str, Any] = Field(default_factory=dict)
+    # CP-0034 richer OBS peer fields (all optional / defaulted)
+    source: str = "injected"  # injected | file | probed | arg
+    ver: str | None = None
+    tip: str | None = None
+    cp_tip: str | None = None
+    latency_ms: float | None = None
+    tls_ok: bool | None = None
+    heartbeat_ok: bool | None = None
+    error: str | None = None
+    error_code: str | None = None
+    host: str | None = None
+    port: int | None = None
+    role: str | None = None
 
 
 class StatusSnapshot(BaseModel):
@@ -205,19 +234,114 @@ def _slo_state_from_debt(root: Path, debt_gates: Sequence[DebtGate]) -> dict[str
     return {k: out[k] for k in sorted(out)}
 
 
-def _normalize_peers(
+def peer_summary_from_mapping(data: Mapping[str, Any]) -> PeerSummary:
+    """Coerce a mapping into ``PeerSummary``, lifting known keys out of summary.
+
+    Accepts Cycle 19 shape ``{node_id, reachable, summary}`` and richer CP-0034
+    keys. Unknown keys under ``summary`` are preserved; top-level unknown keys
+    are rejected by the model (``extra=forbid``) — callers should nest extras
+    under ``summary``.
+    """
+    raw = dict(data)
+    summary = dict(raw.pop("summary", {}) or {})
+    # Lift common OBS keys from summary into typed fields when absent at top.
+    for key in (
+        "ver",
+        "tip",
+        "cp_tip",
+        "latency_ms",
+        "tls_ok",
+        "heartbeat_ok",
+        "error",
+        "error_code",
+        "host",
+        "port",
+        "role",
+        "source",
+    ):
+        if key not in raw and key in summary:
+            raw[key] = summary.pop(key)
+    raw["summary"] = summary
+    if "reachable" not in raw:
+        raw["reachable"] = bool(raw.get("tls_ok") or False)
+    if "source" not in raw:
+        raw["source"] = "injected"
+    return PeerSummary.model_validate(raw)
+
+
+def normalize_peer_summaries(
     peers: Sequence[PeerSummary | Mapping[str, Any]] | None,
 ) -> list[PeerSummary]:
+    """Normalize / validate peer rows; deterministic sort by ``node_id``.
+
+    Deduplicates by ``node_id`` (last write wins) so file+arg+probe merges are
+    stable. Never opens network or consensus.
+    """
     if not peers:
         return []
-    out: list[PeerSummary] = []
+    by_id: dict[str, PeerSummary] = {}
     for p in peers:
         if isinstance(p, PeerSummary):
-            out.append(p)
+            ps = p
         else:
-            out.append(PeerSummary.model_validate(dict(p)))
-    # Deterministic peer order by node_id.
-    return sorted(out, key=lambda x: x.node_id)
+            ps = peer_summary_from_mapping(dict(p))
+        by_id[ps.node_id] = ps
+    return sorted(by_id.values(), key=lambda x: x.node_id)
+
+
+# Back-compat private alias used by snapshot().
+_normalize_peers = normalize_peer_summaries
+
+
+def parse_peers_json(raw: str | bytes | Mapping[str, Any] | Sequence[Any]) -> list[PeerSummary]:
+    """Parse peers from a JSON string/bytes or already-decoded object.
+
+    Accepted shapes:
+      {"peers": [ {...}, ... ]}
+      [ {...}, ... ]
+      {"node_id": "...", ...}   # single peer object
+    """
+    if isinstance(raw, (str, bytes)):
+        data = json.loads(raw)
+    else:
+        data = raw
+    if isinstance(data, Mapping):
+        if "peers" in data:
+            items = data["peers"]
+        elif "node_id" in data:
+            items = [data]
+        else:
+            raise ValueError(
+                "peers JSON object must contain 'peers' list or a single peer "
+                "with 'node_id'"
+            )
+    elif isinstance(data, Sequence) and not isinstance(data, (str, bytes)):
+        items = data
+    else:
+        raise ValueError(f"unsupported peers JSON shape: {type(data)}")
+    if not isinstance(items, Sequence) or isinstance(items, (str, bytes)):
+        raise ValueError("peers must be a list")
+    return normalize_peer_summaries(
+        [dict(x) if not isinstance(x, PeerSummary) else x for x in items]
+    )
+
+
+def load_peers_json(path: str | Path) -> list[PeerSummary]:
+    """Load peer summaries from a JSON file (read-only; no network)."""
+    p = Path(path)
+    return parse_peers_json(p.read_text(encoding="utf-8"))
+
+
+def merge_peer_summaries(
+    *groups: Sequence[PeerSummary | Mapping[str, Any]] | None,
+) -> list[PeerSummary]:
+    """Merge multiple peer groups; later groups override same ``node_id``."""
+    combined: list[PeerSummary | Mapping[str, Any]] = []
+    for g in groups:
+        if not g:
+            continue
+        combined.extend(list(g))
+    return normalize_peer_summaries(combined)
 
 
 def snapshot(
@@ -231,8 +355,10 @@ def snapshot(
 ) -> StatusSnapshot:
     """Build a LOCAL read-only status snapshot from ``root``.
 
-    Peer summaries are injected only (no network / consensus). Passing
-    ``peers`` never triggers Raft, N>2 fabric, or any write under ``root``.
+    Peer summaries are injected via ``peers`` (normalize/load helpers available).
+    Passing ``peers`` never triggers Raft, N>2 fabric, or any write under
+    ``root``. Optional live RO probe is opt-in via ``neural_mesh.obs_peers`` /
+    CLI ``--probe-peer`` — never the default.
     """
     base = Path(root) if root is not None else Path.cwd()
     state = _load_project_state(base)
@@ -343,11 +469,21 @@ def format_obs_m2m(snap: StatusSnapshot | Mapping[str, Any]) -> str:
     debt = ",".join(debt_bits) if debt_bits else "none"
     peers = d.get("peers") or []
     peer_n = len(peers)
+    up = sum(1 for p in peers if p.get("reachable"))
+    down = peer_n - up
+    peer_bits: list[str] = []
+    for p in peers:
+        nid = p.get("node_id") or "?"
+        flag = "up" if p.get("reachable") else "down"
+        src = p.get("source") or "injected"
+        peer_bits.append(f"{nid}/{flag}/{src}")
+    peers_detail = ",".join(peer_bits) if peer_bits else "-"
     return (
         f"OBS: cycle={d.get('cycle')} ver={d.get('ver')} tip={d.get('tip') or 'null'} "
         f"cp={d.get('cp_tip')} cp_range={d.get('cp_range')} "
         f"pytest={passed}/{failed} slo_floor={floor} "
         f"slo_batch={slo.get('checkpoint_durable_batch', '?')} "
         f"slo_recovery={slo.get('recovery', '?')} "
-        f"debt={debt} peers={peer_n}"
+        f"debt={debt} peers={peer_n} peers_up={up} peers_down={down} "
+        f"peers_detail={peers_detail}"
     )

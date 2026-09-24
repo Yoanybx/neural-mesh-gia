@@ -1,0 +1,30 @@
+{
+  "checkpoint": "CP-0034",
+  "created_utc": "2026-09-24T02:08:01.888260+00:00",
+  "cycle": 30,
+  "dual_primary": 0,
+  "files": [
+    "CHECKPOINT.json",
+    "COUNCIL_AGREEMENT_CYCLE30.md.snap",
+    "MESH_OBS_PEERS.md.snap",
+    "PASTE_CYCLE30_M2M.md.snap",
+    "STATUS_CYCLE30.md.snap",
+    "STATUS_FOR_CHATGPT_CYCLE30.md.snap",
+    "checkpoint.json",
+    "cli.py.snap",
+    "manifest.sha256",
+    "obs_peers.py.snap",
+    "status.py.snap",
+    "status_snapshot.py.snap",
+    "test_obs_peers_cycle30.py.snap"
+  ],
+  "obs_peers_cycle30": 19,
+  "plaintext_fallback": 0,
+  "pytest": {
+    "failed": 0,
+    "passed": 539
+  },
+  "status": "VERIFIED",
+  "theme": "richer_OBS_peers",
+  "version": "0.17.0"
+}

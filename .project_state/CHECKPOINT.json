@@ -47,18 +47,19 @@
     "mesh_017_scope_freeze_bootstrap_cp0030",
     "mesh_017_n2_multi_node_packaging_cp0031",
     "mesh_017_n2_rc_hardening_cp0032",
-    "mesh_017_fabric_ops_ux_cp0033"
+    "mesh_017_fabric_ops_ux_cp0033",
+    "mesh_017_obs_peers_cp0034"
   ],
-  "current_module": "mesh-017-fabric-ops-ux",
+  "current_module": "mesh-017-obs-peers",
   "current_phase": 5,
   "decisions_pending": [],
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0033",
+  "last_checkpoint": "CP-0034",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-24T02:01:48.296766+00:00",
-  "last_updated": "2026-09-24T02:01:48.296766+00:00",
+  "last_successful_test": "2026-09-24T02:08:10.484428+00:00",
+  "last_updated": "2026-09-24T02:08:10.484428+00:00",
   "modified_files": [
     "src/neural_mesh/network/ops.py",
     "src/neural_mesh/network/__init__.py",
@@ -71,12 +72,11 @@
   "next_action": "DeepSeek M2M VERDICT on Cycle 29 / CP-0033. Next frozen 0.17 theme: richer_OBS_peers. Do not reopen 0.16.3. NO_HELD unchanged.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
-  "project_version": "0.17.0",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 520
+    "passed": 539
   }
 }

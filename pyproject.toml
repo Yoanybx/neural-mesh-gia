@@ -34,5 +34,6 @@ markers = [
     "packaging_n2: CP-0031 N=2 multi-node packaging design / manifest parity / install rollback",
     "packaging_n2_cycle28: CP-0032 N2 soak / final audit / RC freeze",
     "fabric_ops_cycle29: CP-0033 fabric ops UX status/diagnose/reconnect",
+    "obs_peers_cycle30: CP-0034 richer OBS peers injection / RO probe",
 ]
 
