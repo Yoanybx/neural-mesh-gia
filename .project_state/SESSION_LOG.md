@@ -71,3 +71,10 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## Cycle 27 / CP-0031 — 2026-09-24T01:09:20.965706+00:00
 - Implemented N=2 packaging P27–P29; pytest 491; packaging_n2 14.
+
+## Cycle 28 / CP-0032 — 2026-09-24T01:22:53.785817+00:00
+
+- Implemented P30 n2_rc_soak, P31 n2_final_release_audit, P32 n2_rc_freeze
+- pytest 504/0; packaging_n2 27; cycle28 tests 13
+- N2 freeze channel 0.17.x-n2 embedded always; schema FROZEN for N2 RC
+- 0.16.3 single-node freeze untouched; version held 0.17.0

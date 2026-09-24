@@ -59,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
         pytest=pytest,
         entrypoint_primary=args.entrypoint_primary,
         entrypoint_secondary=args.entrypoint_secondary,
-        freeze=not args.no_freeze,
+        freeze=True,  # P32: always embed N2 freeze
         single_node_for_parity=not args.no_parity_build,
     )
     tar_name = f"{manifest.name}-{manifest.ver}.tar.gz"

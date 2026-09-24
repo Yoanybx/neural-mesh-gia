@@ -58,6 +58,9 @@ N2_ONLY_INCLUDE: tuple[str, ...] = (
     "scripts/build_n2_bundle.py",
     "scripts/verify_n2_bundle.py",
     "scripts/n2_install_rollback_smoke.py",
+    "scripts/n2_rc_soak.py",
+    "scripts/n2_final_release_audit.py",
+    "docs/capabilities/MESH_PACKAGING_N2_FINAL_RELEASE_AUDIT.md",
 )
 
 # Also ship N2 packaging modules themselves (may already be under src/neural_mesh).
@@ -66,12 +69,16 @@ N2_PACKAGING_MODULES: tuple[str, ...] = (
     "src/neural_mesh/packaging/manifest_n2.py",
     "src/neural_mesh/packaging/bundle_n2.py",
     "src/neural_mesh/packaging/n2_install.py",
+    "src/neural_mesh/packaging/n2_rc_soak.py",
+    "src/neural_mesh/packaging/n2_final_release_audit.py",
 )
 
 EXECUTABLE_NAMES_N2 = {
     "build_n2_bundle.py",
     "verify_n2_bundle.py",
     "n2_install_rollback_smoke.py",
+    "n2_rc_soak.py",
+    "n2_final_release_audit.py",
 }
 
 # Core paths used for single-node parity (subset that always exists in mini roots).
@@ -227,9 +234,13 @@ def build_n2_bundle(
     n2_extras = list_n2_extras(file_list, single_rels)
     core_paths = [p for p in CORE_PARITY_CANDIDATES if p in checksums]
 
-    freeze_info: N2FreezeInfo | None
+    # P32 / CP-0032: N2 RC builds always embed freeze (omit not allowed for RC).
     if freeze is False or freeze is None:
-        freeze_info = None
+        freeze_info = N2FreezeInfo(
+            channel=FREEZE_CHANNEL_N2,
+            schema_name=SCHEMA_ID_N2,
+            single_node_schema_frozen=SCHEMA_ID_SINGLE_FROZEN,
+        )
     elif freeze is True:
         freeze_info = N2FreezeInfo(
             channel=FREEZE_CHANNEL_N2,
@@ -343,6 +354,7 @@ def verify_n2_bundle(
     smoke: bool = True,
     expected_ver: str | None = None,
     single_manifest_path: Path | str | None = None,
+    expect_freeze_channel: str | None = None,
 ) -> N2VerifyResult:
     """Verify N2 checksums + schema fields + optional import smoke + core parity."""
     result = N2VerifyResult()
@@ -395,7 +407,29 @@ def verify_n2_bundle(
     if "raft" in (manifest.majority or "").lower():
         result.fail("Raft majority is forbidden in N2 packaging")
 
-    if manifest.freeze is not None:
+    if expect_freeze_channel is not None:
+        if manifest.freeze is None:
+            result.fail(
+                f"freeze missing; expected channel {expect_freeze_channel!r}"
+            )
+        else:
+            ch = manifest.freeze.channel
+            if ch != expect_freeze_channel:
+                result.fail(
+                    f"freeze channel mismatch: {ch!r} != {expect_freeze_channel!r}"
+                )
+            if manifest.freeze.schema_name != SCHEMA_ID_N2:
+                result.fail(
+                    f"freeze.schema mismatch: {manifest.freeze.schema_name!r}"
+                )
+            if (
+                manifest.freeze.single_node_schema_frozen
+                != SCHEMA_ID_SINGLE_FROZEN
+            ):
+                result.fail(
+                    "freeze.single_node_schema_frozen must record v1 frozen"
+                )
+    elif manifest.freeze is not None:
         if manifest.freeze.schema_name != SCHEMA_ID_N2:
             result.fail(
                 f"freeze.schema mismatch: {manifest.freeze.schema_name!r}"

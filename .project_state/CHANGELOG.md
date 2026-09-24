@@ -186,3 +186,8 @@ Bootstrap continuity system (shipped source).
 - Local mTLS debt RESOLVED (`docs/debt/TLS.md`); external PKI optional EXPLICIT DEBT.
 - Bench N=1000 under experiments/network-fabric-tls-c11/.
 - Tests: 217 passed. CP-0015 VERIFIED.
+## Cycle 28 — 2026-09-23 — CP-0032 N2 RC packaging hardening
+- P30: n2_rc_soak (N-iter dual-prefix install smoke; p50/p99; variance fail).
+- P31: n2_final_release_audit + MESH_PACKAGING_N2_FINAL_RELEASE_AUDIT.md (M2M JSON).
+- P32: N2 freeze always-on channel 0.17.x-n2; verify rejects wrong/missing; schema FROZEN for N2 RC; 0.16.3 untouched.
+- tests/test_packaging_n2_cycle28.py (13); packaging_n2 27; pytest 504; CP-0032 VERIFIED; ver 0.17.0 held.

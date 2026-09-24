@@ -68,3 +68,8 @@ Use ADR files for major decisions.
 - `RoutingStrategy` interface; `RoundRobinStrategy` live; `CapabilityAwareStrategy` STUB only (R1 not activated).
 - Audit trail + `mesh router replay <trace_id>` byte-identical canonical form.
 - Determinism contract of R0 unchanged.
+
+## D-C28 — N2 RC freeze channel 0.17.x-n2 (Cycle 28)
+- Decision: Always embed freeze `{channel:0.17.x-n2, schema:v1-n2}` in N2 builds; verify may require channel.
+- Rationale: Mirror single-node RC freeze pattern for N2 packaging without reopening 0.16.3.
+- Non-goals: Raft, N>2, multi-primary, tag_schema, SLO chase, EVERY_fsync.

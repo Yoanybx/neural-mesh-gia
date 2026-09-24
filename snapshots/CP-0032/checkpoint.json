@@ -1,0 +1,19 @@
+{
+  "checkpoint": "CP-0032",
+  "cycle": 28,
+  "dual_primary": 0,
+  "freeze_channel_n2": "0.17.x-n2",
+  "packaging_n2": 27,
+  "packaging_n2_cycle28": 13,
+  "pytest": {
+    "failed": 0,
+    "passed": 504
+  },
+  "schema_n2": "mesh.bundle.manifest/v1-n2",
+  "schema_n2_frozen": true,
+  "single_node_0163_untouched": true,
+  "status": "VERIFIED",
+  "tip_pre_commit": "fa53325",
+  "verified_at": "2026-09-24T01:22:44.221908+00:00",
+  "version": "0.17.0"
+}

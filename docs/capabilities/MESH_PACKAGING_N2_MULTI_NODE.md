@@ -4,7 +4,7 @@
 **Cycle / Checkpoint:** 27 / CP-0031  
 **Version:** 0.17.0 (open 0.17.x line; does **not** reopen 0.16.3 RC)  
 **Scope:** N=2 packaging only — primary + secondary role configs / replica scripts  
-**Schema:** `mesh.bundle.manifest/v1-n2` (sibling of frozen `mesh.bundle.manifest/v1`)
+**Schema:** `mesh.bundle.manifest/v1-n2` (**FROZEN** for 0.17.x-n2 RC; Cycle 28 / CP-0032) (sibling of frozen `mesh.bundle.manifest/v1`)
 
 ## Purpose
 
@@ -140,3 +140,19 @@ Do **not** reopen 0.16.3 RC. Do **not** alter tag `v0.16.3`. Prefer package vers
 - Replica: `docs/phase5_replication_n2.md`, `docs/cram_replica_n2_*`
 - Scope freeze: `docs/planning/0.17_SCOPE_FROZEN.md`
 - Implementation: `neural_mesh.packaging.bundle_n2`, `manifest_n2`, `n2_install`
+
+
+## Schema freeze (Cycle 28 / CP-0032)
+
+N2 RC channel freeze is **embedded** by `build_n2_bundle` (always):
+
+```json
+"freeze": {
+  "channel": "0.17.x-n2",
+  "schema": "mesh.bundle.manifest/v1-n2",
+  "single_node_schema_frozen": "mesh.bundle.manifest/v1"
+}
+```
+
+`verify_n2_bundle(..., expect_freeze_channel="0.17.x-n2")` rejects missing/wrong
+channel. Single-node `mesh.bundle.manifest/v1` / `0.16.x` freeze is **unchanged**.

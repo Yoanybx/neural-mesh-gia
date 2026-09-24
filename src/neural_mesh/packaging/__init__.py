@@ -1,4 +1,4 @@
-"""Mesh Packaging: Single-Node + N=2 Multi-Node Bundle (CP-0024..CP-0031).
+"""Mesh Packaging: Single-Node + N=2 Multi-Node Bundle (CP-0024..CP-0032).
 
 Capability packaging for reproducible single-node and N=2 tarball + manifests.
 Does **not** change tags, SLOs, consensus, Raft, or N>2 beyond packaging.
@@ -115,6 +115,20 @@ from .n2_install import (
     read_n2_install_marker,
 )
 
+from .n2_rc_soak import (
+    N2SoakResult,
+    N2SoakIteration,
+    DEFAULT_ITERATIONS as N2_SOAK_DEFAULT_ITERATIONS,
+    DEFAULT_VARIANCE_RATIO as N2_SOAK_DEFAULT_VARIANCE_RATIO,
+    run_n2_rc_soak,
+)
+from .n2_final_release_audit import (
+    EXPECTED_VERSION_N2,
+    EXPECTED_CP_N2,
+    N2AuditResult,
+    run_n2_final_release_audit,
+)
+
 from .debt_gate_review import (
     DEBT_FLOOR_DOC,
     RESOLUTION_DOC,
@@ -227,4 +241,13 @@ __all__ = [
     "n2_install_rollback_smoke",
     "replica_status_mock",
     "read_n2_install_marker",
+    "N2SoakResult",
+    "N2SoakIteration",
+    "N2_SOAK_DEFAULT_ITERATIONS",
+    "N2_SOAK_DEFAULT_VARIANCE_RATIO",
+    "run_n2_rc_soak",
+    "EXPECTED_VERSION_N2",
+    "EXPECTED_CP_N2",
+    "N2AuditResult",
+    "run_n2_final_release_audit",
 ]

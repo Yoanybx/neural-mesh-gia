@@ -27,6 +27,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--single-manifest", type=Path, default=None)
     p.add_argument("--expected-ver", default=None)
     p.add_argument("--no-smoke", action="store_true")
+    p.add_argument("--expect-freeze-channel", default=None,
+                   help="Reject if freeze.channel mismatches (e.g. 0.17.x-n2)")
     p.add_argument("--json", action="store_true")
     args = p.parse_args(argv)
 
@@ -36,6 +38,7 @@ def main(argv: list[str] | None = None) -> int:
         smoke=not args.no_smoke,
         expected_ver=args.expected_ver,
         single_manifest_path=args.single_manifest,
+        expect_freeze_channel=args.expect_freeze_channel,
     )
     if args.json:
         print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
