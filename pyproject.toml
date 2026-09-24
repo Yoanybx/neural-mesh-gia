@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "neural-mesh-gia"
-version = "0.16.3"
+version = "0.17.0"
 requires-python = ">=3.10"
 dependencies = ["pydantic>=2,<3", "networkx>=3,<4"]
 
@@ -28,4 +28,5 @@ markers = [
     "packaging_rc_cycle23: CP-0027 rc soak / final audit / post-RC watch",
     "packaging_rc_cycle24: CP-0028 release signoff / tag archive / post-release monitor",
     "packaging_rc_cycle25: CP-0029 post-release monitor continue / 0.17 planning / debt gate review",
+    "packaging_rc_cycle26: CP-0030 0.17 scope freeze / schema gate resolution / bootstrap",
 ]

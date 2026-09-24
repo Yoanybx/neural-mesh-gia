@@ -64,3 +64,7 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 ## Cycle 25 / CP-0029 — 2026-09-23 EDT
 - P21 monitor --continue + history JSONL; P22 0.17 planning docs; P23 debt_gate_review.
 - pytest 464; packaging 78; CP-0029 VERIFIED; ver 0.16.3 held; next_line=0.17.x.
+
+## Cycle 26 — 2026-09-23 EDT
+- CP-0030: 0.17 scope FROZEN; SCHEMA-GATED ACCEPT_AND_CARRY; package 0.17.0 bootstrap.
+- pytest 477; packaging 91; release 0.16.3 closed; tag v0.16.3 untouched.

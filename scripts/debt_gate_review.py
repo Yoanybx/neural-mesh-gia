@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Debt gate review (CP-0029 / P23).
+"""Debt gate review (CP-0029 / P23; CP-0030 / P25 resolution).
 
 Reviews CHECKPOINT_EVERY_FLOOR SCHEMA-GATED status and known SLO markers
-without re-benchmarking. Writes JSON report for M2M.
+without re-benchmarking. Emits resolution=ACCEPT_AND_CARRY for 0.17.
+Writes JSON report for M2M.
 
 Usage:
   .venv/bin/python scripts/debt_gate_review.py
@@ -48,6 +49,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"CP: {result.cp}")
         print(f"SCHEMA_GATE_PRESENT: {result.schema_gate_present}")
         print(f"REBENCHMARKED: {result.rebenchmarked}")
+        print(f"RESOLUTION: {result.resolution}")
         for g in result.gates:
             mark = "OK" if g.ok else "FAIL"
             print(f"  [{mark}] {g.id}: {g.status} — {g.detail}")

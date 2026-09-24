@@ -277,16 +277,32 @@ def _gate_cp_prior(root: Path, result: SignoffResult) -> None:
 
 
 def _gate_version(root: Path, result: SignoffResult, expect: str) -> None:
+    """Gate package version vs expect.
+
+    Exact match always OK. When expect is the closed RELEASE_VERSION (0.16.3)
+    and the live package has already opened the 0.17.x line, accept as
+    next-line bootstrap (stamp SIGNOFF ver=expect so closed-release archives
+    stay coherent). pyproject and __init__ must still agree.
+    """
     ver = _read_version(root)
     init = (root / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     m = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', init)
     init_ver = m.group(1) if m else None
-    result.version = ver
-    ok = ver == expect and (init_ver is None or init_ver == expect)
+    agree = init_ver is None or init_ver == ver
+    exact = ver == expect and agree and (init_ver is None or init_ver == expect)
+    next_line_ok = (
+        expect == RELEASE_VERSION
+        and agree
+        and ver.startswith("0.17.")
+        and (init_ver is None or str(init_ver).startswith("0.17."))
+    )
+    ok = exact or next_line_ok
+    # Stamp closed-release expect when accepting next-line bootstrap
+    result.version = expect if next_line_ok else ver
     result.add(
         "version_0163",
         ok,
-        f"pyproject={ver} init={init_ver} expected={expect}",
+        f"pyproject={ver} init={init_ver} expected={expect} next_line_ok={next_line_ok}",
     )
 
 

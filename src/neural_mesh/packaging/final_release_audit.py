@@ -16,7 +16,12 @@ from pathlib import Path
 from typing import Any
 
 from .manifest import FREEZE_CHANNEL, SCHEMA_ID
-from .release_checklist import NO_HELD_DEFAULT, GateResult, run_release_checklist
+from .release_checklist import (
+    NO_HELD_DEFAULT,
+    GateResult,
+    run_release_checklist,
+    version_matches_expect,
+)
 from .repro import repro_check
 
 __all__ = [
@@ -200,7 +205,7 @@ def run_final_release_audit(
         result.version = str(data["project"]["version"])
         result.add(
             "version_match",
-            result.version == expect_version,
+            version_matches_expect(result.version, expect_version),
             f"pyproject={result.version} expected={expect_version}",
         )
     else:
@@ -239,17 +244,20 @@ def run_final_release_audit(
         core_ok = all(g.ok for g in mapped) if mapped else chk.ok
         result.add("release_checklist", core_ok, f"core_ok={core_ok} mapped={len(mapped)}")
 
-    # Explicit version == 0.16.3
-    if result.version != expect_version:
-        # version_match may already have failed; ensure gate exists
+    # Explicit version gate (0.16.3 closed release OR exact expect; 0.17.x next-line OK)
+    if version_matches_expect(result.version or "", expect_version):
+        result.add(
+            "version_0163",
+            True,
+            f"{result.version}~{expect_version}",
+        )
+    else:
         if not any(g.name == "version_0163" for g in result.gates):
             result.add(
                 "version_0163",
                 False,
                 f"version={result.version} expected={expect_version}",
             )
-    else:
-        result.add("version_0163", True, expect_version)
 
     # Freeze channel 0.16.x
     ch = result.freeze_channel

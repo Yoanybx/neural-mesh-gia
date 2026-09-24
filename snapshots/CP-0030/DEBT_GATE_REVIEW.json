@@ -1,0 +1,52 @@
+{
+  "cp": "CP-0030",
+  "cycle": 26,
+  "errors": [],
+  "gates": [
+    {
+      "detail": "debt_status=SCHEMA-GATED markers_ok=True schema_gate_present=True resolution=ACCEPT_AND_CARRY",
+      "id": "CHECKPOINT_EVERY_FLOOR",
+      "ok": true,
+      "path": "docs/debt/CHECKPOINT_EVERY_FLOOR.md",
+      "status": "SCHEMA-GATED"
+    },
+    {
+      "detail": "resolution_doc present; accept_and_carry=True",
+      "id": "SCHEMA_GATE_RESOLUTION_0.17",
+      "ok": true,
+      "path": "docs/debt/SCHEMA_GATE_RESOLUTION_0.17.md",
+      "status": "ACCEPT_AND_CARRY"
+    },
+    {
+      "detail": "documented; not rebenchmarked",
+      "id": "CHECKPOINT_DURABLE_BATCH",
+      "ok": true,
+      "path": null,
+      "status": "MET"
+    },
+    {
+      "detail": "documented; not rebenchmarked",
+      "id": "RECOVERY",
+      "ok": true,
+      "path": null,
+      "status": "MET"
+    }
+  ],
+  "known_slos": {
+    "checkpoint_durable_batch": "MET",
+    "checkpoint_every_floor": "SCHEMA-GATED",
+    "recovery": "MET"
+  },
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "notes": [
+    "Debt gate review: report MET/GAP/SCHEMA-GATED from docs; no rebenchmark.",
+    "0.17 resolution=ACCEPT_AND_CARRY (carry SCHEMA-GATED; non-blocking unless gate fails)."
+  ],
+  "ok": true,
+  "package_line": "0.17.x",
+  "rebenchmarked": false,
+  "report_path": "/workspace/neural-mesh-gia/dist/releases/0.16.3/DEBT_GATE_REVIEW.json",
+  "resolution": "ACCEPT_AND_CARRY",
+  "schema_gate_present": true,
+  "version": "0.16.3"
+}

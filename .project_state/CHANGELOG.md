@@ -1,3 +1,11 @@
+## Cycle 26 — 2026-09-23 — CP-0030 0.17 scope freeze / schema gate / bootstrap
+- P24: docs/planning/0.17_SCOPE_FROZEN.md + council/SCOPE_0.17_FROZEN.md; PLAN marked FROZEN.
+- P25: docs/debt/SCHEMA_GATE_RESOLUTION_0.17.md resolution=ACCEPT_AND_CARRY; debt_gate_status helper.
+- P26: package version 0.17.0; docs/planning/0.17_BOOTSTRAP.md; NEXT_ACTION → N=2 multi-node (deferred).
+- tests/test_packaging_rc_cycle26.py (13); packaging 91; pytest 477; CP-0030 VERIFIED.
+- Release 0.16.3 CLOSED/FROZEN; tag v0.16.3 untouched; freeze channel 0.16.x still closed for RC.
+- No SLO chase; no tag-schema; no Raft/N>2/consensus changes; no full theme impl.
+
 ## Cycle 25 — 2026-09-23 — CP-0029 Post-release ops + 0.17 planning
 - P21: scripts/post_release_monitor.py --continue; monitor_history.jsonl append/roll; fail if signoff/archive missing.
 - P22: docs/planning/0.17_SCOPE.md + 0.17_NON_GOALS.md + council/PLAN_0.17_DRAFT.md (planning only; no 0.17 features).

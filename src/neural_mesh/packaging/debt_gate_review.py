@@ -1,7 +1,10 @@
-"""Debt gate review for CP-0029 / P23.
+"""Debt gate review for CP-0029 / P23 + CP-0030 / P25 resolution.
 
 Reviews CHECKPOINT_EVERY_FLOOR SCHEMA-GATED status and known SLO markers
 without re-benchmarking. Emits a JSON report suitable for M2M.
+
+Cycle 26 / P25: resolution=ACCEPT_AND_CARRY for the 0.17 line (read-only;
+no EVERY fsync optimization; no tag_schema churn).
 """
 
 from __future__ import annotations
@@ -19,12 +22,17 @@ from .release_signoff import RELEASE_VERSION
 
 __all__ = [
     "DEBT_FLOOR_DOC",
+    "RESOLUTION_DOC",
+    "RESOLUTION_ACCEPT_AND_CARRY",
     "DebtGateReviewResult",
     "GateStatus",
+    "debt_gate_status",
     "run_debt_gate_review",
 ]
 
 DEBT_FLOOR_DOC = Path("docs") / "debt" / "CHECKPOINT_EVERY_FLOOR.md"
+RESOLUTION_DOC = Path("docs") / "debt" / "SCHEMA_GATE_RESOLUTION_0.17.md"
+RESOLUTION_ACCEPT_AND_CARRY = "ACCEPT_AND_CARRY"
 SCHEMA_GATE_MARKERS = (
     "SCHEMA-GATED",
     "schema_gate_checkpoint_every_floor",
@@ -57,13 +65,15 @@ class DebtGateReviewResult:
     errors: list[str] = field(default_factory=list)
     gates: list[GateStatus] = field(default_factory=list)
     version: str = RELEASE_VERSION
-    cp: str = "CP-0029"
-    cycle: int = 25
+    cp: str = "CP-0030"
+    cycle: int = 26
     report_path: str | None = None
     no_held: str = NO_HELD_DEFAULT
     notes: list[str] = field(default_factory=list)
     schema_gate_present: bool = False
     rebenchmarked: bool = False
+    resolution: str = RESOLUTION_ACCEPT_AND_CARRY
+    package_line: str = "0.17.x"
 
     def add(self, gate: GateStatus) -> None:
         self.gates.append(gate)
@@ -84,6 +94,8 @@ class DebtGateReviewResult:
             "notes": list(self.notes),
             "schema_gate_present": self.schema_gate_present,
             "rebenchmarked": self.rebenchmarked,
+            "resolution": self.resolution,
+            "package_line": self.package_line,
             "known_slos": dict(KNOWN_SLO_STATES),
         }
 
@@ -111,18 +123,69 @@ def _status_from_debt_doc(text: str) -> str | None:
     return None
 
 
+def debt_gate_status(
+    root: Path | str | None = None,
+    *,
+    package_line: str = "0.17.x",
+) -> dict[str, Any]:
+    """Read-only helper: SCHEMA-GATED debt status + 0.17 ACCEPT_AND_CARRY.
+
+    No production hot-path changes. Does not rebenchmark.
+    """
+    if root is None:
+        # Prefer caller-provided root; default to repo relative to this file
+        root = Path(__file__).resolve().parents[3]
+    root = Path(root).resolve()
+    debt_text = _read(root / DEBT_FLOOR_DOC)
+    res_text = _read(root / RESOLUTION_DOC)
+    tags_text = _read(root / "src" / "neural_mesh" / "tags.py")
+    schema_gate_present = (
+        "schema_gate_checkpoint_every_floor" in tags_text
+        and TAGS_SCHEMA_GATE in tags_text
+        and "SCHEMA-GATED" in tags_text
+    )
+    resolution = RESOLUTION_ACCEPT_AND_CARRY
+    if res_text and RESOLUTION_ACCEPT_AND_CARRY not in res_text:
+        resolution = "UNSPECIFIED"
+    return {
+        "debt": "CHECKPOINT_EVERY_FLOOR",
+        "status": "SCHEMA-GATED",
+        "resolution": resolution,
+        "package_line": package_line,
+        "schema_gate_present": schema_gate_present,
+        "rebenchmarked": False,
+        "blocking": False if schema_gate_present else True,
+        "debt_doc": str(DEBT_FLOOR_DOC),
+        "resolution_doc": str(RESOLUTION_DOC),
+        "resolution_doc_present": bool(res_text),
+        "no_slo_chase": "No SLO chase" in debt_text or "no SLO chase" in debt_text.lower(),
+    }
+
+
 def run_debt_gate_review(
     root: Path | str,
     *,
     version: str = RELEASE_VERSION,
     report_path: Path | str | None = None,
     force_fail: str | None = None,
+    cp: str = "CP-0030",
+    cycle: int = 26,
+    package_line: str = "0.17.x",
 ) -> DebtGateReviewResult:
     """Review debt gates for consistency. Never re-benchmarks SLOs."""
     root = Path(root).resolve()
-    result = DebtGateReviewResult(version=version)
+    result = DebtGateReviewResult(
+        version=version,
+        cp=cp,
+        cycle=cycle,
+        package_line=package_line,
+        resolution=RESOLUTION_ACCEPT_AND_CARRY,
+    )
     result.notes.append(
         "Debt gate review: report MET/GAP/SCHEMA-GATED from docs; no rebenchmark."
+    )
+    result.notes.append(
+        f"0.17 resolution={RESOLUTION_ACCEPT_AND_CARRY} (carry SCHEMA-GATED; non-blocking unless gate fails)."
     )
     result.rebenchmarked = False
 
@@ -172,11 +235,38 @@ def run_debt_gate_review(
                     ok=consistent,
                     detail=(
                         f"debt_status={status} markers_ok={markers_ok} "
-                        f"schema_gate_present={result.schema_gate_present}"
+                        f"schema_gate_present={result.schema_gate_present} "
+                        f"resolution={result.resolution}"
                     ),
                     path=str(DEBT_FLOOR_DOC),
                 )
             )
+
+    # Resolution doc for 0.17 line (ACCEPT_AND_CARRY) — advisory gate
+    res_path = root / RESOLUTION_DOC
+    res_text = _read(res_path)
+    if res_text:
+        res_ok = (
+            RESOLUTION_ACCEPT_AND_CARRY in res_text
+            and "SCHEMA-GATED" in res_text
+        )
+        result.add(
+            GateStatus(
+                id="SCHEMA_GATE_RESOLUTION_0.17",
+                status=RESOLUTION_ACCEPT_AND_CARRY if res_ok else "INCONSISTENT",
+                ok=res_ok,
+                detail=f"resolution_doc present; accept_and_carry={RESOLUTION_ACCEPT_AND_CARRY in res_text}",
+                path=str(RESOLUTION_DOC),
+            )
+        )
+        if RESOLUTION_ACCEPT_AND_CARRY not in res_text:
+            result.resolution = "UNSPECIFIED"
+    else:
+        # Soft note when reviewing a mini-root without the resolution doc
+        result.notes.append(
+            f"Resolution doc {RESOLUTION_DOC} absent (ok for mini-root); "
+            f"default resolution={RESOLUTION_ACCEPT_AND_CARRY}."
+        )
 
     # Known SLOs — report documented states without rebenchmarking
     for slo_id, documented in KNOWN_SLO_STATES.items():

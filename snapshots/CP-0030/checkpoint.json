@@ -1,0 +1,51 @@
+{
+  "checkpoint_id": "CP-0030",
+  "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.17.0",
+  "status": "VERIFIED",
+  "phase": 5,
+  "module": "mesh-017-scope-freeze-bootstrap",
+  "reason": "Cycle 26 0.17 scope freeze; schema-gate ACCEPT_AND_CARRY; 0.17.0 bootstrap",
+  "objective": "",
+  "next_action": "First frozen 0.17 theme (future work): N=2 multi-node packaging beyond single-node. Do not reopen 0.16.3 RC. Still blocked: Raft, N>2, multi-primary, ML/R2/R3, plaintext, Vault-ACME-req, GIA. No SLO chase / EVERY_fsync / tag_schema. DeepSeek M2M VERDICT on Cycle 26 / CP-0030.",
+  "git_commit": null,
+  "changed_files": [
+    "pyproject.toml",
+    "src/neural_mesh/__init__.py",
+    "src/neural_mesh/packaging/debt_gate_review.py",
+    "src/neural_mesh/packaging/release_checklist.py",
+    "src/neural_mesh/packaging/final_release_audit.py",
+    "src/neural_mesh/packaging/release_signoff.py",
+    "src/neural_mesh/packaging/__init__.py",
+    "scripts/debt_gate_review.py",
+    "scripts/release_checklist.py",
+    "docs/planning/0.17_SCOPE_FROZEN.md",
+    "docs/planning/0.17_BOOTSTRAP.md",
+    "docs/planning/0.17_SCOPE.md",
+    "docs/planning/0.17_NON_GOALS.md",
+    "docs/debt/SCHEMA_GATE_RESOLUTION_0.17.md",
+    "council/SCOPE_0.17_FROZEN.md",
+    "council/PLAN_0.17_DRAFT.md",
+    "council/COUNCIL_AGREEMENT_CYCLE26.md",
+    "tests/test_packaging_rc_cycle26.py"
+  ],
+  "tests": {
+    "passed": 477,
+    "failed": 0
+  },
+  "known_bugs": [],
+  "blockers": [],
+  "safety_status": "SAFE",
+  "evidence": [
+    "docs/planning/0.17_SCOPE_FROZEN.md",
+    "docs/planning/0.17_BOOTSTRAP.md",
+    "docs/debt/SCHEMA_GATE_RESOLUTION_0.17.md",
+    "council/SCOPE_0.17_FROZEN.md",
+    "tests/test_packaging_rc_cycle26.py",
+    "dist/releases/0.16.3/DEBT_GATE_REVIEW.json"
+  ],
+  "created_at": "2026-09-24T01:00:28.347659+00:00",
+  "manifest_sha256": "81089e745f89b2a6b7d7635e2f14a7562824f9c32d0d4afe2e2c8e6f445408e2",
+  "cram_root_hash": null,
+  "cram_objects": []
+}

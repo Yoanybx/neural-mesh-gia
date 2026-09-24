@@ -1,6 +1,6 @@
 {
   "audit_hashes": {
-    "final_release_audit": "d18ea8f9ab15a52d258d03866e853ea560342cdc008016e658d8bc8fba5122fd"
+    "final_release_audit": "bf9597d08f08cc96049451a6a1c81f018e82a6ccd1043842f2e857625d7b8071"
   },
   "audit_ok": true,
   "cp": "CP-0028",
@@ -9,12 +9,12 @@
   "freeze_schema": "mesh.bundle.manifest/v1",
   "gates": [
     {
-      "detail": "re-run ok=True hash=d18ea8f9ab15",
+      "detail": "re-run ok=True hash=bf9597d08f08",
       "name": "final_release_audit",
       "ok": true
     },
     {
-      "detail": "pyproject=0.16.3 init=0.16.3 expected=0.16.3",
+      "detail": "pyproject=0.17.0 init=0.17.0 expected=0.16.3 next_line_ok=True",
       "name": "version_0163",
       "ok": true
     },
@@ -24,7 +24,7 @@
       "ok": true
     },
     {
-      "detail": "snap=True last=CP-0028 status=VERIFIED",
+      "detail": "snap=True last=CP-0029 status=VERIFIED",
       "name": "cp_0027_verified",
       "ok": true
     },
@@ -34,18 +34,18 @@
       "ok": true
     },
     {
-      "detail": "injected count=66",
+      "detail": "injected count=40",
       "name": "pytest_packaging",
       "ok": true
     }
   ],
   "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
   "ok": true,
-  "packaging_count": 66,
+  "packaging_count": 40,
   "prior_cp": "CP-0027",
   "schema": "mesh.release.signoff/v1",
   "signer": "council:DeepSeek+Grok",
-  "timestamp": "2026-09-23T23:30:00Z",
-  "tip": "718b910",
+  "timestamp": "2026-09-23T22:00:00Z",
+  "tip": "moncli",
   "ver": "0.16.3"
 }

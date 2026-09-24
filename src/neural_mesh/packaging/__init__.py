@@ -1,4 +1,4 @@
-"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0029).
+"""Mesh Packaging: Single-Node Bundle (CP-0024..CP-0030).
 
 Capability packaging for a reproducible single-node tarball + manifest.
 Does **not** change tags, SLOs, consensus, Raft, or N>2.
@@ -40,6 +40,7 @@ from .release_checklist import (
     ChecklistResult,
     GateResult,
     run_release_checklist,
+    version_matches_expect,
 )
 from .rc_soak import SoakResult, SoakIteration, run_rc_soak, percentile
 from .final_release_audit import (
@@ -81,8 +82,11 @@ from .post_release_monitor import (
 )
 from .debt_gate_review import (
     DEBT_FLOOR_DOC,
+    RESOLUTION_DOC,
+    RESOLUTION_ACCEPT_AND_CARRY,
     DebtGateReviewResult,
     GateStatus,
+    debt_gate_status,
     run_debt_gate_review,
 )
 
@@ -121,6 +125,7 @@ __all__ = [
     "ChecklistResult",
     "GateResult",
     "run_release_checklist",
+    "version_matches_expect",
     "SoakResult",
     "SoakIteration",
     "run_rc_soak",
@@ -153,7 +158,10 @@ __all__ = [
     "run_post_release_monitor",
     "append_monitor_history",
     "DEBT_FLOOR_DOC",
+    "RESOLUTION_DOC",
+    "RESOLUTION_ACCEPT_AND_CARRY",
     "DebtGateReviewResult",
     "GateStatus",
+    "debt_gate_status",
     "run_debt_gate_review",
 ]

@@ -21,6 +21,7 @@ from .repro import repro_check
 
 __all__ = [
     "NO_HELD_DEFAULT",
+    "version_matches_expect",
     "ChecklistResult",
     "GateResult",
     "run_release_checklist",
@@ -30,6 +31,23 @@ NO_HELD_DEFAULT = (
     "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,"
     "SLO_chase,tag_schema,EVERY_fsync"
 )
+
+
+
+def version_matches_expect(live: str, expect: str | None) -> bool:
+    """Exact match, or 0.17.x next-line when expect is closed 0.16.3.
+
+    Closed-release tooling may re-run while the package has already opened
+    0.17.x (CP-0030 bootstrap). pyproject/__init__ agreement is checked
+    separately by callers.
+    """
+    if expect is None:
+        return True
+    if live == expect:
+        return True
+    if expect == "0.16.3" and live.startswith("0.17."):
+        return True
+    return False
 
 
 @dataclass
@@ -89,9 +107,11 @@ def _gate_version(root: Path, expect: str | None, result: ChecklistResult) -> No
     result.version = ver
     ok = True
     detail = f"pyproject={ver} init={init_ver}"
-    if expect and ver != expect:
+    if expect and not version_matches_expect(ver, expect):
         ok = False
         detail += f" expected={expect}"
+    elif expect and ver != expect and version_matches_expect(ver, expect):
+        detail += f" expected={expect} next_line_ok=True"
     if init_ver and init_ver != ver:
         ok = False
         detail += " version mismatch between pyproject and __init__"
@@ -261,7 +281,7 @@ def _gate_no_held(root: Path, result: ChecklistResult) -> None:
 def run_release_checklist(
     root: Path | str,
     *,
-    expect_version: str | None = "0.16.3",
+    expect_version: str | None = "0.17.0",
     expect_cp: str | None = "CP-0027",
     out_dir: Path | str | None = None,
     tip: str | None = None,

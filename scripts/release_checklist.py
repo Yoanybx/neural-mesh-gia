@@ -26,7 +26,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Single-node RC release checklist")
     p.add_argument("--root", type=Path, default=_REPO)
     p.add_argument("--out", type=Path, default=_REPO / "dist" / "checklist")
-    p.add_argument("--expect-version", default="0.16.3")
+    p.add_argument("--expect-version", default="0.17.0")
     p.add_argument("--expect-cp", default="CP-0027")
     p.add_argument("--tip", default=None)
     p.add_argument("--skip-repro", action="store_true")
