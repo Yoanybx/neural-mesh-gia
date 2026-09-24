@@ -16,4 +16,4 @@ NOTE: DeepSeek C28 VERDICT PASS preferred NEXT=fabric_ops_UX executed. 0.17 froz
 NO_HELD: Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync
 ASK: VERDICT+NEXT
 PREFERRED_NEXT: richer_OBS_peers (0.17 theme3; mesh.status.snapshot/v1 peer injection ergonomics; optional read-only probe only if trivial; no consensus/Raft/N>2)
-CONSTRAINTS: 2026-09-23T22:02:00-04:00
+CONSTRAINTS: DeepSeek-only;Search=OFF;inline-only;reply=M2M_v1
