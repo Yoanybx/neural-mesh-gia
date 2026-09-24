@@ -41,6 +41,18 @@ from .transport import (
     listen_unix,
 )
 from .witness import PrimaryWitness
+from .ops import (
+    FabricDiagnoseReport,
+    FabricOps,
+    FabricReconnectResult,
+    FabricStatusReport,
+    PeerProbe,
+    cmd_fabric_diagnose,
+    cmd_fabric_reconnect,
+    cmd_fabric_status,
+    load_endpoints_json,
+    resolve_cert_paths,
+)
 
 __all__ = [
     "CertBootstrapError",
@@ -79,4 +91,14 @@ __all__ = [
     "make_error",
     "peer_identities",
     "verify_peer_identity",
+    "FabricDiagnoseReport",
+    "FabricOps",
+    "FabricReconnectResult",
+    "FabricStatusReport",
+    "PeerProbe",
+    "cmd_fabric_diagnose",
+    "cmd_fabric_reconnect",
+    "cmd_fabric_status",
+    "load_endpoints_json",
+    "resolve_cert_paths",
 ]

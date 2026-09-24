@@ -1,0 +1,29 @@
+{
+  "checkpoint": "CP-0033",
+  "created_utc": "2026-09-24T02:01:48.296766+00:00",
+  "cycle": 29,
+  "dual_primary": 0,
+  "fabric_ops_cycle29": 16,
+  "files": [
+    "CHECKPOINT.json",
+    "COUNCIL_AGREEMENT_CYCLE29.md.snap",
+    "MESH_FABRIC_OPS_UX.md.snap",
+    "PASTE_CYCLE29_M2M.md.snap",
+    "STATUS_CYCLE29.md.snap",
+    "STATUS_FOR_CHATGPT_CYCLE29.md.snap",
+    "checkpoint.json",
+    "cli.py.snap",
+    "manifest.sha256",
+    "network_init.py.snap",
+    "ops.py.snap",
+    "test_fabric_ops_cycle29.py.snap"
+  ],
+  "plaintext_fallback": 0,
+  "pytest": {
+    "failed": 0,
+    "passed": 520
+  },
+  "status": "VERIFIED",
+  "theme": "fabric_ops_UX",
+  "version": "0.17.0"
+}

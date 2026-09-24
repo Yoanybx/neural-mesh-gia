@@ -73,3 +73,5 @@ Use ADR files for major decisions.
 - Decision: Always embed freeze `{channel:0.17.x-n2, schema:v1-n2}` in N2 builds; verify may require channel.
 - Rationale: Mirror single-node RC freeze pattern for N2 packaging without reopening 0.16.3.
 - Non-goals: Raft, N>2, multi-primary, tag_schema, SLO chase, EVERY_fsync.
+
+- Cycle 29: Fabric ops UX is operator ergonomics only; TLS fail-closed; no Vault/ACME required; dual_primary=0; plaintext_fallback=0.

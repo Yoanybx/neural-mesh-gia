@@ -49,6 +49,11 @@ from .router import (
 )
 from .router.capabilities import DEFAULT_CAP_TTL_MS
 import time as _time
+from .network.ops import (
+    cmd_fabric_diagnose,
+    cmd_fabric_reconnect,
+    cmd_fabric_status,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -373,6 +378,48 @@ def main(argv: list[str] | None = None):
     rconn.add_argument("--ping", action="store_true")
 
 
+    fabric_cmd = sub.add_parser(
+        "fabric", help="TLS fabric ops UX: status / diagnose / reconnect"
+    )
+    fabric_subs = fabric_cmd.add_subparsers(dest="fabric_op", required=True)
+    fstat = fabric_subs.add_parser("status", help="Local fabric status (certs + peer probes)")
+    fstat.add_argument("--fabric-root", type=str, required=True, help="LocalCA / fabric root")
+    fstat.add_argument("--node-id", type=str, required=True, help="Local node_id (leaf CN)")
+    fstat.add_argument("--endpoints", type=str, default=None, help="endpoints.json path")
+    fstat.add_argument("--json", action="store_true", help="JSON output")
+    fstat.add_argument("--no-probe", action="store_true", help="Skip live peer probes")
+    fstat.add_argument(
+        "--tls-required",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Require TLS (default true; no plaintext fallback)",
+    )
+    fdiag = fabric_subs.add_parser("diagnose", help="Diagnose fabric certs / peers")
+    fdiag.add_argument("--fabric-root", type=str, required=True)
+    fdiag.add_argument("--node-id", type=str, required=True)
+    fdiag.add_argument("--endpoints", type=str, default=None)
+    fdiag.add_argument("--json", action="store_true")
+    fdiag.add_argument("--no-probe", action="store_true")
+    fdiag.add_argument(
+        "--tls-required",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    frec = fabric_subs.add_parser(
+        "reconnect", help="Safe TLS reconnect of sessions (fail-closed)"
+    )
+    frec.add_argument("--fabric-root", type=str, required=True)
+    frec.add_argument("--node-id", type=str, required=True)
+    frec.add_argument("--peer", type=str, default=None, help="Peer node_id (default: all)")
+    frec.add_argument("--endpoints", type=str, default=None)
+    frec.add_argument("--json", action="store_true")
+    frec.add_argument("--attempts", type=int, default=2)
+    frec.add_argument(
+        "--tls-required",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+
     router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
     rex = router_subs.add_parser("explain", help="Explain last/logged decision for task_id")
@@ -676,6 +723,47 @@ def main(argv: list[str] | None = None):
                         ping=bool(getattr(a, "ping", False)),
                     )
                 )
+
+    elif a.cmd == "fabric":
+        fr = a.fabric_root
+        nid = a.node_id
+        eps = getattr(a, "endpoints", None)
+        as_json = bool(getattr(a, "json", False))
+        tls_req = bool(getattr(a, "tls_required", True))
+        if a.fabric_op == "status":
+            raise SystemExit(
+                cmd_fabric_status(
+                    fabric_root=fr,
+                    node_id=nid,
+                    endpoints=eps,
+                    as_json=as_json,
+                    probe=not bool(getattr(a, "no_probe", False)),
+                    tls_required=tls_req,
+                )
+            )
+        elif a.fabric_op == "diagnose":
+            raise SystemExit(
+                cmd_fabric_diagnose(
+                    fabric_root=fr,
+                    node_id=nid,
+                    endpoints=eps,
+                    as_json=as_json,
+                    probe=not bool(getattr(a, "no_probe", False)),
+                    tls_required=tls_req,
+                )
+            )
+        elif a.fabric_op == "reconnect":
+            raise SystemExit(
+                cmd_fabric_reconnect(
+                    fabric_root=fr,
+                    node_id=nid,
+                    peer=getattr(a, "peer", None),
+                    endpoints=eps,
+                    as_json=as_json,
+                    attempts=int(getattr(a, "attempts", 2)),
+                    tls_required=tls_req,
+                )
+            )
 
     elif a.cmd == "router":
         ensure_default_policy(root)

@@ -78,3 +78,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - pytest 504/0; packaging_n2 27; cycle28 tests 13
 - N2 freeze channel 0.17.x-n2 embedded always; schema FROZEN for N2 RC
 - 0.16.3 single-node freeze untouched; version held 0.17.0
+
+## Cycle 29 / CP-0033 — 2026-09-24T02:01:48.296766+00:00
+- Fabric ops UX: FabricOps + mesh fabric CLI + 16 tests; pytest 520; CP-0033 VERIFIED; ver 0.17.0 held.

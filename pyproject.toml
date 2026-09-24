@@ -33,4 +33,6 @@ markers = [
     "packaging_rc_cycle26: CP-0030 0.17 scope freeze / schema gate resolution / bootstrap",
     "packaging_n2: CP-0031 N=2 multi-node packaging design / manifest parity / install rollback",
     "packaging_n2_cycle28: CP-0032 N2 soak / final audit / RC freeze",
+    "fabric_ops_cycle29: CP-0033 fabric ops UX status/diagnose/reconnect",
 ]
+

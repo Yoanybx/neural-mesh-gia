@@ -1,0 +1,17 @@
+{
+  "checkpoint": "CP-0033",
+  "cycle": 29,
+  "dual_primary": 0,
+  "fabric_ops_cycle29": 16,
+  "plaintext_fallback": 0,
+  "pytest": {
+    "failed": 0,
+    "passed": 520
+  },
+  "status": "VERIFIED",
+  "theme": "fabric_ops_UX",
+  "tip_pre_commit": "7133661",
+  "vault_acme_required": false,
+  "verified_at": "2026-09-24T02:01:48.296766+00:00",
+  "version": "0.17.0"
+}

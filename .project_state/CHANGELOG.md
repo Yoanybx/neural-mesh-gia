@@ -191,3 +191,9 @@ Bootstrap continuity system (shipped source).
 - P31: n2_final_release_audit + MESH_PACKAGING_N2_FINAL_RELEASE_AUDIT.md (M2M JSON).
 - P32: N2 freeze always-on channel 0.17.x-n2; verify rejects wrong/missing; schema FROZEN for N2 RC; 0.16.3 untouched.
 - tests/test_packaging_n2_cycle28.py (13); packaging_n2 27; pytest 504; CP-0032 VERIFIED; ver 0.17.0 held.
+
+## Cycle 29 — 2026-09-23 — CP-0033 Fabric ops UX
+- docs/capabilities/MESH_FABRIC_OPS_UX.md
+- src/neural_mesh/network/ops.py (status/diagnose/reconnect)
+- CLI mesh fabric status|diagnose|reconnect
+- tests/test_fabric_ops_cycle29.py (16); pytest 520; CP-0033 VERIFIED; ver 0.17.0 held.

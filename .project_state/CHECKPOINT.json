@@ -46,29 +46,29 @@
     "mesh_packaging_post_release_ops_planning_cp0029",
     "mesh_017_scope_freeze_bootstrap_cp0030",
     "mesh_017_n2_multi_node_packaging_cp0031",
-    "mesh_017_n2_rc_hardening_cp0032"
+    "mesh_017_n2_rc_hardening_cp0032",
+    "mesh_017_fabric_ops_ux_cp0033"
   ],
-  "current_module": "mesh-017-n2-rc-hardening",
+  "current_module": "mesh-017-fabric-ops-ux",
   "current_phase": 5,
   "decisions_pending": [],
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0032",
+  "last_checkpoint": "CP-0033",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-24T01:22:53.785817+00:00",
-  "last_updated": "2026-09-24T01:22:53.785817+00:00",
+  "last_successful_test": "2026-09-24T02:01:48.296766+00:00",
+  "last_updated": "2026-09-24T02:01:48.296766+00:00",
   "modified_files": [
-    "src/neural_mesh/packaging/n2_rc_soak.py",
-    "src/neural_mesh/packaging/n2_final_release_audit.py",
-    "src/neural_mesh/packaging/bundle_n2.py",
-    "scripts/n2_rc_soak.py",
-    "scripts/n2_final_release_audit.py",
-    "docs/capabilities/MESH_PACKAGING_N2_FINAL_RELEASE_AUDIT.md",
-    "tests/test_packaging_n2_cycle28.py",
-    "council/COUNCIL_AGREEMENT_CYCLE28.md"
+    "src/neural_mesh/network/ops.py",
+    "src/neural_mesh/network/__init__.py",
+    "src/neural_mesh/cli.py",
+    "docs/capabilities/MESH_FABRIC_OPS_UX.md",
+    "tests/test_fabric_ops_cycle29.py",
+    "council/COUNCIL_AGREEMENT_CYCLE29.md",
+    "pyproject.toml"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 28 / CP-0032. Next frozen 0.17 theme after N2 RC hardening (e.g. Fabric ops UX). Do not reopen 0.16.3. NO_HELD unchanged.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 29 / CP-0033. Next frozen 0.17 theme: richer_OBS_peers. Do not reopen 0.16.3. NO_HELD unchanged.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.17.0",
@@ -77,6 +77,6 @@
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 504
+    "passed": 520
   }
 }
