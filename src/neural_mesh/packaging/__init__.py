@@ -139,6 +139,23 @@ from .debt_gate_review import (
     run_debt_gate_review,
 )
 
+
+from .theme_signoff_017 import (
+    THEME_VERSION,
+    THEME_FREEZE,
+    THEME_SCHEMA,
+    PRIOR_CP_017,
+    SEAL_CP_017,
+    CYCLE_017,
+    THEME_CPS,
+    THEME_DOCS,
+    ThemeSignoffResult,
+    ThemeArchiveResult,
+    run_017_theme_signoff,
+    run_017_theme_archive,
+    run_017_post_signoff_monitor,
+)
+
 __all__ = [
     "SCHEMA_ID",
     "FREEZE_CHANNEL",
@@ -250,4 +267,17 @@ __all__ = [
     "EXPECTED_CP_N2",
     "N2AuditResult",
     "run_n2_final_release_audit",
+    "THEME_VERSION",
+    "THEME_FREEZE",
+    "THEME_SCHEMA",
+    "PRIOR_CP_017",
+    "SEAL_CP_017",
+    "CYCLE_017",
+    "THEME_CPS",
+    "THEME_DOCS",
+    "ThemeSignoffResult",
+    "ThemeArchiveResult",
+    "run_017_theme_signoff",
+    "run_017_theme_archive",
+    "run_017_post_signoff_monitor",
 ]

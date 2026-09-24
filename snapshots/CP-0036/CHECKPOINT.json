@@ -1,0 +1,15 @@
+{
+  "checkpoint": "CP-0036",
+  "cycle": 32,
+  "dual_primary": 0,
+  "freeze": "0.17.x-n2",
+  "line_status": "CLOSED_FROZEN_THEMES",
+  "pytest": {
+    "failed": 0,
+    "passed": 567
+  },
+  "signoff_cycle32": 13,
+  "status": "VERIFIED",
+  "theme": "0.17_signoff",
+  "version": "0.17.0"
+}

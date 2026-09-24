@@ -93,3 +93,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Theme 4 of 0.17 frozen scope: MESH_EXTERNAL_QUICKSTART
 - pytest 554/0; quickstart_cycle31=15; dual_primary=0
 - PREFERRED_NEXT: 0.17_signoff
+
+## Cycle 32 / CP-0036 (2026-09-23 22:24 EDT)
+- 0.17_signoff: themes 1–4 CLOSED/FROZEN; dist/releases/0.17.0 artifacts; pytest 567/0; local tag v0.17.0 pending clean commit.

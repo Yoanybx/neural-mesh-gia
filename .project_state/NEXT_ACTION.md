@@ -1,7 +1,5 @@
 # NEXT ACTION
 
-1. Paste `council/PASTE_CYCLE31_M2M.md` to DeepSeek (DeepSeek-only; Search=OFF).
-2. Await VERDICT + NEXT for Cycle 32 / CP-0036.
-3. Hold version 0.17.0. Do not reopen 0.16.3. Do not touch tag v0.16.3.
-4. Candidate next: **0.17_signoff** (0.17 frozen themes 1–4 complete).
-5. NO_HELD unchanged. Debt remains SCHEMA-GATED ACCEPT_AND_CARRY.
+**CP-0036 VERIFIED.** Preferred next: `0.18_bootstrap` (planning docs only). Then `0.18_H1_identity` after council NEXT.
+Do not reopen 0.16.3. Do not implement H1..H8 in the signoff window.
+NO_HELD unchanged. GOV.7 schema-debt deadline at 0.18 entry.

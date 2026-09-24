@@ -1,0 +1,71 @@
+{
+  "gates": [
+    {
+      "detail": "pyproject=0.17.0 init=0.17.0 expected=0.17.0",
+      "name": "version_0170",
+      "ok": true
+    },
+    {
+      "detail": "channel=0.17.x-n2 schema=mesh.bundle.manifest/v1-n2",
+      "name": "freeze_017x_n2",
+      "ok": true
+    },
+    {
+      "detail": "present=5 missing=none",
+      "name": "themes_1_4_shipped",
+      "ok": true
+    },
+    {
+      "detail": "missing=none seal=CP-0036",
+      "name": "cps_0031_0035",
+      "ok": true
+    },
+    {
+      "detail": "snap=True",
+      "name": "cp_0035_verified",
+      "ok": true
+    },
+    {
+      "detail": "seal=CP-0036",
+      "name": "cp_0036_seal",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "hit=0.17_SCOPE_FROZEN.md",
+      "name": "no_held_documented",
+      "ok": true
+    },
+    {
+      "detail": "injected count=567",
+      "name": "pytest_green",
+      "ok": true
+    },
+    {
+      "detail": "signoff_0163=True tag_v0163=True",
+      "name": "release_0163_untouched",
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "schema": "mesh.release.theme_checklist/v1",
+  "theme_cps": [
+    "CP-0031",
+    "CP-0032",
+    "CP-0033",
+    "CP-0034",
+    "CP-0035"
+  ],
+  "themes": [
+    "theme1_n2_packaging",
+    "theme1_n2_audit",
+    "theme2_fabric_ops",
+    "theme3_obs_peers",
+    "theme4_external_quickstart"
+  ],
+  "ver": "0.17.0"
+}

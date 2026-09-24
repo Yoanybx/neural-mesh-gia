@@ -1,0 +1,86 @@
+{
+  "cp": "CP-0036",
+  "cycle": 32,
+  "dual_primary": 0,
+  "freeze": "0.17.x-n2",
+  "freeze_schema": "mesh.bundle.manifest/v1-n2",
+  "gates": [
+    {
+      "detail": "pyproject=0.17.0 init=0.17.0 expected=0.17.0",
+      "name": "version_0170",
+      "ok": true
+    },
+    {
+      "detail": "channel=0.17.x-n2 schema=mesh.bundle.manifest/v1-n2",
+      "name": "freeze_017x_n2",
+      "ok": true
+    },
+    {
+      "detail": "present=5 missing=none",
+      "name": "themes_1_4_shipped",
+      "ok": true
+    },
+    {
+      "detail": "missing=none seal=CP-0036",
+      "name": "cps_0031_0035",
+      "ok": true
+    },
+    {
+      "detail": "snap=True",
+      "name": "cp_0035_verified",
+      "ok": true
+    },
+    {
+      "detail": "seal=CP-0036",
+      "name": "cp_0036_seal",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "hit=0.17_SCOPE_FROZEN.md",
+      "name": "no_held_documented",
+      "ok": true
+    },
+    {
+      "detail": "injected count=567",
+      "name": "pytest_green",
+      "ok": true
+    },
+    {
+      "detail": "signoff_0163=True tag_v0163=True",
+      "name": "release_0163_untouched",
+      "ok": true
+    }
+  ],
+  "line_status": "CLOSED_FROZEN_THEMES",
+  "next_line": "0.18.x H1..H8 (planning only after council NEXT)",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "note": "0.17.0 theme set CLOSED/FROZEN; package stays 0.17.0 until 0.18 bootstrap. Do not reopen 0.16.3. Do not implement H1..H8 here.",
+  "ok": true,
+  "package_held_at": "0.17.0",
+  "prior_cp": "CP-0035",
+  "pytest_count": 567,
+  "schema": "mesh.release.theme_signoff/v1",
+  "signer": "council:DeepSeek+Grok",
+  "theme_cps": [
+    "CP-0031",
+    "CP-0032",
+    "CP-0033",
+    "CP-0034",
+    "CP-0035"
+  ],
+  "themes": {
+    "1": "n2_packaging_rc",
+    "2": "fabric_ops_ux",
+    "3": "richer_obs_peers",
+    "4": "external_quickstart",
+    "status": "CLOSED"
+  },
+  "timestamp": "2026-09-24T02:23:44Z",
+  "tip": "1d1125e",
+  "ver": "0.17.0"
+}

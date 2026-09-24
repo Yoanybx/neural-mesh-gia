@@ -1,0 +1,31 @@
+{
+  "checkpoint": "CP-0036",
+  "created_utc": "2026-09-24T02:24:11Z",
+  "cycle": 32,
+  "dual_primary": 0,
+  "files": [
+    "ARCHIVE_MANIFEST.json",
+    "CHECKLIST.json",
+    "CHECKPOINT.json",
+    "COUNCIL_AGREEMENT_CYCLE32.md.snap",
+    "MESH_0.17_SIGNOFF.md.snap",
+    "MONITOR.json",
+    "PASTE_CYCLE32_M2M.md.snap",
+    "SIGNOFF.json",
+    "STATUS_CYCLE32.md.snap",
+    "STATUS_FOR_CHATGPT_CYCLE32.md.snap",
+    "TAG_MARKER.json",
+    "manifest.sha256",
+    "test_017_signoff_cycle32.py.snap",
+    "theme_signoff_017.py.snap",
+    "theme_signoff_017_script.py.snap"
+  ],
+  "pytest": {
+    "failed": 0,
+    "passed": 567
+  },
+  "signoff_cycle32": 13,
+  "status": "VERIFIED",
+  "theme": "0.17_signoff",
+  "version": "0.17.0"
+}

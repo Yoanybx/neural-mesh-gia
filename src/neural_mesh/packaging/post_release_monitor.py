@@ -192,7 +192,48 @@ def _check_freeze(
     tip: str | None,
     ver: str | None,
     prebuilt_manifest: Path | None,
+    expect_freeze_channel: str | None = None,
+    expect_schema: str | None = None,
 ) -> None:
+    want_freeze = expect_freeze_channel or FREEZE_CHANNEL
+    want_schema = expect_schema or SCHEMA_ID
+
+    # N2 / alternate freeze: prefer JSON channel check when expect differs
+    if want_freeze != FREEZE_CHANNEL:
+        man_path = None
+        if prebuilt_manifest and Path(prebuilt_manifest).is_file():
+            man_path = Path(prebuilt_manifest)
+        else:
+            release_mans = list(
+                (root / "dist" / "releases" / (ver or RELEASE_VERSION)).glob(
+                    "*.manifest.json"
+                )
+            )
+            if release_mans:
+                man_path = release_mans[0]
+        if man_path is not None:
+            try:
+                from .bundle_n2 import load_n2_manifest
+
+                m = load_n2_manifest(man_path)
+                result.version = result.version or getattr(m, "ver", None)
+                ch = m.freeze.channel if m.freeze else None
+                sch = (
+                    m.freeze.schema_name
+                    if m.freeze and hasattr(m.freeze, "schema_name")
+                    else getattr(m, "schema_name", None)
+                )
+                result.freeze_channel = ch
+                ok = ch == want_freeze and (want_schema is None or sch == want_schema)
+                result.add(
+                    "freeze_intact",
+                    ok,
+                    f"n2 channel={ch!r} schema={sch!r} expect={want_freeze}/{want_schema}",
+                )
+                return
+            except Exception as exc:  # noqa: BLE001 — fall through to single-node path
+                pass  # N2 load failed; fall through to single-node path
+
     if prebuilt_manifest and prebuilt_manifest.is_file():
         m = load_manifest(prebuilt_manifest)
     else:
@@ -216,9 +257,9 @@ def _check_freeze(
     result.freeze_channel = m.freeze.channel if m.freeze else None
     ok = (
         m.freeze is not None
-        and m.freeze.channel == FREEZE_CHANNEL
-        and m.freeze.schema_name == SCHEMA_ID
-        and m.schema_name == SCHEMA_ID
+        and m.freeze.channel == want_freeze
+        and m.freeze.schema_name == want_schema
+        and m.schema_name == want_schema
     )
     result.add(
         "freeze_intact",
@@ -253,6 +294,7 @@ def _check_no_forbidden_drift(root: Path, result: MonitorResult) -> None:
         "final_release_audit.py",
         "release_checklist.py",
         "debt_gate_review.py",
+        "theme_signoff_017.py",
     }
     hits: list[str] = []
     for path in scan_paths:
@@ -333,6 +375,8 @@ def run_post_release_monitor(
     tip: str | None = None,
     prebuilt_manifest: Path | str | None = None,
     force_fail: str | None = None,
+    expect_freeze_channel: str | None = None,
+    expect_schema: str | None = None,
 ) -> MonitorResult:
     """Run post-release --once checks. With continue_mode, also append history JSONL."""
     root = Path(root).resolve()
@@ -383,6 +427,8 @@ def run_post_release_monitor(
             tip=tip,
             ver=version,
             prebuilt_manifest=Path(prebuilt_manifest) if prebuilt_manifest else None,
+            expect_freeze_channel=expect_freeze_channel,
+            expect_schema=expect_schema,
         )
 
     if force_fail == "debt_schema_gated":

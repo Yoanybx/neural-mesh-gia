@@ -49,18 +49,19 @@
     "mesh_017_n2_rc_hardening_cp0032",
     "mesh_017_fabric_ops_ux_cp0033",
     "mesh_017_obs_peers_cp0034",
-    "mesh_017_external_quickstart_cp0035"
+    "mesh_017_external_quickstart_cp0035",
+    "mesh_017_theme_signoff_cp0036"
   ],
-  "current_module": "mesh-017-external-quickstart",
+  "current_module": "mesh-017-theme-signoff",
   "current_phase": 5,
   "decisions_pending": [],
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0035",
+  "last_checkpoint": "CP-0036",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-24T02:13:00.906324+00:00",
-  "last_updated": "2026-09-24T02:13:00.906324+00:00",
+  "last_successful_test": "2026-09-24T02:24:11.427798+00:00",
+  "last_updated": "2026-09-24T02:24:11.427809+00:00",
   "modified_files": [
     "docs/quickstart/QUICKSTART_0.16.3.md",
     "docs/quickstart/QUICKSTART_0.17_STUB.md",
@@ -70,14 +71,15 @@
     "council/STATUS_CYCLE31.md",
     "pyproject.toml"
   ],
-  "next_action": "DeepSeek M2M VERDICT on Cycle 31 / CP-0035. Next: 0.17_signoff. Do not reopen 0.16.3. NO_HELD unchanged.",
+  "next_action": "DeepSeek M2M VERDICT on Cycle 32 / CP-0036. Next: 0.18_bootstrap. Do not reopen 0.16.3. NO_HELD unchanged. Do not implement H1..H8 yet.",
   "open_questions": [],
   "project": "Neural Mesh / GIA-COS",
+  "project_version": "0.17.0",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 554
+    "passed": 567
   }
 }
