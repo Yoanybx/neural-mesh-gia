@@ -178,9 +178,9 @@ def test_rc_install_verify_success_real_bundle(tmp_path: Path):
     assert result.help_ok is True
     assert result.status_ok is True
     assert result.freeze_channel == FREEZE_CHANNEL
-    assert result.version == "0.17.0"
+    assert result.version == "0.18.0"
     marker = read_install_marker(tmp_path / "prefix")
-    assert marker.get("ver") == "0.17.0"
+    assert marker.get("ver") == "0.17.0"  # manifest ver param; live __version__ is 0.18.0
     assert (tmp_path / "prefix" / "bin" / "mesh").is_file()
 
 
@@ -353,7 +353,7 @@ def test_release_checklist_pass_with_skips(tmp_path: Path):
     # by using marker + skip_pytest; still run freeze + version + no_held.
     result = run_release_checklist(
         REPO,
-        expect_version="0.17.0",
+        expect_version="0.18.0",
         expect_cp="CP-0027",
         out_dir=tmp_path / "chk",
         tip="chkpass",
@@ -364,7 +364,7 @@ def test_release_checklist_pass_with_skips(tmp_path: Path):
         require_freeze=True,
     )
     assert result.ok, result.errors
-    assert result.version == "0.17.0"
+    assert result.version == "0.18.0"
     assert result.freeze_channel == FREEZE_CHANNEL
     names = {g.name for g in result.gates}
     assert "version_match" in names
@@ -388,7 +388,7 @@ def test_release_checklist_fails_when_freeze_missing(tmp_path: Path):
     tar = out / f"{m.name}-{m.ver}.tar.gz"
     result = run_release_checklist(
         REPO,
-        expect_version="0.17.0",
+        expect_version="0.18.0",
         expect_cp="CP-0027",
         out_dir=tmp_path / "chk",
         skip_repro=True,
@@ -429,7 +429,7 @@ def test_release_checklist_script_json(tmp_path: Path):
             "--out",
             str(tmp_path / "chk"),
             "--expect-version",
-            "0.17.0",
+            "0.18.0",
             "--expect-cp",
             "CP-0027",
             "--skip-cp",
@@ -446,13 +446,13 @@ def test_release_checklist_script_json(tmp_path: Path):
     assert r.returncode == 0, r.stderr + r.stdout
     data = json.loads(r.stdout)
     assert data["ok"] is True
-    assert data["version"] == "0.17.0"
+    assert data["version"] == "0.18.0"
     assert data["freeze_channel"] == FREEZE_CHANNEL
 
 
 def test_version_gate_0162_files():
-    """Historical name; live package is 0.17.0; 0.16.3 release remains closed."""
+    """Historical name; live package is 0.18.0; 0.16.3 release remains closed."""
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject
-    assert '__version__ = "0.17.0"' in init
+    assert 'version = "0.18.0"' in pyproject
+    assert '__version__ = "0.18.0"' in init

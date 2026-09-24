@@ -378,7 +378,7 @@ def test_rc_soak_script_force_fail(tmp_path: Path):
 def test_final_release_audit_pass_test_mode(tmp_path: Path):
     result = run_final_release_audit(
         REPO,
-        expect_version="0.17.0",
+        expect_version="0.18.0",
         expect_cp="CP-0027",
         out_dir=tmp_path / "audit",
         tip="audpass",
@@ -389,7 +389,7 @@ def test_final_release_audit_pass_test_mode(tmp_path: Path):
         packaging_count=48,
     )
     assert result.ok, result.errors
-    assert result.version == "0.17.0"
+    assert result.version == "0.18.0"
     assert result.freeze_channel == FREEZE_CHANNEL
     assert result.packaging_count == 48
     assert result.dual_primary == 0
@@ -429,7 +429,7 @@ def test_final_release_audit_script_json(tmp_path: Path):
             "--out",
             str(tmp_path / "audit"),
             "--expect-version",
-            "0.17.0",
+            "0.18.0",
             "--expect-cp",
             "CP-0027",
             "--skip-cp",
@@ -448,7 +448,7 @@ def test_final_release_audit_script_json(tmp_path: Path):
     assert r.returncode == 0, r.stderr + r.stdout
     data = json.loads(r.stdout)
     assert data["ok"] is True
-    assert data["version"] == "0.17.0"
+    assert data["version"] == "0.18.0"
     assert data["dual_primary"] == 0
 
 
@@ -527,11 +527,11 @@ def test_post_rc_watch_mini_root(tmp_path: Path):
 
 
 def test_version_gate_0163_files():
-    """Historical name; live package is 0.17.0; RELEASE_VERSION stays 0.16.3 closed."""
+    """Historical name; live package is 0.18.0; RELEASE_VERSION stays 0.16.3 closed."""
     from neural_mesh.packaging import RELEASE_VERSION
 
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject
-    assert '__version__ = "0.17.0"' in init
+    assert 'version = "0.18.0"' in pyproject
+    assert '__version__ = "0.18.0"' in init
     assert RELEASE_VERSION == "0.16.3"

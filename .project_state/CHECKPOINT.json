@@ -50,7 +50,8 @@
     "mesh_017_fabric_ops_ux_cp0033",
     "mesh_017_obs_peers_cp0034",
     "mesh_017_external_quickstart_cp0035",
-    "mesh_017_theme_signoff_cp0036"
+    "mesh_017_theme_signoff_cp0036",
+    "mesh_018_bootstrap_cp0037"
   ],
   "current_module": "mesh-017-theme-signoff",
   "current_phase": 5,
@@ -58,7 +59,7 @@
   "git_commit": null,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0036",
+  "last_checkpoint": "CP-0037",
   "last_failed_test": null,
   "last_successful_test": "2026-09-24T02:24:11.427798+00:00",
   "last_updated": "2026-09-24T02:24:11.427809+00:00",
@@ -81,5 +82,6 @@
   "test_summary": {
     "failed": 0,
     "passed": 567
-  }
+  },
+  "version": "0.18.0"
 }

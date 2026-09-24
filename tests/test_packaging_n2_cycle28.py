@@ -113,7 +113,7 @@ def test_n2_rc_soak_script_cli(tmp_path: Path):
             "--n",
             "2",
             "--ver",
-            "0.17.0",
+            "0.18.0",
             "--tip",
             "soakcli",
             "--variance-bound",
@@ -136,7 +136,7 @@ def test_n2_rc_soak_script_cli(tmp_path: Path):
 def test_n2_final_audit_pass_injected(tmp_path: Path):
     result = run_n2_final_release_audit(
         REPO,
-        expect_version="0.17.0",
+        expect_version="0.18.0",
         expect_cp="CP-0032",
         out_dir=tmp_path / "audit",
         tip="audpass",
@@ -148,7 +148,7 @@ def test_n2_final_audit_pass_injected(tmp_path: Path):
         packaging_n2_count=26,
     )
     assert result.ok, result.errors
-    assert result.version == "0.17.0"
+    assert result.version == "0.18.0"
     assert result.freeze_channel == FREEZE_CHANNEL_N2
     assert result.packaging_n2_count == 26
     assert result.dual_primary == 0
@@ -180,7 +180,7 @@ def test_n2_final_audit_fails_bad_version(tmp_path: Path):
 def test_n2_final_audit_fails_soak_missing(tmp_path: Path):
     result = run_n2_final_release_audit(
         REPO,
-        expect_version="0.17.0",
+        expect_version="0.18.0",
         expect_cp="CP-0032",
         out_dir=tmp_path / "audit",
         skip_verify=True,
@@ -205,7 +205,7 @@ def test_n2_final_audit_script_json(tmp_path: Path):
             "--out",
             str(tmp_path / "audit"),
             "--expect-version",
-            "0.17.0",
+            "0.18.0",
             "--expect-cp",
             "CP-0032",
             "--skip-cp",

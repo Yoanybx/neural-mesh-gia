@@ -164,11 +164,11 @@ def test_verify_accepts_freeze_and_rejects_bad_freeze_schema(tmp_path: Path):
 
 
 def test_version_gate_0161_files():
-    """Historical name; live package is 0.17.0; 0.16.3 release remains closed."""
+    """Historical name; live package is 0.18.0; 0.16.3 release remains closed."""
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject
-    assert '__version__ = "0.17.0"' in init
+    assert 'version = "0.18.0"' in pyproject
+    assert '__version__ = "0.18.0"' in init
     doc = (REPO / "docs" / "capabilities" / "MESH_PACKAGING_SINGLE_NODE_BUNDLE.md").read_text(
         encoding="utf-8"
     )
@@ -314,7 +314,7 @@ def test_clean_node_smoke_on_real_repo_bundle(tmp_path: Path):
     assert str(REPO / "src") not in result.neural_mesh_file.replace("\\", "/")
     assert result.status_snapshot is not None
     assert result.status_snapshot.get("schema") == "mesh.status.snapshot/v1"
-    assert result.version == "0.17.0"
+    assert result.version == "0.18.0"
 
 
 def test_clean_node_smoke_script_cli(tmp_path: Path):

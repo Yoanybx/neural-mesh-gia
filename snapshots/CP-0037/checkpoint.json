@@ -1,0 +1,8 @@
+{
+  "checkpoint": "CP-0037",
+  "cycle": 33,
+  "dual_primary": 0,
+  "pytest_passed": 579,
+  "status": "VERIFIED",
+  "version": "0.18.0"
+}

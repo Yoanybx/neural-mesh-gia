@@ -35,17 +35,22 @@ NO_HELD_DEFAULT = (
 
 
 def version_matches_expect(live: str, expect: str | None) -> bool:
-    """Exact match, or 0.17.x next-line when expect is closed 0.16.3.
+    """Exact match, or next-line when expect is a closed prior release.
 
     Closed-release tooling may re-run while the package has already opened
-    0.17.x (CP-0030 bootstrap). pyproject/__init__ agreement is checked
-    separately by callers.
+    a later line (0.17.x CP-0030; 0.18.x CP-0037). Also accept 0.18.x when
+    expect is the closed 0.17.0 theme-set line. pyproject/__init__ agreement
+    is checked separately by callers.
     """
     if expect is None:
         return True
     if live == expect:
         return True
-    if expect == "0.16.3" and live.startswith("0.17."):
+    if expect == "0.16.3" and (
+        live.startswith("0.17.") or live.startswith("0.18.")
+    ):
+        return True
+    if expect == "0.17.0" and live.startswith("0.18."):
         return True
     return False
 

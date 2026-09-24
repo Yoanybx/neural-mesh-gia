@@ -237,14 +237,26 @@ def _read_version(root: Path) -> tuple[str, str | None]:
 
 
 def _gate_version(root: Path, result: ThemeSignoffResult, expect: str) -> None:
+    """Exact THEME_VERSION match, or 0.18.x next-line after theme closeout.
+
+    When package has opened 0.18.x (CP-0037 bootstrap), accept and stamp
+    SIGNOFF ver=expect (0.17.0) so closed theme-set archives stay coherent.
+    """
     ver, init_ver = _read_version(root)
     agree = init_ver is None or init_ver == ver
-    ok = ver == expect and agree and (init_ver is None or init_ver == expect)
+    exact = ver == expect and agree and (init_ver is None or init_ver == expect)
+    next_line_ok = (
+        expect == THEME_VERSION
+        and agree
+        and ver.startswith("0.18.")
+        and (init_ver is None or str(init_ver).startswith("0.18."))
+    )
+    ok = exact or next_line_ok
     result.version = expect if ok else ver
     result.add(
         "version_0170",
         ok,
-        f"pyproject={ver} init={init_ver} expected={expect}",
+        f"pyproject={ver} init={init_ver} expected={expect} next_line_ok={next_line_ok}",
     )
 
 

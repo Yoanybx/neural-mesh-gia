@@ -96,3 +96,6 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## Cycle 32 / CP-0036 (2026-09-23 22:24 EDT)
 - 0.17_signoff: themes 1–4 CLOSED/FROZEN; dist/releases/0.17.0 artifacts; pytest 567/0; local tag v0.17.0 pending clean commit.
+
+## Cycle 33 / CP-0037 (2026-09-23 22:28 EDT)
+- 0.18_bootstrap: ver 0.18.0 open; SCOPE H1..H8 frozen; GOV.7 WAIVE_VIA_ACCEPT_AND_CARRY; pytest 579/0; CP-0037 VERIFIED.

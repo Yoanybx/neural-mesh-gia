@@ -1,3 +1,10 @@
+## Cycle 33 — 2026-09-23 — CP-0037 0.18 bootstrap / GOV.7 entry
+- Package version 0.18.0; docs/planning/0.18_{BOOTSTRAP,SCOPE,SCOPE_FROZEN,NON_GOALS}.md.
+- council/SCOPE_0.18_FROZEN.md; MESH_0.18_BOOTSTRAP capability.
+- docs/debt/SCHEMA_GATE_0.18_ENTRY.md WAIVE_VIA_ACCEPT_AND_CARRY (GOV.7); links 0.17 resolution.
+- tests/test_018_bootstrap_cycle33.py (12); pytest 579; CP-0037 VERIFIED.
+- v0.17.0 + dist/releases/0.17.0 + v0.16.3 untouched; no H1..H8 impl; NO_HELD unchanged.
+
 ## Cycle 27 — 2026-09-23 — CP-0031 N=2 multi-node packaging
 - P27: docs/capabilities/MESH_PACKAGING_N2_MULTI_NODE.md (schema v1-n2; fenced heal NOT Raft; dual_primary=0).
 - P28: manifest_n2 + bundle_n2; build_n2_bundle/verify_n2_bundle; core parity vs single-node; N2 stubs/scripts.

@@ -1,0 +1,16 @@
+{
+  "bootstrap_cycle33": 12,
+  "checkpoint": "CP-0037",
+  "cycle": 33,
+  "dual_primary": 0,
+  "gov7_entry": "WAIVE_VIA_ACCEPT_AND_CARRY",
+  "line_status": "OPEN_BOOTSTRAP",
+  "preferred_next": "0.18_H1_identity",
+  "pytest": {
+    "failed": 0,
+    "passed": 579
+  },
+  "status": "VERIFIED",
+  "theme": "0.18_bootstrap",
+  "version": "0.18.0"
+}

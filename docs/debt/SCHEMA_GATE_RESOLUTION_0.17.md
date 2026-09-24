@@ -48,3 +48,5 @@ gate fails.
 - `docs/debt/DEBT_GATE_REVIEW_CP0029.md`
 - `docs/planning/0.17_SCOPE_FROZEN.md`
 - `scripts/debt_gate_review.py`
+
+- `docs/debt/SCHEMA_GATE_0.18_ENTRY.md` (GOV.7 0.18.x entry waive/carry)

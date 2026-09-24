@@ -61,6 +61,7 @@ def test_pyproject_version_014x():
         or 'version = "0.15.' in text
         or 'version = "0.16.' in text
         or 'version = "0.17.' in text
+        or 'version = "0.18.' in text
     )
 
 

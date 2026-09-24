@@ -280,7 +280,7 @@ def _gate_version(root: Path, result: SignoffResult, expect: str) -> None:
     """Gate package version vs expect.
 
     Exact match always OK. When expect is the closed RELEASE_VERSION (0.16.3)
-    and the live package has already opened the 0.17.x line, accept as
+    and the live package has already opened 0.17.x / 0.18.x, accept as
     next-line bootstrap (stamp SIGNOFF ver=expect so closed-release archives
     stay coherent). pyproject and __init__ must still agree.
     """
@@ -290,11 +290,15 @@ def _gate_version(root: Path, result: SignoffResult, expect: str) -> None:
     init_ver = m.group(1) if m else None
     agree = init_ver is None or init_ver == ver
     exact = ver == expect and agree and (init_ver is None or init_ver == expect)
+    next_prefixes = ("0.17.", "0.18.")
     next_line_ok = (
         expect == RELEASE_VERSION
         and agree
-        and ver.startswith("0.17.")
-        and (init_ver is None or str(init_ver).startswith("0.17."))
+        and any(ver.startswith(p) for p in next_prefixes)
+        and (
+            init_ver is None
+            or any(str(init_ver).startswith(p) for p in next_prefixes)
+        )
     )
     ok = exact or next_line_ok
     # Stamp closed-release expect when accepting next-line bootstrap

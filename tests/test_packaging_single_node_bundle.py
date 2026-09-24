@@ -336,17 +336,17 @@ def test_scripts_build_and_verify_cli(tmp_path: Path):
 
 
 def test_repo_version_is_0162_when_installed():
-    """Historical name; live package is 0.17.0 (CP-0030 bootstrap)."""
+    """Historical name; live package is 0.18.0 (CP-0037 bootstrap)."""
     import neural_mesh
 
     # Allow running mid-implement; assert file source of truth.
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject or "version = '0.17.0'" in pyproject
-    assert '__version__ = "0.17.0"' in init
+    assert 'version = "0.18.0"' in pyproject or "version = '0.18.0'" in pyproject
+    assert '__version__ = "0.18.0"' in init
     # If already imported older, still check file; prefer live if matches.
     if hasattr(neural_mesh, "__version__"):
         # May be stale if module imported before bump in same session — file is SoT.
         assert neural_mesh.__version__ in {
-            "0.15.0", "0.16.0", "0.16.1", "0.16.2", "0.16.3", "0.17.0"
+            "0.15.0", "0.16.0", "0.16.1", "0.16.2", "0.16.3", "0.17.0", "0.18.0"
         }

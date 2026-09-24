@@ -151,13 +151,13 @@ def test_debt_gate_review_script_prints_resolution(tmp_path: Path):
 # --- P26: 0.17 bootstrap -----------------------------------------------------
 
 
-def test_package_version_is_0170():
+def test_package_version_is_0180_live_after_bootstrap():
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject
-    assert '__version__ = "0.17.0"' in init
-    assert __version__ == "0.17.0"
-    # Closed release id unchanged
+    assert 'version = "0.18.0"' in pyproject
+    assert '__version__ = "0.18.0"' in init
+    assert __version__ == "0.18.0"
+    # Closed single-node release id unchanged; live package opened 0.18 at CP-0037
     assert RELEASE_VERSION == "0.16.3"
 
 
@@ -210,13 +210,15 @@ def test_version_matches_expect_next_line_helper():
     assert version_matches_expect("0.16.3", "0.16.3") is True
     assert version_matches_expect("0.17.0", "0.16.3") is True
     assert version_matches_expect("0.17.0", "0.17.0") is True
-    assert version_matches_expect("0.18.0", "0.16.3") is False
+    assert version_matches_expect("0.18.0", "0.16.3") is True
+    assert version_matches_expect("0.18.0", "0.17.0") is True
+    assert version_matches_expect("0.19.0", "0.16.3") is False
     assert version_matches_expect("0.15.0", "0.16.3") is False
 
 
 def test_next_action_points_at_first_frozen_theme():
     na = (REPO / ".project_state" / "NEXT_ACTION.md").read_text(encoding="utf-8")
-    # After seal this will point at N=2 multi-node; allow bootstrap phrasing too
+    # Historical: pointed at N=2 after 0.17 bootstrap; now may point at 0.18 H1
     low = na.lower()
     assert (
         "n=2" in low
@@ -224,4 +226,7 @@ def test_next_action_points_at_first_frozen_theme():
         or "multi_node" in low
         or "0.17" in low
         or "cp-0030" in low
+        or "0.18" in low
+        or "cp-0037" in low
+        or "h1" in low
     )

@@ -1,7 +1,7 @@
 # CHECKPOINT
 
-**Last:** CP-0033 = VERIFIED (Cycle 29)  
-**Module:** mesh-017-fabric-ops-ux  
-**Reason:** Fabric ops UX — status / diagnose / reconnect around TLS fabric  
-**Pytest:** 520 / 0  
-**Next:** richer_OBS_peers (0.17 theme 3)
+**Last:** CP-0037 = VERIFIED (Cycle 33)  
+**Module:** mesh-018-bootstrap  
+**Reason:** 0.18.0 bootstrap + GOV.7 entry waiver + H1..H8 scope freeze  
+**Pytest:** 579 / 0  
+**Next:** 0.18_H1_identity

@@ -251,11 +251,11 @@ def test_planning_docs_exclude_held_features_as_goals():
 
 
 def test_version_still_0163_no_0170_shipped():
-    """Cycle 25 name retained; Cycle 26 opened 0.17.0; RELEASE_VERSION stays 0.16.3."""
+    """Cycle 25 name retained; Cycle 33 opened 0.18.0; RELEASE_VERSION stays 0.16.3."""
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject
-    assert '__version__ = "0.17.0"' in init
+    assert 'version = "0.18.0"' in pyproject
+    assert '__version__ = "0.18.0"' in init
     assert RELEASE_VERSION == "0.16.3"
     assert SEAL_CP == "CP-0028"
     assert DEFAULT_SIGNER

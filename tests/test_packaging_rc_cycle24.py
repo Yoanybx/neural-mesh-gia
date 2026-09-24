@@ -243,11 +243,11 @@ def _mini_root(tmp_path: Path, *, ver: str = "0.16.3", tip_cp: str = "CP-0027") 
 
 
 def test_release_signoff_pass_real_repo(tmp_path: Path):
-    """Signoff against live package version (0.17.0); RELEASE_VERSION stays 0.16.3."""
+    """Signoff against live package version (0.18.0); RELEASE_VERSION stays 0.16.3."""
     result = run_release_signoff(
         REPO,
-        expect_version="0.17.0",
-        out_dir=tmp_path / "releases" / "0.17.0",
+        expect_version="0.18.0",
+        out_dir=tmp_path / "releases" / "0.18.0",
         tip="sgnoff1",
         timestamp="2026-09-23T22:00:00Z",
         packaging_count=53,
@@ -256,7 +256,7 @@ def test_release_signoff_pass_real_repo(tmp_path: Path):
         write_project_state=False,
     )
     assert result.ok, result.errors
-    assert result.version == "0.17.0"
+    assert result.version == "0.18.0"
     assert result.cp == SEAL_CP
     assert result.prior_cp == "CP-0027"
     assert result.signer == DEFAULT_SIGNER
@@ -266,7 +266,7 @@ def test_release_signoff_pass_real_repo(tmp_path: Path):
     assert result.signoff_path and Path(result.signoff_path).is_file()
     data = json.loads(Path(result.signoff_path).read_text(encoding="utf-8"))
     assert data["ok"] is True
-    assert data["ver"] == "0.17.0"
+    assert data["ver"] == "0.18.0"
     assert data["signer"] == DEFAULT_SIGNER
     assert data["schema"] == "mesh.release.signoff/v1"
     assert data["cp"] == "CP-0028"
@@ -607,9 +607,9 @@ def test_post_release_monitor_script_once(tmp_path: Path):
 
 
 def test_version_gate_0163_unchanged():
-    """Package opened at 0.17.0; closed release id RELEASE_VERSION stays 0.16.3."""
+    """Package opened at 0.18.0; closed release id RELEASE_VERSION stays 0.16.3."""
     init = (REPO / "src" / "neural_mesh" / "__init__.py").read_text(encoding="utf-8")
     pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.17.0"' in pyproject
-    assert '__version__ = "0.17.0"' in init
+    assert 'version = "0.18.0"' in pyproject
+    assert '__version__ = "0.18.0"' in init
     assert RELEASE_VERSION == "0.16.3"

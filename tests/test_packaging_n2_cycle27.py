@@ -443,7 +443,7 @@ def test_n2_scripts_help():
 
 
 def test_package_version_stays_0170_and_stub_configs_exist():
-    assert __version__ == "0.17.0"
+    assert __version__ == "0.18.0"
     stub_dir = REPO / "src" / "neural_mesh" / "packaging" / "n2_stub_configs"
     assert (stub_dir / "node_a_primary.json").is_file()
     assert (stub_dir / "node_b_secondary.json").is_file()
