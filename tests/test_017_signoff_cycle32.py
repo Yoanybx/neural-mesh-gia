@@ -145,7 +145,9 @@ def test_archive_builds_without_tag(tmp_path: Path):
     assert result.release_archive and Path(result.release_archive).is_file()
     assert result.tag_created is False
     marker = json.loads((out / "TAG_MARKER.json").read_text(encoding="utf-8"))
-    assert marker["tag"] == "v0.17.0"
+    from neural_mesh.packaging.release_tag_archive import preferred_tag_name
+    expect_tag = preferred_tag_name(REPO, "0.17.0")
+    assert marker["tag"] == expect_tag
     assert marker["freeze"] == THEME_FREEZE
 
 
@@ -192,7 +194,8 @@ def test_archive_mock_tag(tmp_path: Path):
     )
     assert result.ok, result.errors
     assert result.tag_created is True
-    assert result.tag_name == "v0.17.0"
+    from neural_mesh.packaging.release_tag_archive import preferred_tag_name
+    assert result.tag_name == preferred_tag_name(REPO, "0.17.0")
 
 
 def test_script_cli_signoff(tmp_path: Path):
