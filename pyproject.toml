@@ -43,6 +43,7 @@ markers = [
     "scope_freeze_cycle44: CP-0048 0.19 scope freeze themes A-D",
     "shell_spike_cycle45: CP-0049 agent-shell adapter spike plan",
     "m1_design_cycle46: CP-0050 M1 consensus choice design + M2/M3 pointers",
+    "schema_stubs_cycle47: CP-0051 L_judge/goal/continuity/shell schema stubs",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

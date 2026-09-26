@@ -1,3 +1,8 @@
+## Cycle 47 — 2026-09-26 — CP-0051 L_judge schema stubs
+- docs/schema/{judge,goal,continuity,shell}/v0.md stubs; MESH_L_JUDGE_SCHEMA_STUBS.
+- tests schema_stubs_cycle47 (10); pytest 789; CP-0051 VERIFIED.
+- No runtime codecs; package 0.18.0 held; NEXT=await_deepseek_c43_c47.
+
 ## Cycle 46 — 2026-09-26 — CP-0050 M1 consensus choice design + M2/M3 pointers
 - docs/design/fabric/M1_CONSENSUS_CHOICE_DESIGN.md (scorecard ≥80; no default=Raft).
 - M2 membership + M3 WAN/HLC pointer docs; MESH_M1_CONSENSUS_CHOICE_DESIGN.
