@@ -74,6 +74,12 @@ from .recovery import (
     cmd_recover_snapshot,
     cmd_recover_status,
 )
+from .fence import (
+    cmd_fence_demote,
+    cmd_fence_probe,
+    cmd_fence_reelect,
+    cmd_fence_status,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -538,6 +544,40 @@ def main(argv: list[str] | None = None):
     rec_reb.add_argument("--mode", type=str, default="local")
     rec_reb.add_argument("--json", action="store_true")
 
+    fence_cmd = sub.add_parser(
+        "fence",
+        help="Dual-primary fence (H3): status/probe/demote/reelect; ABORT→demote+re-elect @N2",
+    )
+    fence_subs = fence_cmd.add_subparsers(dest="fence_op", required=True)
+    fen_stat = fence_subs.add_parser("status", help="Show fence epoch/roles/abort status")
+    fen_stat.add_argument("--data-root", type=str, required=True, help="Fence data root")
+    fen_stat.add_argument("--json", action="store_true")
+    fen_probe = fence_subs.add_parser(
+        "probe", help="Probe dual-primary @N2; ABORT→demote+re-elect when auto-fence"
+    )
+    fen_probe.add_argument("--data-root", type=str, required=True)
+    fen_probe.add_argument(
+        "--no-auto-fence",
+        dest="auto_fence",
+        action="store_false",
+        help="Detect only; enter abort without demote+re-elect",
+    )
+    fen_probe.set_defaults(auto_fence=True)
+    fen_probe.add_argument("--preferred", type=str, default=None, help="Preferred primary node id")
+    fen_probe.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (local only; plaintext forbidden)"
+    )
+    fen_probe.add_argument("--json", action="store_true")
+    fen_dem = fence_subs.add_parser("demote", help="Demote a primary contender")
+    fen_dem.add_argument("--data-root", type=str, required=True)
+    fen_dem.add_argument("--node-id", type=str, required=True)
+    fen_dem.add_argument("--mode", type=str, default="local")
+    fen_dem.add_argument("--json", action="store_true")
+    fen_ree = fence_subs.add_parser("reelect", help="Re-elect sole writable primary @N2")
+    fen_ree.add_argument("--data-root", type=str, required=True)
+    fen_ree.add_argument("--preferred", type=str, default=None)
+    fen_ree.add_argument("--mode", type=str, default="local")
+    fen_ree.add_argument("--json", action="store_true")
 
     router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
@@ -993,6 +1033,40 @@ def main(argv: list[str] | None = None):
                 cmd_recover_rebuild(
                     data_root=dr,
                     snapshot_id=getattr(a, "snapshot", None),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+
+    elif a.cmd == "fence":
+        dr = a.data_root
+        as_json = bool(getattr(a, "json", False))
+        if a.fence_op == "status":
+            raise SystemExit(cmd_fence_status(data_root=dr, as_json=as_json))
+        elif a.fence_op == "probe":
+            raise SystemExit(
+                cmd_fence_probe(
+                    data_root=dr,
+                    auto_fence=bool(getattr(a, "auto_fence", True)),
+                    preferred=getattr(a, "preferred", None),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+        elif a.fence_op == "demote":
+            raise SystemExit(
+                cmd_fence_demote(
+                    data_root=dr,
+                    node_id=str(a.node_id),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+        elif a.fence_op == "reelect":
+            raise SystemExit(
+                cmd_fence_reelect(
+                    data_root=dr,
+                    preferred=getattr(a, "preferred", None),
                     mode=str(getattr(a, "mode", "local")),
                     as_json=as_json,
                 )

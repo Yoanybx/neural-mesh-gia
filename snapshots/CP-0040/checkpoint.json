@@ -1,0 +1,17 @@
+{
+  "checkpoint": "CP-0040",
+  "cycle": 36,
+  "dual_primary": 0,
+  "plaintext_fallback": 0,
+  "preferred_next": "0.18_H4_obs_telemetry",
+  "pytest": {
+    "failed": 0,
+    "passed": 631
+  },
+  "pytest_passed": 631,
+  "fence_cycle36": 18,
+  "status": "VERIFIED",
+  "theme": "0.18_H3_dual_primary_fence",
+  "vault_acme_required": 0,
+  "version": "0.18.0"
+}

@@ -4,10 +4,10 @@
 P0
 
 ## Action
-0.18_H3_dual_primary_fence
+0.18_H4_obs_telemetry
 
 ## Status
 READY
 
 ## Checkpoint
-CP-0039
+CP-0040
