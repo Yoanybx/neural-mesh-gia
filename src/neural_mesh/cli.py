@@ -91,6 +91,12 @@ from .packaging.distribution import (
     cmd_dist_schema,
     cmd_dist_verify,
 )
+
+from .minority import (
+    cmd_minority_halt,
+    cmd_minority_probe,
+    cmd_minority_status,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -589,6 +595,35 @@ def main(argv: list[str] | None = None):
     fen_ree.add_argument("--preferred", type=str, default=None)
     fen_ree.add_argument("--mode", type=str, default="local")
     fen_ree.add_argument("--json", action="store_true")
+
+    minority_cmd = sub.add_parser(
+        "minority",
+        help="Minority-write safety (H6): status/probe/halt; ABORT→halt writes @N2",
+    )
+    minority_subs = minority_cmd.add_subparsers(dest="minority_op", required=True)
+    min_stat = minority_subs.add_parser("status", help="Show minority-write / halt status")
+    min_stat.add_argument("--data-root", type=str, required=True, help="Minority data root")
+    min_stat.add_argument("--json", action="store_true")
+    min_probe = minority_subs.add_parser(
+        "probe", help="Probe minority-write @N2; ABORT→halt writes when auto-halt"
+    )
+    min_probe.add_argument("--data-root", type=str, required=True)
+    min_probe.add_argument(
+        "--no-auto-halt",
+        dest="auto_halt",
+        action="store_false",
+        help="Detect only; enter abort without auto halt clear",
+    )
+    min_probe.set_defaults(auto_halt=True)
+    min_probe.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (local only; plaintext forbidden)"
+    )
+    min_probe.add_argument("--json", action="store_true")
+    min_halt = minority_subs.add_parser("halt", help="ABORT→halt writes (refuse further writes)")
+    min_halt.add_argument("--data-root", type=str, required=True)
+    min_halt.add_argument("--reason", type=str, default="operator halt")
+    min_halt.add_argument("--mode", type=str, default="local")
+    min_halt.add_argument("--json", action="store_true")
 
     obs_cmd = sub.add_parser(
         "obs",
@@ -1179,6 +1214,30 @@ def main(argv: list[str] | None = None):
                 cmd_fence_reelect(
                     data_root=dr,
                     preferred=getattr(a, "preferred", None),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+
+    elif a.cmd == "minority":
+        dr = a.data_root
+        as_json = bool(getattr(a, "json", False))
+        if a.minority_op == "status":
+            raise SystemExit(cmd_minority_status(data_root=dr, as_json=as_json))
+        elif a.minority_op == "probe":
+            raise SystemExit(
+                cmd_minority_probe(
+                    data_root=dr,
+                    auto_halt=bool(getattr(a, "auto_halt", True)),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+        elif a.minority_op == "halt":
+            raise SystemExit(
+                cmd_minority_halt(
+                    data_root=dr,
+                    reason=str(getattr(a, "reason", "operator halt") or "operator halt"),
                     mode=str(getattr(a, "mode", "local")),
                     as_json=as_json,
                 )

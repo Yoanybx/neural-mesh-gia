@@ -43,5 +43,6 @@ markers = [
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",
     "obs_telemetry_cycle37: CP-0041 0.18_H4 OBS telemetry contract / ABORT block CP mint",
     "packaging_dist_cycle38: CP-0042 0.18_H5 packaging distribution / ABORT pin prior",
+    "minority_write_cycle39: CP-0043 0.18_H6 minority_write @N2 / ABORT halt writes",
 ]
 
