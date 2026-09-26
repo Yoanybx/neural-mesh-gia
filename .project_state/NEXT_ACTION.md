@@ -1,13 +1,7 @@
 # NEXT ACTION
 
-## Priority
-P0
+PREFERRED_NEXT: 0.18_H5_packaging_distribution
 
-## Action
-0.18_H4_obs_telemetry
+Then H6 minority_write@N2 → H7 clock_skew@N2 → H8 manifest_parity@N2 → 0.18.x signoff.
 
-## Status
-READY
-
-## Checkpoint
-CP-0040
+NO_HELD unchanged. Do not reopen 0.16.3 / 0.17.0 tags. No GIA claims.

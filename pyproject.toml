@@ -41,5 +41,6 @@ markers = [
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",
+    "obs_telemetry_cycle37: CP-0041 0.18_H4 OBS telemetry contract / ABORT block CP mint",
 ]
 

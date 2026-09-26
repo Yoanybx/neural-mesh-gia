@@ -1,0 +1,17 @@
+{
+  "checkpoint": "CP-0041",
+  "cycle": 37,
+  "dual_primary": 0,
+  "plaintext_fallback": 0,
+  "preferred_next": "0.18_H5_packaging_distribution",
+  "pytest": {
+    "failed": 0,
+    "passed": 650
+  },
+  "pytest_passed": 650,
+  "obs_telemetry_cycle37": 19,
+  "status": "VERIFIED",
+  "theme": "0.18_H4_obs_telemetry",
+  "vault_acme_required": 0,
+  "version": "0.18.0"
+}

@@ -80,6 +80,11 @@ from .fence import (
     cmd_fence_reelect,
     cmd_fence_status,
 )
+from .obs import (
+    cmd_obs_schema,
+    cmd_obs_telemetry,
+    cmd_obs_validate,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -579,6 +584,58 @@ def main(argv: list[str] | None = None):
     fen_ree.add_argument("--mode", type=str, default="local")
     fen_ree.add_argument("--json", action="store_true")
 
+    obs_cmd = sub.add_parser(
+        "obs",
+        help="OBS telemetry contract (H4): telemetry/validate/schema; ABORT→block CP mint",
+    )
+    obs_subs = obs_cmd.add_subparsers(dest="obs_op", required=True)
+    obs_tel = obs_subs.add_parser(
+        "telemetry", help="Emit mesh.obs/v1 from local status snapshot"
+    )
+    obs_tel.add_argument("--repo", type=str, default=".", help="Repo root for snapshot")
+    obs_tel.add_argument("--node-id", type=str, default="local")
+    obs_tel.add_argument(
+        "--cadence",
+        type=str,
+        default="10s",
+        choices=["1s", "10s", "60s"],
+        help="Cadence tier 1s/10s/60s",
+    )
+    obs_tel.add_argument(
+        "--packaging",
+        type=str,
+        default="0.18-H4-obs-telemetry",
+        help="Packaging label embedded in contract",
+    )
+    obs_tel.add_argument("--cycle", type=int, default=None, help="Override cycle int")
+    obs_tel.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (plaintext forbidden)"
+    )
+    obs_tel.add_argument("--json", action="store_true", default=True)
+    obs_tel.add_argument(
+        "--m2m", action="store_true", help="Compact OBS telemetry one-liner"
+    )
+    obs_tel.add_argument(
+        "--text", action="store_true", help="Human text instead of JSON"
+    )
+    obs_val = obs_subs.add_parser(
+        "validate", help="Validate mesh.obs/v1 JSON; ABORT→block CP on breach"
+    )
+    obs_val.add_argument(
+        "--file",
+        type=str,
+        default=None,
+        help="Telemetry JSON path (default: stdin / -)",
+    )
+    obs_val.add_argument(
+        "--stdin",
+        action="store_true",
+        help="Read telemetry JSON from stdin",
+    )
+    obs_sch = obs_subs.add_parser("schema", help="Print active mesh.obs/v1 descriptor")
+    obs_sch.add_argument("--json", action="store_true", default=True)
+    obs_sch.add_argument("--text", action="store_true")
+
     router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
     rex = router_subs.add_parser("explain", help="Explain last/logged decision for task_id")
@@ -1071,6 +1128,34 @@ def main(argv: list[str] | None = None):
                     as_json=as_json,
                 )
             )
+
+    elif a.cmd == "obs":
+        if a.obs_op == "telemetry":
+            as_json = not bool(getattr(a, "text", False))
+            raise SystemExit(
+                cmd_obs_telemetry(
+                    repo=getattr(a, "repo", ".") or ".",
+                    node_id=str(getattr(a, "node_id", "local")),
+                    cadence=str(getattr(a, "cadence", "10s")),
+                    packaging=str(getattr(a, "packaging", "0.18-H4-obs-telemetry")),
+                    as_json=as_json,
+                    m2m=bool(getattr(a, "m2m", False)),
+                    mode=str(getattr(a, "mode", "local")),
+                    cycle=getattr(a, "cycle", None),
+                )
+            )
+        elif a.obs_op == "validate":
+            raise SystemExit(
+                cmd_obs_validate(
+                    file=getattr(a, "file", None),
+                    use_stdin=bool(getattr(a, "stdin", False))
+                    or getattr(a, "file", None) in (None, "-"),
+                    abort_on_breach=True,
+                )
+            )
+        elif a.obs_op == "schema":
+            as_json = not bool(getattr(a, "text", False))
+            raise SystemExit(cmd_obs_schema(as_json=as_json))
 
     elif a.cmd == "router":
         ensure_default_policy(root)
