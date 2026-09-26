@@ -295,6 +295,7 @@ def _check_no_forbidden_drift(root: Path, result: MonitorResult) -> None:
         "release_checklist.py",
         "debt_gate_review.py",
         "theme_signoff_017.py",
+        "theme_signoff_018.py",
     }
     hits: list[str] = []
     for path in scan_paths:

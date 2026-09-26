@@ -1,0 +1,54 @@
+{
+  "checks": [
+    {
+      "detail": "path=SIGNOFF.json ok=True ver=0.18.0 themes=CLOSED freeze=0.18.x",
+      "name": "signoff_present",
+      "ok": true
+    },
+    {
+      "detail": "tag=False marker=True archive_manifest=True tar=True",
+      "name": "tag_or_archive_marker",
+      "ok": true
+    },
+    {
+      "detail": "manifest=neural-mesh-gia-theme-0.18.0.manifest.json channel=0.18.x",
+      "name": "freeze_intact",
+      "ok": true
+    },
+    {
+      "detail": "status=CLOSED keys=['1', '2', '3', '4', '5', '6', '7', '8']",
+      "name": "themes_closed",
+      "ok": true
+    },
+    {
+      "detail": "0163=True 0170=True",
+      "name": "prior_untouched",
+      "ok": true
+    },
+    {
+      "detail": "hit=0.18_SCOPE_FROZEN.md",
+      "name": "no_held",
+      "ok": true
+    }
+  ],
+  "cp": "CP-0046",
+  "cycle": 42,
+  "errors": [],
+  "freeze_channel": "0.18.x",
+  "freeze_expected": "0.18.x",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "preferred_next": "0.19_bootstrap_plan",
+  "report_path": null,
+  "summary": {
+    "cp": "CP-0046",
+    "cycle": 42,
+    "freeze": "0.18.x",
+    "preferred_next": "0.19_bootstrap_plan",
+    "tip": "pending018",
+    "ver": "0.18.0"
+  },
+  "theme_signoff": true,
+  "tip": "pending018",
+  "version": "0.18.0"
+}

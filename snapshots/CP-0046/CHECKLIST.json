@@ -1,0 +1,83 @@
+{
+  "gates": [
+    {
+      "detail": "pyproject=0.18.0 init=0.18.0 expected=0.18.0 next_line_ok=False",
+      "name": "version_0180",
+      "ok": true
+    },
+    {
+      "detail": "channel=0.18.x schema=mesh.bundle/v1",
+      "name": "freeze_018x",
+      "ok": true
+    },
+    {
+      "detail": "present=8 missing=none",
+      "name": "themes_h1_h8_shipped",
+      "ok": true
+    },
+    {
+      "detail": "missing=none seal=CP-0046",
+      "name": "cps_0038_0045",
+      "ok": true
+    },
+    {
+      "detail": "snap=True verified=True",
+      "name": "cp_0045_verified",
+      "ok": true
+    },
+    {
+      "detail": "seal=CP-0046",
+      "name": "cp_0046_seal",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "hit=0.18_SCOPE_FROZEN.md",
+      "name": "no_held_documented",
+      "ok": true
+    },
+    {
+      "detail": "injected count=736",
+      "name": "pytest_green",
+      "ok": true
+    },
+    {
+      "detail": "signoff_0163=True signoff_0170=True tag_v0163=True tag_v0170=True",
+      "name": "prior_releases_untouched",
+      "ok": true
+    },
+    {
+      "detail": "hits=none deny_doc=True",
+      "name": "no_gia_claim",
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "preferred_next": "0.19_bootstrap_plan",
+  "schema": "mesh.release.theme_checklist/v1",
+  "theme_cps": [
+    "CP-0038",
+    "CP-0039",
+    "CP-0040",
+    "CP-0041",
+    "CP-0042",
+    "CP-0043",
+    "CP-0044",
+    "CP-0045"
+  ],
+  "themes": [
+    "H1_identity",
+    "H2_recovery",
+    "H3_dual_primary_fence",
+    "H4_obs_telemetry",
+    "H5_packaging_distribution",
+    "H6_minority_write",
+    "H7_clock_skew",
+    "H8_manifest_parity"
+  ],
+  "ver": "0.18.0"
+}

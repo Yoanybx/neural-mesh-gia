@@ -1,0 +1,56 @@
+{
+  "archive_dir": "/workspace/neural-mesh-gia/dist/releases/0.18.0",
+  "cp": "CP-0046",
+  "errors": [],
+  "freeze": "0.18.x",
+  "gates": [
+    {
+      "detail": "ok=True ver=0.18.0 freeze=0.18.x",
+      "name": "signoff_present",
+      "ok": true
+    },
+    {
+      "detail": "skipped theme_manifest=neural-mesh-gia-theme-0.18.0.manifest.json",
+      "name": "bundle",
+      "ok": true
+    },
+    {
+      "detail": "SHA256SUMS",
+      "name": "sha256sums",
+      "ok": true
+    },
+    {
+      "detail": "neural-mesh-gia-release-0.18.0.tar.gz",
+      "name": "release_archive",
+      "ok": true
+    },
+    {
+      "detail": "skipped exists=False name=v0.18.0",
+      "name": "tag",
+      "ok": true
+    }
+  ],
+  "manifest_path": "/workspace/neural-mesh-gia/dist/releases/0.18.0/neural-mesh-gia-theme-0.18.0.manifest.json",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "release_archive": "/workspace/neural-mesh-gia/dist/releases/0.18.0/neural-mesh-gia-release-0.18.0.tar.gz",
+  "schema": "mesh.bundle/v1",
+  "sha256sums_path": "/workspace/neural-mesh-gia/dist/releases/0.18.0/SHA256SUMS",
+  "signoff_path": "/workspace/neural-mesh-gia/dist/releases/0.18.0/SIGNOFF.json",
+  "summary": {
+    "archive_dir": "/workspace/neural-mesh-gia/dist/releases/0.18.0",
+    "cp": "CP-0046",
+    "cycle": 42,
+    "freeze": "0.18.x",
+    "preferred_next": "0.19_bootstrap_plan",
+    "tag": "v0.18.0",
+    "tag_created": false,
+    "tip": "pending018",
+    "ver": "0.18.0"
+  },
+  "tag_created": false,
+  "tag_name": "v0.18.0",
+  "tarball": null,
+  "tip": "pending018",
+  "version": "0.18.0"
+}

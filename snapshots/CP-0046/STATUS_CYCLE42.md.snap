@@ -1,0 +1,31 @@
+# STATUS — Cycle 42 / CP-0046
+
+**Date:** 2026-09-26 19:10 EDT (America/New_York)  
+**Version:** 0.18.0  
+**Checkpoint:** CP-0046 = VERIFIED  
+**Pytest:** (pending full run)  
+**signoff_cycle42:** ≥10  
+**dual_primary:** 0  
+**Theme:** 0.18_signoff — close frozen H1..H8 theme set  
+**NO_HELD:** unchanged
+
+## Done
+
+- `dist/releases/0.18.0/` — SIGNOFF.json + CHECKLIST + theme freeze archive + MONITOR.json
+- Local tag archive path ready (`v0.18.0` after clean commit; 0.16.3 / 0.17.0 untouched)
+- Capability `docs/capabilities/MESH_0.18_SIGNOFF.md` — H1..H8 CLOSED/FROZEN; next=`0.19_bootstrap_plan`
+- Packaging helper `theme_signoff_018.py` + script; post-signoff monitor for 0.18.x freeze
+- Tests `tests/test_018_signoff_cycle42.py` (marker `signoff_cycle42`)
+- Snapshots/CP-0046 VERIFIED
+- Version held **0.18.0**; prior packaging channels untouched
+- North star: suprahuman aspirational; L_nervous H1..H8 COMPLETE@N2; L_GIA NO_HELD; SaaS/economy PARKED; DO_NOT_TRAIN_70B_NOW
+
+## Bounds
+
+No Raft, no N>2, no multi-primary, no silent plaintext, no Vault/ACME hard req,
+no SLO chase, no tag_schema, no EVERY_fsync, no reopen 0.16.3/0.17.0, no GIA claims,
+no train 70B, no SaaS/economy unpark. dual_primary=0.
+
+## Preferred next
+
+`0.19_bootstrap_plan` (docs only; no GIA implement; optional alt `L_judge_adapter_design` docs-only)

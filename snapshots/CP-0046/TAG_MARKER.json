@@ -1,0 +1,10 @@
+{
+  "cp": "CP-0046",
+  "created": false,
+  "exists": false,
+  "freeze": "0.18.x",
+  "note": "tag not requested (--tag to create when clean)",
+  "tag": "v0.18.0",
+  "tip": "pending018",
+  "ver": "0.18.0"
+}
