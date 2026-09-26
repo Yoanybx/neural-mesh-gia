@@ -56,13 +56,22 @@ def test_scope_draft_themes_abcd():
     assert "M1" in text and "M2" in text and "M3" in text
     assert "NO_HELD" in text
     # must not claim frozen status as current
-    assert "**Status:** DRAFT" in text or "Status:** DRAFT" in text
+    # DRAFT may later be SUPERSEDED by freeze (CP-0048+)
+    assert (
+        "**Status:** DRAFT" in text
+        or "Status:** DRAFT" in text
+        or "SUPERSEDED" in text
+    )
 
 
 def test_scope_not_frozen_file_absent_or_not_claimed():
+    """CP-0047 shipped DRAFT-only; CP-0048+ may add FROZEN with DRAFT SUPERSEDED."""
     frozen = REPO / "docs" / "planning" / "0.19_SCOPE_FROZEN.md"
-    # Prefer DRAFT; freeze file should not exist this cycle
-    assert not frozen.is_file(), "0.19_SCOPE_FROZEN must not exist until freeze gate"
+    draft = REPO / "docs" / "planning" / "0.19_SCOPE_DRAFT.md"
+    assert draft.is_file()
+    if frozen.is_file():
+        assert "SUPERSEDED" in draft.read_text(encoding="utf-8")
+        assert "FROZEN" in frozen.read_text(encoding="utf-8")
 
 
 def test_non_goals_no_held():

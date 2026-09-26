@@ -1,3 +1,8 @@
+## Cycle 44 — 2026-09-26 — CP-0048 0.19 scope freeze A–D
+- docs/planning/0.19_SCOPE_FROZEN.md + council/SCOPE_0.19_FROZEN.md; DRAFT SUPERSEDED.
+- MESH_0.19_SCOPE_FREEZE; tests scope_freeze_cycle44 (10); pytest 759; CP-0048 VERIFIED.
+- Package 0.18.0 held; NO_HELD unchanged; PREFERRED_NEXT=agent_shell_adapter_spike_plan.
+
 ## Cycle 43 — 2026-09-26 — CP-0047 0.19 bootstrap plan / L_judge MIX + durable goals design
 - docs/planning/0.19_{BOOTSTRAP,SCOPE_DRAFT,NON_GOALS}.md (DRAFT; version 0.18.0 held).
 - docs/design/L_JUDGE_MIX_DESIGN.md + DURABLE_GOALS_CONTINUITY_DESIGN.md.
