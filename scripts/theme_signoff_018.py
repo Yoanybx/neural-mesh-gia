@@ -100,6 +100,7 @@ def main(argv: list[str] | None = None) -> int:
             pytest_count=args.pytest_count,
             skip_pytest=args.skip_pytest,
             force_fail=args.force_fail,
+            write_project_state=args.out is None,
         )
         _print_signoff(r)
         if not r.ok:
