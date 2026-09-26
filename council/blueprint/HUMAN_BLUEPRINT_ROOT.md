@@ -113,3 +113,17 @@ Raft · N>2 · multi-primary · ML · R2/R3 · Vault-ACME-req · **GIA** · tag_
 ## Próximo trabajo real (corrección Grok sobre tip)
 
 No P30 (ya hecho). Siguiente alineado a scope 0.17 congelado: **Fabric ops UX** (R1), luego OBS peers (R2), luego quickstart (R3).
+
+---
+
+## North Star Recalibration (2026-09-26)
+
+**Puntero / pointer:** ver `council/NORTH_STAR_RECALIBRATION.md` (no reescribe este blueprint).
+
+- **Norte aspiracional:** sistema de razonamiento suprahumano — **no** claim AGI/conciencia ahora.
+- **Capas:** L_nervous (H1..H8 / 0.18) → L_judge (B MIX LLM-as-judgment; DO_NOT_TRAIN_70B_NOW) → L_GIA (**NO_HELD** hasta evidencia + GOV).
+- **Neural Mesh ≠ LLM.** Terminar H8 no crea cerebro suprahumano solo.
+- **PARKED:** SaaS; economía tokenless.
+- **Se mantiene:** continuar H8 + signoff 0.18; lista NO_HELD intacta; GIA HOLD.
+
+Paste M2M: `council/PASTE_NORTH_STAR_RECALIBRATION_M2M.md` · Acuerdo borrador: `council/COUNCIL_AGREEMENT_NORTH_STAR.md` (pending ACK).
