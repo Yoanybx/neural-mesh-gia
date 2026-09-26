@@ -42,5 +42,6 @@ markers = [
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",
     "obs_telemetry_cycle37: CP-0041 0.18_H4 OBS telemetry contract / ABORT block CP mint",
+    "packaging_dist_cycle38: CP-0042 0.18_H5 packaging distribution / ABORT pin prior",
 ]
 

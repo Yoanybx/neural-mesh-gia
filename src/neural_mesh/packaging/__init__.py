@@ -280,4 +280,36 @@ __all__ = [
     "run_017_theme_signoff",
     "run_017_theme_archive",
     "run_017_post_signoff_monitor",
+    "DIST_SCHEMA_ID",
+    "DIST_CHANNEL",
+    "DistributionDocument",
+    "DistAbortPinPrior",
+    "cmd_dist_distribute",
+    "cmd_dist_pin_prior",
+    "cmd_dist_schema",
+    "cmd_dist_verify",
+    "compute_toolchain_pin",
+    "distribute",
+    "pin_prior",
+    "validate_dict",
+    "verify_distribution",
 ]
+
+
+# Cycle 38 / CP-0042 — H5 packaging distribution (mesh.bundle/v1)
+from .distribution import (
+    SCHEMA_ID as DIST_SCHEMA_ID,
+    DIST_CHANNEL,
+    DistributionDocument,
+    DistAbortPinPrior,
+    cmd_dist_distribute,
+    cmd_dist_pin_prior,
+    cmd_dist_schema,
+    cmd_dist_verify,
+    compute_toolchain_pin,
+    distribute,
+    pin_prior,
+    validate_dict,
+    verify_distribution,
+)
+

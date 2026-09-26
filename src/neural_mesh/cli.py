@@ -85,6 +85,12 @@ from .obs import (
     cmd_obs_telemetry,
     cmd_obs_validate,
 )
+from .packaging.distribution import (
+    cmd_dist_distribute,
+    cmd_dist_pin_prior,
+    cmd_dist_schema,
+    cmd_dist_verify,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -636,6 +642,55 @@ def main(argv: list[str] | None = None):
     obs_sch.add_argument("--json", action="store_true", default=True)
     obs_sch.add_argument("--text", action="store_true")
 
+    dist_cmd = sub.add_parser(
+        "dist",
+        help="Packaging distribution (H5): distribute/verify/pin-prior; ABORT→pin prior",
+    )
+    dist_subs = dist_cmd.add_subparsers(dest="dist_op", required=True)
+    dist_dist = dist_subs.add_parser(
+        "distribute", help="Mint mesh.bundle/v1 under dist/releases/0.18.x"
+    )
+    dist_dist.add_argument("--repo", type=str, default=".", help="Repo root")
+    dist_dist.add_argument(
+        "--out-dir",
+        type=str,
+        default=None,
+        help="Output dir (default: dist/releases/<ver>)",
+    )
+    dist_dist.add_argument("--name", type=str, default="neural-mesh-gia-dist")
+    dist_dist.add_argument("--channel", type=str, default="0.18.x")
+    dist_dist.add_argument("--cycle", type=int, default=38)
+    dist_dist.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (plaintext forbidden)"
+    )
+    dist_dist.add_argument("--json", action="store_true", default=True)
+    dist_dist.add_argument("--m2m", action="store_true", help="Compact DIST one-liner")
+    dist_dist.add_argument("--text", action="store_true", help="Human text instead of JSON")
+    dist_ver = dist_subs.add_parser(
+        "verify", help="Verify mesh.bundle/v1 JSON; ABORT→pin prior on breach"
+    )
+    dist_ver.add_argument(
+        "--file", type=str, default=None, help="Distribution JSON path (default: stdin / -)"
+    )
+    dist_ver.add_argument("--stdin", action="store_true", help="Read JSON from stdin")
+    dist_ver.add_argument("--repo", type=str, default=".", help="Repo for replay registry")
+    dist_ver.add_argument(
+        "--mark-replay-seen",
+        action="store_true",
+        help="Consume nonce into replay registry (second consume aborts)",
+    )
+    dist_pin = dist_subs.add_parser(
+        "pin-prior", help="ABORT→pin prior known-good; never retag v0.16.3/v0.17.0"
+    )
+    dist_pin.add_argument("--repo", type=str, default=".")
+    dist_pin.add_argument("--reason", type=str, default="ABORT distribution breach")
+    dist_pin.add_argument("--ver", type=str, default="0.17.0", help="Prior version label")
+    dist_pin.add_argument("--json", action="store_true", default=True)
+    dist_pin.add_argument("--text", action="store_true")
+    dist_sch = dist_subs.add_parser("schema", help="Print active mesh.bundle/v1 descriptor")
+    dist_sch.add_argument("--json", action="store_true", default=True)
+    dist_sch.add_argument("--text", action="store_true")
+
     router_cmd = sub.add_parser("router", help="Cognitive Router R0/R1 (Phase 3)")
     router_subs = router_cmd.add_subparsers(dest="op", required=True)
     rex = router_subs.add_parser("explain", help="Explain last/logged decision for task_id")
@@ -1156,6 +1211,46 @@ def main(argv: list[str] | None = None):
         elif a.obs_op == "schema":
             as_json = not bool(getattr(a, "text", False))
             raise SystemExit(cmd_obs_schema(as_json=as_json))
+
+    elif a.cmd == "dist":
+        if a.dist_op == "distribute":
+            as_json = not bool(getattr(a, "text", False))
+            raise SystemExit(
+                cmd_dist_distribute(
+                    repo=getattr(a, "repo", ".") or ".",
+                    out_dir=getattr(a, "out_dir", None),
+                    name=str(getattr(a, "name", "neural-mesh-gia-dist")),
+                    channel=str(getattr(a, "channel", "0.18.x")),
+                    cycle=int(getattr(a, "cycle", 38) or 38),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                    m2m=bool(getattr(a, "m2m", False)),
+                )
+            )
+        elif a.dist_op == "verify":
+            raise SystemExit(
+                cmd_dist_verify(
+                    file=getattr(a, "file", None),
+                    use_stdin=bool(getattr(a, "stdin", False))
+                    or getattr(a, "file", None) in (None, "-"),
+                    repo=getattr(a, "repo", ".") or ".",
+                    abort_on_breach=True,
+                    mark_replay_seen=bool(getattr(a, "mark_replay_seen", False)),
+                )
+            )
+        elif a.dist_op == "pin-prior":
+            as_json = not bool(getattr(a, "text", False))
+            raise SystemExit(
+                cmd_dist_pin_prior(
+                    repo=getattr(a, "repo", ".") or ".",
+                    reason=str(getattr(a, "reason", "ABORT distribution breach")),
+                    ver=str(getattr(a, "ver", "0.17.0")),
+                    as_json=as_json,
+                )
+            )
+        elif a.dist_op == "schema":
+            as_json = not bool(getattr(a, "text", False))
+            raise SystemExit(cmd_dist_schema(as_json=as_json))
 
     elif a.cmd == "router":
         ensure_default_policy(root)
