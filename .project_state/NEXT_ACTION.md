@@ -1,6 +1,6 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: agent_shell_adapter_spike_plan
+PREFERRED_NEXT: M1_consensus_choice_design
 
-0.19 scope A–D FROZEN (CP-0048). Package 0.18.0 held. Next: agent-shell adapter
-spike plan (docs). Then M1 design-only. NO_HELD unchanged. No GIA/Raft/N>2/train.
+Agent-shell spike plan sealed (CP-0049). Next: M1 consensus_choice design-only
+scorecard (no Raft default; runtime NO_HELD). No GIA/N>2/train/SaaS/economy.

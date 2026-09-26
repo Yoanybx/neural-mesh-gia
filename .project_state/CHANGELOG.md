@@ -1,3 +1,8 @@
+## Cycle 45 — 2026-09-26 — CP-0049 agent_shell_adapter_spike_plan
+- docs/design/AGENT_SHELL_ADAPTER_SPIKE.md + MESH_AGENT_SHELL_SPIKE_PLAN.
+- tests shell_spike_cycle45 (10); pytest 769; CP-0049 VERIFIED.
+- No shell runtime/settlement; package 0.18.0 held; NEXT=M1_consensus_choice_design.
+
 ## Cycle 44 — 2026-09-26 — CP-0048 0.19 scope freeze A–D
 - docs/planning/0.19_SCOPE_FROZEN.md + council/SCOPE_0.19_FROZEN.md; DRAFT SUPERSEDED.
 - MESH_0.19_SCOPE_FREEZE; tests scope_freeze_cycle44 (10); pytest 759; CP-0048 VERIFIED.

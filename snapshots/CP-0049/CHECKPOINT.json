@@ -1,0 +1,14 @@
+{
+  "checkpoint": "CP-0049",
+  "cycle": 45,
+  "dual_primary": 0,
+  "shell_spike_cycle45": 10,
+  "preferred_next": "M1_consensus_choice_design",
+  "pytest": {
+    "failed": 0,
+    "passed": 769
+  },
+  "status": "VERIFIED",
+  "theme": "agent_shell_adapter_spike_plan",
+  "version": "0.18.0"
+}
