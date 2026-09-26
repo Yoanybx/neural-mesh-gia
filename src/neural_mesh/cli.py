@@ -97,6 +97,11 @@ from .minority import (
     cmd_minority_probe,
     cmd_minority_status,
 )
+from .clock import (
+    cmd_clock_join_check,
+    cmd_clock_probe,
+    cmd_clock_status,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -624,6 +629,45 @@ def main(argv: list[str] | None = None):
     min_halt.add_argument("--reason", type=str, default="operator halt")
     min_halt.add_argument("--mode", type=str, default="local")
     min_halt.add_argument("--json", action="store_true")
+
+    clock_cmd = sub.add_parser(
+        "clock",
+        help="Clock-skew join fence (H7): status/probe/join-check; ABORT→refuse join @N2",
+    )
+    clock_subs = clock_cmd.add_subparsers(dest="clock_op", required=True)
+    clk_stat = clock_subs.add_parser("status", help="Show clock-skew / refuse-join status")
+    clk_stat.add_argument("--data-root", type=str, required=True, help="Clock data root")
+    clk_stat.add_argument("--json", action="store_true")
+    clk_probe = clock_subs.add_parser(
+        "probe", help="Probe clock-skew @N2; ABORT→refuse join when auto-refuse"
+    )
+    clk_probe.add_argument("--data-root", type=str, required=True)
+    clk_probe.add_argument(
+        "--no-auto-refuse",
+        dest="auto_refuse",
+        action="store_false",
+        help="Detect only; enter abort without auto refuse clear",
+    )
+    clk_probe.set_defaults(auto_refuse=True)
+    clk_probe.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (local only; plaintext forbidden)"
+    )
+    clk_probe.add_argument("--json", action="store_true")
+    clk_join = clock_subs.add_parser(
+        "join-check", help="Check join; ABORT→refuse join on excess skew"
+    )
+    clk_join.add_argument("--data-root", type=str, required=True)
+    clk_join.add_argument("--node-id", type=str, required=True, help="Joining node id")
+    clk_join.add_argument("--peer-wall-ms", type=int, default=None, help="Peer wall ms (diagnostic)")
+    clk_join.add_argument("--local-wall-ms", type=int, default=None, help="Local wall ms (diagnostic)")
+    clk_join.add_argument(
+        "--no-auto-refuse",
+        dest="auto_refuse",
+        action="store_false",
+    )
+    clk_join.set_defaults(auto_refuse=True)
+    clk_join.add_argument("--mode", type=str, default="local")
+    clk_join.add_argument("--json", action="store_true")
 
     obs_cmd = sub.add_parser(
         "obs",
@@ -1239,6 +1283,33 @@ def main(argv: list[str] | None = None):
                     data_root=dr,
                     reason=str(getattr(a, "reason", "operator halt") or "operator halt"),
                     mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+
+    elif a.cmd == "clock":
+        dr = a.data_root
+        as_json = bool(getattr(a, "json", False))
+        if a.clock_op == "status":
+            raise SystemExit(cmd_clock_status(data_root=dr, as_json=as_json))
+        elif a.clock_op == "probe":
+            raise SystemExit(
+                cmd_clock_probe(
+                    data_root=dr,
+                    auto_refuse=bool(getattr(a, "auto_refuse", True)),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+        elif a.clock_op == "join-check":
+            raise SystemExit(
+                cmd_clock_join_check(
+                    data_root=dr,
+                    node_id=str(getattr(a, "node_id")),
+                    peer_wall_ms=getattr(a, "peer_wall_ms", None),
+                    local_wall_ms=getattr(a, "local_wall_ms", None),
+                    mode=str(getattr(a, "mode", "local")),
+                    auto_refuse=bool(getattr(a, "auto_refuse", True)),
                     as_json=as_json,
                 )
             )
