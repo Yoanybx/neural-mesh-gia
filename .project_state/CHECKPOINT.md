@@ -1,8 +1,8 @@
-# CP-0043
+# CP-0047
 
-Phase: 0.18
-Module: 0.18_H6_minority_write
+Phase: 0.19_plan
+Module: 0.19_bootstrap_plan
 Status: VERIFIED
-Next: 0.18_H7_clock_skew
-Version: 0.18.0
+Next: 0.19_scope_freeze
+Version: 0.18.0 (held)
 Date: 2026-09-26 (America/New_York)

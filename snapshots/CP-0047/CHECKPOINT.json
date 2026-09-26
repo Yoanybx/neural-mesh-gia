@@ -1,0 +1,15 @@
+{
+  "checkpoint": "CP-0047",
+  "cycle": 43,
+  "dual_primary": 0,
+  "bootstrap_plan_cycle43": 13,
+  "preferred_next": "0.19_scope_freeze",
+  "pytest": {
+    "failed": 0,
+    "passed": 749
+  },
+  "scope_status": "DRAFT",
+  "status": "VERIFIED",
+  "theme": "0.19_bootstrap_plan",
+  "version": "0.18.0"
+}

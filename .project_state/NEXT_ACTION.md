@@ -1,9 +1,10 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: 0.19_bootstrap_plan
+PREFERRED_NEXT: 0.19_scope_freeze
 
-0.18 H1..H8 theme set CLOSED/FROZEN (CP-0046). Docs-only 0.19 bootstrap plan
-(or L_judge_adapter_design docs-only). Do **not** invent GIA / N>2 / train-70B.
+0.19 bootstrap plan DRAFT sealed (CP-0047). Themes A–D proposed. L_judge MIX +
+durable goals/continuity designs written. Package 0.18.0 held. Do **not** invent
+GIA / N>2 / train-70B / SaaS / economy. Freeze gate next (docs); then agent-shell
+spike plan / M1 design-only as authorized.
 
-NO_HELD unchanged. Do not reopen 0.16.3 / 0.17.0 / 0.18.0 tags after mint.
-No GIA claims. SaaS/economy PARKED. DO_NOT_TRAIN_70B_NOW.
+NO_HELD unchanged. Do not retag v0.18.0.

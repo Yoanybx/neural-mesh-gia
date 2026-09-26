@@ -1,3 +1,10 @@
+## Cycle 43 — 2026-09-26 — CP-0047 0.19 bootstrap plan / L_judge MIX + durable goals design
+- docs/planning/0.19_{BOOTSTRAP,SCOPE_DRAFT,NON_GOALS}.md (DRAFT; version 0.18.0 held).
+- docs/design/L_JUDGE_MIX_DESIGN.md + DURABLE_GOALS_CONTINUITY_DESIGN.md.
+- MESH_0.19_BOOTSTRAP_PLAN; council SCOPE_0.19_DRAFT; HYPERBRAIN_ASTRA authority.
+- tests/test_019_bootstrap_plan_cycle43.py (13); pytest 749; CP-0047 VERIFIED.
+- v0.18.0 / 0.17.0 / 0.16.3 untouched; no GIA/Raft/N>2/train/SaaS/economy; NO_HELD held.
+
 ## Cycle 33 — 2026-09-23 — CP-0037 0.18 bootstrap / GOV.7 entry
 - Package version 0.18.0; docs/planning/0.18_{BOOTSTRAP,SCOPE,SCOPE_FROZEN,NON_GOALS}.md.
 - council/SCOPE_0.18_FROZEN.md; MESH_0.18_BOOTSTRAP capability.
