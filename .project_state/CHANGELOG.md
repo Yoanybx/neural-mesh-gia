@@ -1,3 +1,9 @@
+## Cycle 46 — 2026-09-26 — CP-0050 M1 consensus choice design + M2/M3 pointers
+- docs/design/fabric/M1_CONSENSUS_CHOICE_DESIGN.md (scorecard ≥80; no default=Raft).
+- M2 membership + M3 WAN/HLC pointer docs; MESH_M1_CONSENSUS_CHOICE_DESIGN.
+- tests m1_design_cycle46 (10); pytest 779; CP-0050 VERIFIED.
+- Runtime Raft/N>2 still NO_HELD; package 0.18.0 held; NEXT=L_judge_schema_stubs.
+
 ## Cycle 45 — 2026-09-26 — CP-0049 agent_shell_adapter_spike_plan
 - docs/design/AGENT_SHELL_ADAPTER_SPIKE.md + MESH_AGENT_SHELL_SPIKE_PLAN.
 - tests shell_spike_cycle45 (10); pytest 769; CP-0049 VERIFIED.

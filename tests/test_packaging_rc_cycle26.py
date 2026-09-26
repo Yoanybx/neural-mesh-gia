@@ -218,7 +218,7 @@ def test_version_matches_expect_next_line_helper():
 
 def test_next_action_points_at_first_frozen_theme():
     na = (REPO / ".project_state" / "NEXT_ACTION.md").read_text(encoding="utf-8")
-    # Historical: pointed at N=2 after 0.17 bootstrap; now may point at 0.18 H1
+    # Historical: N=2 / 0.17 / 0.18 H1; post-0.18 may point at 0.19 plan themes
     low = na.lower()
     assert (
         "n=2" in low
@@ -229,4 +229,14 @@ def test_next_action_points_at_first_frozen_theme():
         or "0.18" in low
         or "cp-0037" in low
         or "h1" in low
+        or "0.19" in low
+        or "l_judge" in low
+        or "agent_shell" in low
+        or "agent-shell" in low
+        or "m1_" in low
+        or "m1 " in low
+        or "cp-0047" in low
+        or "cp-0048" in low
+        or "cp-0049" in low
+        or "cp-0050" in low
     )
