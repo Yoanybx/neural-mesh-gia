@@ -45,10 +45,10 @@
     "cycle": 42,
     "freeze": "0.18.x",
     "preferred_next": "0.19_bootstrap_plan",
-    "tip": "pending018",
+    "tip": "55d25ba",
     "ver": "0.18.0"
   },
   "theme_signoff": true,
-  "tip": "pending018",
+  "tip": "55d25ba",
   "version": "0.18.0"
 }
