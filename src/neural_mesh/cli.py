@@ -102,6 +102,11 @@ from .clock import (
     cmd_clock_probe,
     cmd_clock_status,
 )
+from .packaging.parity import (
+    cmd_parity_build_check,
+    cmd_parity_check,
+    cmd_parity_status,
+)
 from .cram.replica_cli import (
     cmd_replica_connect,
     cmd_replica_create,
@@ -668,6 +673,45 @@ def main(argv: list[str] | None = None):
     clk_join.set_defaults(auto_refuse=True)
     clk_join.add_argument("--mode", type=str, default="local")
     clk_join.add_argument("--json", action="store_true")
+
+    parity_cmd = sub.add_parser(
+        "parity",
+        help="Manifest parity @N2 (H8): status/check/build-check; ABORT→reject build",
+    )
+    parity_subs = parity_cmd.add_subparsers(dest="parity_op", required=True)
+    par_stat = parity_subs.add_parser("status", help="Show manifest-parity / reject-build status")
+    par_stat.add_argument("--data-root", type=str, required=True, help="Parity data root")
+    par_stat.add_argument("--json", action="store_true")
+    par_check = parity_subs.add_parser(
+        "check", help="Check recorded N2 builds; ABORT→reject build on mismatch"
+    )
+    par_check.add_argument("--data-root", type=str, required=True)
+    par_check.add_argument(
+        "--no-auto-reject",
+        dest="auto_reject",
+        action="store_false",
+        help="Detect only; enter abort without auto reject clear",
+    )
+    par_check.set_defaults(auto_reject=True)
+    par_check.add_argument(
+        "--mode", type=str, default="local", help="Transport mode (local only; plaintext forbidden)"
+    )
+    par_check.add_argument("--json", action="store_true")
+    par_build = parity_subs.add_parser(
+        "build-check",
+        help="Concurrent build byte-equality @N2 (or compare two manifest files)",
+    )
+    par_build.add_argument("--data-root", type=str, required=True)
+    par_build.add_argument("--manifest-a", type=str, default=None, help="Left manifest JSON path")
+    par_build.add_argument("--manifest-b", type=str, default=None, help="Right manifest JSON path")
+    par_build.add_argument(
+        "--no-auto-reject",
+        dest="auto_reject",
+        action="store_false",
+    )
+    par_build.set_defaults(auto_reject=True)
+    par_build.add_argument("--mode", type=str, default="local")
+    par_build.add_argument("--json", action="store_true")
 
     obs_cmd = sub.add_parser(
         "obs",
@@ -1310,6 +1354,32 @@ def main(argv: list[str] | None = None):
                     local_wall_ms=getattr(a, "local_wall_ms", None),
                     mode=str(getattr(a, "mode", "local")),
                     auto_refuse=bool(getattr(a, "auto_refuse", True)),
+                    as_json=as_json,
+                )
+            )
+
+    elif a.cmd == "parity":
+        dr = a.data_root
+        as_json = bool(getattr(a, "json", False))
+        if a.parity_op == "status":
+            raise SystemExit(cmd_parity_status(data_root=dr, as_json=as_json))
+        elif a.parity_op == "check":
+            raise SystemExit(
+                cmd_parity_check(
+                    data_root=dr,
+                    auto_reject=bool(getattr(a, "auto_reject", True)),
+                    mode=str(getattr(a, "mode", "local")),
+                    as_json=as_json,
+                )
+            )
+        elif a.parity_op == "build-check":
+            raise SystemExit(
+                cmd_parity_build_check(
+                    data_root=dr,
+                    manifest_a=getattr(a, "manifest_a", None),
+                    manifest_b=getattr(a, "manifest_b", None),
+                    auto_reject=bool(getattr(a, "auto_reject", True)),
+                    mode=str(getattr(a, "mode", "local")),
                     as_json=as_json,
                 )
             )

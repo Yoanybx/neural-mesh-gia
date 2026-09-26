@@ -45,5 +45,6 @@ markers = [
     "packaging_dist_cycle38: CP-0042 0.18_H5 packaging distribution / ABORT pin prior",
     "minority_write_cycle39: CP-0043 0.18_H6 minority_write @N2 / ABORT halt writes",
     "clock_skew_cycle40: CP-0044 0.18_H7 clock_skew @N2 / ABORT refuse join",
+    "manifest_parity_cycle41: CP-0045 0.18_H8 manifest_parity @N2 / ABORT reject build",
 ]
 

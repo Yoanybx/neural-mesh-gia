@@ -1,6 +1,7 @@
 {
   "active_tasks": [],
   "blocked_tasks": [],
+  "checkpoint": "CP-0045",
   "completed_phases": [
     0,
     1,
@@ -55,8 +56,10 @@
   ],
   "current_module": "mesh-017-theme-signoff",
   "current_phase": 5,
+  "cycle": 41,
   "decisions_pending": [],
   "git_commit": null,
+  "h1_h8_complete": true,
   "human_approval_required": false,
   "known_bugs": [],
   "last_checkpoint": "CP-0037",
@@ -74,8 +77,13 @@
   ],
   "next_action": "DeepSeek M2M VERDICT on Cycle 32 / CP-0036. Next: 0.18_bootstrap. Do not reopen 0.16.3. NO_HELD unchanged. Do not implement H1..H8 yet.",
   "open_questions": [],
+  "preferred_next": "0.18_signoff",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.17.0",
+  "pytest": {
+    "failed": 0,
+    "passed": 722
+  },
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
@@ -83,5 +91,6 @@
     "failed": 0,
     "passed": 567
   },
+  "theme": "0.18_H8_manifest_parity",
   "version": "0.18.0"
 }

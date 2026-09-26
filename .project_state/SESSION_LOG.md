@@ -99,3 +99,11 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 
 ## Cycle 33 / CP-0037 (2026-09-23 22:28 EDT)
 - 0.18_bootstrap: ver 0.18.0 open; SCOPE H1..H8 frozen; GOV.7 WAIVE_VIA_ACCEPT_AND_CARRY; pytest 579/0; CP-0037 VERIFIED.
+
+## Cycle 41 / CP-0045 — 2026-09-26 19:02 EDT
+- Theme: 0.18_H8_manifest_parity (mesh.manifest.parity/v1)
+- DONE: packaging/parity lib+CLI; byte-equality concurrent build; ABORT→reject build; toolchain pin; tests 20; CP-0045 sealed
+- pytest: 722/0; ver 0.18.0; H1..H8 COMPLETE
+- PREFERRED_NEXT: 0.18_signoff
+- NO_HELD unchanged; economy PARKED; tags 0.16.3/0.17.0 untouched
+

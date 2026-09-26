@@ -1,0 +1,20 @@
+{
+  "checkpoint": "CP-0045",
+  "cycle": 41,
+  "dual_primary": 0,
+  "h1_h8_complete": true,
+  "manifest_parity_cycle41": 20,
+  "minority_writes": 0,
+  "plaintext_fallback": 0,
+  "preferred_next": "0.18_signoff",
+  "pytest": {
+    "failed": 0,
+    "passed": 722
+  },
+  "pytest_passed": 722,
+  "status": "VERIFIED",
+  "theme": "0.18_H8_manifest_parity",
+  "vault_acme_required": 0,
+  "version": "0.18.0",
+  "wall_clock_as_authority": 0
+}
