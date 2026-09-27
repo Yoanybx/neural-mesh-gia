@@ -63,6 +63,7 @@ markers = [
     "orchestrator_continuity_cycle64: CP-0068 orchestrator continuity design (durable goals/ledger/resume; mock; live=DISABLED)",
     "orchestrator_oversight_cycle65: CP-0069 oversight hooks design refinement I5 (approve/deny/pause/kill/deadman; mock; live=DISABLED)",
     "orchestrator_design_set_signoff_cycle66: CP-0070 orchestrator design-set signoff (ledger close CP-0064..CP-0069; pkg0190 NOT_OPENED; live=DISABLED)",
+    "d1_l_judge_safety_maturation_cycle67: CP-0071 D1 L_judge safety-case maturation (D4-A..K; live=DISABLED; M1=NO_CONSENSUS_YET)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

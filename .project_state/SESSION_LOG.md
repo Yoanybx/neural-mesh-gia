@@ -1,3 +1,9 @@
+## Cycle 67 — 2026-09-26 EDT — CP-0071 d1_l_judge_safety_case_maturation
+- Operator authorized D1 after COUNCIL_AGREEMENT_D4 LOCKED (97735e9).
+- Absorbed ChatGPT D4-A..K into planning doc + helpers; F1 evidence-bundle cites all IDs.
+- Composes CP-0058+0068+0069; live=DISABLED; M1=NO_CONSENSUS_YET; pytest 1107/0.
+- PREFERRED_NEXT: await_deepseek (D2 queued per F10).
+
 ## Cycle 66 — 2026-09-26 EDT — CP-0070 orchestrator_design_set_signoff
 - DeepSeek C65 Option1: formal ledger close orchestrator contract CP-0064..CP-0069.
 - Helpers + docs + THEME_SIGNOFF_ORCHESTRATOR_DESIGN; pytest 1078/0.

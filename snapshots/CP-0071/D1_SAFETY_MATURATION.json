@@ -1,0 +1,255 @@
+{
+  "authority_matrix": [
+    {
+      "approve": false,
+      "component": "L_judge",
+      "execute": false,
+      "propose": true,
+      "veto": false
+    },
+    {
+      "approve": true,
+      "component": "Oversight_I5",
+      "execute": false,
+      "propose": true,
+      "veto": true
+    },
+    {
+      "approve": false,
+      "component": "Continuity",
+      "execute": false,
+      "propose": false,
+      "veto": true
+    },
+    {
+      "approve": true,
+      "component": "Operator",
+      "execute": true,
+      "propose": true,
+      "veto": true
+    },
+    {
+      "approve": false,
+      "component": "OrchestratorRouter",
+      "execute": false,
+      "propose": true,
+      "veto": true
+    },
+    {
+      "approve": false,
+      "component": "RefuseTransport",
+      "execute": false,
+      "propose": false,
+      "veto": true
+    }
+  ],
+  "composed_cps": [
+    "CP-0058",
+    "CP-0068",
+    "CP-0069"
+  ],
+  "cp": "CP-0071",
+  "cycle": 67,
+  "d1_exit_ready_for_live": false,
+  "d4_debt_ids": [
+    "D4-A",
+    "D4-B",
+    "D4-C",
+    "D4-D",
+    "D4-E",
+    "D4-F",
+    "D4-G",
+    "D4-H",
+    "D4-I",
+    "D4-J",
+    "D4-K"
+  ],
+  "dual_primary": 0,
+  "gates": [
+    {
+      "detail": "version=0.18.0 expect=0.18.0",
+      "name": "version_held",
+      "ok": true
+    },
+    {
+      "detail": "docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md",
+      "name": "planning_doc_present",
+      "ok": true
+    },
+    {
+      "detail": "missing=[]",
+      "name": "d4_ids_cited",
+      "ok": true
+    },
+    {
+      "detail": "D4-A",
+      "name": "authority_matrix",
+      "ok": true
+    },
+    {
+      "detail": "D4-B M1=NO_CONSENSUS_YET",
+      "name": "consensus_draft_no_default",
+      "ok": true
+    },
+    {
+      "detail": "D4-C",
+      "name": "continuity_limits",
+      "ok": true
+    },
+    {
+      "detail": "D4-D",
+      "name": "oversight_bounds",
+      "ok": true
+    },
+    {
+      "detail": "missing_rv=[]",
+      "name": "rollback_verification",
+      "ok": true
+    },
+    {
+      "detail": "D4-I",
+      "name": "evidence_provenance",
+      "ok": true
+    },
+    {
+      "detail": "D4-E/J/K (not D3 perf)",
+      "name": "d1_exit_criteria",
+      "ok": true
+    },
+    {
+      "detail": "D4-F",
+      "name": "claim_hygiene",
+      "ok": true
+    },
+    {
+      "detail": "live=DISABLED + no live-ready claim",
+      "name": "live_disabled",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0058', 'CP-0068', 'CP-0069']",
+      "name": "composed_cps",
+      "ok": true
+    },
+    {
+      "detail": "CP-0070",
+      "name": "prior_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "capability_schema_present",
+      "ok": true
+    },
+    {
+      "detail": "n=5",
+      "name": "upstream_docs_present",
+      "ok": true
+    },
+    {
+      "detail": "env=''",
+      "name": "mesh_perf_experimental_off",
+      "ok": true
+    },
+    {
+      "detail": "v0.19.0 absent; pkg0190 not opened",
+      "name": "pkg0190_not_opened",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_gia_claim",
+      "ok": true
+    },
+    {
+      "detail": "count=1107",
+      "name": "pytest_green",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "authority_semantics",
+      "ok": true
+    }
+  ],
+  "live": "DISABLED",
+  "m1_status": "NO_CONSENSUS_YET",
+  "maturation_gate": {
+    "audit_completeness_required": true,
+    "authority_matrix_frozen": true,
+    "composed_cps": [
+      "CP-0058",
+      "CP-0068",
+      "CP-0069"
+    ],
+    "continuity_verified_state_only": true,
+    "d1_exit_ready_for_live": false,
+    "d4_debt_ids": [
+      "D4-A",
+      "D4-B",
+      "D4-C",
+      "D4-D",
+      "D4-E",
+      "D4-F",
+      "D4-G",
+      "D4-H",
+      "D4-I",
+      "D4-J",
+      "D4-K"
+    ],
+    "live_enabled": false,
+    "m1_status": "NO_CONSENSUS_YET",
+    "mesh_perf_experimental": "OFF",
+    "must_stay_false": {
+      "d1_exit_ready_for_live": false,
+      "gia_unlocked": false,
+      "live_adapter.enabled": false,
+      "live_api_in_ci": false,
+      "m1_consensus_default_selected": false,
+      "mesh_is_frontier_model": false,
+      "n_gt_2": false,
+      "raft_runtime": false,
+      "saas_settlement": false,
+      "src_live_codec_shipped": false,
+      "train_70b": false
+    },
+    "oversight_bounds_documented": true,
+    "policy_version_required": true,
+    "rollback_verification_ids": [
+      "RV-1",
+      "RV-2",
+      "RV-3",
+      "RV-4",
+      "RV-5",
+      "RV-6",
+      "RV-7"
+    ],
+    "schema": "mesh.judge.d1_safety_maturation/v0"
+  },
+  "mesh_perf_experimental": "OFF",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "note": "D1 L_judge safety-case maturation: absorbs ChatGPT D4-A..K into authority/consensus-draft/continuity/oversight/rollback-verify/evidence/claim-hygiene/acceptance artifacts composing CP-0058+0068+0069. Design-only. live=DISABLED. M1=NO_CONSENSUS_YET. Does not enable live, open pkg0190, unlock GIA/Raft/N>2, or flip MESH_PERF_EXPERIMENTAL.",
+  "ok": true,
+  "package_held": "0.18.0",
+  "package_open_0190": false,
+  "preferred_next": "await_deepseek",
+  "prior_cp": "CP-0070",
+  "pytest_count": 1107,
+  "rollback_verification_ids": [
+    "RV-1",
+    "RV-2",
+    "RV-3",
+    "RV-4",
+    "RV-5",
+    "RV-6",
+    "RV-7"
+  ],
+  "schema": "mesh.release.d1_safety_maturation/v1",
+  "timestamp": "2026-09-27T03:10:00Z",
+  "tip": "pending"
+}
