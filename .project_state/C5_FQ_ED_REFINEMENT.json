@@ -226,6 +226,6 @@
     "safety": "unchanged 23: N>2 partition safety evidence still absent (raising would be fudge)."
   },
   "timestamp": "2026-09-27T03:35:00Z",
-  "tip": "TIP_PENDING",
+  "tip": "a6f53fb",
   "verdict": "NO_CONSENSUS_YET"
 }
