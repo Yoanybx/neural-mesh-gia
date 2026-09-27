@@ -5,7 +5,7 @@ Module: agent_shell_extended_scenarios
 Status: VERIFIED
 Last checkpoint: CP-0062
 Next action: 0.19_design_set_signoff_v2
-Git: TIP_PENDING
+Git: cffda03
 Safety: ok
 L1: CLOSED
 live: DISABLED
