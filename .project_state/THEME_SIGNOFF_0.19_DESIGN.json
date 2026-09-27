@@ -1,8 +1,18 @@
 {
+  "amendment": "v2",
+  "baseline_cp": "CP-0055",
   "channel": "0.19.x-design",
-  "cp": "CP-0055",
-  "cycle": 51,
+  "cp": "CP-0063",
+  "cycle": 59,
   "dual_primary": 0,
+  "extension_cps": [
+    "CP-0057",
+    "CP-0058",
+    "CP-0059",
+    "CP-0060",
+    "CP-0061",
+    "CP-0062"
+  ],
   "gates": [
     {
       "detail": "version=0.18.0 expect=0.18.0",
@@ -10,17 +20,37 @@
       "ok": true
     },
     {
-      "detail": "n_docs=10",
-      "name": "themes_a_d_present",
+      "detail": "n_docs=17",
+      "name": "themes_a_g_present",
       "ok": true
     },
     {
-      "detail": "cps=['CP-0047', 'CP-0048', 'CP-0049', 'CP-0050', 'CP-0051', 'CP-0052', 'CP-0053', 'CP-0054']",
+      "detail": "n_base=10",
+      "name": "baseline_a_d_present",
+      "ok": true
+    },
+    {
+      "detail": "n_ext=8",
+      "name": "extension_docs_present",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0047', 'CP-0048', 'CP-0049', 'CP-0050', 'CP-0051', 'CP-0052', 'CP-0053', 'CP-0054', 'CP-0055', 'CP-0057', 'CP-0058', 'CP-0059', 'CP-0060', 'CP-0061', 'CP-0062']",
       "name": "cps_verified",
       "ok": true
     },
     {
-      "detail": "CP-0054",
+      "detail": "ext=['CP-0057', 'CP-0058', 'CP-0059', 'CP-0060', 'CP-0061', 'CP-0062']",
+      "name": "extension_cps_verified",
+      "ok": true
+    },
+    {
+      "detail": "CP-0055",
+      "name": "baseline_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "CP-0062",
       "name": "prior_cp_present",
       "ok": true
     },
@@ -55,27 +85,38 @@
       "ok": true
     },
     {
+      "detail": "live=DISABLED across extension spikes",
+      "name": "live_disabled",
+      "ok": true
+    },
+    {
       "detail": "0.19.0 deferred",
       "name": "package_0190_not_opened",
       "ok": true
     },
     {
-      "detail": "injected=844",
+      "detail": "v0.19.0 absent",
+      "name": "no_v019_tag",
+      "ok": true
+    },
+    {
+      "detail": "injected=977",
       "name": "pytest_green",
       "ok": true
     }
   ],
-  "line_status": "CLOSED_FROZEN_DESIGN_SET",
+  "line_status": "CLOSED_FROZEN_DESIGN_SET_V2",
+  "live": "DISABLED",
   "m1_unlock": "NO_CONSENSUS_YET",
   "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
-  "note": "0.19 A\u2013D design-set CLOSED/FROZEN; package stays 0.18.0. Do not open 0.19.0 here. Do not retag v0.18.0. NO_CONSENSUS_YET on M1 unlock; Raft/N>2 still NO_HELD. Do not claim GIA; no train/SaaS/economy.",
+  "note": "0.19 design-set signoff v2: amends CP-0055 A\u2013D CLOSED with post-C51 M2/M3/live-adapter/safety/L_judge\u00d7M2 e2e/agent_shell extended. Package stays 0.18.0. Do not open 0.19.0. Do not retag v0.18.0 / create v0.19.0. M1=NO_CONSENSUS_YET; Raft/N>2/GIA still NO_HELD; live=DISABLED; no train/SaaS.",
   "ok": true,
   "package_held": "0.18.0",
   "package_open_0190": false,
-  "preferred_next": "await_deepseek_design_signoff",
-  "prior_cp": "CP-0054",
-  "pytest_count": 844,
-  "schema": "mesh.release.design_set_signoff/v1",
+  "preferred_next": "await_deepseek",
+  "prior_cp": "CP-0062",
+  "pytest_count": 977,
+  "schema": "mesh.release.design_set_signoff/v2",
   "signer": "council:DeepSeek+Grok",
   "theme_cps": [
     "CP-0047",
@@ -85,15 +126,26 @@
     "CP-0051",
     "CP-0052",
     "CP-0053",
-    "CP-0054"
+    "CP-0054",
+    "CP-0055",
+    "CP-0057",
+    "CP-0058",
+    "CP-0059",
+    "CP-0060",
+    "CP-0061",
+    "CP-0062"
   ],
   "themes": {
     "A": "L_judge_MIX_adapter_design",
     "B": "durable_goal_registry_continuity",
     "C": "agent_shell_adapter_spike",
     "D": "M1_M2_M3_fabric_design_pointers",
-    "status": "CLOSED"
+    "E": "L_judge_live_adapter_design_and_safety",
+    "F": "M2_M3_fabric_design_matured",
+    "G": "L_judge_M2_e2e_and_agent_shell_extended_spikes",
+    "baseline_status": "CLOSED",
+    "status": "CLOSED_V2"
   },
-  "timestamp": "2026-09-27T00:09:16Z",
-  "tip": "c80f436"
+  "timestamp": "2026-09-27T01:00:00Z",
+  "tip": "TIP_PENDING"
 }

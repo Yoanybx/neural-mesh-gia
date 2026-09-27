@@ -1,0 +1,18 @@
+{
+  "checkpoint": "CP-0063",
+  "cycle": 59,
+  "dual_primary": 0,
+  "design_set_signoff_v2_cycle59": 19,
+  "pytest": {
+    "failed": 0,
+    "passed": 977
+  },
+  "status": "VERIFIED",
+  "theme": "0.19_design_set_signoff_v2",
+  "version": "0.18.0",
+  "preferred_next": "await_deepseek",
+  "baseline_cp": "CP-0055",
+  "amendment": "v2",
+  "live": "DISABLED",
+  "created_utc": "2026-09-27T01:00:00Z"
+}

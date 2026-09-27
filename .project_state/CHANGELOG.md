@@ -1,3 +1,9 @@
+## Cycle 59 — 2026-09-26 — CP-0063 0.19_design_set_signoff_v2
+- Amend C51 A–D design-set signoff with post-C51: M2, M3, L_judge safety case, live-adapter design, L_judge×M2 e2e, agent_shell extended.
+- design_set_signoff_019_v2 helpers; DESIGN_SET_SIGNOFF_V2; MESH_0.19_DESIGN_SET_SIGNOFF updated.
+- tests=19; pytest 977/0. Package 0.18.0 held; 0.19.0 not opened; no v0.19 tag; v0.18.0 untouched.
+- live=DISABLED; M1=NO_CONSENSUS_YET; NEXT=await_deepseek.
+
 ## Cycle 58 — 2026-09-26 — CP-0062 agent_shell_extended_scenarios
 - docs/design/AGENT_SHELL_EXTENDED_SCENARIOS.md; packaging agent_shell_extended (multi-turn/probe/churn).
 - ShellMembershipBridge×M2; optional L_judge dry_run; T-shell-a/b/c; receipt chain under churn.
