@@ -59,6 +59,7 @@ markers = [
     "orchestrator_judge_routing_cycle60: CP-0064 orchestrator judge/shell routing design (mock; live=DISABLED)",
     "multi_judge_agent_shell_spike_cycle61: CP-0065 multi-judge + agent_shell spike (DUAL/FALLBACK/ABORT under churn; live=DISABLED)",
     "mesh_perf_research_cycle62: CP-0066 Mesh perf research track (honest local microbenches; M1=NO_CONSENSUS_YET)",
+    "mesh_perf_hotspot_cycle63: CP-0067 perf hotspot + improvement design (experimental A/B flag OFF; M1=NO_CONSENSUS_YET)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

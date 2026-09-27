@@ -1,0 +1,191 @@
+{
+  "schema": "mesh.perf.hotspot_report/v0",
+  "honest": true,
+  "m1_status": "NO_CONSENSUS_YET",
+  "ranking_claim": null,
+  "box_local": true,
+  "claim_policy": [
+    "LOCAL_BASELINE_ONLY",
+    "NO_FASTEST_IN_WORLD",
+    "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+    "NONDEFAULT_LITERATURE_REFS"
+  ],
+  "n_cap": 2,
+  "live_api": false,
+  "note": "Rows ranked by local median_ms only \u2014 NOT a cross-system ranking; ranking_claim=null",
+  "hotspots": [
+    {
+      "name": "fence_path",
+      "median_ms": 2.7971150120720267,
+      "p95_ms": 3.124985989416018,
+      "share_pct": 45.79157229228171,
+      "iterations": 11,
+      "notes": "local tmp FenceService probe(auto_fence); not cross-system"
+    },
+    {
+      "name": "obs_snapshot",
+      "median_ms": 2.143271005479619,
+      "p95_ms": 2.6556170196272433,
+      "share_pct": 35.08749149241062,
+      "iterations": 21,
+      "notes": "status_snapshot.snapshot() local; IO-bound on project_state"
+    },
+    {
+      "name": "receipt_hash_chain",
+      "median_ms": 0.9377399983350188,
+      "p95_ms": 1.1465690040495247,
+      "share_pct": 15.351742327289188,
+      "iterations": 11,
+      "notes": "orchestrator routing receipts chain_len=32"
+    },
+    {
+      "name": "packaging_verify",
+      "median_ms": 0.22832999820820987,
+      "p95_ms": 0.2483589923940599,
+      "share_pct": 3.7379905990002817,
+      "iterations": 11,
+      "notes": "synthetic manifest sha256 verify; local only"
+    },
+    {
+      "name": "membership_sm",
+      "median_ms": 0.0019060098566114902,
+      "p95_ms": 0.003341992851346731,
+      "share_pct": 0.03120328901819897,
+      "iterations": 51,
+      "notes": "in-memory M2 SM full churn path; N_CAP=2 held"
+    }
+  ],
+  "baseline": {
+    "schema": "mesh.perf.research_report/v0",
+    "samples": [
+      {
+        "schema": "mesh.perf.research_sample/v0",
+        "name": "fence_path",
+        "iterations": 11,
+        "median_ms": 2.7971150120720267,
+        "p95_ms": 3.124985989416018,
+        "min_ms": 2.5102890213020146,
+        "max_ms": 3.124985989416018,
+        "notes": "local tmp FenceService probe(auto_fence); not cross-system",
+        "dual_primary": 0,
+        "live_api": false,
+        "claim_policy": [
+          "LOCAL_BASELINE_ONLY",
+          "NO_FASTEST_IN_WORLD",
+          "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+          "NONDEFAULT_LITERATURE_REFS"
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "ranking_claim": null
+      },
+      {
+        "schema": "mesh.perf.research_sample/v0",
+        "name": "obs_snapshot",
+        "iterations": 21,
+        "median_ms": 2.143271005479619,
+        "p95_ms": 2.6556170196272433,
+        "min_ms": 1.8482489977031946,
+        "max_ms": 2.793291991110891,
+        "notes": "status_snapshot.snapshot() local; IO-bound on project_state",
+        "dual_primary": 0,
+        "live_api": false,
+        "claim_policy": [
+          "LOCAL_BASELINE_ONLY",
+          "NO_FASTEST_IN_WORLD",
+          "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+          "NONDEFAULT_LITERATURE_REFS"
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "ranking_claim": null
+      },
+      {
+        "schema": "mesh.perf.research_sample/v0",
+        "name": "membership_sm",
+        "iterations": 51,
+        "median_ms": 0.0019060098566114902,
+        "p95_ms": 0.003341992851346731,
+        "min_ms": 0.001769978553056717,
+        "max_ms": 0.00465699122287333,
+        "notes": "in-memory M2 SM full churn path; N_CAP=2 held",
+        "dual_primary": 0,
+        "live_api": false,
+        "claim_policy": [
+          "LOCAL_BASELINE_ONLY",
+          "NO_FASTEST_IN_WORLD",
+          "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+          "NONDEFAULT_LITERATURE_REFS"
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "ranking_claim": null
+      },
+      {
+        "schema": "mesh.perf.research_sample/v0",
+        "name": "receipt_hash_chain",
+        "iterations": 11,
+        "median_ms": 0.9377399983350188,
+        "p95_ms": 1.1465690040495247,
+        "min_ms": 0.8613899990450591,
+        "max_ms": 1.1465690040495247,
+        "notes": "orchestrator routing receipts chain_len=32",
+        "dual_primary": 0,
+        "live_api": false,
+        "claim_policy": [
+          "LOCAL_BASELINE_ONLY",
+          "NO_FASTEST_IN_WORLD",
+          "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+          "NONDEFAULT_LITERATURE_REFS"
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "ranking_claim": null
+      },
+      {
+        "schema": "mesh.perf.research_sample/v0",
+        "name": "packaging_verify",
+        "iterations": 11,
+        "median_ms": 0.22832999820820987,
+        "p95_ms": 0.2483589923940599,
+        "min_ms": 0.2114870003424585,
+        "max_ms": 0.2483589923940599,
+        "notes": "synthetic manifest sha256 verify; local only",
+        "dual_primary": 0,
+        "live_api": false,
+        "claim_policy": [
+          "LOCAL_BASELINE_ONLY",
+          "NO_FASTEST_IN_WORLD",
+          "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+          "NONDEFAULT_LITERATURE_REFS"
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "ranking_claim": null
+      }
+    ],
+    "honest": true,
+    "m1_status": "NO_CONSENSUS_YET",
+    "claim_policy": [
+      "LOCAL_BASELINE_ONLY",
+      "NO_FASTEST_IN_WORLD",
+      "NO_CROSS_SYSTEM_RANKING_WITHOUT_SHARED_HARNESS",
+      "NONDEFAULT_LITERATURE_REFS"
+    ],
+    "nondefault_refs": [
+      {
+        "name": "etcd",
+        "role": "NON_DEFAULT_REFERENCE",
+        "note": "Distributed KV / Raft-backed store; useful latency literature, not Mesh SoT."
+      },
+      {
+        "name": "Raft",
+        "role": "NON_DEFAULT_REFERENCE",
+        "note": "Consensus algorithm family; Mesh M1=NO_CONSENSUS_YET; Raft remains NO_HELD."
+      },
+      {
+        "name": "CRDT",
+        "role": "NON_DEFAULT_REFERENCE",
+        "note": "Conflict-free replicated data types; orthogonal research pointer, not default Mesh path."
+      }
+    ],
+    "n_cap": 2,
+    "live_api": false,
+    "ranking_claim": null
+  }
+}

@@ -1,7 +1,7 @@
-# CP-0066
+# CP-0067
 
 Phase: 0.19_plan
-Module: MESH_PERF_RESEARCH_TRACK
+Module: perf_hotspot_and_improvement_design
 Status: VERIFIED
 Next: await_deepseek
 Version: 0.18.0 (held)

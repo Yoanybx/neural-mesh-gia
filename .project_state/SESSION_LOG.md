@@ -128,3 +128,8 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 ## Cycle 62 — 2026-09-26 EDT — CP-0066 MESH_PERF_RESEARCH_TRACK
 - Honest local microbenches (fence/OBS/membership/receipt/packaging); etcd/Raft/CRDT NON-default.
 - ranking_claim=null; M1=NO_CONSENSUS_YET; pytest 1023/0; package 0.18.0 held; no Raft/N>2/GIA unlock.
+
+## Cycle 63 — 2026-09-26 EDT — CP-0067 perf_hotspot_and_improvement_design
+- Hotspot analysis from CP-0066 benches (fence/OBS/receipt lead locally); I1..I7 designs.
+- MESH_PERF_EXPERIMENTAL default OFF; ranking_claim=null; achieved_speedup_claimed=false.
+- Continuity still queued; M1=NO_CONSENSUS_YET; pytest 1035/0; package 0.18.0 held.

@@ -320,3 +320,8 @@ Bootstrap continuity system (shipped source).
 - src/neural_mesh/network/ops.py (status/diagnose/reconnect)
 - CLI mesh fabric status|diagnose|reconnect
 - tests/test_fabric_ops_cycle29.py (16); pytest 520; CP-0033 VERIFIED; ver 0.17.0 held.
+
+## Cycle 63 / CP-0067 — 2026-09-26 EDT
+- perf_hotspot_and_improvement_design: hotspot report + ranked I1..I7 experimental designs.
+- packaging mesh_perf_hotspot; optional A/B behind MESH_PERF_EXPERIMENTAL (default OFF).
+- Honest local only; no world-fastest/ranking claims; continuity queued; 0.18.0 held.

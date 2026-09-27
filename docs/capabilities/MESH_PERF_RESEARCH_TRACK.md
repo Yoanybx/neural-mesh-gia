@@ -23,7 +23,7 @@ NON-default; M1=NO_CONSENSUS_YET; no false "fastest" claims
 
 ## Preferred next
 
-`await_deepseek`
+Superseded by CP-0067 `perf_hotspot_and_improvement_design` (then `await_deepseek`).
 
 ## NO_HELD
 

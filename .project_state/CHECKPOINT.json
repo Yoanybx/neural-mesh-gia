@@ -1,7 +1,7 @@
 {
   "active_tasks": [],
   "blocked_tasks": [],
-  "checkpoint": "CP-0066",
+  "checkpoint": "CP-0067",
   "completed_phases": [
     0,
     1,
@@ -81,44 +81,44 @@
     "mesh_019_design_set_signoff_v2_cp0063",
     "mesh_orchestrator_judge_routing_cp0064",
     "mesh_multi_judge_agent_shell_spike_cp0065",
-    "mesh_perf_research_track_cp0066"
+    "mesh_perf_research_track_cp0066",
+    "mesh_perf_hotspot_improvement_cp0067"
   ],
-  "current_module": "mesh-perf-research-track",
+  "current_module": "perf-hotspot-and-improvement-design",
   "current_phase": 5,
-  "cycle": 62,
+  "cycle": 63,
   "decisions_pending": [],
   "git_commit": null,
   "h1_h8_complete": true,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0066",
+  "last_checkpoint": "CP-0067",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-27T01:30:00Z",
-  "last_updated": "2026-09-27T01:30:00Z",
+  "last_successful_test": "2026-09-27T01:50:00Z",
+  "last_updated": "2026-09-27T01:50:00Z",
   "modified_files": [
-    "docs/design/MESH_PERF_RESEARCH_TRACK.md",
-    "docs/design/MESH_PERF_LITERATURE_POINTERS_NONDEFAULT.md",
-    "docs/capabilities/MESH_PERF_RESEARCH_TRACK.md",
-    "src/neural_mesh/packaging/mesh_perf_research.py",
-    "tests/test_mesh_perf_research_cycle62.py"
+    "docs/design/MESH_PERF_HOTSPOT_AND_IMPROVEMENT_DESIGN.md",
+    "docs/capabilities/MESH_PERF_HOTSPOT_AND_IMPROVEMENT.md",
+    "src/neural_mesh/packaging/mesh_perf_hotspot.py",
+    "tests/test_mesh_perf_hotspot_cycle63.py"
   ],
-  "next_action": "CP-0066 sealed (MESH_PERF_RESEARCH_TRACK). PREFERRED_NEXT=await_deepseek. Package 0.18.0 held; live=DISABLED; M1=NO_CONSENSUS_YET; honest baselines only; NO_HELD unchanged.",
+  "next_action": "CP-0067 sealed (perf_hotspot_and_improvement_design). PREFERRED_NEXT=await_deepseek. Package 0.18.0 held; live=DISABLED; M1=NO_CONSENSUS_YET; experimental flag OFF; continuity queued; NO_HELD unchanged.",
   "open_questions": [],
   "preferred_next": "await_deepseek",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
     "failed": 0,
-    "passed": 1023
+    "passed": 1035
   },
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 1023
+    "passed": 1035
   },
-  "theme": "MESH_PERF_RESEARCH_TRACK",
+  "theme": "perf_hotspot_and_improvement_design",
   "themes_status": "CLOSED_FROZEN_DESIGN_SET_V2",
   "version": "0.18.0",
   "l1_status": "CLOSED"
