@@ -5,7 +5,7 @@ Module: M3_WAN_model_DESIGN
 Status: VERIFIED
 Last checkpoint: CP-0060
 Next action: await_deepseek
-Git: TIP_PENDING
+Git: ce2d0ce
 Safety: ok
 L1: CLOSED
 Updated: 2026-09-26T20:40:30-04:00
