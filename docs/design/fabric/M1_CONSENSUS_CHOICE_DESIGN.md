@@ -105,3 +105,11 @@ Stub pointer docs: `docs/design/fabric/M2_MEMBERSHIP_REJOIN_POINTER.md`,
 - `council/blueprint/FINAL_BLUEPRINT_ROOT.md` (L4 M1..M7)
 - `docs/planning/0.19_SCOPE_FROZEN.md`
 - `council/COUNCIL_AGREEMENT_HYPERBRAIN_ASTRA.md`
+
+---
+
+## Addendum — Cycle 68 / CP-0072
+
+See `M1_CONSENSUS_RERESEARCH.md` / `docs/planning/D2_M1_CONSENSUS_CANDIDATE_RERESEARCH.md`
+for C67 weight re-score + C5 FQ-ED sketch. **M1=NO_CONSENSUS_YET** unchanged; no Raft default.
+

@@ -136,3 +136,14 @@ M2/M3 drafts exist.
 - `docs/design/fabric/M3_WAN_PARTITION_HLC_POINTER.md` (stub)
 - `docs/planning/0.19_SCOPE_FROZEN.md`
 - `council/blueprint/FINAL_BLUEPRINT_ROOT.md` (L4 M1)
+
+---
+
+## Addendum — Cycle 68 / CP-0072 re-research
+
+C67 re-weighted axes and C5 FQ-ED sketch live in
+`docs/planning/D2_M1_CONSENSUS_CANDIDATE_RERESEARCH.md` and
+`docs/design/fabric/M1_CONSENSUS_RERESEARCH.md`.
+
+**Verdict unchanged:** **NO_CONSENSUS_YET** (closest C5=78 under new weights; Raft further demoted via explicit no-Raft axis). This addendum does not alter CP-0054 provisional scores under the *old* axes; those remain historical.
+

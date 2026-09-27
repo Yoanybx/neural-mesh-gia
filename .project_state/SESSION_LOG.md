@@ -1,3 +1,9 @@
+## Cycle 68 — 2026-09-26 EDT — CP-0072 d2_m1_consensus_candidate_reresearch
+- DeepSeek C67 PASS authorized D2 after D1; F10 order held.
+- C67 axes re-score C0..C5; C5 FQ-ED sketch; verdict NO_CONSENSUS_YET (78<80).
+- F2 confirmed; D1 seal-exit PASS / live-discussion NOT PASS; pytest 1139/0.
+- PREFERRED_NEXT: await_deepseek (D3 ACK-gated per F10).
+
 ## Cycle 67 — 2026-09-26 EDT — CP-0071 d1_l_judge_safety_case_maturation
 - Operator authorized D1 after COUNCIL_AGREEMENT_D4 LOCKED (97735e9).
 - Absorbed ChatGPT D4-A..K into planning doc + helpers; F1 evidence-bundle cites all IDs.
