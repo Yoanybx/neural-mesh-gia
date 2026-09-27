@@ -5,7 +5,7 @@ Module: multi_judge_agent_shell_spike
 Status: VERIFIED
 Last checkpoint: CP-0065
 Next action: await_deepseek
-Git: PENDING
+Git: 387a15b
 Safety: ok
 L1: CLOSED
 live: DISABLED
