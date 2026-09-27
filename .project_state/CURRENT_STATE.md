@@ -5,7 +5,7 @@ Module: Orchestrator_judge_routing_DESIGN
 Status: VERIFIED
 Last checkpoint: CP-0064
 Next action: await_deepseek
-Git: TIP_PENDING
+Git: 3f952c2
 Safety: ok
 L1: CLOSED
 live: DISABLED
