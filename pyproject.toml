@@ -45,6 +45,7 @@ markers = [
     "m1_design_cycle46: CP-0050 M1 consensus choice design + M2/M3 pointers",
     "schema_stubs_cycle47: CP-0051 L_judge/goal/continuity/shell schema stubs",
     "l_judge_integration_cycle48: CP-0052 L_judge MIX integration design + mock",
+    "shell_spike_execution_cycle49: CP-0053 agent-shell spike execution (mock pipeline)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

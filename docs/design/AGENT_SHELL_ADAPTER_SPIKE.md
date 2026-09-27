@@ -1,7 +1,7 @@
 # Agent-Shell Adapter Spike Plan — Design (docs only)
 
-**Status:** SPIKE PLAN DRAFT  
-**Cycle / Checkpoint:** 45 / CP-0049  
+**Status:** SPIKE PLAN DRAFT → **EXECUTED @ CP-0053**  
+**Cycle / Checkpoint:** 45 / CP-0049 (plan); 49 / CP-0053 (execution)  
 **Date:** 2026-09-26 America/New_York (EDT)  
 **Theme:** (C) from `0.19_SCOPE_FROZEN`  
 **Authority:** `COUNCIL_AGREEMENT_HYPERBRAIN_ASTRA` RANKED #2  
@@ -152,13 +152,14 @@ Spike does **not** vendor or fork them this cycle.
 ## 8. Suggested later CP sequence (not opened here)
 
 1. Schema stubs under `schema/shell/v0` (docs/json only)
-2. In-process fake shell → adapter dry-run tests
+2. In-process fake shell → adapter dry-run tests **(DONE CP-0053)**
 3. Optional OpenJarvis stub client behind feature flag
 4. Wire goal_id + continuity resume_token
 5. Never: settlement, GIA, N>2
 
 ## Related
 
+- `docs/design/AGENT_SHELL_SPIKE_EXECUTION.md` (CP-0053)
 - `docs/planning/0.19_SCOPE_FROZEN.md`
 - `docs/design/L_JUDGE_MIX_DESIGN.md`
 - `docs/design/DURABLE_GOALS_CONTINUITY_DESIGN.md`
