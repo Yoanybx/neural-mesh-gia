@@ -192,3 +192,13 @@ Membership compose M2; majority attested Active; hash-chained journal; HLC requi
 - `council/COUNCIL_AGREEMENT_CYCLE69.md`
 
 *End C5 FQ-ED refinement — design-only; C5=80 numeric; M1=NO_CONSENSUS_YET.*
+
+---
+
+## Addendum — Cycle 70 / CP-0074
+
+Operator formalized **permanent** M1=NO_CONSENSUS_YET under N=2 scope + HOLD
+(`docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md`, `council/NOTE_M1_NO_CONSENSUS_N2_SCOPE.md`).
+C5 numeric 80 unchanged; unlock still blocked; no Raft default; no N>2; D3 not ACKed;
+live=DISABLED. Re-research loop under this scope closed. This addendum does not alter
+CP-0073 scores or fence-probe DESIGN_DRAFTED status.

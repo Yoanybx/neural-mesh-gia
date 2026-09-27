@@ -1,0 +1,204 @@
+{
+  "candidate_totals": {
+    "C0": 85,
+    "C1": 54,
+    "C2": 53,
+    "C3": 60,
+    "C4": 73,
+    "C5": 80
+  },
+  "closest_candidate": "C5",
+  "closest_score": 80,
+  "composed_cps": [
+    "CP-0050",
+    "CP-0054",
+    "CP-0071",
+    "CP-0072",
+    "CP-0073"
+  ],
+  "cp": "CP-0074",
+  "cycle": 70,
+  "d3_acked": false,
+  "dual_primary": 0,
+  "fence_probe_status": "DESIGN_DRAFTED",
+  "gates": [
+    {
+      "detail": "version=0.18.0 expect=0.18.0",
+      "name": "version_held",
+      "ok": true
+    },
+    {
+      "detail": "council/NOTE_M1_NO_CONSENSUS_N2_SCOPE.md",
+      "name": "posture_note_present",
+      "ok": true
+    },
+    {
+      "detail": "docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md",
+      "name": "planning_doc_present",
+      "ok": true
+    },
+    {
+      "detail": "posture=PERMANENT_UNDER_N2_SCOPE",
+      "name": "permanent_no_consensus",
+      "ok": true
+    },
+    {
+      "detail": "C5=80; unlocked=False; thr=80",
+      "name": "numeric_not_ratify",
+      "ok": true
+    },
+    {
+      "detail": "policy rejects Raft default",
+      "name": "no_raft_default",
+      "ok": true
+    },
+    {
+      "detail": "N>2 remains NO_HELD",
+      "name": "n_gt2_no_held",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "live_disabled",
+      "ok": true
+    },
+    {
+      "detail": "D3 remains ACK-gated; not started",
+      "name": "d3_not_acked",
+      "ok": true
+    },
+    {
+      "detail": "env=''",
+      "name": "mesh_perf_experimental_off",
+      "ok": true
+    },
+    {
+      "detail": "v0.19.0 absent; pkg0190 not opened",
+      "name": "pkg0190_not_opened",
+      "ok": true
+    },
+    {
+      "detail": "n_gt2_safety_blocked_while_n_gt2_no_held",
+      "name": "structural_circularity_documented",
+      "ok": true
+    },
+    {
+      "detail": "HOLD active; no D3; no unlock",
+      "name": "hold_active",
+      "ok": true
+    },
+    {
+      "detail": "fence_green,GOV.2,n_gt2_safety",
+      "name": "remaining_gaps",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "capability_schema_present",
+      "ok": true
+    },
+    {
+      "detail": "n=4",
+      "name": "upstream_docs_present",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0050', 'CP-0054', 'CP-0071', 'CP-0072', 'CP-0073']",
+      "name": "prior_m1_cps",
+      "ok": true
+    },
+    {
+      "detail": "CP-0073",
+      "name": "prior_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_gia_claim",
+      "ok": true
+    },
+    {
+      "detail": "count=1200",
+      "name": "pytest_green",
+      "ok": true
+    }
+  ],
+  "hold_active": true,
+  "live": "DISABLED",
+  "m1_status": "NO_CONSENSUS_YET",
+  "mesh_perf_experimental": "OFF",
+  "n_gt2_status": "NO_HELD",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "note": "Cycle 70: operator Path C + HOLD \u2014 permanent M1=NO_CONSENSUS_YET under N=2 / NO_HELD scope. C5 numeric 80 \u2260 ratified. Structural circularity on n_gt2_safety documented. No Raft default; no N>2 unlock; D3 ACK-gated OFF; live=DISABLED; MESH_PERF_EXPERIMENTAL=OFF; pkg0190 NOT_OPENED. Re-research loop under this scope closed.",
+  "ok": true,
+  "package_held": "0.18.0",
+  "package_open_0190": false,
+  "pending_reresearch": false,
+  "posture": "PERMANENT_UNDER_N2_SCOPE",
+  "posture_gate": {
+    "c5_numeric_threshold_met": true,
+    "closest_candidate": "C5",
+    "closest_score": 80,
+    "composed_cps": [
+      "CP-0050",
+      "CP-0054",
+      "CP-0071",
+      "CP-0072",
+      "CP-0073"
+    ],
+    "d3_acked": false,
+    "fence_probe_status": "DESIGN_DRAFTED",
+    "hold_active": true,
+    "live_enabled": false,
+    "m1_status": "NO_CONSENSUS_YET",
+    "mesh_perf_experimental": "OFF",
+    "must_stay_false": {
+      "d3_started_without_ack": false,
+      "gia_unlocked": false,
+      "live_enabled": false,
+      "mesh_perf_experimental_on": false,
+      "n_gt2_unlocked": false,
+      "numeric_80_means_ratified": false,
+      "pending_reresearch_under_n2": false,
+      "pkg0190_opened": false,
+      "raft_is_default": false,
+      "saas_settlement": false,
+      "train_70b": false,
+      "v019_tagged": false
+    },
+    "n_gt2_status": "NO_HELD",
+    "pending_reresearch": false,
+    "posture": "PERMANENT_UNDER_N2_SCOPE",
+    "raft_is_default": false,
+    "ratify_threshold": 80,
+    "remaining_unlock_gaps": [
+      "fence_green",
+      "GOV.2",
+      "n_gt2_safety"
+    ],
+    "schema": "mesh.membership.m1_n2_scope_posture/v0",
+    "structural_circularity": "n_gt2_safety_blocked_while_n_gt2_no_held",
+    "unlocked": false
+  },
+  "preferred_next": "await_deepseek",
+  "prior_cp": "CP-0073",
+  "pytest_count": 1200,
+  "raft_is_default": false,
+  "ratify_threshold": 80,
+  "remaining_unlock_gaps": [
+    "fence_green",
+    "GOV.2",
+    "n_gt2_safety"
+  ],
+  "schema": "mesh.release.m1_no_consensus_n2_scope/v1",
+  "structural_circularity": "n_gt2_safety_blocked_while_n_gt2_no_held",
+  "timestamp": "2026-09-27T03:45:00Z",
+  "tip": "pending",
+  "unlocked": false,
+  "verdict": "NO_CONSENSUS_YET"
+}

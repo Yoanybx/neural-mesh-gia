@@ -119,3 +119,5 @@ for C67 weight re-score + C5 FQ-ED sketch. **M1=NO_CONSENSUS_YET** unchanged; no
 ## Addendum — Cycle 69 / CP-0073
 
 C5 FQ-ED refined to numeric **80** (`M1_C5_FQ_ED_REFINEMENT.md`). **M1=NO_CONSENSUS_YET** for unlock (design-review green + GOV.2 still open). No Raft default; live=DISABLED.
+
+**CP-0074:** Permanent M1=NO_CONSENSUS_YET under N=2 scope + HOLD — see `M1_NO_CONSENSUS_N2_SCOPE.md`.

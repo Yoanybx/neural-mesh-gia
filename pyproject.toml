@@ -66,6 +66,7 @@ markers = [
     "d1_l_judge_safety_maturation_cycle67: CP-0071 D1 L_judge safety-case maturation (D4-A..K; live=DISABLED; M1=NO_CONSENSUS_YET)",
     "d2_m1_consensus_reresearch_cycle68: CP-0072 D2 M1 consensus candidate re-research (C67 axes; C5 FQ-ED; NO_CONSENSUS_YET; live=DISABLED)",
     "c5_fq_ed_refinement_cycle69: CP-0073 C5 FQ-ED refinement (honest +2 → 80 numeric; M1=NO_CONSENSUS_YET; fence DESIGN_DRAFTED; live=DISABLED)",
+    "m1_no_consensus_n2_scope_cycle70: CP-0074 M1 permanent NO_CONSENSUS_YET under N=2 scope + HOLD (numeric≥80≠ratified; no Raft/N>2; D3 ACK-gated OFF; live=DISABLED)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

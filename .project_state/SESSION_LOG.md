@@ -1,3 +1,9 @@
+## Cycle 70 — 2026-09-26 EDT — CP-0074 m1_no_consensus_n2_scope
+- Operator Path C + HOLD: permanent M1=NO_CONSENSUS_YET under N=2 scope.
+- C5 numeric 80 ≠ ratified; structural circularity (n_gt2_safety) documented.
+- No Raft default; no N>2 unlock; D3 ACK-gated OFF; live=DISABLED; HOLD active.
+- pytest 1200/0; package 0.18.0 held; re-research loop under this scope closed.
+
 ## Cycle 69 — 2026-09-26 EDT — CP-0073 c5_fq_ed_refinement
 - Resume after Hold post-D2; refine C5 FQ-ED toward ≥80 (design-only).
 - Honest +2: fence_compat 12→13 (matrix DESIGN_DRAFTED), adversary 8→9 (ED criteria); safety 23 unchanged.

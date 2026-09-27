@@ -153,3 +153,5 @@ C67 re-weighted axes and C5 FQ-ED sketch live in
 ## Addendum — Cycle 69 / CP-0073 C5 refinement
 
 See `docs/planning/C5_FQ_ED_REFINEMENT.md`. C5 reaches **80 numeric** via honest +2; unlock still **NO_CONSENSUS_YET** (fence-probe not design-review green; GOV.2 open). CP-0054 historical scores under old axes unchanged.
+
+**CP-0074:** Permanent M1=NO_CONSENSUS_YET under N=2 scope + HOLD — see `M1_NO_CONSENSUS_N2_SCOPE.md`.

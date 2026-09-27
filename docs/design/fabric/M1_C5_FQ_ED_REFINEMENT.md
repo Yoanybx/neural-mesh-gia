@@ -28,3 +28,5 @@ Numeric threshold met ≠ unlocked. Ratify still requires fence-probe design-rev
 - `docs/planning/C5_FQ_ED_REFINEMENT.md`
 - `docs/design/fabric/M1_CONSENSUS_RERESEARCH.md` (updated totals)
 - `docs/planning/D2_M1_CONSENSUS_CANDIDATE_RERESEARCH.md`
+
+**CP-0074:** Numeric 80 still ≠ ratified; permanent NO_CONSENSUS_YET under N=2 scope — see `M1_NO_CONSENSUS_N2_SCOPE.md`.

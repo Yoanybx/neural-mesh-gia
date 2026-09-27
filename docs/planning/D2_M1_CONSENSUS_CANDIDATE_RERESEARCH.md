@@ -247,3 +247,11 @@ These rules raise the bar for C1..C3 (classical protocols without Mesh-native AB
 ## Addendum — Cycle 69 / CP-0073
 
 C5 FQ-ED refined in `docs/planning/C5_FQ_ED_REFINEMENT.md`: honest +2 (fence_compat 12→13, adversary 8→9) → **C5=80 numeric**. Fence-probe matrix **DESIGN_DRAFTED** (not design-review green). **M1=NO_CONSENSUS_YET** unchanged for unlock. Threshold held; no Raft default; live=DISABLED; D3 not ACKed. This addendum does not alter CP-0072 historical 78-era scores.
+
+---
+
+## Addendum — Cycle 70 / CP-0074
+
+Operator Path C + HOLD: permanent M1=NO_CONSENSUS_YET under N=2 scope formalized
+(`docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md`). Does not reopen D2 scores; does not
+start D3; does not unlock N>2/Raft; live=DISABLED.
