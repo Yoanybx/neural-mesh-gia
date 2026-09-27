@@ -113,3 +113,9 @@ Stub pointer docs: `docs/design/fabric/M2_MEMBERSHIP_REJOIN_POINTER.md`,
 See `M1_CONSENSUS_RERESEARCH.md` / `docs/planning/D2_M1_CONSENSUS_CANDIDATE_RERESEARCH.md`
 for C67 weight re-score + C5 FQ-ED sketch. **M1=NO_CONSENSUS_YET** unchanged; no Raft default.
 
+
+---
+
+## Addendum — Cycle 69 / CP-0073
+
+C5 FQ-ED refined to numeric **80** (`M1_C5_FQ_ED_REFINEMENT.md`). **M1=NO_CONSENSUS_YET** for unlock (design-review green + GOV.2 still open). No Raft default; live=DISABLED.

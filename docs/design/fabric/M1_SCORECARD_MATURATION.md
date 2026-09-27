@@ -147,3 +147,9 @@ C67 re-weighted axes and C5 FQ-ED sketch live in
 
 **Verdict unchanged:** **NO_CONSENSUS_YET** (closest C5=78 under new weights; Raft further demoted via explicit no-Raft axis). This addendum does not alter CP-0054 provisional scores under the *old* axes; those remain historical.
 
+
+---
+
+## Addendum — Cycle 69 / CP-0073 C5 refinement
+
+See `docs/planning/C5_FQ_ED_REFINEMENT.md`. C5 reaches **80 numeric** via honest +2; unlock still **NO_CONSENSUS_YET** (fence-probe not design-review green; GOV.2 open). CP-0054 historical scores under old axes unchanged.

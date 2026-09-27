@@ -1,3 +1,9 @@
+## Cycle 69 — 2026-09-26 EDT — CP-0073 c5_fq_ed_refinement
+- Resume after Hold post-D2; refine C5 FQ-ED toward ≥80 (design-only).
+- Honest +2: fence_compat 12→13 (matrix DESIGN_DRAFTED), adversary 8→9 (ED criteria); safety 23 unchanged.
+- C5=80 numeric; M1=NO_CONSENSUS_YET (unlock AND-gates incomplete); D3 not ACKed.
+- pytest 1171/0; package 0.18.0 held; live=DISABLED; no Raft default.
+
 ## Cycle 68 — 2026-09-26 EDT — CP-0072 d2_m1_consensus_candidate_reresearch
 - DeepSeek C67 PASS authorized D2 after D1; F10 order held.
 - C67 axes re-score C0..C5; C5 FQ-ED sketch; verdict NO_CONSENSUS_YET (78<80).

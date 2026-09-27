@@ -1,0 +1,231 @@
+{
+  "axes": {
+    "adversary_resistance": 10,
+    "complexity": 5,
+    "fence_compat": 15,
+    "liveness": 15,
+    "no_raft": 10,
+    "safety": 30,
+    "wan_tolerance": 15
+  },
+  "candidate_totals": {
+    "C0": 85,
+    "C1": 54,
+    "C2": 53,
+    "C3": 60,
+    "C4": 73,
+    "C5": 80
+  },
+  "closest_candidate": "C5",
+  "closest_score": 80,
+  "composed_cps": [
+    "CP-0050",
+    "CP-0054",
+    "CP-0071",
+    "CP-0072"
+  ],
+  "cp": "CP-0073",
+  "cycle": 69,
+  "d3_acked": false,
+  "dual_primary": 0,
+  "fence_probe_status": "DESIGN_DRAFTED",
+  "gates": [
+    {
+      "detail": "version=0.18.0 expect=0.18.0",
+      "name": "version_held",
+      "ok": true
+    },
+    {
+      "detail": "docs/planning/C5_FQ_ED_REFINEMENT.md",
+      "name": "planning_doc_present",
+      "ok": true
+    },
+    {
+      "detail": "resume after Hold post-D2",
+      "name": "hold_note_present",
+      "ok": true
+    },
+    {
+      "detail": "sum=100 thr=80",
+      "name": "axes_threshold_held",
+      "ok": true
+    },
+    {
+      "detail": "C0..C5 ok; C5=80",
+      "name": "scores_filled",
+      "ok": true
+    },
+    {
+      "detail": "+2 = fence+1 + adversary+1",
+      "name": "honest_delta_documented",
+      "ok": true
+    },
+    {
+      "detail": "status=DESIGN_DRAFTED; n_ids=13",
+      "name": "fence_probe_matrix",
+      "ok": true
+    },
+    {
+      "detail": "kinds=7",
+      "name": "evidence_diversity_criteria",
+      "ok": true
+    },
+    {
+      "detail": "helper=NO_CONSENSUS_YET; numeric_met=True; ratifiable=False",
+      "name": "no_consensus_yet",
+      "ok": true
+    },
+    {
+      "detail": "fence_probe_not_design_review_green,gov2_quorum_evidence_bundle_open,n_gt2_safety_evidence_absent,runtime_raft_n_gt2_no_held",
+      "name": "remaining_gaps",
+      "ok": true
+    },
+    {
+      "detail": "C1 no_raft=0; policy rejects Raft default",
+      "name": "no_raft_default",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "live_disabled",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "capability_schema_present",
+      "ok": true
+    },
+    {
+      "detail": "n=6",
+      "name": "upstream_docs_present",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0050', 'CP-0054', 'CP-0071', 'CP-0072']",
+      "name": "prior_m1_cps",
+      "ok": true
+    },
+    {
+      "detail": "CP-0072",
+      "name": "prior_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "env=''",
+      "name": "mesh_perf_experimental_off",
+      "ok": true
+    },
+    {
+      "detail": "v0.19.0 absent; pkg0190 not opened",
+      "name": "pkg0190_not_opened",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "D3 remains ACK-gated; not started",
+      "name": "d3_not_acked",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_gia_claim",
+      "ok": true
+    },
+    {
+      "detail": "count=1171",
+      "name": "pytest_green",
+      "ok": true
+    }
+  ],
+  "live": "DISABLED",
+  "m1_status": "NO_CONSENSUS_YET",
+  "mesh_perf_experimental": "OFF",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "note": "Cycle 69 C5 FQ-ED refinement: honest +2 (fence_compat 12\u219213, adversary_resistance 8\u21929) \u2192 C5=80 numeric. Fence-probe matrix DESIGN_DRAFTED (not design-review green). M1=NO_CONSENSUS_YET (remaining: design-review green, GOV.2, N>2 safety evidence). Threshold held at \u226580; no Raft default; live=DISABLED; MESH_PERF_EXPERIMENTAL=OFF; D3 not ACKed; pkg0190 NOT_OPENED.",
+  "ok": true,
+  "package_held": "0.18.0",
+  "package_open_0190": false,
+  "preferred_next": "await_deepseek",
+  "prior_closest_score": 78,
+  "prior_cp": "CP-0072",
+  "pytest_count": 1171,
+  "raft_is_default": false,
+  "ratify_threshold": 80,
+  "refinement_gate": {
+    "axes": {
+      "adversary_resistance": 10,
+      "complexity": 5,
+      "fence_compat": 15,
+      "liveness": 15,
+      "no_raft": 10,
+      "safety": 30,
+      "wan_tolerance": 15
+    },
+    "c5_numeric_threshold_met": true,
+    "candidate_totals": {
+      "C0": 85,
+      "C1": 54,
+      "C2": 53,
+      "C3": 60,
+      "C4": 73,
+      "C5": 80
+    },
+    "closest_candidate": "C5",
+    "closest_score": 80,
+    "composed_cps": [
+      "CP-0050",
+      "CP-0054",
+      "CP-0071",
+      "CP-0072"
+    ],
+    "fence_probe_status": "DESIGN_DRAFTED",
+    "live_enabled": false,
+    "m1_status": "NO_CONSENSUS_YET",
+    "mesh_perf_experimental": "OFF",
+    "must_stay_false": {
+      "d3_started_without_ack": false,
+      "gia_unlocked": false,
+      "live_adapter.enabled": false,
+      "live_api_in_ci": false,
+      "m1_consensus_default_selected": false,
+      "mesh_perf_experimental_on": false,
+      "n_gt_2": false,
+      "raft_is_default": false,
+      "raft_runtime": false,
+      "saas_settlement": false,
+      "train_70b": false
+    },
+    "prior_closest_score": 78,
+    "raft_is_default": false,
+    "ratify_threshold": 80,
+    "remaining_unlock_gaps": [
+      "fence_probe_not_design_review_green",
+      "gov2_quorum_evidence_bundle_open",
+      "n_gt2_safety_evidence_absent",
+      "runtime_raft_n_gt2_no_held"
+    ],
+    "schema": "mesh.membership.m1_c5_refinement/v0",
+    "score_delta": 2
+  },
+  "remaining_unlock_gaps": [
+    "fence_probe_not_design_review_green",
+    "gov2_quorum_evidence_bundle_open",
+    "n_gt2_safety_evidence_absent",
+    "runtime_raft_n_gt2_no_held"
+  ],
+  "schema": "mesh.release.c5_fq_ed_refinement/v1",
+  "score_delta": 2,
+  "score_delta_justification": {
+    "adversary_resistance": "+1 (8\u21929): measurable evidence-kind taxonomy + correlation classes + acceptance criteria (\u22652 kinds AND \u22652 correlation classes before any consensus *claim*). Not +2\u219210: independence/correlation not proven with evidence (D1 recorded requirements still unmet as proof).",
+    "fence_compat": "+1 (12\u219213): C5 fence-probe matrix completed at design level (H3/H6/H7/ED/ADV/WAN/ABORT rows with expected outcomes). Not +2\u219214/15: matrix is self-authored DESIGN_DRAFTED, not independent design-review green; no runtime probes executed.",
+    "other_axes": "liveness/wan/no_raft/complexity unchanged (no new proofs).",
+    "safety": "unchanged 23: N>2 partition safety evidence still absent (raising would be fudge)."
+  },
+  "timestamp": "2026-09-27T03:35:00Z",
+  "tip": "TIP_PENDING",
+  "verdict": "NO_CONSENSUS_YET"
+}
