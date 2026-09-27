@@ -61,6 +61,7 @@ markers = [
     "mesh_perf_research_cycle62: CP-0066 Mesh perf research track (honest local microbenches; M1=NO_CONSENSUS_YET)",
     "mesh_perf_hotspot_cycle63: CP-0067 perf hotspot + improvement design (experimental A/B flag OFF; M1=NO_CONSENSUS_YET)",
     "orchestrator_continuity_cycle64: CP-0068 orchestrator continuity design (durable goals/ledger/resume; mock; live=DISABLED)",
+    "orchestrator_oversight_cycle65: CP-0069 oversight hooks design refinement I5 (approve/deny/pause/kill/deadman; mock; live=DISABLED)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

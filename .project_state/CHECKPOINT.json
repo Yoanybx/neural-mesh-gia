@@ -1,7 +1,7 @@
 {
   "active_tasks": [],
   "blocked_tasks": [],
-  "checkpoint": "CP-0068",
+  "checkpoint": "CP-0069",
   "completed_phases": [
     0,
     1,
@@ -83,44 +83,46 @@
     "mesh_multi_judge_agent_shell_spike_cp0065",
     "mesh_perf_research_track_cp0066",
     "mesh_perf_hotspot_improvement_cp0067",
-    "mesh_orchestrator_continuity_cp0068"
+    "mesh_orchestrator_continuity_cp0068",
+    "mesh_orchestrator_oversight_hooks_cp0069"
   ],
-  "current_module": "orchestrator-continuity-design",
+  "current_module": "orchestrator-oversight-hooks-design",
   "current_phase": 5,
-  "cycle": 64,
+  "cycle": 65,
   "decisions_pending": [],
   "git_commit": null,
   "h1_h8_complete": true,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0068",
+  "last_checkpoint": "CP-0069",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-27T01:35:00Z",
-  "last_updated": "2026-09-27T01:35:00Z",
+  "last_successful_test": "2026-09-27T01:42:58Z",
+  "last_updated": "2026-09-27T01:42:58Z",
   "modified_files": [
-    "docs/design/ORCHESTRATOR_CONTINUITY_DESIGN.md",
-    "docs/schema/continuity/orchestrator_v0.md",
-    "docs/capabilities/MESH_ORCHESTRATOR_CONTINUITY.md",
-    "src/neural_mesh/packaging/orchestrator_continuity.py",
-    "tests/test_orchestrator_continuity_cycle64.py"
+    "docs/design/ORCHESTRATOR_OVERSIGHT_HOOKS_DESIGN.md",
+    "docs/oversight/deadman-v1.md",
+    "docs/schema/oversight/orchestrator_v0.md",
+    "docs/capabilities/MESH_ORCHESTRATOR_OVERSIGHT.md",
+    "src/neural_mesh/packaging/orchestrator_oversight.py",
+    "tests/test_orchestrator_oversight_cycle65.py"
   ],
-  "next_action": "CP-0068 sealed (orchestrator_continuity_design). PREFERRED_NEXT=await_deepseek. Package 0.18.0 held; live=DISABLED; M1=NO_CONSENSUS_YET; substrate memory NOT consciousness; oversight_hooks queued; NO_HELD unchanged.",
+  "next_action": "CP-0069 sealed (oversight_hooks_design_refinement I5). PREFERRED_NEXT=await_deepseek. Package 0.18.0 held; live=DISABLED; M1=NO_CONSENSUS_YET; human oversight NOT consciousness; perf A/B operator-gated OFF; NO_HELD unchanged.",
   "open_questions": [],
   "preferred_next": "await_deepseek",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
-    "failed": 0,
-    "passed": 1046
+    "passed": 1057,
+    "failed": 0
   },
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
-    "failed": 0,
-    "passed": 1046
+    "passed": 1057,
+    "failed": 0
   },
-  "theme": "orchestrator_continuity_design",
+  "theme": "oversight_hooks_design_refinement",
   "themes_status": "CLOSED_FROZEN_DESIGN_SET_V2",
   "version": "0.18.0",
   "l1_status": "CLOSED"

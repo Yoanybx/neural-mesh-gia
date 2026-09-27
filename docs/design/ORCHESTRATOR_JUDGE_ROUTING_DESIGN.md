@@ -32,7 +32,7 @@ Engines are rented/ephemeral; Mesh owns goals, evidence, continuity, receipts, A
 | Routing policy design + schema stub | Live multi-engine HTTPS/SDK |
 | Mock `OrchestratorRouter` + registry | Runtime codec in `src/neural_mesh/judge_*.py` |
 | Neg tests T-route-a/b/c | Dual-judge as M1 consensus |
-| Continuity / oversight hooks (design) | GIA / train / SaaS / settlement |
+| Continuity (CP-0068) / oversight hooks (CP-0069) | GIA / train / SaaS / settlement |
 
 ---
 
@@ -237,6 +237,8 @@ with code `ROUTE_JUDGE_MISMATCH` (no silent ACCEPT).
 | `consent_revoke` | Any | Drops approval; subsequent routes re-gate |
 
 Design-only: mock `OversightGate` records decisions; no UI; no live kill channel.
+**Refined in CP-0069:** `ORCHESTRATOR_OVERSIGHT_HOOKS_DESIGN.md` (OversightPlane +
+deadman/quorum/consent; compose continuity).
 
 ---
 

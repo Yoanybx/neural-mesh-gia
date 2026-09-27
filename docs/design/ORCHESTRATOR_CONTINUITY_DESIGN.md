@@ -34,7 +34,7 @@ Formalize the **orchestrator continuity contract** that CP-0064 only hooked:
 |---------------|---------------------|
 | Continuity policy design + schema stubs | Live multi-engine HTTPS/SDK |
 | Mock ContinuityOrchestrator + registry/ledger | Runtime codec in `src/neural_mesh/judge_*.py` |
-| Neg tests T-cont-a/b/c | Oversight-hooks refinement (queued after) |
+| Neg tests T-cont-a/b/c | Oversight-hooks refinement → CP-0069 |
 | Resume-after-restart mock | WAL/SQLite backend lock; Raft/N>2 |
 | Continuity × routing compose | GIA / train / SaaS / settlement |
 
@@ -294,3 +294,4 @@ Happy path (design): ACTIVE T2 + soft path → ALLOW + ledger chain verifies + r
 - `docs/capabilities/MESH_ORCHESTRATOR_CONTINUITY.md`
 - `src/neural_mesh/packaging/orchestrator_continuity.py`
 - `tests/test_orchestrator_continuity_cycle64.py`
+- `docs/design/ORCHESTRATOR_OVERSIGHT_HOOKS_DESIGN.md` (CP-0069 I5)

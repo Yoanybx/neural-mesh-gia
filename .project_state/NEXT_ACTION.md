@@ -2,8 +2,8 @@
 
 PREFERRED_NEXT: await_deepseek
 
-Cycle 64 / CP-0068 sealed: orchestrator_continuity_design (durable goals + audit ledger + resume;
-orphan LEFT/REJOIN; idempotency; compose CP-0064 routing; substrate memory NOT consciousness).
+Cycle 65 / CP-0069 sealed: oversight_hooks_design_refinement (I5 approve/deny/pause/resume/kill/deadman/consent-revoke;
+A0..A4 boundary; compose CP-0068 continuity + CP-0064 routing; RefuseTransport; T-ovs-a/b/c).
 Package 0.18.0 held; live=DISABLED; M1=NO_CONSENSUS_YET; no N>2/Raft/GIA/train/settlement/pkg0190/v0.19 tag.
-Oversight_hooks refinement still queued (DeepSeek C63 Option3). DeepSeek-only verdict on C64 seal.
+Perf A/B remains operator-gated (MESH_PERF_EXPERIMENTAL=OFF). DeepSeek-only verdict on C65 seal.
 NO_HELD unchanged.

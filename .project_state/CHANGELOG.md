@@ -1,3 +1,10 @@
+## Cycle 65 — 2026-09-26 — CP-0069 oversight_hooks_design_refinement
+
+- I5 human oversight: approve/deny/pause/resume/kill/deadman/consent-revoke; A0..A4 boundary.
+- packaging orchestrator_oversight: OversightPlane + DeadmanWatch + QuorumHuman + OversightOrchestrator.
+- Compose ContinuityOrchestrator (CP-0068) + OrchestratorRouter (CP-0064); RefuseTransport on kill.
+- deadman-v1 T_dead=86400 → auto-DRAIN; quorum-human ≥2 for A4; T-ovs-a/b/c; pytest 1057/0; 0.18.0 held.
+
 ## Cycle 64 — 2026-09-26 — CP-0068 orchestrator_continuity_design
 - docs/design/ORCHESTRATOR_CONTINUITY_DESIGN.md; schema continuity/orchestrator_v0; MESH_ORCHESTRATOR_CONTINUITY.
 - packaging orchestrator_continuity: GoalRegistry + EvidenceLedger + ContinuityMachine + InFlightTracker; orphan LEFT/REJOIN; idempotency; resume-after-restart; timeouts; ABORT propagation; compose OrchestratorRouter.

@@ -1,12 +1,10 @@
-# CP-0068
+# CHECKPOINT
 
-Phase: 0.19_plan
-Module: orchestrator_continuity_design
-Status: VERIFIED
-Next: await_deepseek
-Version: 0.18.0 (held)
-live: DISABLED
-M1: NO_CONSENSUS_YET
-N>2 runtime: no
-Raft: no
-Date: 2026-09-26 (America/New_York)
+**CP-0069** VERIFIED — Cycle 65 — oversight_hooks_design_refinement (I5)
+**Version:** 0.18.0 HELD  
+**Date:** 2026-09-26 21:45 EDT  
+**Pytest:** 1057/0  
+**LAST_SEALED prior:** CP-0068 / tip d8442c3  
+**PREFERRED_NEXT:** await_deepseek  
+**live:** DISABLED · **M1:** NO_CONSENSUS_YET · **consciousness_claim:** 0  
+**NO_HELD:** unchanged · v0.18.0 tag untouched  
