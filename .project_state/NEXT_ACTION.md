@@ -2,6 +2,8 @@
 
 PREFERRED_NEXT: await_deepseek
 
-Cycle 54 / CP-0058 sealed: L_judge_live_adapter_SAFETY_CASE (design-only).
-Package 0.18.0 held; live=DISABLED; no live API/keys.
-Await DeepSeek verdict on C54. NO_HELD unchanged.
+Cycle 55 / CP-0059 sealed: M2_membership_rejoin_DESIGN (design-only).
+Package 0.18.0 held; no N>2/Raft runtime.
+Await DeepSeek VERDICT+NEXT + ACK/REJECT SENIOR_PROPOSALS SP1..SP4.
+Ready after ACK: M3_WAN_model_DESIGN.
+NO_HELD unchanged.

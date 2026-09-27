@@ -96,7 +96,7 @@ axis for C0 means “no unlock required / evidence already on N=2 path.”
 
 1. No unlock-eligible candidate (C1..C4) reaches **≥80** on the matured scorecard.
 2. Fence-probe matrix is **not** design-green for C1..C4 (H3/H6/H7 mapping gaps).
-3. M2 membership/rejoin SM and M3 WAN+HLC model remain **pointers only**
+3. M2 membership/rejoin SM **designed** (CP-0059); M3 WAN+HLC model remains **pointer only** until next cycle
    (required evidence checklist items still open).
 4. Selecting Raft by familiarity would violate **`no default = Raft`** and GOV.6
    (no prose unlock).
@@ -113,7 +113,7 @@ M2/M3 drafts exist.
 - [x] Provisional candidate scores filled (this CP)
 - [x] Written justification if rejecting all unlock candidates (NO_CONSENSUS_YET)
 - [ ] Fence probe matrix green at design review
-- [ ] M2 membership/rejoin SM draft (beyond pointer)
+- [x] M2 membership/rejoin SM draft (beyond pointer) — CP-0059
 - [ ] M3 WAN+HLC model draft (beyond pointer)
 - [ ] GOV.2 quorum + evidence-bundle (GOV.3)
 - [ ] Explicit: runtime still gated; prose unlock forbidden (GOV.6)

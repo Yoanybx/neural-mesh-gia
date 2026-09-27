@@ -1,7 +1,7 @@
 {
   "active_tasks": [],
   "blocked_tasks": [],
-  "checkpoint": "CP-0058",
+  "checkpoint": "CP-0059",
   "completed_phases": [
     0,
     1,
@@ -73,20 +73,21 @@
     "mesh_019_design_set_signoff_cp0055",
     "mesh_l1_residue_closeout_cp0056",
     "mesh_l_judge_live_adapter_design_cp0057",
-    "mesh_l_judge_live_adapter_safety_case_cp0058"
+    "mesh_l_judge_live_adapter_safety_case_cp0058",
+    "mesh_m2_membership_rejoin_design_cp0059"
   ],
-  "current_module": "mesh-l-judge-live-adapter-safety-case",
+  "current_module": "mesh-m2-membership-rejoin-design",
   "current_phase": 5,
-  "cycle": 54,
+  "cycle": 55,
   "decisions_pending": [],
   "git_commit": null,
   "h1_h8_complete": true,
   "human_approval_required": false,
   "known_bugs": [],
-  "last_checkpoint": "CP-0058",
+  "last_checkpoint": "CP-0059",
   "last_failed_test": null,
-  "last_successful_test": "2026-09-27T00:27:12Z",
-  "last_updated": "2026-09-27T00:30:00Z",
+  "last_successful_test": "2026-09-27T00:33:36Z",
+  "last_updated": "2026-09-27T00:35:00Z",
   "modified_files": [
     "docs/quickstart/QUICKSTART_0.16.3.md",
     "docs/quickstart/QUICKSTART_0.17_STUB.md",
@@ -96,23 +97,23 @@
     "council/STATUS_CYCLE31.md",
     "pyproject.toml"
   ],
-  "next_action": "Await DeepSeek on C54 safety case. NO_HELD unchanged.",
+  "next_action": "Await DeepSeek on C55 M2 design + SENIOR_PROPOSALS SP1..SP4. NO_HELD unchanged.",
   "open_questions": [],
   "preferred_next": "await_deepseek",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
     "failed": 0,
-    "passed": 885
+    "passed": 903
   },
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
     "failed": 0,
-    "passed": 885
+    "passed": 903
   },
-  "theme": "L_judge_live_adapter_SAFETY_CASE",
+  "theme": "M2_membership_rejoin_DESIGN",
   "themes_status": "FROZEN_PLAN",
   "version": "0.18.0",
   "l1_status": "CLOSED"

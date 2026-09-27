@@ -1,8 +1,9 @@
 # TEST STATUS
 
-Last run: 2026-09-27T00:27:12Z
-Pytest: 885 passed / 0 failed
-Checkpoint: CP-0058 VERIFIED
-Markers: l_judge_live_adapter_safety_cycle54=15
+Last run: 2026-09-27T00:33:36Z
+Pytest: 903 passed / 0 failed
+Checkpoint: CP-0059 VERIFIED
+Markers: m2_membership_rejoin_cycle55=18
 dual_primary: 0
-live_api: false
+n_gt2_runtime: false
+raft: false

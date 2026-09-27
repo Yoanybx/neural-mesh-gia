@@ -1,17 +1,20 @@
-# M2 Membership + Rejoin — Design Pointer Only
+# M2 Membership + Rejoin — Design Pointer
 
-**Status:** POINTER (no SM runtime)  
-**Cycle:** 46 / CP-0050  
+**Status:** SUPERSEDED by design doc (stub retained)  
+**Cycle:** 46 / CP-0050 (pointer); **55 / CP-0059 (design matured)**  
+**Design:** `docs/design/fabric/M2_MEMBERSHIP_REJOIN_DESIGN.md`  
 **Target RFC (later):** `rfc/0002-membership.md`
 
-## Proposed states (blueprint)
+## Proposed states (canonical — CP-0059)
 
-`JOINING → ACTIVE → DRAINING → LEFT → REJOIN`
+`JOINING → ATTESTING → ACTIVE → DRAINING → LEFT → REJOIN`
 
-## Tests (future, not now)
+(ATTESTING added vs original blueprint five-name sketch to compose with H1.)
 
-- T-M2a rejoin_state_machine
-- T-M2b drain_no_loss
+## Tests (mock in CP-0059; runtime later)
+
+- T-M2a rejoin_state_machine (+ neg)
+- T-M2b drain_no_loss (+ neg)
 
 ## Non-goals
 

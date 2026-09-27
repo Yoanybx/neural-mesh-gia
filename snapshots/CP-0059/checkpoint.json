@@ -1,0 +1,10 @@
+{
+  "id": "CP-0059",
+  "status": "VERIFIED",
+  "cycle": 55,
+  "theme": "M2_membership_rejoin_DESIGN",
+  "version": "0.18.0",
+  "pytest_passed": 903,
+  "n_gt2_runtime": false,
+  "raft": false
+}

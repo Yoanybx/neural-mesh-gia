@@ -1,11 +1,11 @@
 # CURRENT PROJECT STATE
 
 Phase: 0.19_plan
-Module: L_judge_live_adapter_SAFETY_CASE
+Module: M2_membership_rejoin_DESIGN
 Status: VERIFIED
-Last checkpoint: CP-0058
+Last checkpoint: CP-0059
 Next action: await_deepseek
-Git: 8f060bf
+Git: (pending feature commit)
 Safety: ok
 L1: CLOSED
-Updated: 2026-09-26T20:30:00-04:00
+Updated: 2026-09-26T20:35:00-04:00

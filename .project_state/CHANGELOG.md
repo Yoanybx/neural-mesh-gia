@@ -1,3 +1,8 @@
+## Cycle 55 — 2026-09-26 — CP-0059 M2_membership_rejoin_DESIGN
+- docs/design/fabric/M2_MEMBERSHIP_REJOIN_DESIGN.md (JOINING→ATTESTING→ACTIVE→DRAINING→LEFT→REJOIN + H1 tiers).
+- schema membership/v0; packaging m2_membership_rejoin mock SM + neg tests; MESH_M2_MEMBERSHIP_REJOIN_DESIGN.
+- SENIOR_PROPOSALS SP1..SP4 in PASTE; Package 0.18.0 held; v0.18.0 untouched; NEXT=await_deepseek.
+
 ## Cycle 54 — 2026-09-26 — CP-0058 L_judge_live_adapter_SAFETY_CASE
 - docs/design/L_JUDGE_LIVE_ADAPTER_SAFETY_CASE.md (threat model/ABORT/secret_handle/RefuseTransport/rate limits/audit/must-stay-false).
 - schema live_adapter_safety_v0; packaging helpers + negative refusal tests; MESH_L_JUDGE_LIVE_ADAPTER_SAFETY_CASE.
