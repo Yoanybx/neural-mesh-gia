@@ -1,9 +1,9 @@
 # TEST STATUS
 
-Last run: 2026-09-27T00:47:37Z
-Pytest: 943 passed / 0 failed
-Checkpoint: CP-0061 VERIFIED
-Markers: l_judge_m2_e2e_cycle57=17
+Last run: 2026-09-27T00:54:10Z
+Pytest: 958 passed / 0 failed
+Checkpoint: CP-0062 VERIFIED
+Markers: agent_shell_extended_cycle58=15
 dual_primary: 0
 n_gt2_runtime: false
 raft: false

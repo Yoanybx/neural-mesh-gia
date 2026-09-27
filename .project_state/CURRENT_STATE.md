@@ -1,12 +1,12 @@
 # CURRENT PROJECT STATE
 
 Phase: 0.19_plan
-Module: L_judge_mock_e2e_with_M2_SM
+Module: agent_shell_extended_scenarios
 Status: VERIFIED
-Last checkpoint: CP-0061
-Next action: await_deepseek
-Git: de228b0
+Last checkpoint: CP-0062
+Next action: 0.19_design_set_signoff_v2
+Git: TIP_PENDING
 Safety: ok
 L1: CLOSED
 live: DISABLED
-Updated: 2026-09-26T20:48:00-04:00
+Updated: 2026-09-26T20:54:00-04:00

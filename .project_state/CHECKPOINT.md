@@ -1,9 +1,9 @@
-# CP-0061
+# CP-0062
 
 Phase: 0.19_plan
-Module: L_judge_mock_e2e_with_M2_SM
+Module: agent_shell_extended_scenarios
 Status: VERIFIED
-Next: await_deepseek
+Next: 0.19_design_set_signoff_v2
 Version: 0.18.0 (held)
 live: DISABLED
 N>2 runtime: no

@@ -1,3 +1,9 @@
+## Cycle 58 — 2026-09-26 — CP-0062 agent_shell_extended_scenarios
+- docs/design/AGENT_SHELL_EXTENDED_SCENARIOS.md; packaging agent_shell_extended (multi-turn/probe/churn).
+- ShellMembershipBridge×M2; optional L_judge dry_run; T-shell-a/b/c; receipt chain under churn.
+- MESH_AGENT_SHELL_EXTENDED; live=DISABLED; no WAN/live LLM/settlement/pkg0190; tests=15; pytest 958/0.
+- Package 0.18.0 held; v0.18.0 untouched; NEXT=0.19_design_set_signoff_v2.
+
 ## Cycle 57 — 2026-09-26 — CP-0061 L_judge_mock_e2e_with_M2_SM
 - docs/design/L_JUDGE_M2_E2E_SPIKE.md; packaging l_judge_m2_e2e bridge (MembershipSM × MockLJudge).
 - Happy JOINING→ATTESTING→ACTIVE(T2|T3); DRAINING mid-judgment; LEFT/REJOIN inflight; T-M2-judge-a/b/c.

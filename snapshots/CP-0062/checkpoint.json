@@ -1,0 +1,12 @@
+{
+  "id": "CP-0062",
+  "status": "VERIFIED",
+  "cycle": 58,
+  "theme": "agent_shell_extended_scenarios",
+  "version": "0.18.0",
+  "pytest_passed": 958,
+  "n_gt2_runtime": false,
+  "raft": false,
+  "live_api_enabled": false,
+  "wall_clock_as_authority": 0
+}
