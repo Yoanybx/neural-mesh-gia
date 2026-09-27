@@ -5,7 +5,7 @@ Module: L_judge_mock_e2e_with_M2_SM
 Status: VERIFIED
 Last checkpoint: CP-0061
 Next action: await_deepseek
-Git: TIP_PENDING
+Git: de228b0
 Safety: ok
 L1: CLOSED
 live: DISABLED
