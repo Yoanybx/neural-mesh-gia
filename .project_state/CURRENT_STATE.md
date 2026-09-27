@@ -5,7 +5,7 @@ Module: orchestrator_continuity_design
 Status: VERIFIED
 Last checkpoint: CP-0068
 Next action: await_deepseek
-Git: PENDING
+Git: d8442c3
 Safety: ok
 L1: CLOSED
 live: DISABLED
