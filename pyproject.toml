@@ -47,6 +47,7 @@ markers = [
     "l_judge_integration_cycle48: CP-0052 L_judge MIX integration design + mock",
     "shell_spike_execution_cycle49: CP-0053 agent-shell spike execution (mock pipeline)",
     "m1_scorecard_maturation_cycle50: CP-0054 M1 scorecard maturation (provisional scores + NO_CONSENSUS_YET)",
+    "design_set_signoff_cycle51: CP-0055 0.19 design-set signoff A-D closeout",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

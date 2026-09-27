@@ -1,0 +1,70 @@
+{
+  "channel": "0.19.x-design",
+  "gates": [
+    {
+      "detail": "version=0.18.0 expect=0.18.0",
+      "name": "version_held",
+      "ok": true
+    },
+    {
+      "detail": "n_docs=10",
+      "name": "themes_a_d_present",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0047', 'CP-0048', 'CP-0049', 'CP-0050', 'CP-0051', 'CP-0052', 'CP-0053', 'CP-0054']",
+      "name": "cps_verified",
+      "ok": true
+    },
+    {
+      "detail": "CP-0054",
+      "name": "prior_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "scope_frozen_present",
+      "ok": true
+    },
+    {
+      "detail": "NO_CONSENSUS_YET + no Raft default",
+      "name": "m1_no_consensus",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_held_documented",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "prior_releases_untouched",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_gia_claim",
+      "ok": true
+    },
+    {
+      "detail": "0.19.0 deferred",
+      "name": "package_0190_not_opened",
+      "ok": true
+    },
+    {
+      "detail": "injected=844",
+      "name": "pytest_green",
+      "ok": true
+    }
+  ],
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "package_held": "0.18.0",
+  "preferred_next": "await_deepseek_design_signoff",
+  "schema": "mesh.release.design_set_checklist/v1"
+}
