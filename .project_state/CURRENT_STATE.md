@@ -5,7 +5,7 @@ Module: perf_hotspot_and_improvement_design
 Status: VERIFIED
 Last checkpoint: CP-0067
 Next action: await_deepseek
-Git: PLACEHOLDER
+Git: fe6b81d
 Safety: ok
 L1: CLOSED
 live: DISABLED
