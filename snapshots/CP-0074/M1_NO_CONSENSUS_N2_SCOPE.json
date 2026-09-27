@@ -198,7 +198,7 @@
   "schema": "mesh.release.m1_no_consensus_n2_scope/v1",
   "structural_circularity": "n_gt2_safety_blocked_while_n_gt2_no_held",
   "timestamp": "2026-09-27T03:45:00Z",
-  "tip": "pending",
+  "tip": "4b43bf4",
   "unlocked": false,
   "verdict": "NO_CONSENSUS_YET"
 }
