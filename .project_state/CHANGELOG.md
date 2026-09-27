@@ -1,3 +1,9 @@
+## Cycle 48 — 2026-09-26 — CP-0052 L_judge MIX integration design
+- docs/design/L_JUDGE_MIX_INTEGRATION.md (I2..I6 call/inject/parse/ABORT/receipt).
+- docs/schema/judge/injection_v0.md; MESH_L_JUDGE_MIX_INTEGRATION.
+- tests l_judge_integration_cycle48 (MockLJudgePort; no API keys); CP-0052 VERIFIED.
+- No src codec / live engine; package 0.18.0 held; NEXT=agent_shell_spike_execution.
+
 ## Cycle 47 — 2026-09-26 — CP-0051 L_judge schema stubs
 - docs/schema/{judge,goal,continuity,shell}/v0.md stubs; MESH_L_JUDGE_SCHEMA_STUBS.
 - tests schema_stubs_cycle47 (10); pytest 789; CP-0051 VERIFIED.

@@ -1,7 +1,8 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: await_deepseek_c43_c47
+PREFERRED_NEXT: agent_shell_spike_execution
 
-0.19 plan track C43–C47 sealed (bootstrap plan → freeze → shell spike → M1 design →
-schema stubs). Package 0.18.0 held; N=2 held. Await DeepSeek batch VERDICT+NEXT.
+Cycle 48 / CP-0052 sealed: L_judge MIX integration design + mock contract.
+Package 0.18.0 held; N=2 held. Next = bounded agent-shell spike execution
+(workload → normalize → probes → receipts → reports; mock OK; no settlement).
 No GIA / Raft runtime / N>2 / train-70B / SaaS / economy. NO_HELD unchanged.

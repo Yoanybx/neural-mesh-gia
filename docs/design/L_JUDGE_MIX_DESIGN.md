@@ -171,12 +171,14 @@ Details: `docs/design/DURABLE_GOALS_CONTINUITY_DESIGN.md`.
 
 ## 8. Implementation deferral
 
-CP-0047 ships **this design doc only**. Runtime adapter modules, schemas under
-`schema/judge/`, and live engine wiring are future CPs after `0.19_scope_freeze`
-(and still without opening NO_HELD items).
+CP-0047 shipped **this design doc**. CP-0051 shipped schema stubs.
+CP-0052 ships **integration design** + mock-tested contract
+(`docs/design/L_JUDGE_MIX_INTEGRATION.md`). Live engine wiring remains future
+(still without opening NO_HELD items; DO_NOT_TRAIN_70B_NOW).
 
 ## Related
 
+- `docs/design/L_JUDGE_MIX_INTEGRATION.md` (CP-0052 concrete integration)
 - `docs/design/DURABLE_GOALS_CONTINUITY_DESIGN.md`
 - `docs/planning/0.19_SCOPE_DRAFT.md`
 - `council/COUNCIL_AGREEMENT_HYPERBRAIN_ASTRA.md`
