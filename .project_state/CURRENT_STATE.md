@@ -5,7 +5,7 @@ Module: 0.19_design_set_signoff_v2
 Status: VERIFIED
 Last checkpoint: CP-0063
 Next action: await_deepseek
-Git: TIP_PENDING
+Git: 52e97ea
 Safety: ok
 L1: CLOSED
 live: DISABLED
