@@ -1,0 +1,18 @@
+{
+  "checkpoint": "CP-0065",
+  "cycle": 61,
+  "dual_primary": 0,
+  "multi_judge_agent_shell_spike_cycle61": 15,
+  "pytest": {
+    "failed": 0,
+    "passed": 1011
+  },
+  "status": "VERIFIED",
+  "theme": "multi_judge_agent_shell_spike",
+  "version": "0.18.0",
+  "preferred_next": "await_deepseek",
+  "live": "DISABLED",
+  "m1": "NO_CONSENSUS_YET",
+  "operator_intent": "Mesh=reasoning_orchestrator_not_frontier_LLM",
+  "created_utc": "2026-09-27T01:20:00Z"
+}

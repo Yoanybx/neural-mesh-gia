@@ -120,3 +120,7 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Post-0.18 authorized work per COUNCIL_AGREEMENT_HYPERBRAIN_ASTRA (LOCKED).
 - 0.19_bootstrap_plan docs/design DRAFT; L_judge MIX + durable goals/continuity designs.
 - pytest: 749 passed; CP-0047 VERIFIED; PREFERRED_NEXT=0.19_scope_freeze.
+
+## Cycle 61 — 2026-09-26 EDT — CP-0065 multi_judge_agent_shell_spike
+- Two mock judges + agent_shell + OrchestratorRouter under M2 churn; DUAL/FALLBACK/ABORT_MISMATCH.
+- T-route-spike-a/b/c; receipts hash-chained; m1=NO_CONSENSUS_YET; pytest 1011/0; package 0.18.0 held.

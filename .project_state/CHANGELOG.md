@@ -1,3 +1,10 @@
+## Cycle 61 — 2026-09-26 — CP-0065 multi_judge_agent_shell_spike
+- docs/design/MULTI_JUDGE_AGENT_SHELL_SPIKE.md; MESH_MULTI_JUDGE_AGENT_SHELL_SPIKE.
+- packaging multi_judge_agent_shell_spike: two mock judges + agent_shell + OrchestratorRouter under M2 churn.
+- DUAL_ADVISORY/FALLBACK/ABORT_MISMATCH; receipt hash-chain; no double-invoke; attribution; m1=NO_CONSENSUS_YET.
+- T-route-spike-a/b/c; mock-only; live=DISABLED; no train/GIA/Raft/N>2; tests=15; pytest 1011/0.
+- Package 0.18.0 held; v0.18.0 untouched; NEXT=await_deepseek (MESH_PERF_RESEARCH_TRACK authorized next).
+
 ## Cycle 60 — 2026-09-26 — CP-0064 Orchestrator_judge_routing_DESIGN
 - docs/design/ORCHESTRATOR_JUDGE_ROUTING_DESIGN.md; schema judge/routing_v0; MESH_ORCHESTRATOR_JUDGE_ROUTING.
 - packaging orchestrator_judge_routing: SINGLE/DUAL_ADVISORY/FALLBACK/ABORT_MISMATCH; M2/M3; A3/A4 oversight; continuity hooks.
