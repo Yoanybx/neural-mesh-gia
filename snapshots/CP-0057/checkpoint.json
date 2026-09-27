@@ -1,0 +1,9 @@
+{
+  "id": "CP-0057",
+  "status": "VERIFIED",
+  "cycle": 53,
+  "theme": "L_judge_live_adapter_design",
+  "version": "0.18.0",
+  "pytest_passed": 870,
+  "live_api": false
+}

@@ -1,3 +1,8 @@
+## Cycle 53 — 2026-09-26 — CP-0057 L_judge_live_adapter_design
+- docs/design/L_JUDGE_LIVE_ADAPTER_DESIGN.md (EngineTransport/secret_handle/RefuseTransport).
+- MESH_L_JUDGE_LIVE_ADAPTER_DESIGN; tests=12; pytest 870; no live API/keys/src codec.
+- Package 0.18.0 held; v0.18.0 untouched; NEXT=await_deepseek.
+
 ## Cycle 52 — 2026-09-26 — CP-0056 L1_residue_closeout
 - docs/planning/L1_RESIDUE_CLOSEOUT.md; ops obs-peers-v1 + fabric-ops-ux-v1; quickstart.sh alias.
 - Blueprint L1 → CLOSED (evidence CP-0032..0036); l1_residue_closeout helpers.
