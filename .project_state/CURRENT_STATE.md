@@ -5,7 +5,7 @@ Module: MESH_PERF_RESEARCH_TRACK
 Status: VERIFIED
 Last checkpoint: CP-0066
 Next action: await_deepseek
-Git: PENDING
+Git: 0778d32
 Safety: ok
 L1: CLOSED
 live: DISABLED
