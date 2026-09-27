@@ -1,3 +1,11 @@
+## Cycle 66 — 2026-09-26 — CP-0070 orchestrator_design_set_signoff
+
+- Formal ledger close for orchestrator contract CP-0064..CP-0069 (routing, continuity, oversight, spikes, perf, safety).
+- Supporting evidence CP-0058 (safety case) + CP-0061 (L_judge×M2 e2e); analogous to 0.19 design-set signoff_v2 (CP-0063).
+- packaging orchestrator_design_set_signoff helpers; MESH_ORCHESTRATOR_DESIGN_SET_SIGNOFF; ORCHESTRATOR_DESIGN_SET_SIGNOFF planning doc.
+- Re-affirm: pkg0190 NOT_OPENED; 0.18.0 HELD; no v0.19 tag; live=DISABLED; M1=NO_CONSENSUS_YET; MESH_PERF_EXPERIMENTAL=OFF; NO_HELD unchanged.
+- tests=21; pytest 1078/0. Accounting-only (no new scope). NEXT=await_deepseek. DeepSeek C65 Option1.
+
 ## Cycle 65 — 2026-09-26 — CP-0069 oversight_hooks_design_refinement
 
 - I5 human oversight: approve/deny/pause/resume/kill/deadman/consent-revoke; A0..A4 boundary.

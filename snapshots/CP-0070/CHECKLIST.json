@@ -1,0 +1,122 @@
+{
+  "baseline_signoff_cp": "CP-0063",
+  "channel": "orchestrator-design",
+  "contract_cps": [
+    "CP-0064",
+    "CP-0065",
+    "CP-0066",
+    "CP-0067",
+    "CP-0068",
+    "CP-0069"
+  ],
+  "gates": [
+    {
+      "detail": "version=0.18.0 expect=0.18.0",
+      "name": "version_held",
+      "ok": true
+    },
+    {
+      "detail": "n_docs=13",
+      "name": "themes_a_f_present",
+      "ok": true
+    },
+    {
+      "detail": "n_contract=6",
+      "name": "contract_docs_present",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0058', 'CP-0061', 'CP-0064', 'CP-0065', 'CP-0066', 'CP-0067', 'CP-0068', 'CP-0069']",
+      "name": "cps_verified",
+      "ok": true
+    },
+    {
+      "detail": "contract=['CP-0064', 'CP-0065', 'CP-0066', 'CP-0067', 'CP-0068', 'CP-0069']",
+      "name": "contract_cps_verified",
+      "ok": true
+    },
+    {
+      "detail": "supporting=['CP-0058', 'CP-0061']",
+      "name": "supporting_cps_verified",
+      "ok": true
+    },
+    {
+      "detail": "CP-0063",
+      "name": "baseline_signoff_present",
+      "ok": true
+    },
+    {
+      "detail": "CP-0069",
+      "name": "prior_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "NO_CONSENSUS_YET + no Raft default",
+      "name": "m1_no_consensus",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_held_documented",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "prior_releases_untouched",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_gia_claim",
+      "ok": true
+    },
+    {
+      "detail": "live=DISABLED across orchestrator contract",
+      "name": "live_disabled",
+      "ok": true
+    },
+    {
+      "detail": "env='' doc_ok=True",
+      "name": "mesh_perf_experimental_off",
+      "ok": true
+    },
+    {
+      "detail": "0.19.0 / pkg0190 deferred",
+      "name": "package_0190_not_opened",
+      "ok": true
+    },
+    {
+      "detail": "v0.19.0 absent",
+      "name": "no_v019_tag",
+      "ok": true
+    },
+    {
+      "detail": "v0.18.0 present and untouched",
+      "name": "v018_tag_present",
+      "ok": true
+    },
+    {
+      "detail": "injected=1078",
+      "name": "pytest_green",
+      "ok": true
+    }
+  ],
+  "live": "DISABLED",
+  "m1_unlock": "NO_CONSENSUS_YET",
+  "mesh_perf_experimental": "OFF",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "package_held": "0.18.0",
+  "package_open_0190": false,
+  "preferred_next": "await_deepseek",
+  "schema": "mesh.release.orchestrator_design_set_checklist/v1",
+  "supporting_cps": [
+    "CP-0058",
+    "CP-0061"
+  ]
+}

@@ -2,8 +2,9 @@
 
 PREFERRED_NEXT: await_deepseek
 
-Cycle 65 / CP-0069 sealed: oversight_hooks_design_refinement (I5 approve/deny/pause/resume/kill/deadman/consent-revoke;
-A0..A4 boundary; compose CP-0068 continuity + CP-0064 routing; RefuseTransport; T-ovs-a/b/c).
-Package 0.18.0 held; live=DISABLED; M1=NO_CONSENSUS_YET; no N>2/Raft/GIA/train/settlement/pkg0190/v0.19 tag.
-Perf A/B remains operator-gated (MESH_PERF_EXPERIMENTAL=OFF). DeepSeek-only verdict on C65 seal.
-NO_HELD unchanged.
+Cycle 66 / CP-0070 sealed: orchestrator_design_set_signoff (formal ledger close for
+CP-0064..CP-0069 routing/continuity/oversight/spikes/perf/safety; analogous to
+0.19 design-set signoff_v2 at CP-0063). Package 0.18.0 held; pkg0190 NOT_OPENED;
+no v0.19 tag; live=DISABLED; M1=NO_CONSENSUS_YET; MESH_PERF_EXPERIMENTAL=OFF;
+no N>2/Raft/GIA/train/settlement. Accounting-only (no new scope). DeepSeek-only
+verdict on C66 seal. NO_HELD unchanged.
