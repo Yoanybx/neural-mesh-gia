@@ -1,11 +1,12 @@
 # M1 Consensus Choice — Design-Only Scorecard
 
-**Status:** DESIGN DRAFT (no runtime; no candidate defaulted to Raft)  
-**Cycle / Checkpoint:** 46 / CP-0050  
+**Status:** DESIGN MATURED (no runtime; no candidate defaulted to Raft)  
+**Cycle / Checkpoint:** 46 / CP-0050 (base); **50 / CP-0054 (maturation)**  
 **Date:** 2026-09-26 America/New_York (EDT)  
 **Theme:** (D) M1 from `0.19_SCOPE_FROZEN` / blueprint L4  
 **ABORT rule:** M1..M3 fail review → N stays 2  
-**Runtime:** Raft / N>2 / M4+ remain **NO_HELD**
+**Runtime:** Raft / N>2 / M4+ remain **NO_HELD**  
+**Maturation:** see `M1_SCORECARD_MATURATION.md` (provisional scores + NO_CONSENSUS_YET)
 
 ---
 
@@ -16,7 +17,8 @@ approach **if and when** GOV unlocks N>2. This CP does **not** pick Raft, does
 **not** implement consensus, and does **not** unlock G_Raft or G_Ngt2.
 
 Blueprint artifact target (later): `rfc/0001-consensus-choice.md`  
-This doc is the pre-RFC design scorecard + candidate axes.
+This doc is the pre-RFC design scorecard + candidate axes.  
+**CP-0054** fills provisional scores and records **NO_CONSENSUS_YET**.
 
 ## 2. Non-negotiable Mesh constraints
 
@@ -47,24 +49,28 @@ among others; selecting it still requires ≥80 + GOV — and **runtime remains 
 | Reversibility | 5 | Can stay on N=2 fenced heal if rejected |
 
 **Ratify threshold:** total ≥ **80**. Below 80 → keep N=2; no unlock prose.
+Unlock ratification applies to C1..C5 only (C0 = status-quo baseline).
 
-## 4. Candidate slots (empty scores — fill in later RFC)
+## 4. Candidate slots (provisional scores — CP-0054)
 
-| ID | Candidate | Notes | Score (TBD) |
-|----|-----------|-------|-------------|
-| C0 | **Stay N=2 fenced_primary_heal** (status quo) | Always available baseline | — |
-| C1 | Raft (etcd-class) | Common; **not default**; fence-compat proof required | — |
-| C2 | Paxos / Multi-Paxos family | Classic; complexity cost | — |
-| C3 | Flexible Paxos / EPaxos-class | WAN-friendly claims; evidence heavy | — |
-| C4 | Mesh-native fence+quorum journal (non-Raft) | Design exploration only | — |
+| ID | Candidate | Notes | Score |
+|----|-----------|-------|------:|
+| C0 | **Stay N=2 fenced_primary_heal** (status quo) | Always available baseline (not N>2 unlock) | 85† |
+| C1 | Raft (etcd-class) | Common; **not default**; fence-compat proof required | 68 |
+| C2 | Paxos / Multi-Paxos family | Classic; complexity cost | 59 |
+| C3 | Flexible Paxos / EPaxos-class | WAN-friendly claims; evidence heavy | 62 |
+| C4 | Mesh-native fence+quorum journal (non-Raft) | Design exploration only | 75 |
 | C5 | Other (named later) | Must fill all axes | — |
 
-Filling numeric scores is a **future RFC CP**, not this design stub.
+† Baseline viability only — not an unlock score.
+
+**Unlock verdict:** no C1..C4 ≥80 → **NO_CONSENSUS_YET** (see maturation doc).
 
 ## 5. Evidence checklist (for a future unlock — not now)
 
-- [ ] Scorecard ≥80 for chosen candidate
-- [ ] Written justification if rejecting all but C0
+- [x] Scorecard ≥80 threshold + axes documented
+- [x] Provisional scores filled (CP-0054)
+- [x] Written justification if rejecting all unlock candidates (NO_CONSENSUS_YET)
 - [ ] Fence probe matrix green at design review
 - [ ] M2 membership/rejoin SM draft exists
 - [ ] M3 WAN+HLC model draft exists
@@ -89,11 +95,13 @@ Stub pointer docs: `docs/design/fabric/M2_MEMBERSHIP_REJOIN_POINTER.md`,
 - Multi-primary reconciliation (M5 NO_HELD)
 - Claiming Mesh already has world-scale consensus
 - GIA / train / SaaS / economy
+- Defaulting any candidate to Raft
 
 **NO_HELD:** Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync
 
 ## Related
 
+- `docs/design/fabric/M1_SCORECARD_MATURATION.md` (CP-0054)
 - `council/blueprint/FINAL_BLUEPRINT_ROOT.md` (L4 M1..M7)
 - `docs/planning/0.19_SCOPE_FROZEN.md`
 - `council/COUNCIL_AGREEMENT_HYPERBRAIN_ASTRA.md`

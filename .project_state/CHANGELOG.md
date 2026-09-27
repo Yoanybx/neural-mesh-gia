@@ -1,3 +1,9 @@
+## Cycle 50 — 2026-09-26 — CP-0054 M1_scorecard_maturation
+- docs/design/fabric/M1_SCORECARD_MATURATION.md; scores filled on M1_CONSENSUS_CHOICE_DESIGN.
+- Provisional C0..C4; unlock C1..C4 all <80; written NO_CONSENSUS_YET; N stays 2.
+- Scorecard helpers tested (14); MESH_M1_SCORECARD_MATURATION; pytest 830.
+- No Raft default/runtime/N>2; package 0.18.0 held; NEXT=0.19_design_set_signoff.
+
 ## Cycle 49 — 2026-09-26 — CP-0053 agent_shell_spike_execution
 - docs/design/AGENT_SHELL_SPIKE_EXECUTION.md; MESH_AGENT_SHELL_SPIKE_EXECUTION.
 - MockAgentShellAdapter pipeline (workload→normalize→probes→receipts→reports).
