@@ -1,11 +1,12 @@
 # CURRENT PROJECT STATE
 
 Phase: 0.19_plan
-Module: M3_WAN_model_DESIGN
+Module: L_judge_mock_e2e_with_M2_SM
 Status: VERIFIED
-Last checkpoint: CP-0060
+Last checkpoint: CP-0061
 Next action: await_deepseek
-Git: ce2d0ce
+Git: TIP_PENDING
 Safety: ok
 L1: CLOSED
-Updated: 2026-09-26T20:40:30-04:00
+live: DISABLED
+Updated: 2026-09-26T20:48:00-04:00

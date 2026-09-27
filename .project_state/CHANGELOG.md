@@ -1,3 +1,9 @@
+## Cycle 57 — 2026-09-26 — CP-0061 L_judge_mock_e2e_with_M2_SM
+- docs/design/L_JUDGE_M2_E2E_SPIKE.md; packaging l_judge_m2_e2e bridge (MembershipSM × MockLJudge).
+- Happy JOINING→ATTESTING→ACTIVE(T2|T3); DRAINING mid-judgment; LEFT/REJOIN inflight; T-M2-judge-a/b/c.
+- MESH_L_JUDGE_M2_E2E; live=DISABLED; no WAN/live LLM/pkg0190; tests=17; pytest 943/0.
+- Package 0.18.0 held; v0.18.0 untouched; NEXT=await_deepseek.
+
 ## Cycle 56 — 2026-09-26 — CP-0060 M3_WAN_model_DESIGN
 - docs/design/fabric/M3_WAN_MODEL_DESIGN.md (RTT bands, jitter/loss, P_partition, HLC, SPLIT/HEAL/FLIP_FLOP/CASCADE).
 - schema wan/v0; packaging m3_wan_model mock + neg tests; MESH_M3_WAN_MODEL_DESIGN.

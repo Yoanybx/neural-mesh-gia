@@ -1,0 +1,12 @@
+{
+  "id": "CP-0061",
+  "status": "VERIFIED",
+  "cycle": 57,
+  "theme": "L_judge_mock_e2e_with_M2_SM",
+  "version": "0.18.0",
+  "pytest_passed": 943,
+  "n_gt2_runtime": false,
+  "raft": false,
+  "live_api_enabled": false,
+  "wall_clock_as_authority": 0
+}

@@ -53,6 +53,7 @@ markers = [
     "l_judge_live_adapter_safety_cycle54: CP-0058 L_judge live-adapter safety case (no live API)",
     "m2_membership_rejoin_cycle55: CP-0059 M2 membership+rejoin design (mock SM; no N>2/Raft)",
     "m3_wan_model_cycle56: CP-0060 M3 WAN model design (bands/HLC/partition classes; no N>2/Raft)",
+    "l_judge_m2_e2e_cycle57: CP-0061 L_judge mock e2e with M2 membership SM (live=DISABLED)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",
