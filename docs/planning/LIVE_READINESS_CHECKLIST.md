@@ -3,9 +3,9 @@
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
 **Date:** 2026-09-27 America/New_York (EDT)  
-**Tip context:** Gate1 ACK draft atop ~`8c771a7` (live readiness checklist) / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
+**Tip context:** Gate4 data-policy draft atop Gate1 ACK draft ~`0b6353c` / checklist ~`8c771a7` / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
-**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`
+**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md`
 
 ---
 
@@ -24,7 +24,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`8c771a7` + Gate1 ACK **draft** (unsigned) / CP-0074 posture.
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`0b6353c` + Gate1 ACK **draft** (unsigned) + Gate4 data-policy **draft** (unsealed) / CP-0074 posture.
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -60,12 +60,14 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 | Item | Rule | Today |
 |------|------|-------|
-| No keys in repo | Raw API keys / Bearer / `sk-` material forbidden in tree, CI logs, evidence digests | **Held** (live=DISABLED; spike uses no keys) |
-| secret_handle only | Versioned handles; I5 sees handle ids / digests, never raw secrets | Design (CP-0058 / D1 §7.2) |
-| Data classes | What may leave the box (prompts, digests, redacted envelopes) vs forbidden (operational Mesh SoT, plaintext secrets, unverified continuity) | **Needs explicit live data schedule** before any real call |
-| Provider bounds | Free-tier Gemini (if ever) stays evaluation evidence; Vertex paid needs separate approval | Google fences |
+| No keys in repo | Raw API keys / Bearer / `sk-` material forbidden in tree, CI logs, evidence digests | **Held** (live=DISABLED; spike uses no keys; **no real calls**) |
+| secret_handle only | Versioned handles; I5 sees handle ids / digests, never raw secrets | **Design schedule drafted** — `docs/planning/GATE4_LIVE_DATA_POLICY.md` (create/rotate/revoke; handles outside repo); CP-0058 / D1 §7.2 |
+| Data classes | What may leave the box (prompts, digests, redacted envelopes) vs forbidden (operational Mesh SoT, plaintext secrets, unverified continuity) | **Design schedule drafted** (allowed vs forbidden classes); still **no real calls** |
+| Provider bounds | Free-tier Gemini (if ever) stays evaluation evidence; Vertex paid needs separate approval | Google fences; dry-run schedule design-only in Gate4 doc |
+| Seal dependency | Serial gates: Gate 4 **cannot seal** while Gate 1 unsigned | **Cannot seal** — Gate 1 still **UNSIGNED** |
 
-**Exit:** Written data-handling schedule + secret_handle lifecycle for the ACK’d env; still no keys committed.
+**Exit:** Written data-handling schedule + secret_handle lifecycle for the ACK’d env; still no keys committed.  
+**Today:** schedule **drafted**; env **not** ACK’d (Gate 1 unsigned) → Gate 4 **OPEN / cannot seal**; no keys / no real calls.
 
 ### Gate 5 — Adapter: RefuseTransport → live flag
 
@@ -116,12 +118,12 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ tip ~74ce42e |
+| # | Gate | Blocks live+API? | Status @ tip ~0b6353c |
 |---|------|------------------|------------------------|
 | 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
 | 2 | Safety evidence (+ live amendment) | **Yes** | Design OK; live amendment OPEN |
 | 3 | Authority Matrix in use | **Yes** | Design OK; live binding OPEN |
-| 4 | Keys + data policy | **Yes** | No-keys held; live data schedule OPEN |
+| 4 | Keys + data policy | **Yes** | Schedule **drafted** (`GATE4_LIVE_DATA_POLICY.md`); no-keys / no-calls held; **cannot seal** (Gate 1 unsigned) |
 | 5 | RefuseTransport → live flag | **Yes** | Refuse default ON; flip OPEN |
 | 6 | Acceptance metrics / D4-K | **Yes** | Design OK; live bundle OPEN |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
@@ -146,6 +148,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 - `council/NOTE_LIVE_READINESS.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `council/NOTE_GATE1_ACK_DRAFT.md`
+- `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `council/NOTE_GATE4_DATA_POLICY.md`
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071)
