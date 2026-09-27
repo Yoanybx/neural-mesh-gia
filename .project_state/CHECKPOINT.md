@@ -1,7 +1,7 @@
-# CP-0065
+# CP-0066
 
 Phase: 0.19_plan
-Module: multi_judge_agent_shell_spike
+Module: MESH_PERF_RESEARCH_TRACK
 Status: VERIFIED
 Next: await_deepseek
 Version: 0.18.0 (held)

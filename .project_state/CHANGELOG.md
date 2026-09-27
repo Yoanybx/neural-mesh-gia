@@ -1,3 +1,9 @@
+## Cycle 62 — 2026-09-26 — CP-0066 MESH_PERF_RESEARCH_TRACK
+- docs/design/MESH_PERF_RESEARCH_TRACK.md; MESH_PERF_LITERATURE_POINTERS_NONDEFAULT; MESH_PERF_RESEARCH_TRACK capability.
+- packaging mesh_perf_research: fence_path / obs_snapshot / membership_sm / receipt_hash_chain / packaging_verify microbenches (perf_counter).
+- Honest claim policy (ranking_claim=null; no fastest-in-world); etcd/Raft/CRDT NON-default refs; M1=NO_CONSENSUS_YET.
+- tests=12; pytest 1023/0. Package 0.18.0 held; v0.18.0 untouched; no Raft/N>2/GIA unlock; NEXT=await_deepseek.
+
 ## Cycle 61 — 2026-09-26 — CP-0065 multi_judge_agent_shell_spike
 - docs/design/MULTI_JUDGE_AGENT_SHELL_SPIKE.md; MESH_MULTI_JUDGE_AGENT_SHELL_SPIKE.
 - packaging multi_judge_agent_shell_spike: two mock judges + agent_shell + OrchestratorRouter under M2 churn.
