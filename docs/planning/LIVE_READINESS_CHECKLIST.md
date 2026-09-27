@@ -2,10 +2,10 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-26 America/New_York (EDT)  
-**Tip context:** ~`74ce42e` (Google free AI tools fenced) atop Cycle 70 / **CP-0074** (`4b43bf4`)  
+**Date:** 2026-09-27 America/New_York (EDT)  
+**Tip context:** Gate1 ACK draft atop ~`8c771a7` (live readiness checklist) / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
-**Council note:** `council/NOTE_LIVE_READINESS.md`
+**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`
 
 ---
 
@@ -24,14 +24,14 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`74ce42e` / CP-0074 posture.
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`8c771a7` + Gate1 ACK **draft** (unsigned) / CP-0074 posture.
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
 | Item | Rule | Today |
 |------|------|-------|
-| Separate ACK | Live *discussion* ≠ D4 lock ≠ Google tools APPROVE_WITH_FENCES ≠ D1 seal | **Missing** — no live ACK |
-| Scope string | ACK must name provider(s), env, data classes, kill authority, rollback owner | **N/A until ACK draft** |
+| Separate ACK | Live *discussion* ≠ D4 lock ≠ Google tools APPROVE_WITH_FENCES ≠ D1 seal | **Draft exists, unsigned** — `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`; still **Missing signed ACK** |
+| Scope string | ACK must name provider(s), env, data classes, kill authority, rollback owner | **Draft fields present** — operator must fill; unsigned |
 | Non-implication | Tool approvals, mock spikes, Colab placeholders do **not** count as this ACK | Binding (Google fence §10) |
 
 **Exit:** Written operator ACK artifact recording intent to *discuss* or *enable* live under named fences. Still not an automatic `enabled=true`.
@@ -118,7 +118,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 | # | Gate | Blocks live+API? | Status @ tip ~74ce42e |
 |---|------|------------------|------------------------|
-| 1 | Operator ACK | **Yes** | OPEN |
+| 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
 | 2 | Safety evidence (+ live amendment) | **Yes** | Design OK; live amendment OPEN |
 | 3 | Authority Matrix in use | **Yes** | Design OK; live binding OPEN |
 | 4 | Keys + data policy | **Yes** | No-keys held; live data schedule OPEN |
@@ -145,6 +145,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 ## 4. Related
 
 - `council/NOTE_LIVE_READINESS.md`
+- `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `council/NOTE_GATE1_ACK_DRAFT.md`
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071)
