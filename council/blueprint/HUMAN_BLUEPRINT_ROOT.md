@@ -24,9 +24,9 @@ GIA-COS [HOLD]
 │   majority = fenced_primary_heal (NO Raft)
 │
 ├── L1 REMAINING_0.17 [CLOSED CP-0056]
-│   ├── R1 Fabric ops UX     → mesh fabric status|diagnose|reconnect [CLOSED CP-0033]
-│   ├── R2 OBS peers         → docs/ops/obs-peers-v1.md + inject/probe [CLOSED CP-0034]
-│   ├── R3 External quickstart → quickstart.sh + docs/quickstart   [CLOSED CP-0035]
+│   ├── L1-ops-UX (was R1) Fabric ops UX → mesh fabric status|diagnose|reconnect [CLOSED CP-0033]
+│   ├── L1-OBS-peers (was R2) OBS peers → docs/ops/obs-peers-v1.md + inject/probe [CLOSED CP-0034]
+│   ├── L1-quickstart (was R3) External quickstart → quickstart.sh + docs/quickstart [CLOSED CP-0035]
 │   ├── R4 soak P30          → [DONE en tip / CP-0032]
 │   ├── R5 audit P31         → [DONE en tip / CP-0032]
 │   ├── R6 freeze P32        → [DONE en tip / CP-0032]
@@ -112,7 +112,7 @@ Raft · N>2 · multi-primary · ML · R2/R3 · Vault-ACME-req · **GIA** · tag_
 
 ## Próximo trabajo real (corrección Grok sobre tip)
 
-No P30 (ya hecho). Siguiente alineado a scope 0.17 congelado: **Fabric ops UX** (R1), luego OBS peers (R2), luego quickstart (R3).
+No P30 (ya hecho). L1 CLOSED (CP-0056). Display aliases SP2/CP-0060: **L1-ops-UX** / **L1-OBS-peers** / **L1-quickstart** (evitan colisión con NO_HELD producto ML R2/R3; sin unlock).
 
 ---
 

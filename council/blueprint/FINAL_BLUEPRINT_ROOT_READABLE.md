@@ -3,7 +3,7 @@
 Source: DeepSeek R10 after 10 critique rounds. Reformatted for human reading only;
 substance unchanged. Tip baseline: 0.17.0 / tip 35d3e42 / CP-0032 / pytest 504/0.
 
-**Operator note (Grok / Cycle 52 CP-0056):** L1 REMAINING_0.17 is **CLOSED**. R1–R3 evidence: CP-0033..0035 (tips e1d5e50 / 64747b9 / e6a0964); R4–R6: CP-0032; R7: CP-0036. See `docs/planning/L1_RESIDUE_CLOSEOUT.md`. Full `mesh ctl|pause|kill` remains L5 I2/I5 (not L1). NO_HELD product R2/R3 (ML-router) stay locked.
+**Operator note (Grok / Cycle 52 CP-0056; SP2 alias Cycle 56 CP-0060):** L1 REMAINING_0.17 is **CLOSED**. L1-ops-UX / L1-OBS-peers / L1-quickstart evidence: CP-0033..0035 (tips e1d5e50 / 64747b9 / e6a0964); R4–R6: CP-0032; R7: CP-0036. See `docs/planning/L1_RESIDUE_CLOSEOUT.md` + `NOTE_L1_ALIAS_VS_NO_HELD_R2_R3.md`. Full `mesh ctl|pause|kill` remains L5 I2/I5 (not L1). NO_HELD product **R2/R3** (ML-router) stay locked — display aliases only; no unlock.
 
 ---
 
@@ -230,18 +230,19 @@ GIA-COS [HOLD]
 └── H8 manifest parity@N2 → T:T-H8a(+neg) ABORT→reject build
 │
 └── L1 REMAINING_0.17 [CLOSED]
-├── R1 fabric ops UX → C:mesh fabric status|diagnose|reconnect + D:docs/ops/fabric-ops-ux-v1.md
+├── L1-ops-UX (was R1) fabric ops UX → C:mesh fabric status|diagnose|reconnect + D:docs/ops/fabric-ops-ux-v1.md
 │   T:fabric_ops_cycle29 (CP-0033 tip e1d5e50)
 │   [note: full mesh ctl|pause|kill deferred to L5 I2/I5]
-├── R2 obs peers → D:docs/ops/obs-peers-v1.md + UI T:obs_peers_cycle30 (CP-0034 tip 64747b9)
+├── L1-OBS-peers (was R2) obs peers → D:docs/ops/obs-peers-v1.md + UI T:obs_peers_cycle30 (CP-0034 tip 64747b9)
 │   ABORT→single-node view
-├── R3 quickstart → C:scripts/quickstart.sh→quickstart_0.16.3.sh + D:docs/quickstart
+├── L1-quickstart (was R3) quickstart → C:scripts/quickstart.sh→quickstart_0.16.3.sh + D:docs/quickstart
 │   T:quickstart_cycle31 (CP-0035 tip e6a0964)
 ├── R4 soak P30 → CP-0032 tip 8a941f0 [DONE]
 ├── R5 audit P31 → CP-0032 [DONE]
 ├── R6 freeze P32 → CP-0032 freeze 0.17.x-n2 [DONE]
 └── R7 install/signoff → CP-0036 tip 241d570 THEME_SIGNOFF_0.17.0 [DONE]
     closeout=docs/planning/L1_RESIDUE_CLOSEOUT.md CP-0056
+    SP2: aliases avoid collision with NO_HELD product ML R2/R3 (no unlock)
 │
 └── L0 HAVE (0.17.0/CP-0032) [DONE]runtime WAL+fsync; N=1 (0.16.3 closed); N=2 manifest v1-n2 + install + rollback;packaging single+N2; OBS single+basic N2; TLS helpers;process CP-0001..0032 / 504/0 / audit PASS; SLO batch+recovery=MET;majority=fenced_primary_heal_NOT_Raft
 

@@ -1,11 +1,11 @@
 # CURRENT PROJECT STATE
 
 Phase: 0.19_plan
-Module: M2_membership_rejoin_DESIGN
+Module: M3_WAN_model_DESIGN
 Status: VERIFIED
-Last checkpoint: CP-0059
+Last checkpoint: CP-0060
 Next action: await_deepseek
-Git: e508f48
+Git: TIP_PENDING
 Safety: ok
 L1: CLOSED
-Updated: 2026-09-26T20:35:00-04:00
+Updated: 2026-09-26T20:40:30-04:00

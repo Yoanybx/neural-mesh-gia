@@ -1,7 +1,7 @@
-# CP-0059
+# CP-0060
 
 Phase: 0.19_plan
-Module: M2_membership_rejoin_DESIGN
+Module: M3_WAN_model_DESIGN
 Status: VERIFIED
 Next: await_deepseek
 Version: 0.18.0 (held)

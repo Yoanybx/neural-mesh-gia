@@ -14,13 +14,15 @@ root still marked L1 `[OPEN]`. This cycle audits evidence, fills real doc path
 gaps, and marks L1 **CLOSED** without inventing GIA or unlocking NO_HELD
 product layers **R2/R3** (ML-router style — distinct from L1 R2 OBS / R3 quickstart).
 
-## Evidence audit (R1 / R2 / R3)
+## Evidence audit (L1-ops-UX / L1-OBS-peers / L1-quickstart; historical R1/R2/R3)
+
+**SP2 alias (CP-0060):** prefer display names **L1-ops-UX**, **L1-OBS-peers**, **L1-quickstart** so they never collide with NO_HELD product ML **R2/R3**. See `docs/planning/NOTE_L1_ALIAS_VS_NO_HELD_R2_R3.md`.
 
 | Item | Theme | CP / Cycle | Tip (feature) | Primary artifacts | Tests |
 |------|-------|------------|---------------|-------------------|-------|
-| **R1** | Fabric ops UX | CP-0033 / C29 | `e1d5e50` | `docs/capabilities/MESH_FABRIC_OPS_UX.md`; `src/neural_mesh/network/ops.py`; CLI `mesh fabric status\|diagnose\|reconnect`; ops doc `docs/ops/fabric-ops-ux-v1.md` | `tests/test_fabric_ops_cycle29.py` (16; marker `fabric_ops_cycle29`) |
-| **R2** | Richer OBS peers | CP-0034 / C30 | `64747b9` | `docs/capabilities/MESH_OBS_PEERS.md`; `src/neural_mesh/obs_peers.py`; CLI peer inject + RO probe≤2; ops doc `docs/ops/obs-peers-v1.md` | `tests/test_obs_peers_cycle30.py` (19; marker `obs_peers_cycle30`) |
-| **R3** | External quickstart | CP-0035 / C31 | `e6a0964` | `docs/quickstart/QUICKSTART_0.16.3.md`; `QUICKSTART_0.17_STUB.md`; `scripts/quickstart_0.16.3.sh`; alias `scripts/quickstart.sh`; capability `MESH_EXTERNAL_QUICKSTART` | `tests/test_quickstart_cycle31.py` (15; marker `quickstart_cycle31`) |
+| **L1-ops-UX** (was R1) | Fabric ops UX | CP-0033 / C29 | `e1d5e50` | `docs/capabilities/MESH_FABRIC_OPS_UX.md`; `src/neural_mesh/network/ops.py`; CLI `mesh fabric status\|diagnose\|reconnect`; ops doc `docs/ops/fabric-ops-ux-v1.md` | `tests/test_fabric_ops_cycle29.py` (16; marker `fabric_ops_cycle29`) |
+| **L1-OBS-peers** (was R2) | Richer OBS peers | CP-0034 / C30 | `64747b9` | `docs/capabilities/MESH_OBS_PEERS.md`; `src/neural_mesh/obs_peers.py`; CLI peer inject + RO probe≤2; ops doc `docs/ops/obs-peers-v1.md` | `tests/test_obs_peers_cycle30.py` (19; marker `obs_peers_cycle30`) |
+| **L1-quickstart** (was R3) | External quickstart | CP-0035 / C31 | `e6a0964` | `docs/quickstart/QUICKSTART_0.16.3.md`; `QUICKSTART_0.17_STUB.md`; `scripts/quickstart_0.16.3.sh`; alias `scripts/quickstart.sh`; capability `MESH_EXTERNAL_QUICKSTART` | `tests/test_quickstart_cycle31.py` (15; marker `quickstart_cycle31`) |
 
 ### R4–R7 (already done; listed for ledger completeness)
 

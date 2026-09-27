@@ -148,7 +148,7 @@ Runtime fabric membership service remains **out of scope**. Helpers in
 |------|----------------------|
 | M1 scorecard | unchanged; **NO_CONSENSUS_YET**; checklist "M2 SM draft exists" → **yes** |
 | M2 pointer | design matured here; pointer retained as stub |
-| M3 WAN+HLC | still pointer; DeepSeek ranks M3 after M2 (actors now defined) |
+| M3 WAN+HLC | design matured CP-0060 (`M3_WAN_MODEL_DESIGN.md`); pointer retained as stub |
 | M4+ | NO_HELD until M1+M2+M3 ratified |
 | Blueprint L4 M2 | design artifact toward future `rfc/0002-membership.md` |
 

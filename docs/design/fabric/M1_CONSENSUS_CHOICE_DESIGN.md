@@ -73,7 +73,7 @@ Unlock ratification applies to C1..C5 only (C0 = status-quo baseline).
 - [x] Written justification if rejecting all unlock candidates (NO_CONSENSUS_YET)
 - [ ] Fence probe matrix green at design review
 - [x] M2 membership/rejoin SM draft exists (CP-0059)
-- [ ] M3 WAN+HLC model draft exists
+- [x] M3 WAN+HLC model draft exists (CP-0060)
 - [ ] GOV.2 quorum + evidence-bundle (GOV.3)
 - [ ] Explicit: runtime still gated; prose unlock forbidden (GOV.6)
 
@@ -82,7 +82,7 @@ Unlock ratification applies to C1..C5 only (C0 = status-quo baseline).
 | Item | Pointer | Runtime |
 |------|---------|---------|
 | **M2** membership+rejoin | JOINING→ATTESTING→ACTIVE→DRAINING→LEFT→REJOIN (`M2_MEMBERSHIP_REJOIN_DESIGN.md` CP-0059); future `rfc/0002-membership.md` | NO_HELD |
-| **M3** WAN latency/partition | RTT bands, loss%, heal windows; **HLC required**; future `docs/wan/partition-v1.md` | NO_HELD |
+| **M3** WAN latency/partition | RTT bands, loss%, heal windows; **HLC required**; `M3_WAN_MODEL_DESIGN.md` CP-0060; stubs `docs/wan/partition-v1.md` + `latency-bands-v1.md` | NO_HELD |
 | **M4+** | N3 partition_suite etc. | NO_HELD until M1+M2+M3 ratified |
 
 Stub pointer docs: `docs/design/fabric/M2_MEMBERSHIP_REJOIN_POINTER.md`,

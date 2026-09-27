@@ -1,0 +1,11 @@
+{
+  "id": "CP-0060",
+  "status": "VERIFIED",
+  "cycle": 56,
+  "theme": "M3_WAN_model_DESIGN",
+  "version": "0.18.0",
+  "pytest_passed": 926,
+  "n_gt2_runtime": false,
+  "raft": false,
+  "wall_clock_as_authority": 0
+}

@@ -1,3 +1,9 @@
+## Cycle 56 — 2026-09-26 — CP-0060 M3_WAN_model_DESIGN
+- docs/design/fabric/M3_WAN_MODEL_DESIGN.md (RTT bands, jitter/loss, P_partition, HLC, SPLIT/HEAL/FLIP_FLOP/CASCADE).
+- schema wan/v0; packaging m3_wan_model mock + neg tests; MESH_M3_WAN_MODEL_DESIGN.
+- SP2 L1 aliases L1-ops-UX/L1-OBS-peers/L1-quickstart + NOTE; NO_HELD R2/R3 untouched.
+- Package 0.18.0 held; v0.18.0 untouched; tests=23; pytest 926/0; NEXT=await_deepseek.
+
 ## Cycle 55 — 2026-09-26 — CP-0059 M2_membership_rejoin_DESIGN
 - docs/design/fabric/M2_MEMBERSHIP_REJOIN_DESIGN.md (JOINING→ATTESTING→ACTIVE→DRAINING→LEFT→REJOIN + H1 tiers).
 - schema membership/v0; packaging m2_membership_rejoin mock SM + neg tests; MESH_M2_MEMBERSHIP_REJOIN_DESIGN.

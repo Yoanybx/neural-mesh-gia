@@ -1,14 +1,17 @@
-# M3 WAN Latency / Partition + HLC — Design Pointer Only
+# M3 WAN Latency / Partition + HLC — Design Pointer
 
-**Status:** POINTER (no WAN runtime)  
-**Cycle:** 46 / CP-0050  
-**Target doc (later):** `docs/wan/partition-v1.md` (+ latency bands)
+**Status:** SUPERSEDED by design doc (stub retained)  
+**Cycle:** 46 / CP-0050 (pointer); **56 / CP-0060 (design matured)**  
+**Design:** `docs/design/fabric/M3_WAN_MODEL_DESIGN.md`  
+**Target docs (later):** `docs/wan/partition-v1.md`, `docs/wan/latency-bands-v1.md`
 
-## Required
+## Required (now in design)
 
-- RTT / loss / heal window classes (ratifiable defaults later)
-- **HLC required** for cross-site event ordering notes
-- Partition matrix tests T-M3a/b are future — not this CP
+- RTT bands `RTT_lo` / `RTT_mid` / `RTT_hi` (+ `RTT_x` stress)
+- Jitter / loss envelopes; heal windows; `P_partition`
+- **HLC required** for cross-site event ordering (`wall_clock_as_authority=0`)
+- Partition classes: split / heal / flip-flop / cascade
+- Mock tests T-M3a/T-M3b (+neg) in CP-0060; runtime matrix later (M4 NO_HELD)
 
 ## Non-goals
 
