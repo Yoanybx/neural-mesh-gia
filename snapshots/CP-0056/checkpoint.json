@@ -1,0 +1,9 @@
+{
+  "id": "CP-0056",
+  "status": "VERIFIED",
+  "cycle": 52,
+  "theme": "L1_residue_closeout",
+  "version": "0.18.0",
+  "l1_status": "CLOSED",
+  "pytest_passed": 858
+}

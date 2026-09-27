@@ -23,10 +23,10 @@ GIA-COS [HOLD]
 │   CP-0001..0032; 504/0; dual_primary=0
 │   majority = fenced_primary_heal (NO Raft)
 │
-├── L1 REMAINING_0.17
-│   ├── R1 Fabric ops UX     → C:mesh ctl|status|trace|pause|kill  [OPEN]
-│   ├── R2 OBS peers         → D+UI peer summaries                 [OPEN]
-│   ├── R3 External quickstart → quickstart.sh + docs              [OPEN]
+├── L1 REMAINING_0.17 [CLOSED CP-0056]
+│   ├── R1 Fabric ops UX     → mesh fabric status|diagnose|reconnect [CLOSED CP-0033]
+│   ├── R2 OBS peers         → docs/ops/obs-peers-v1.md + inject/probe [CLOSED CP-0034]
+│   ├── R3 External quickstart → quickstart.sh + docs/quickstart   [CLOSED CP-0035]
 │   ├── R4 soak P30          → [DONE en tip / CP-0032]
 │   ├── R5 audit P31         → [DONE en tip / CP-0032]
 │   ├── R6 freeze P32        → [DONE en tip / CP-0032]

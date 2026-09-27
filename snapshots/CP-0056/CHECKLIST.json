@@ -1,0 +1,66 @@
+{
+  "channel": "l1-residue",
+  "gates": [
+    {
+      "detail": "version=0.18.0 expect=0.18.0",
+      "name": "version_held",
+      "ok": true
+    },
+    {
+      "detail": "n_docs=16",
+      "name": "evidence_docs_present",
+      "ok": true
+    },
+    {
+      "detail": "cps=['CP-0032', 'CP-0033', 'CP-0034', 'CP-0035', 'CP-0036']",
+      "name": "cps_verified",
+      "ok": true
+    },
+    {
+      "detail": "CP-0055",
+      "name": "prior_cp_present",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "closeout_declares_closed",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "blueprint_l1_closed",
+      "ok": true
+    },
+    {
+      "detail": "L1 R2/R3 \u2260 NO_HELD R2/R3",
+      "name": "no_held_product_r2_r3_locked",
+      "ok": true
+    },
+    {
+      "detail": "dual_primary=0",
+      "name": "dual_primary_zero",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "quickstart_alias",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "no_gia_claim",
+      "ok": true
+    },
+    {
+      "detail": "injected=844",
+      "name": "pytest_green",
+      "ok": true
+    }
+  ],
+  "l1_status": "CLOSED",
+  "no_held": "Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync",
+  "ok": true,
+  "package_held": "0.18.0",
+  "preferred_next": "L_judge_live_adapter_design",
+  "schema": "mesh.release.l1_residue_checklist/v1"
+}
