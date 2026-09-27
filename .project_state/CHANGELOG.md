@@ -1,3 +1,8 @@
+## Cycle 54 — 2026-09-26 — CP-0058 L_judge_live_adapter_SAFETY_CASE
+- docs/design/L_JUDGE_LIVE_ADAPTER_SAFETY_CASE.md (threat model/ABORT/secret_handle/RefuseTransport/rate limits/audit/must-stay-false).
+- schema live_adapter_safety_v0; packaging helpers + negative refusal tests; MESH_L_JUDGE_LIVE_ADAPTER_SAFETY_CASE.
+- Package 0.18.0 held; v0.18.0 untouched; live=DISABLED; NEXT=await_deepseek.
+
 ## Cycle 53 — 2026-09-26 — CP-0057 L_judge_live_adapter_design
 - docs/design/L_JUDGE_LIVE_ADAPTER_DESIGN.md (EngineTransport/secret_handle/RefuseTransport).
 - MESH_L_JUDGE_LIVE_ADAPTER_DESIGN; tests=12; pytest 870; no live API/keys/src codec.

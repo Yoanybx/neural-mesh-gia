@@ -1,7 +1,7 @@
-# CP-0057
+# CP-0058
 
 Phase: 0.19_plan
-Module: L_judge_live_adapter_design
+Module: L_judge_live_adapter_SAFETY_CASE
 Status: VERIFIED
 Next: await_deepseek
 Version: 0.18.0 (held)

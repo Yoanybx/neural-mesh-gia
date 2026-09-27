@@ -2,6 +2,6 @@
 
 PREFERRED_NEXT: await_deepseek
 
-Cycle 53 / CP-0057 sealed: L_judge_live_adapter_design (design-only).
-Cycle 52 / CP-0056: L1 CLOSED. Package 0.18.0 held; no live API/keys.
-Await DeepSeek verdict on C52–C53. NO_HELD unchanged.
+Cycle 54 / CP-0058 sealed: L_judge_live_adapter_SAFETY_CASE (design-only).
+Package 0.18.0 held; live=DISABLED; no live API/keys.
+Await DeepSeek verdict on C54. NO_HELD unchanged.
