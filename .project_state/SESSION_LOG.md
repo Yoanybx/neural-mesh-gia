@@ -133,3 +133,7 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Hotspot analysis from CP-0066 benches (fence/OBS/receipt lead locally); I1..I7 designs.
 - MESH_PERF_EXPERIMENTAL default OFF; ranking_claim=null; achieved_speedup_claimed=false.
 - Continuity still queued; M1=NO_CONSENSUS_YET; pytest 1035/0; package 0.18.0 held.
+
+## Cycle 64 — 2026-09-26 EDT — CP-0068 orchestrator_continuity_design
+- Durable goals + audit ledger + resume-after-restart; orphan policy LEFT/REJOIN; idempotency; compose CP-0064.
+- Substrate memory NOT consciousness; T-cont-a/b/c; pytest 1046/0; package 0.18.0 held; M1=NO_CONSENSUS_YET.

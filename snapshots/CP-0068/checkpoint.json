@@ -1,0 +1,20 @@
+{
+  "checkpoint": "CP-0068",
+  "cycle": 64,
+  "dual_primary": 0,
+  "orchestrator_continuity_cycle64": 11,
+  "pytest": {
+    "failed": 0,
+    "passed": 1046
+  },
+  "status": "VERIFIED",
+  "theme": "orchestrator_continuity_design",
+  "version": "0.18.0",
+  "preferred_next": "await_deepseek",
+  "live": "DISABLED",
+  "substrate_memory": true,
+  "consciousness_claim": false,
+  "m1": "NO_CONSENSUS_YET",
+  "operator_intent": "substrate_memory_not_consciousness",
+  "created_utc": "2026-09-27T01:40:00Z"
+}

@@ -184,6 +184,7 @@ CPs. Prefer reuse of existing OBS/receipt patterns where possible.
 
 ## Related
 
+- `docs/design/ORCHESTRATOR_CONTINUITY_DESIGN.md` (CP-0068 orchestrator compose)
 - `docs/design/L_JUDGE_MIX_DESIGN.md`
 - `docs/planning/0.19_SCOPE_DRAFT.md`
 - `council/COUNCIL_AGREEMENT_HYPERBRAIN_ASTRA.md`

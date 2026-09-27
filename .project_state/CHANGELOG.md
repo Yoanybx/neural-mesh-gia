@@ -1,3 +1,9 @@
+## Cycle 64 — 2026-09-26 — CP-0068 orchestrator_continuity_design
+- docs/design/ORCHESTRATOR_CONTINUITY_DESIGN.md; schema continuity/orchestrator_v0; MESH_ORCHESTRATOR_CONTINUITY.
+- packaging orchestrator_continuity: GoalRegistry + EvidenceLedger + ContinuityMachine + InFlightTracker; orphan LEFT/REJOIN; idempotency; resume-after-restart; timeouts; ABORT propagation; compose OrchestratorRouter.
+- T-cont-a/b/c; substrate memory NOT consciousness; mock-only; live=DISABLED; no train/GIA/Raft/N>2; tests=11; pytest 1046/0.
+- Package 0.18.0 held; v0.18.0 untouched; NEXT=await_deepseek. DeepSeek C63 Option1.
+
 ## Cycle 62 — 2026-09-26 — CP-0066 MESH_PERF_RESEARCH_TRACK
 - docs/design/MESH_PERF_RESEARCH_TRACK.md; MESH_PERF_LITERATURE_POINTERS_NONDEFAULT; MESH_PERF_RESEARCH_TRACK capability.
 - packaging mesh_perf_research: fence_path / obs_snapshot / membership_sm / receipt_hash_chain / packaging_verify microbenches (perf_counter).

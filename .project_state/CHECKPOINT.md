@@ -1,7 +1,7 @@
-# CP-0067
+# CP-0068
 
 Phase: 0.19_plan
-Module: perf_hotspot_and_improvement_design
+Module: orchestrator_continuity_design
 Status: VERIFIED
 Next: await_deepseek
 Version: 0.18.0 (held)
