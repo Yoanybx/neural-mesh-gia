@@ -56,6 +56,7 @@ markers = [
     "l_judge_m2_e2e_cycle57: CP-0061 L_judge mock e2e with M2 membership SM (live=DISABLED)",
     "agent_shell_extended_cycle58: CP-0062 agent-shell extended scenarios (multi-turn/probe/churn; live=DISABLED)",
     "design_set_signoff_v2_cycle59: CP-0063 0.19 design-set signoff v2 (amend C51 + post-C51 M2/M3/spikes)",
+    "orchestrator_judge_routing_cycle60: CP-0064 orchestrator judge/shell routing design (mock; live=DISABLED)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

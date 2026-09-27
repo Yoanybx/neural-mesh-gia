@@ -1,0 +1,17 @@
+{
+  "checkpoint": "CP-0064",
+  "cycle": 60,
+  "dual_primary": 0,
+  "orchestrator_judge_routing_cycle60": 19,
+  "pytest": {
+    "failed": 0,
+    "passed": 996
+  },
+  "status": "VERIFIED",
+  "theme": "Orchestrator_judge_routing_DESIGN",
+  "version": "0.18.0",
+  "preferred_next": "await_deepseek",
+  "live": "DISABLED",
+  "operator_intent": "Mesh=reasoning_orchestrator_not_frontier_LLM",
+  "created_utc": "2026-09-27T01:10:00Z"
+}

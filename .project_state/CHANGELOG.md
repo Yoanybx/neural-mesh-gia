@@ -1,3 +1,9 @@
+## Cycle 60 — 2026-09-26 — CP-0064 Orchestrator_judge_routing_DESIGN
+- docs/design/ORCHESTRATOR_JUDGE_ROUTING_DESIGN.md; schema judge/routing_v0; MESH_ORCHESTRATOR_JUDGE_ROUTING.
+- packaging orchestrator_judge_routing: SINGLE/DUAL_ADVISORY/FALLBACK/ABORT_MISMATCH; M2/M3; A3/A4 oversight; continuity hooks.
+- T-route-a/b/c; mock-only; live=DISABLED; no train/GIA/Raft/N>2; tests=19; pytest 996/0.
+- Package 0.18.0 held; v0.18.0 untouched; NEXT=await_deepseek. OPERATOR_INTENT=orchestrator_not_frontier_LLM.
+
 ## Cycle 59 — 2026-09-26 — CP-0063 0.19_design_set_signoff_v2
 - Amend C51 A–D design-set signoff with post-C51: M2, M3, L_judge safety case, live-adapter design, L_judge×M2 e2e, agent_shell extended.
 - design_set_signoff_019_v2 helpers; DESIGN_SET_SIGNOFF_V2; MESH_0.19_DESIGN_SET_SIGNOFF updated.
