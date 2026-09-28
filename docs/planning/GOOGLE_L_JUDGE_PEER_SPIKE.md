@@ -70,8 +70,8 @@ Mock peer transport (`MockGeminiPeerTransport`) is **in-process only** — retur
 
 1. **Correlation:** compare primary mock digest vs Gemini-mock digest on the same envelope; record `correlation_score` in `[0,1]` from digest equality / Hamming of truncated digests (mock heuristic only).
 2. **Independence review:** when correlation is forced-high, mark `independence_risk` and require human/I5 review in any future live design — **does not** auto-approve.
-3. **Disagreement handling:** mismatch → evidence row + continue advisory; Mesh policy / I5 arbitrate; peer cannot override Mesh ABORT.
-4. **Provenance:** each peer attribution includes `provider`, `model_ref` (mock), `digest`, `transport=mock|refuse`.
+3. **Disagreement handling:** mismatch → evidence row + continue advisory; `mesh_decision=ABORT` / `mesh_accept=False`; `abort_provenance` records `PEER_DIGEST_DISAGREE` + digests; Mesh policy / I5 arbitrate; peer cannot override Mesh ABORT; **no** invented ACCEPT / M1 consensus.
+4. **Provenance:** each peer attribution includes `provider`, `model_ref` (mock), `digest`, `transport=mock|refuse`. Dual-advisory report also carries `dual_advisory`, `refuse_transport_default`, and structured `abort_provenance` (stage / outcome / code) under live=DISABLED.
 
 ---
 
@@ -117,5 +117,7 @@ Path: `notebooks/colab/README.md` (+ optional future `.ipynb` under that directo
 | pkg0190 | **NOT_OPENED** |
 | M1 | **NO_CONSENSUS_YET** |
 | Cycle tip at write | `b3e84fb` / sealed feature `4b43bf4` (CP-0074); this spike is design-only under fences |
+
+**Hold mock cycle 2:** dual-advisory report fields + abort provenance on mock peer disagreement (see HOLD_MOCK_NEXT Progress; in tip).
 
 **ONE_LINE:** Gemini free tier is a fenced optional mock second L_judge peer for correlation/independence dry-runs; RefuseTransport default; no keys; live=DISABLED.

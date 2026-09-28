@@ -3,6 +3,9 @@
 Mock / dry-run helpers for treating Gemini free-tier as an optional second
 L_judge peer under ChatGPT APPROVE_WITH_FENCES. RefuseTransport default.
 No network. No API keys. live=DISABLED. Dual advisory ≠ M1 consensus.
+
+Hold mock cycle 2: dual-advisory report fields + abort provenance when mock
+peers disagree (Mesh ACCEPT refused; advisory evidence may continue).
 """
 
 from __future__ import annotations
@@ -47,6 +50,7 @@ ABORT_CODES: tuple[str, ...] = (
     "PEER_FENCE",
     "PEER_SECRET_FORBIDDEN",
     "PEER_SCHEMA_INVALID",
+    "PEER_DIGEST_DISAGREE",
     "ENGINE_DISABLED",
 )
 
@@ -104,12 +108,17 @@ class CorrelationReport:
     correlation_score: float = 0.0
     independence_risk: str = "UNKNOWN"  # LOW | MEDIUM | HIGH | UNKNOWN
     disagreement: bool = False
+    dual_advisory: bool = True
+    mesh_decision: str = "ADVISORY"  # ADVISORY | ABORT — never ACCEPT from peers
+    mesh_accept: bool = False
     advisory_only: bool = True
     m1_status: str = M1_STATUS
     live_api_enabled: bool = False
+    refuse_transport_default: bool = True
     attributions: list[PeerAttribution] = field(default_factory=list)
     abort_code: str | None = None
     abort_reason: str | None = None
+    abort_provenance: dict[str, Any] = field(default_factory=dict)
     provenance: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -120,12 +129,17 @@ class CorrelationReport:
             "correlation_score": self.correlation_score,
             "independence_risk": self.independence_risk,
             "disagreement": self.disagreement,
+            "dual_advisory": self.dual_advisory,
+            "mesh_decision": self.mesh_decision,
+            "mesh_accept": self.mesh_accept,
             "advisory_only": self.advisory_only,
             "m1_status": self.m1_status,
             "live_api_enabled": self.live_api_enabled,
+            "refuse_transport_default": self.refuse_transport_default,
             "attributions": [a.to_dict() for a in self.attributions],
             "abort_code": self.abort_code,
             "abort_reason": self.abort_reason,
+            "abort_provenance": dict(self.abort_provenance),
             "provenance": dict(self.provenance),
         }
 
@@ -165,6 +179,22 @@ class MockGeminiPeerTransport:
         return {"ok": True, "binding": self.name, "live": False, "provider": "gemini-mock"}
 
 
+
+def _base_abort_provenance(**extra: Any) -> dict[str, Any]:
+    """Structured abort / dual-advisory provenance (mock; live=DISABLED)."""
+    base: dict[str, Any] = {
+        "live_api_enabled": False,
+        "refuse_transport_default": True,
+        "binding": "RefuseTransport",
+        "mesh_accept": False,
+        "m1_status": M1_STATUS,
+        "advisory_only": True,
+        "dual_advisory": True,
+    }
+    base.update(extra)
+    return base
+
+
 class GoogleLJudgePeerSpike:
     """Dry-run spike: primary mock + optional Gemini mock peer; RefuseTransport on live."""
 
@@ -196,32 +226,64 @@ class GoogleLJudgePeerSpike:
                 "colab_placeholder": COLAB_PLACEHOLDER,
                 "evidence_only": True,
                 "mesh_authority": False,
+                "refuse_transport_default": True,
             }
         )
 
         if env.get("n_peers", N_CAP) and int(env.get("n_peers", N_CAP)) > N_CAP:
             report.ok = False
+            report.mesh_decision = "ABORT"
             report.abort_code = "PEER_N_GT2_REFUSED"
             report.abort_reason = "N>2 peer roster refused under fence"
+            report.abort_provenance = _base_abort_provenance(
+                stage="fence",
+                outcome="N_GT2_REFUSED",
+                code="PEER_N_GT2_REFUSED",
+                continue_advisory=False,
+                n_peers=int(env.get("n_peers", N_CAP)),
+                n_cap=N_CAP,
+            )
             return report
 
         if env.get("raft") or env.get("saas") or env.get("train_70b"):
             report.ok = False
+            report.mesh_decision = "ABORT"
             report.abort_code = "PEER_FENCE"
             report.abort_reason = "forbidden flag under Google tools fences"
+            report.abort_provenance = _base_abort_provenance(
+                stage="fence",
+                outcome="FORBIDDEN_FLAG",
+                code="PEER_FENCE",
+                continue_advisory=False,
+                flags={
+                    "raft": bool(env.get("raft")),
+                    "saas": bool(env.get("saas")),
+                    "train_70b": bool(env.get("train_70b")),
+                },
+            )
             return report
 
         secret = env.get("api_key") or env.get("secret") or env.get("raw_key")
         if secret:
             report.ok = False
+            report.mesh_decision = "ABORT"
             report.abort_code = "PEER_SECRET_FORBIDDEN"
             report.abort_reason = "no API keys in repo / envelope"
+            report.abort_provenance = _base_abort_provenance(
+                stage="fence",
+                outcome="SECRET_FORBIDDEN",
+                code="PEER_SECRET_FORBIDDEN",
+                continue_advisory=False,
+                secret_present=True,
+                secret_echoed=False,
+            )
             return report
 
         # Live path is always refused while LIVE_API_ENABLED is False.
         if env.get("live_api_enabled") or env.get("use_live_gemini"):
             refused = self.refuse.call(env)
             report.ok = False
+            report.mesh_decision = "ABORT"
             report.live_api_enabled = False
             report.abort_code = "PEER_LIVE_DISABLED"
             report.abort_reason = "live=DISABLED; RefuseTransport default"
@@ -239,6 +301,15 @@ class GoogleLJudgePeerSpike:
                 "error_code": refused.get("error_code"),
                 "abort": refused.get("abort"),
             }
+            report.abort_provenance = _base_abort_provenance(
+                stage="live_gemini_slot",
+                outcome="LIVE_REFUSED",
+                code="PEER_LIVE_DISABLED",
+                continue_advisory=False,
+                refuse_error_code=refused.get("error_code"),
+                refuse_verdict=refused.get("verdict"),
+                requested_live=True,
+            )
             return report
 
         primary_out = self.primary.call(env)
@@ -258,12 +329,46 @@ class GoogleLJudgePeerSpike:
         report.correlated = equal
         report.correlation_score = score
         report.disagreement = not equal
+        report.dual_advisory = True
+        report.mesh_accept = False
+        report.advisory_only = True
+        report.m1_status = M1_STATUS
+        report.live_api_enabled = False
+        report.refuse_transport_default = True
         if equal:
             report.independence_risk = "HIGH" if self.force_correlation else "MEDIUM"
-        elif score >= 0.75:
-            report.independence_risk = "MEDIUM"
+            report.mesh_decision = "ADVISORY"
+            report.abort_provenance = _base_abort_provenance(
+                stage="dual_advisory_correlation",
+                outcome="AGREE_ADVISORY_ONLY",
+                code=None,
+                continue_advisory=True,
+                primary_digest=d1,
+                gemini_digest=d2,
+                correlation_score=score,
+                independence_risk=report.independence_risk,
+                force_correlation=bool(self.force_correlation),
+                claim="peer_agree_is_not_m1_consensus",
+            )
         else:
-            report.independence_risk = "LOW"
+            if score >= 0.75:
+                report.independence_risk = "MEDIUM"
+            else:
+                report.independence_risk = "LOW"
+            # Disagreement: refuse Mesh ACCEPT; keep dual-advisory evidence.
+            report.mesh_decision = "ABORT"
+            report.abort_provenance = _base_abort_provenance(
+                stage="dual_advisory_correlation",
+                outcome="DISAGREE_ABORT_MESH_ACCEPT",
+                code="PEER_DIGEST_DISAGREE",
+                continue_advisory=True,
+                primary_digest=d1,
+                gemini_digest=d2,
+                correlation_score=score,
+                independence_risk=report.independence_risk,
+                policy="ABORT_ACCEPT_CONTINUE_ADVISORY",
+                claim="disagreement_recorded_no_invented_accept",
+            )
 
         report.attributions = [
             PeerAttribution(
@@ -287,4 +392,6 @@ class GoogleLJudgePeerSpike:
         report.provenance["claim"] = (
             "evidence_input_only_not_consensus_not_safety_proof"
         )
+        report.provenance["dual_advisory"] = True
+        report.provenance["mesh_decision"] = report.mesh_decision
         return report
