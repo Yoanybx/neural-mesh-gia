@@ -24,7 +24,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`45ccc16` + Gate1 ACK **draft** (unsigned) + Gate2 live safety-case **amendment drafted as design** (not live proof; cannot seal) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) / CP-0074 posture.
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`001211b` + Gate1 ACK **draft** (unsigned) + Gate2 live safety-case **amendment drafted as design** (not live proof; cannot seal) + Gate3 Authority Matrix **binding drafted as design** (cannot seal) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) / CP-0074 posture.
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -51,11 +51,12 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 | Item | Rule | Today |
 |------|------|-------|
-| Frozen matrix | L_judge propose-only; I5 approve/veto; Operator sole live-enable ACK; RefuseTransport veto | **Design present** (D1 §3) |
-| In use | Runtime / adapter config and ops runbooks **reference** the matrix (propose/approve/veto/execute) — not prose-only | **Partial** — design table exists; live ops binding **not** opened |
-| Disagreement | Mesh ABORT > judge ACCEPT; I5 may stop post-advisory; no judge-over-judge override | Binding in design |
+| Frozen matrix | L_judge propose-only; I5 approve/veto; Operator sole live-enable ACK; RefuseTransport veto | **Design present** (D1 §3) — cited by binding doc |
+| In use | Runtime / adapter config and ops runbooks **reference** the matrix (propose/approve/veto/execute) — not prose-only | **Binding drafted as design** — `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md` (matrix IDs + config/ops cite); runtime still Refuse default; **cannot seal** |
+| Disagreement | Mesh ABORT > judge ACCEPT; I5 may stop post-advisory; no judge-over-judge override | Binding in design (+ Gate3 AM-NT-* intent) |
 
-**Exit:** Live cycle cites matrix IDs in config/policy version; no role invents execute authority.
+**Exit:** Live cycle cites matrix IDs in config/policy version; no role invents execute authority.  
+**Today:** binding **drafted as design**; live ops **not** armed; Gate 1 **UNSIGNED** (+ Gate 2 cannot seal) → Gate 3 **OPEN / cannot seal**.
 
 ### Gate 4 — Keys + data policy
 
@@ -120,18 +121,18 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ tip ~45ccc16 |
+| # | Gate | Blocks live+API? | Status @ tip ~001211b+Gate3 |
 |---|------|------------------|------------------------|
 | 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
 | 2 | Safety evidence (+ live amendment) | **Yes** | Amendment **drafted as design** (`GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`); still **Missing live proof**; **cannot seal** (Gate 1 unsigned) |
-| 3 | Authority Matrix in use | **Yes** | Design OK; live binding OPEN |
+| 3 | Authority Matrix in use | **Yes** | Binding **drafted as design** (`GATE3_AUTHORITY_MATRIX_BINDING.md`); live ops not armed; **cannot seal** (Gate 1 unsigned) |
 | 4 | Keys + data policy | **Yes** | Schedule **drafted** (`GATE4_LIVE_DATA_POLICY.md`); no-keys / no-calls held; **cannot seal** (Gate 1 unsigned) |
 | 5 | RefuseTransport → live flag | **Yes** | Runbook **drafted** (`GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`); flip **not executed**; Refuse default ON; **cannot seal** (Gates 1–4 not sealed) |
 | 6 | Acceptance metrics / D4-K | **Yes** | Design OK; live bundle OPEN |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Missing for live+API = Gates **1–6** (signed ACK, live safety amendment **reviewed/sealed** + live proof, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). Gate 2 amendment is **drafted as design** only — still Missing live proof; Gate1 unsigned. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
+**Bottom line:** Missing for live+API = Gates **1–6** (signed ACK, live safety amendment **reviewed/sealed** + live proof, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). Gates **2–5** design drafts present; Gate 3 binding **drafted as design**; Gate1 unsigned → none of 1–6 sealed. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
 
 ---
 
@@ -151,6 +152,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `council/NOTE_LIVE_READINESS.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `council/NOTE_GATE1_ACK_DRAFT.md`
 - `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · `council/NOTE_GATE2_SAFETY_AMENDMENT.md`
+- `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md` · `council/NOTE_GATE3_AUTHORITY_MATRIX.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `council/NOTE_GATE4_DATA_POLICY.md`
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `council/NOTE_GATE5_FLIP_RUNBOOK.md`
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
