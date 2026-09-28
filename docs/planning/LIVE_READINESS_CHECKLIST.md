@@ -2,10 +2,10 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-27 America/New_York (EDT)  
-**Tip context:** Gate5 flip-runbook draft atop Gate4 ~`8f2eea6` / Gate1 ACK draft ~`0b6353c` / checklist ~`8c771a7` / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
+**Date:** 2026-09-28 America/New_York (EDT) — Gate2 amendment draft refresh  
+**Tip context:** Gate2 safety-case amendment draft atop Gate5 ~`45ccc16` / Gate4 ~`8f2eea6` / Gate1 ACK draft ~`0b6353c` / checklist ~`8c771a7` / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
-**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`
+**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_SAFETY_AMENDMENT.md` / `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`
 
 ---
 
@@ -24,7 +24,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`8f2eea6` + Gate1 ACK **draft** (unsigned) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) / CP-0074 posture.
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`45ccc16` + Gate1 ACK **draft** (unsigned) + Gate2 live safety-case **amendment drafted as design** (not live proof; cannot seal) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) / CP-0074 posture.
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -41,10 +41,11 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Item | Rule | Today |
 |------|------|-------|
 | Safety-case maturation | D1 artifacts cite D4-A..K; fail-closed RefuseTransport; containment + rollback **verification** (RV-*) | **Design sealed** (CP-0071) — evidence exists as *design*, not as live proof |
-| Live amendment | Any live path needs safety-case **amendment** for real transport, keys, blast radius, compromise response | **Missing** |
-| Kill path | I5 kill → RefuseTransport + continuity ABORT remains default until amended | Binding |
+| Live amendment | Any live path needs safety-case **amendment** for real transport, keys, blast radius, compromise response | **Amendment drafted as design** — `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`; still **Missing live proof**; Gate 1 unsigned → **cannot seal** |
+| Kill path | I5 kill → RefuseTransport + continuity ABORT remains default until amended | Binding (amended wording in Gate2 doc §4; **not** live-armed) |
 
-**Exit:** Live-safety amendment reviewed; mock RV drills still green; no silent codec.
+**Exit:** Live-safety amendment reviewed; mock RV drills still green; no silent codec.  
+**Today:** amendment **drafted as design**; still **Missing live proof**; Gate 1 **UNSIGNED** → Gate 2 **OPEN / cannot seal**; RV drills mock-green only.
 
 ### Gate 3 — Authority Matrix in use (D4-A)
 
@@ -119,10 +120,10 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ tip ~8f2eea6 |
+| # | Gate | Blocks live+API? | Status @ tip ~45ccc16 |
 |---|------|------------------|------------------------|
 | 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
-| 2 | Safety evidence (+ live amendment) | **Yes** | Design OK; live amendment OPEN |
+| 2 | Safety evidence (+ live amendment) | **Yes** | Amendment **drafted as design** (`GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`); still **Missing live proof**; **cannot seal** (Gate 1 unsigned) |
 | 3 | Authority Matrix in use | **Yes** | Design OK; live binding OPEN |
 | 4 | Keys + data policy | **Yes** | Schedule **drafted** (`GATE4_LIVE_DATA_POLICY.md`); no-keys / no-calls held; **cannot seal** (Gate 1 unsigned) |
 | 5 | RefuseTransport → live flag | **Yes** | Runbook **drafted** (`GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`); flip **not executed**; Refuse default ON; **cannot seal** (Gates 1–4 not sealed) |
@@ -130,7 +131,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Missing for live+API = Gates **1–6** (ACK, live safety amendment, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
+**Bottom line:** Missing for live+API = Gates **1–6** (signed ACK, live safety amendment **reviewed/sealed** + live proof, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). Gate 2 amendment is **drafted as design** only — still Missing live proof; Gate1 unsigned. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
 
 ---
 
@@ -149,6 +150,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 - `council/NOTE_LIVE_READINESS.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `council/NOTE_GATE1_ACK_DRAFT.md`
+- `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · `council/NOTE_GATE2_SAFETY_AMENDMENT.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `council/NOTE_GATE4_DATA_POLICY.md`
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `council/NOTE_GATE5_FLIP_RUNBOOK.md`
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
