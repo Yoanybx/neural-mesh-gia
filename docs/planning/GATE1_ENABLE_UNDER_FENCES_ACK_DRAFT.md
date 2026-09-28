@@ -1,16 +1,17 @@
-# Gate 1 — ENABLE_UNDER_FENCES operator ACK — **UNSIGNED DRAFT**
+# Gate 1 — ENABLE_UNDER_FENCES operator ACK — **UNSIGNED DRAFT (HISTORICAL)**
 
-**Status:** **UNSIGNED DRAFT** — prepared for operator signature later  
-**Effect (when signed by operator):** Records intent to *enable later under fences* (Gemini free-tier canary path after Gates 2–5 enable-ready).  
-**It does NOT (while unsigned):** enable live · flip flags · mint keys · authorize Mesh live calls · start D3 · push/tag · mint CP · substitute for a signature.  
-**Bots must NOT invent signature.** Operator (user) signs when ready — no chat-menu ask in this cycle.
+**Status:** **HISTORICAL UNSIGNED DRAFT** — superseded by **SIGNED** artifact  
+**Signed copy:** `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` — operator **「Aprobado」** 2026-09-28 ~19:41 ET  
+**Effect (when signed):** Records intent to *enable under fences* (Gemini free-tier canary path after Gates 2–5 enable-ready).  
+**This draft file alone does not authorize flips**; use the SIGNED copy as the ACK of record.
 
 **Date drafted:** 2026-09-28 ~18:55 EDT (America/New_York)  
-**Author (draft only):** Grok Bot `<grok-bot@local>` — docs only; **did not invent operator signature**  
-**Date signed:** _unsigned_  
-**Operator ACK:** _awaiting user-written signature_  
+**Author (draft only):** Grok Bot `<grok-bot@local>` — docs only  
+**Date signed:** 2026-09-28 ~19:41 EDT — see SIGNED artifact  
+**Operator ACK:** Joan / Yoan V — **「Aprobado」** (recorded on SIGNED copy)  
 **Tip at draft:** Gate6 DESIGN_SEALED atop `d2c16d8` (Gate5) / Gates 2–4 · peer wire `30fe593` · evidence `1e502c6`  
-**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **LIVE_API_ENABLED=False** · Gate1 **SIGNED DISCUSS_ONLY** (prior) · Gates **2–6 DESIGN_SEALED** (discuss/eval) · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
+**Tip at sign:** `a816c34`  
+**Package posture at draft:** **0.18.0 HELD** · **LIVE_API_ENABLED=False** · Gate1 was **SIGNED DISCUSS_ONLY** · Gates **2–6 DESIGN_SEALED** · **NO_HELD** stays NO_HELD
 
 **Prior Gate1:** `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md` — **DISCUSS_ONLY** (does not substitute for this ENABLE ACK)  
 **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md` · wall `docs/planning/LIVE_100_OPERATOR_WALL.md`  
@@ -192,4 +193,4 @@ Before any `live_adapter.enabled` / `LIVE_API_ENABLED` flip:
 
 ---
 
-*End GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT — UNSIGNED; live=DISABLED; for operator signature later; bots must not invent signature.*
+*End GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT — HISTORICAL; see GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md.*

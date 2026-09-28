@@ -5,7 +5,7 @@
 **Author:** Grok Bot `<grok-bot@local>`
 **Tip lineage:** `bcba248` / `59d4178`
 **Topic:** `DESIGN_SEAL_GATES_2_6_HYGIENE_ONLY`
-**ENABLE draft:** `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**)
+**ENABLE:** was draft UNSIGNED at hygiene lock; **later SIGNED** — see postscript
 
 ## Agreement
 
@@ -34,4 +34,21 @@
 - Do not execute the Gate5 canary.
 - Do not treat the Gates 2–6 design seals as live authorization.
 
-*End COUNCIL_AGREEMENT_DESIGN_SEAL_GATES_2_6 — locked hygiene record; live remains disabled.*
+## Postscript — ENABLE signed (same day; does not rewrite hygiene ACK)
+
+**2026-09-28 ~19:41 ET:** Operator signed ENABLE_UNDER_FENCES (`GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md`, 「Aprobado」).  
+Dual hygiene ACK above remains **PASS / hygiene-only** — it did **not** authorize the ENABLE; the operator signature did.
+
+| Item | After postscript |
+|------|------------------|
+| Hygiene ACK | Still PASS (unchanged meaning) |
+| ENABLE | **SIGNED** |
+| Gates 2–4 ENABLE_READY | Docs sealed same cycle |
+| `LIVE_API_ENABLED` | **Still False** — Gate5 step (6) blocked on `impl_cp_not_authorized` |
+| Canary | **Not executed** |
+| NO_HELD | Unchanged |
+
+Cite: `council/NOTE_ENABLE_UNDER_FENCES_SIGNED.md` · `docs/planning/GATE5_HEALTH_CHECK_EVIDENCE.md`
+
+*End COUNCIL_AGREEMENT_DESIGN_SEAL_GATES_2_6 — locked hygiene record; ENABLE later signed by operator; LIVE_API_ENABLED still False.*
+

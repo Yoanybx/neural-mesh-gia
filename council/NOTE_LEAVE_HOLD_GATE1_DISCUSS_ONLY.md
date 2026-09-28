@@ -59,4 +59,17 @@ See `docs/planning/GEMINI_FREE_NEXT_STEPS.md`:
 - D3, push, tags, CP mint
 - Claiming DISCUSS_ONLY = live-ready
 
-*End NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY — Hold A left; Gate1 SIGNED DISCUSS_ONLY; live=DISABLED.*
+## Later upgrade (same day) — ENABLE_UNDER_FENCES
+
+**2026-09-28 ~19:41 ET:** Operator **「Aprobado」** signed `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md`.  
+This leave-Hold note remains the **DISCUSS_ONLY reopen** record. Intent upgrade and ENABLE-ready seals are recorded in:
+
+- `council/NOTE_ENABLE_UNDER_FENCES_SIGNED.md`
+- `docs/planning/GATE2_ENABLE_READY.md` · `GATE3_ENABLE_READY.md` · `GATE4_ENABLE_READY.md`
+- `docs/planning/GATE5_HEALTH_CHECK_EVIDENCE.md`
+
+**Still true from leave-Hold:** no keys in git; NO_HELD unchanged; D3/push/tags no.  
+**Updated:** intent is no longer DISCUSS_ONLY-only — ENABLE_UNDER_FENCES is signed; **`LIVE_API_ENABLED` still False** (Gate5 step 6 blocked on `impl_cp_not_authorized`).
+
+*End NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY — Hold A left; DISCUSS_ONLY record retained; see ENABLE signed note for intent upgrade.*
+

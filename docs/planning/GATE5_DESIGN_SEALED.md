@@ -1,7 +1,7 @@
 # Gate 5 — DESIGN_SEALED (DISCUSS_ONLY / Gemini free-tier eval path — procedure only)
 
-**Status:** **DESIGN_SEALED** for Gate1 **DISCUSS_ONLY** / Gemini **free-tier eval** — RefuseTransport → live-flag **flip runbook / canary procedure** (docs only)  
-**Not:** canary **execution** · **not** `live=ENABLED` · **not** Mesh live adapter on · **not** flag flip · **not** ENABLE seal · **not** invent ENABLE_UNDER_FENCES signature  
+**Status:** **DESIGN_SEALED** (procedure) — Gate1 later **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; step (5) PASS; step (6) **not** executed  
+**Not:** canary **execution complete** · **not** `LIVE_API_ENABLED=true` · **not** invent impl CP · **not** NO_HELD unlock  
 **Date sealed (design):** 2026-09-28 ~18:50 EDT (America/New_York)  
 **Author (docs):** Grok Bot `<grok-bot@local>` — design seal only; **did not invent operator signature**  
 **Tip at seal base:** `5879321` (Gate4 DESIGN_SEALED) atop Gate3 `ce53e7c` / Gate2 `7c436f8` / peer wire `30fe593` / evidence `1e502c6` / leave-Hold `fc4ef9e`  
@@ -106,4 +106,10 @@
 
 ---
 
-*End GATE5_DESIGN_SEALED — procedure sealed for DISCUSS_ONLY; canary NOT STARTED / NOT AUTHORIZED; live=DISABLED; LIVE_API_ENABLED=False; ENABLE still needs operator ACK; next=Gate6 metrics DESIGN_SEALED.*
+## Postscript (2026-09-28 ~19:41 ET)
+
+ENABLE_UNDER_FENCES **SIGNED**; Gates 2–4 **ENABLE_READY**; health step (5) **PASS** (`GATE5_HEALTH_CHECK_EVIDENCE.md`).  
+Canary / `LIVE_API_ENABLED` flip still **OPEN / blocked** on authorized impl CP (`may_enable=False`). Procedure DESIGN_SEALED record retained.
+
+*End GATE5_DESIGN_SEALED — procedure sealed; ENABLE signed later; LIVE_API_ENABLED=False; canary blocked on impl CP.*
+

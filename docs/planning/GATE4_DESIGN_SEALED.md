@@ -102,4 +102,10 @@
 
 ---
 
+
+## Postscript (2026-09-28 ~19:41 ET) — Postscript ENABLE_READY → `GATE4_ENABLE_READY.md`
+
+Operator SIGNED ENABLE_UNDER_FENCES; see `docs/planning/GATE4_ENABLE_READY.md`.
+This DESIGN_SEALED (discuss/eval) record is retained. Live RV / flag flip still Gate5.
+
 *End GATE4_DESIGN_SEALED — design/docs seal for DISCUSS_ONLY eval data policy + secret_handle; live=DISABLED; ENABLE still needs operator ACK; Gate5 canary not authorized.*

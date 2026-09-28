@@ -1,10 +1,10 @@
-# Gemini free-tier — next steps (DISCUSS_ONLY)
+# Gemini free-tier — next steps (ENABLE_UNDER_FENCES)
 
-**Status:** Ordered plan under Gate1 **SIGNED DISCUSS_ONLY** (2026-09-28)  
-**Does not** enable Mesh live · **does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** flip `LIVE_API_ENABLED`  
-**Scope:** Gemini **free-tier eval only**; Vertex paid **OUT**  
-**Posture:** **live=DISABLED**; flags `live=false` held  
-**Cite:** `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md` · `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`  
+**Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
+**Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** invent impl CP / auto-flip without NT-10 clearance  
+**Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
+**Posture:** **`LIVE_API_ENABLED=False`**; RefuseTransport default ON; Gates 2–4 ENABLE_READY  
+**Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · prior DISCUSS_ONLY + leave-Hold notes  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
 ---
@@ -22,7 +22,11 @@
 | **4** | **Gate5 runbook design seal** — docs/canary procedure toward DESIGN_SEALED (**not** execute canary) | **DONE (DESIGN_SEALED)** — `GATE5_DESIGN_SEALED.md` · `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`; procedure sealed; canary NOT AUTHORIZED | Flip `live_adapter.enabled` / `LIVE_API_ENABLED`; run canary without ENABLE chain; invent ENABLE_UNDER_FENCES |
 | **4b** | **Gate5 canary later** — health check → single canary under kill-armed I5 → ledger evidence (Gate5 steps 1–7) | **NOT STARTED / NOT AUTHORIZED** — only after Gates 2–4 **enable**-ready + Gate1 scope upgrade if operator marks ENABLE_UNDER_FENCES; dry-run `30fe593` ≠ canary | Canary / flip without full ENABLE chain |
 | **5** | **Gate6 metrics design seal** — acceptance metrics toward DESIGN_SEALED (docs) | **DONE (DESIGN_SEALED)** — `GATE6_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md`; live measurement OPEN; dry-run ≠ live RV | Claim canary evidence without Gate5 execution; flip live flags; invent ENABLE signature |
-| **6** | **ENABLE_UNDER_FENCES draft** — unsigned operator ACK artifact for later user signature | **DRAFTED UNSIGNED** — `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md`; bots must **not** invent signature | Sign as bot; flip flags; run canary; treat draft as signed |
+| **6** | **ENABLE_UNDER_FENCES** — operator signature | **SIGNED** — `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` (「Aprobado」 ~19:41 ET) | Invent extra unlocks; commit keys |
+| **6b** | **Gates 2–4 ENABLE_READY** — docs enable-ready seals under ENABLE | **DONE** — `GATE2/3/4_ENABLE_READY.md` | Claim live RV complete; flip without Gate5 |
+| **6c** | **Gate5 step (5) health** | **PASS** — `GATE5_HEALTH_CHECK_EVIDENCE.md` | Treat as canary / flag flip |
+| **7** | **Gate5 step (6) canary / LIVE_API_ENABLED flip** | **BLOCKED** — `may_enable=False` / `impl_cp_not_authorized` (NT-10); no Mesh live transport beyond RefuseTransport | Half-flip; invent impl CP; treat dry-run as canary |
+| **8** | **Gate6 live measurement** on canary evidence | **OPEN** — after authorized canary | Claim design metrics = live RV |
 
 ---
 
@@ -30,25 +34,26 @@
 
 Before any flag flip:
 
-1. Gate2 live safety-case amendment — **DESIGN_SEALED** (discuss/eval); ENABLE + live proof still open  
-2. Gate3 Authority Matrix in use — **DESIGN_SEALED** (discuss/eval); ENABLE / live-armed still open  
-3. Gate4 secret_handle outside repo + live data schedule — **DESIGN_SEALED** (discuss/eval); enable seal open  
-4. Gate5 runbook **DESIGN_SEALED** (docs/canary procedure) — **done**; canary execution only after ENABLE chain (**NOT AUTHORIZED** now)  
-5. Gate6 acceptance metrics **DESIGN_SEALED** — **done** (docs); live measurement / canary evidence later  
-6. ENABLE_UNDER_FENCES ACK — **draft UNSIGNED** for operator signature later  
+1. Gate2 — **ENABLE_READY** (docs) under SIGNED ENABLE; Mesh live RV still OPEN  
+2. Gate3 — **ENABLE_READY** (docs); runtime not live-enabled  
+3. Gate4 — **ENABLE_READY** (docs); oob key only  
+4. Gate5 runbook DESIGN_SEALED; step (5) **PASS**; step (6) **BLOCKED** (`impl_cp_not_authorized`)  
+5. Gate6 metrics DESIGN_SEALED; live measurement after canary  
+6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** **DISCUSS_ONLY** — eval dry-run + Gates **2–6** design seal done (Gate5 = procedure; Gate6 = metrics); upgrade to ENABLE_UNDER_FENCES requires a **new** operator mark (user-written) — draft ready, **UNSIGNED**.
+**Intent today:** **ENABLE_UNDER_FENCES** — canary path authorized in governance; **flag flip held** until authorized impl CP clears NT-10.
 
 ---
 
 ## Related
 
 - `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` · `council/NOTE_GEMINI_DRY_RUN.md` · `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
-- `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `GATE4_DESIGN_SEALED.md` · `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE5_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md` · `GATE6_DESIGN_SEALED.md` · `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md`
+- `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · `GATE2_ENABLE_READY.md` · `GATE3_ENABLE_READY.md` · `GATE4_ENABLE_READY.md` · `GATE5_HEALTH_CHECK_EVIDENCE.md`
+- `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE5_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/LIVE_100_OPERATOR_WALL.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — discuss only; live=DISABLED; eval dry-run + peer wire + Gates 2–6 DESIGN_SEALED (Gate5=procedure; Gate6=metrics); next=operator ENABLE_UNDER_FENCES signature (draft UNSIGNED); canary NOT AUTHORIZED; no Mesh live enable.*
+*End GEMINI_FREE_NEXT_STEPS — ENABLE_UNDER_FENCES SIGNED; Gates 2–4 ENABLE_READY; LIVE_API_ENABLED=False; next=authorized impl CP then Gate5 canary; NO_HELD unchanged.*
