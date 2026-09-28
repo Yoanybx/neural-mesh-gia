@@ -24,7 +24,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`0af78c8` + Gate1 ACK **draft** (unsigned) + Gate2 live safety-case **amendment drafted as design** (not live proof; cannot seal) + Gate3 Authority Matrix **binding drafted as design** (cannot seal) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) + Gate6 acceptance-metrics **bundle drafted as design** (cannot seal) / CP-0074 posture.
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`2eca8aa` + Gate1 ACK **draft** (unsigned) + Gates **2–6 design drafts complete** (none sealed) + operator wall `LIVE_100_OPERATOR_WALL.md` / CP-0074 posture. **live=DISABLED.**
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -122,7 +122,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ tip ~0af78c8+Gate6 |
+| # | Gate | Blocks live+API? | Status @ tip ~2eca8aa+wall |
 |---|------|------------------|------------------------|
 | 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
 | 2 | Safety evidence (+ live amendment) | **Yes** | Amendment **drafted as design** (`GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`); still **Missing live proof**; **cannot seal** (Gate 1 unsigned) |
@@ -133,7 +133,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Missing for live+API = Gates **1–6** (signed ACK, live safety amendment **reviewed/sealed** + live proof, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). Gates **2–6** design drafts present; Gate1 unsigned → none of 1–6 sealed; no live proof / no canary. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
+**Bottom line:** Missing for live+API = Gates **1–6** sealed with live proof. **Designable drafts DONE** (Gates 2–6 + Gate1 draft + checklist + `LIVE_100_OPERATOR_WALL.md`). **Operator wall:** sign Gate1 · provision secret_handle outside repo · execute Gate5 canary · seal with live proof. Mesh **0.18 local/mock** ≠ live+API **100%**. live=DISABLED. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
 
 ---
 
@@ -150,6 +150,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 4. Related
 
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — DONE vs BLOCKED on operator; Mesh 0.18 local/mock vs live+API 100%
 - `council/NOTE_LIVE_READINESS.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `council/NOTE_GATE1_ACK_DRAFT.md`
 - `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · `council/NOTE_GATE2_SAFETY_AMENDMENT.md`
