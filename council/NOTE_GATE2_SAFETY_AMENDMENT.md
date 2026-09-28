@@ -1,48 +1,40 @@
-# Operator note — Gate 2 live safety-case amendment (design-only)
+# Operator note — Gate 2 live safety-case amendment
 
-- **Date:** 2026-09-28 America/New_York (EDT)
-- **Author:** Grok Bot (Staff Eng — docs only; not an unlock)
-- **Tip stack:** parent `45ccc16` (Gate 5 flip runbook) · Gate4 `8f2eea6` · Gate1 draft `0b6353c` (unsigned) · checklist `8c771a7`
+- **Date:** 2026-09-28 America/New_York (EDT) — refreshed at DESIGN_SEAL
+- **Author:** Grok Bot `<grok-bot@local>` (Staff Eng — docs only; not an unlock)
+- **Tip stack:** design seal atop peer wire `30fe593` · dry-run `1e502c6` · leave-Hold `fc4ef9e` · prior draft parent Gate5 `45ccc16`
 - **Package posture:** **0.18.0 HELD** · **live=DISABLED** · **M1=NO_CONSENSUS_YET** (N=2) · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED**
-- **Gate 1:** still **UNSIGNED** (`docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`)
+- **Gate 1:** **SIGNED DISCUSS_ONLY** (`docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md`)
+- **Gate 2 status:** **DESIGN_SEALED** (DISCUSS_ONLY / Gemini free eval) — `docs/planning/GATE2_DESIGN_SEALED.md`
 - **Planning doc:** `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`
 - **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md` Gate 2
-- **CP minted:** **No** (docs-only; no helpers/tests; no keys; no flip)
+- **CP minted:** **No** (docs-only; no flag flip)
 
-## Operator choice reflected
+## Operator / blueprint choice reflected
 
-Operator approved Gate 2 live safety-case **amendment** (design only — not live proof). **Do not** enable live · **do not** mint keys · **do not** call Gemini · **do not** start D3 · **do not** push/tag · **do not** mint CP.
+Serial step after Gemini dry-run peer wire: advance Gate2 live safety-case amendment toward seal. Honest outcome = **DESIGN_SEALED** for discuss/eval (not ENABLE). **Do not** enable live · **do not** mint keys into git · **do not** start D3 · **do not** push/tag · **do not** mint CP · **do not** invent ENABLE signature.
 
 ## What this is
 
-Design-only Gate 2 amendment covering: real transport blast radius; key compromise response; kill→RefuseTransport+ABORT; continuity under live peer failure; what D1 design proves vs what live still needs as evidence; RV-1..RV-7 drills still mock-green until live cycle; explicit NOT executed / not live proof. Cites D4-A..K, F4, RefuseTransport, I5 kill.
+Gate2 amendment covering: real transport blast radius; key compromise response; kill→RefuseTransport+ABORT; continuity under live peer failure; D1 vs live gaps; RV-1..RV-7 mock-green until live cycle. Now **bound** to dry-run evidence, peer wire, Authority Matrix, RefuseTransport, secret_handle.
 
 ## What this is not
 
-- **Not** a Gate 2 seal — Gate 1 unsigned → Gate 2 **cannot seal**
-- **Not** live proof — RV drills remain mock-green; no real transport exercised
+- **Not** an ENABLE seal — needs user-written **ENABLE_UNDER_FENCES** ACK + Mesh live proof
+- **Not** Gate5 canary / Mesh live adapter enable
 - **Does not** flip `live_adapter.enabled` / `LIVE_API_ENABLED`
-- **Does not** mint keys, call Gemini/providers, start D3, push, tag, or mint CP
-- Amendment **drafted as design**; live evidence **still Missing**
+- Eval dry-run ≠ live RV proof
 
 ## Posture reaffirm
 
-**live=DISABLED.** RefuseTransport default ON. No keys in repo. Gate 1 **UNSIGNED** → Gate 2 **cannot seal**. Gates **3–6** still open before any flip.
+**live=DISABLED.** RefuseTransport default ON. No keys in repo. Gate1 **SIGNED DISCUSS_ONLY**. Gate2 **DESIGN_SEALED** (discuss/eval). **Next: Gate 3** design seal. Gates **3–6** still open before any enable flip.
 
 ## Related
 
-- `docs/planning/LIVE_100_OPERATOR_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
-- Gate1 remains **UNSIGNED**; Gates 2–6 design drafts **cannot seal** under Hold
-
-- `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`
-- `docs/planning/LIVE_READINESS_CHECKLIST.md`
+- `docs/planning/GATE2_DESIGN_SEALED.md` · `council/NOTE_GATE2_DESIGN_SEALED.md`
+- `docs/planning/GEMINI_FREE_NEXT_STEPS.md` · `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
+- `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md` · `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`
+- `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071)
 - `council/COUNCIL_AGREEMENT_D4.md` (F4)
-- `council/D4_CHATGPT_FINDINGS.md`
-- `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`
-- `council/NOTE_GATE1_ACK_DRAFT.md`
-- `docs/planning/GATE4_LIVE_DATA_POLICY.md`
-- `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`
-- `council/NOTE_GATE5_FLIP_RUNBOOK.md`
-- `docs/design/L_JUDGE_LIVE_ADAPTER_SAFETY_CASE.md` (CP-0058)
 - `src/neural_mesh/packaging/l_judge_live_adapter_safety.py`

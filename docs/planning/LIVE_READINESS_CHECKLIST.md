@@ -4,10 +4,10 @@
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
 **Date:** 2026-09-28 America/New_York (EDT) — Gate1 SIGNED DISCUSS_ONLY (leave Hold)  
 **Operator decision:** Hold A **LEFT** 2026-09-28 — Gate1 **SIGNED DISCUSS_ONLY** (Gemini free-tier eval only); live still **DISABLED**; see `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md` · `docs/planning/GEMINI_FREE_NEXT_STEPS.md`  
-**Tip context:** leave-Hold atop HOLD_STAY ~`9348651` / wall / Gate6 `2eca8aa` / … / Gate1 draft `0b6353c` → **SIGNED** / checklist `8c771a7` / Google fenced `74ce42e` / **CP-0074** (`4b43bf4`)  
-**Wall:** `docs/planning/LIVE_100_OPERATOR_WALL.md` — Gate1 **SIGNED DISCUSS_ONLY**; Gates 2–6 design-only **cannot seal** for enable  
+**Tip context:** Gate2 DESIGN_SEALED atop peer wire `30fe593` / dry-run `1e502c6` / leave-Hold `fc4ef9e` / HOLD_STAY ~`9348651` / Gate1 **SIGNED DISCUSS_ONLY** / **CP-0074**  
+**Wall:** `docs/planning/LIVE_100_OPERATOR_WALL.md` — Gate1 **SIGNED DISCUSS_ONLY**; Gate2 **DESIGN_SEALED** (discuss/eval); Gates 3–6 **cannot seal for enable** yet  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
-**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_SAFETY_AMENDMENT.md` / `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
+**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects Gate1 **SIGNED DISCUSS_ONLY** + Gates **2–6 design drafts complete** (none sealed for enable) + operator wall `LIVE_100_OPERATOR_WALL.md` / leave-Hold note / CP-0074 posture. **live=DISABLED.**
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal for enable** until earlier gates are satisfied. Checkbox state today reflects Gate1 **SIGNED DISCUSS_ONLY** + Gate2 **DESIGN_SEALED** (discuss/eval) + Gates **3–6 design drafts** (none sealed for enable) + dry-run peer wire + CP-0074 posture. **live=DISABLED.**
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -44,11 +44,11 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Item | Rule | Today |
 |------|------|-------|
 | Safety-case maturation | D1 artifacts cite D4-A..K; fail-closed RefuseTransport; containment + rollback **verification** (RV-*) | **Design sealed** (CP-0071) — evidence exists as *design*, not as live proof |
-| Live amendment | Any live path needs safety-case **amendment** for real transport, keys, blast radius, compromise response | **Amendment drafted as design** — `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`; still **Missing live proof**; **cannot seal** |
+| Live amendment | Any live path needs safety-case **amendment** for real transport, keys, blast radius, compromise response | **DESIGN_SEALED** (DISCUSS_ONLY/eval) — `GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` + `GATE2_DESIGN_SEALED.md`; bound to `30fe593`/`1e502c6`, Authority Matrix, RefuseTransport, secret_handle; **Missing Mesh live proof**; ENABLE seal **OPEN** |
 | Kill path | I5 kill → RefuseTransport + continuity ABORT remains default until amended | Binding (amended wording in Gate2 doc §4; **not** live-armed) |
 
-**Exit:** Live-safety amendment reviewed; mock RV drills still green; no silent codec.  
-**Today:** amendment **drafted as design**; still **Missing live proof**; Gate 1 DISCUSS_ONLY ≠ enable → Gate 2 **OPEN / cannot seal**; RV drills mock-green only.
+**Exit (design/discuss):** Live-safety amendment reviewed; mock RV drills still green; no silent codec; Gate1 DISCUSS_ONLY signed.  
+**Today:** Gate2 **DESIGN_SEALED** for DISCUSS_ONLY/eval; ENABLE seal still needs operator **ENABLE_UNDER_FENCES** ACK + live proof; RV drills mock-green only; **live=DISABLED**.
 
 ### Gate 3 — Authority Matrix in use (D4-A)
 
@@ -59,7 +59,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Disagreement | Mesh ABORT > judge ACCEPT; I5 may stop post-advisory; no judge-over-judge override | Binding in design (+ Gate3 AM-NT-* intent) |
 
 **Exit:** Live cycle cites matrix IDs in config/policy version; no role invents execute authority.  
-**Today:** binding **drafted as design**; live ops **not** armed; Gate 2 cannot seal → Gate 3 **OPEN / cannot seal**.
+**Today:** binding **drafted as design**; live ops **not** armed; Gate2 design-sealed (discuss) → Gate 3 is **next** design seal; enable seal still **OPEN / cannot seal**.
 
 ### Gate 4 — Keys + data policy
 
@@ -125,18 +125,18 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ leave-Hold (Gate1 SIGNED DISCUSS_ONLY) |
+| # | Gate | Blocks live+API? | Status @ Gate2 DESIGN_SEALED (DISCUSS_ONLY/eval) |
 |---|------|------------------|--------------------------------------------------|
 | 1 | Operator ACK | **Yes** (enable) | **SIGNED DISCUSS_ONLY** — Gemini free eval (`GATE1_LIVE_OPERATOR_ACK_SIGNED.md`) |
-| 2 | Safety evidence (+ live amendment) | **Yes** | Amendment **drafted as design** (`GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`); still **Missing live proof**; **cannot seal** |
-| 3 | Authority Matrix in use | **Yes** | Binding **drafted as design** (`GATE3_AUTHORITY_MATRIX_BINDING.md`); live ops not armed; **cannot seal** |
+| 2 | Safety evidence (+ live amendment) | **Yes** (enable) | **DESIGN_SEALED** discuss/eval (`GATE2_DESIGN_SEALED.md`); ENABLE seal **OPEN**; Missing Mesh live proof |
+| 3 | Authority Matrix in use | **Yes** | Binding **drafted as design** (`GATE3_AUTHORITY_MATRIX_BINDING.md`); live ops not armed; **next design seal**; **cannot seal for enable** |
 | 4 | Keys + data policy | **Yes** | Schedule **drafted** (`GATE4_LIVE_DATA_POLICY.md`); no-keys / no-calls held; **cannot seal** |
 | 5 | RefuseTransport → live flag | **Yes** | Runbook **drafted** (`GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`); flip **not executed**; Refuse default ON; **cannot seal** |
 | 6 | Acceptance metrics / D4-K | **Yes** | Bundle **drafted as design** (`GATE6_LIVE_ACCEPTANCE_METRICS.md`); canary not executed; **cannot seal** |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED DISCUSS_ONLY** (reopen for discussion). Missing for live+API **enable** = Gates **2–6** sealed with live proof + secret_handle outside repo + Gate5 canary. See `docs/planning/GEMINI_FREE_NEXT_STEPS.md`. Mesh **0.18 local/mock** ≠ live+API **100%**. **live=DISABLED**. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
+**Bottom line:** Gate1 **SIGNED DISCUSS_ONLY**. Gate2 **DESIGN_SEALED** (discuss/eval). Missing for live+API **enable** = ENABLE_UNDER_FENCES operator ACK + Gates **2(enable)–6** with live proof + Gate5 canary. **Next design step: Gate 3.** See `docs/planning/GEMINI_FREE_NEXT_STEPS.md`. Mesh **0.18 local/mock** ≠ live+API **100%**. **live=DISABLED**. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
 
 ---
 
@@ -156,7 +156,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `docs/planning/LIVE_100_OPERATOR_WALL.md` — DONE vs BLOCKED on operator; Mesh 0.18 local/mock vs live+API 100%
 - `council/NOTE_LIVE_READINESS.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `GATE1_LIVE_OPERATOR_ACK_SIGNED.md` · `council/NOTE_GATE1_ACK_DRAFT.md` · `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md` · `docs/planning/GEMINI_FREE_NEXT_STEPS.md`
-- `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · `council/NOTE_GATE2_SAFETY_AMENDMENT.md`
+- `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · `GATE2_DESIGN_SEALED.md` · `council/NOTE_GATE2_SAFETY_AMENDMENT.md` · `council/NOTE_GATE2_DESIGN_SEALED.md`
 - `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md` · `council/NOTE_GATE3_AUTHORITY_MATRIX.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `council/NOTE_GATE4_DATA_POLICY.md`
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `council/NOTE_GATE5_FLIP_RUNBOOK.md`
