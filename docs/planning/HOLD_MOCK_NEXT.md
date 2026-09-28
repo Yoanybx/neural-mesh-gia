@@ -26,7 +26,7 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 |---|-------|--------|--------------|
 | 1 | **RefuseTransport negatives refresh** | Keep fail-closed paths green; optional extra envelope/edge cases if a gap appears | Live flag flip, real transport |
 | 2 | **Google mock peer correlation** ✅ **DONE** | Strengthen mock dual-advisory reports / abort provenance under live=DISABLED | Real Gemini, keys, Colab live |
-| 3 | **Mock multi-judge harness** | Local evaluation hygiene; disagreement → ABORT > ACCEPT | Claiming peer agree = M1 consensus |
+| 3 | **Mock multi-judge harness** ✅ **DONE** | Local evaluation hygiene; disagreement → ABORT > ACCEPT | Claiming peer agree = M1 consensus |
 | 4 | **Docs hygiene** | Cross-link wall / checklist / Gate1–6 drafts; keep “UNSIGNED / cannot seal” honest | Signing Gate1, inventing ACKs |
 | 5 | **RV / kill-path mock drills** | Re-run existing mock rollback / I5→Refuse drills if present | Arming live kill for canary |
 
@@ -41,6 +41,7 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 |-------|-------|------------|
 | 1 RefuseTransport negatives refresh | Verified green at Hold tip (no code delta required) | Tip `8d0951b`; safety + peer suite green |
 | 2 Google mock peer correlation | **DONE** @ `96daa25` | Dual-advisory fields + `abort_provenance` on disagreement (`PEER_DIGEST_DISAGREE`); RefuseTransport still default; **26 passed** peer+safety; no CP mint (Hold docs+helpers pattern) |
+| 3 Mock multi-judge harness | **DONE** (in tip) | Post-invoke digest hygiene + `abort_provenance`; disagreement → `SPIKE_JUDGE_DIGEST_DISAGREE` / `ROUTE_JUDGE_MISMATCH` with **ABORT > ACCEPT**; dual agree stays ADVISORY (`mesh_accept=False`, ≠ M1); no CP mint |
 
 ## Stop conditions (reassess with operator)
 

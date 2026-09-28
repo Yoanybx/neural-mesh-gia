@@ -5,6 +5,10 @@ CP-0062 agent_shell under M2 churn (DRAINING→LEFT→REJOIN). Exercises
 DUAL_ADVISORY, FALLBACK, ABORT_MISMATCH. Verifies receipt hash-chain,
 no double-invoke, attribution. Mock-only; live=DISABLED; M1=NO_CONSENSUS_YET
 (dual advisory ≠ consensus). No N>2, no Raft, no train, no GIA, no SaaS.
+
+Hold mock cycle 3: local dual-judge evaluation hygiene — disagreement →
+ABORT > ACCEPT (structured abort_provenance; mesh_accept never True from
+dual advisory, including when digests agree).
 """
 
 from __future__ import annotations
@@ -53,15 +57,19 @@ __all__ = [
     "M1_STATUS",
     "ABORT_CODES",
     "CHURN_SEQUENCE",
+    "ABORT_GT_ACCEPT_POLICY",
     "MockJudgmentEngine",
     "SpikeReceipt",
     "SpikeReport",
     "MultiJudgeAgentShellSpike",
     "two_judge_registry",
     "sample_spike_envelope",
+    "base_abort_provenance",
+    "evaluate_dual_digest_hygiene",
     "verify_spike_receipt_chain",
     "verify_no_double_invoke",
     "verify_attribution",
+    "verify_abort_gt_accept",
 ]
 
 PACKAGE_HELD = "0.18.0"
@@ -84,6 +92,7 @@ ABORT_CODES: tuple[str, ...] = (
     "SPIKE_N_GT2_REFUSED",
     "SPIKE_FENCE",
     "SPIKE_SCHEMA_INVALID",
+    "SPIKE_JUDGE_DIGEST_DISAGREE",
     "ROUTE_JUDGE_MISMATCH",
     "ROUTE_DUAL_UNDERPROVISIONED",
     "ROUTE_FALLBACK_EXHAUSTED",
@@ -94,6 +103,9 @@ ABORT_CODES: tuple[str, ...] = (
     "ROUTE_LIVE_DISABLED",
     "FENCE",
 )
+
+# Local evaluation hygiene: on dual-judge disagreement prefer ABORT over ACCEPT.
+ABORT_GT_ACCEPT_POLICY = "ABORT_GT_ACCEPT"
 
 # Canonical churn path exercised by this spike
 CHURN_SEQUENCE: tuple[MemberState, ...] = (
@@ -131,8 +143,10 @@ class MockJudgmentEngine:
         self.invoke_count += 1
         prompt_hash = _sha256(prompt_body)
         self.last_prompt_hash = prompt_hash
+        # Default digests agree on the same prompt (dual-advisory hygiene);
+        # forced_digest injects disagreement → ABORT > ACCEPT at post-invoke.
         digest = self.forced_digest or _sha256(
-            f"adv:{self.engine_id}:{prompt_body}:agree"
+            f"adv:{prompt_body}:agree"
         )
         self.last_response_digest = digest
         return {
@@ -170,6 +184,11 @@ class SpikeReceipt:
     m1_status: str = M1_STATUS
     dual_primary: int = 0
     live_api: bool = False
+    dual_advisory: bool = False
+    disagreement: bool = False
+    mesh_decision: str = "ADVISORY"  # ADVISORY | ABORT — never ACCEPT from dual judges
+    mesh_accept: bool = False
+    abort_provenance: dict[str, Any] = field(default_factory=dict)
     prev_receipt_hash: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -194,6 +213,11 @@ class SpikeReceipt:
             "m1_status": self.m1_status,
             "dual_primary": 0,
             "live_api": False,
+            "dual_advisory": self.dual_advisory,
+            "disagreement": self.disagreement,
+            "mesh_decision": self.mesh_decision,
+            "mesh_accept": False,
+            "abort_provenance": dict(self.abort_provenance),
             "prev_receipt_hash": self.prev_receipt_hash,
         }
 
@@ -216,6 +240,10 @@ class SpikeReport:
     shell_report: dict[str, Any] | None = None
     attributions: list[dict[str, Any]] = field(default_factory=list)
     double_invoke: bool = False
+    disagreement: bool = False
+    mesh_decision: str = "ADVISORY"
+    mesh_accept: bool = False
+    abort_provenance: dict[str, Any] = field(default_factory=dict)
 
 
 def two_judge_registry() -> JudgeCapabilitiesRegistry:
@@ -250,6 +278,58 @@ def two_judge_registry() -> JudgeCapabilitiesRegistry:
 
 def sample_spike_envelope(**kwargs: Any) -> RoutingEnvelope:
     return sample_envelope(**kwargs)
+
+
+def base_abort_provenance(**extra: Any) -> dict[str, Any]:
+    """Structured abort / dual-advisory provenance (mock; live=DISABLED)."""
+    base: dict[str, Any] = {
+        "live_api_enabled": False,
+        "mesh_accept": False,
+        "m1_status": M1_STATUS,
+        "advisory_only": True,
+        "dual_advisory": True,
+        "policy": ABORT_GT_ACCEPT_POLICY,
+    }
+    base.update(extra)
+    return base
+
+
+def evaluate_dual_digest_hygiene(
+    attributions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Local dual-judge hygiene: digest disagreement → ABORT Mesh ACCEPT.
+
+    Agreeing digests remain advisory-only (≠ M1 consensus). Never returns
+    mesh_accept=True. mesh_decision is ADVISORY or ABORT — never ACCEPT.
+    """
+    digests = [
+        a.get("response_digest")
+        for a in attributions
+        if a.get("response_digest") is not None
+    ]
+    unique = sorted(set(digests))
+    disagreement = len(unique) > 1
+    if disagreement:
+        mesh_decision = "ABORT"
+        claim = "disagreement_abort_gt_accept"
+        outcome = "DISAGREE_ABORT_MESH_ACCEPT"
+    else:
+        mesh_decision = "ADVISORY"
+        claim = "dual_advisory_agree_is_not_m1_consensus"
+        outcome = "AGREE_ADVISORY_ONLY"
+    return {
+        "disagreement": disagreement,
+        "digest_count": len(digests),
+        "unique_digest_count": len(unique),
+        "digests": unique,
+        "mesh_accept": False,
+        "mesh_decision": mesh_decision,
+        "m1_status": M1_STATUS,
+        "advisory_only": True,
+        "claim": claim,
+        "outcome": outcome,
+        "policy": ABORT_GT_ACCEPT_POLICY,
+    }
 
 
 @dataclass
@@ -365,6 +445,10 @@ class MultiJudgeAgentShellSpike:
         continuity_id: str | None = None,
         routing_receipt_id: str | None = None,
         shell_workload_id: str | None = None,
+        dual_advisory: bool = False,
+        disagreement: bool = False,
+        mesh_decision: str | None = None,
+        abort_provenance: dict[str, Any] | None = None,
     ) -> SpikeReceipt:
         counts = {eid: self.engines[eid].invoke_count for eid in self.engines}
         body = {
@@ -375,6 +459,35 @@ class MultiJudgeAgentShellSpike:
             "abort": abort_code,
         }
         rid = "spike:" + _digest16(body)
+        # Routing ALLOW is not Mesh ACCEPT; dual advisory never seals M1.
+        if mesh_decision is None:
+            if decision == "ABORT" or abort_code:
+                mesh_decision = "ABORT"
+            elif dual_advisory or (policy == RoutingPolicy.DUAL_JUDGE_ADVISORY.value):
+                mesh_decision = "ADVISORY"
+            else:
+                mesh_decision = "ADVISORY"
+        if mesh_decision == "ACCEPT":
+            # Hygiene guard: never emit Mesh ACCEPT from this mock harness.
+            mesh_decision = "ABORT"
+            abort_code = abort_code or "SPIKE_JUDGE_DIGEST_DISAGREE"
+            disagreement = True
+        ap = dict(abort_provenance or {})
+        if not ap:
+            ap = base_abort_provenance(
+                stage="spike_emit",
+                outcome=(
+                    "DISAGREE_ABORT_MESH_ACCEPT"
+                    if disagreement
+                    else ("ROUTE_ABORT" if decision == "ABORT" else "ADVISORY_ONLY")
+                ),
+                code=abort_code,
+                continue_advisory=bool(dual_advisory and not (
+                    abort_code in ("SPIKE_LIVE_DISABLED", "FENCE", "ROUTE_N_GT2_REFUSED")
+                )),
+                disagreement=disagreement,
+                mesh_decision=mesh_decision,
+            )
         rcpt = SpikeReceipt(
             receipt_id=rid,
             phase=phase,
@@ -394,6 +507,11 @@ class MultiJudgeAgentShellSpike:
             shell_workload_id=shell_workload_id,
             advisory_only=True,
             m1_status=M1_STATUS,
+            dual_advisory=dual_advisory,
+            disagreement=disagreement,
+            mesh_decision=mesh_decision,
+            mesh_accept=False,
+            abort_provenance=ap,
             prev_receipt_hash=self._prev_hash(),
         )
         self.spike_receipts.append(rcpt)
@@ -470,6 +588,14 @@ class MultiJudgeAgentShellSpike:
         also_shell: bool = False,
     ) -> SpikeReport:
         if LIVE_API_ENABLED or env.live_api_enabled:
+            ap = base_abort_provenance(
+                stage="live_gate",
+                outcome="LIVE_REFUSED",
+                code="SPIKE_LIVE_DISABLED",
+                continue_advisory=False,
+                requested_live=True,
+                mesh_decision="ABORT",
+            )
             rcpt = self._emit(
                 phase=phase,
                 decision="ABORT",
@@ -483,6 +609,8 @@ class MultiJudgeAgentShellSpike:
                 abort_reason="live path forbidden",
                 goal_id=env.goal_id,
                 continuity_id=env.continuity_id,
+                mesh_decision="ABORT",
+                abort_provenance=ap,
             )
             return SpikeReport(
                 ok=False,
@@ -490,6 +618,9 @@ class MultiJudgeAgentShellSpike:
                 decision="ABORT",
                 abort_code="SPIKE_LIVE_DISABLED",
                 receipt=rcpt,
+                mesh_decision="ABORT",
+                mesh_accept=False,
+                abort_provenance=ap,
             )
 
         decision = self.router.route(env)
@@ -498,6 +629,31 @@ class MultiJudgeAgentShellSpike:
         if not decision.allow:
             # Map membership aborts into spike-visible codes while preserving route code
             code = decision.abort_code
+            is_mismatch = code == "ROUTE_JUDGE_MISMATCH"
+            dualish = is_mismatch or (
+                decision.policy == RoutingPolicy.DUAL_JUDGE_ADVISORY
+                if decision.policy
+                else False
+            )
+            ap = base_abort_provenance(
+                stage="router_gate",
+                outcome=(
+                    "DISAGREE_ABORT_MESH_ACCEPT"
+                    if is_mismatch
+                    else "ROUTE_ABORT"
+                ),
+                code=code,
+                continue_advisory=is_mismatch,  # mismatch evidence recorded; no ACCEPT
+                disagreement=is_mismatch,
+                dual_advisory=bool(dualish),
+                mesh_decision="ABORT",
+                claim=(
+                    "disagreement_abort_gt_accept"
+                    if is_mismatch
+                    else "route_abort_no_mesh_accept"
+                ),
+                reason=decision.reason,
+            )
             rcpt = self._emit(
                 phase=phase,
                 decision="ABORT",
@@ -512,6 +668,10 @@ class MultiJudgeAgentShellSpike:
                 goal_id=env.goal_id,
                 continuity_id=env.continuity_id,
                 routing_receipt_id=routing_rid,
+                dual_advisory=bool(dualish),
+                disagreement=is_mismatch,
+                mesh_decision="ABORT",
+                abort_provenance=ap,
             )
             return SpikeReport(
                 ok=False,
@@ -520,6 +680,10 @@ class MultiJudgeAgentShellSpike:
                 abort_code=code,
                 receipt=rcpt,
                 routing=decision,
+                disagreement=is_mismatch,
+                mesh_decision="ABORT",
+                mesh_accept=False,
+                abort_provenance=ap,
             )
 
         attributions: list[dict[str, Any]] = []
@@ -532,6 +696,15 @@ class MultiJudgeAgentShellSpike:
             attributions, double, inv_abort = self._invoke_selected(decision, env)
             if double or inv_abort:
                 code = inv_abort or "SPIKE_DOUBLE_INVOKE"
+                ap = base_abort_provenance(
+                    stage="invoke_guard",
+                    outcome="INVOKE_GUARD_ABORT",
+                    code=code,
+                    continue_advisory=False,
+                    disagreement=False,
+                    mesh_decision="ABORT",
+                    double_invoke=bool(double),
+                )
                 rcpt = self._emit(
                     phase=phase,
                     decision="ABORT",
@@ -546,6 +719,9 @@ class MultiJudgeAgentShellSpike:
                     goal_id=env.goal_id,
                     continuity_id=env.continuity_id,
                     routing_receipt_id=routing_rid,
+                    dual_advisory=decision.policy == RoutingPolicy.DUAL_JUDGE_ADVISORY,
+                    mesh_decision="ABORT",
+                    abort_provenance=ap,
                 )
                 return SpikeReport(
                     ok=False,
@@ -556,7 +732,61 @@ class MultiJudgeAgentShellSpike:
                     routing=decision,
                     attributions=attributions,
                     double_invoke=double,
+                    mesh_decision="ABORT",
+                    mesh_accept=False,
+                    abort_provenance=ap,
                 )
+            # Post-invoke dual hygiene: disagreement → ABORT > ACCEPT
+            if (
+                decision.policy == RoutingPolicy.DUAL_JUDGE_ADVISORY
+                or len(decision.engine_ids) >= 2
+            ):
+                hygiene = evaluate_dual_digest_hygiene(attributions)
+                if hygiene["disagreement"]:
+                    code = "SPIKE_JUDGE_DIGEST_DISAGREE"
+                    ap = base_abort_provenance(
+                        stage="dual_digest_hygiene",
+                        outcome=hygiene["outcome"],
+                        code=code,
+                        continue_advisory=True,
+                        disagreement=True,
+                        mesh_decision="ABORT",
+                        claim=hygiene["claim"],
+                        digests=hygiene["digests"],
+                        engine_ids=list(decision.engine_ids),
+                    )
+                    rcpt = self._emit(
+                        phase=phase,
+                        decision="ABORT",
+                        policy=decision.policy.value,
+                        target=decision.target.value,
+                        engine_ids=list(decision.engine_ids),
+                        attributions=attributions,
+                        member_state=env.member_state.value,
+                        latency_band=env.latency_band.value,
+                        abort_code=code,
+                        abort_reason="dual judge digest disagreement; ABORT > ACCEPT",
+                        goal_id=env.goal_id,
+                        continuity_id=env.continuity_id,
+                        routing_receipt_id=routing_rid,
+                        dual_advisory=True,
+                        disagreement=True,
+                        mesh_decision="ABORT",
+                        abort_provenance=ap,
+                    )
+                    return SpikeReport(
+                        ok=False,
+                        phase=phase,
+                        decision="ABORT",
+                        abort_code=code,
+                        receipt=rcpt,
+                        routing=decision,
+                        attributions=attributions,
+                        disagreement=True,
+                        mesh_decision="ABORT",
+                        mesh_accept=False,
+                        abort_provenance=ap,
+                    )
 
         if decision.target == RoutingTarget.AGENT_SHELL or also_shell:
             wl = sample_workload(
@@ -570,6 +800,31 @@ class MultiJudgeAgentShellSpike:
                     wl["workload_id"], require_prior_dry_run=False
                 )
 
+        dual_adv = decision.policy == RoutingPolicy.DUAL_JUDGE_ADVISORY
+        hygiene = (
+            evaluate_dual_digest_hygiene(attributions)
+            if (dual_adv or len(attributions) >= 2)
+            else {
+                "disagreement": False,
+                "outcome": "AGREE_ADVISORY_ONLY",
+                "claim": "routing_allow_is_not_mesh_accept",
+                "digests": [],
+            }
+        )
+        # Routing ALLOW ≠ Mesh ACCEPT / M1; dual agree stays ADVISORY.
+        mesh_decision = "ADVISORY"
+        ap = base_abort_provenance(
+            stage="dual_digest_hygiene" if dual_adv else "route_allow",
+            outcome=hygiene["outcome"],
+            code=None,
+            continue_advisory=True,
+            disagreement=False,
+            mesh_decision=mesh_decision,
+            claim=hygiene["claim"],
+            digests=hygiene.get("digests", []),
+            engine_ids=list(decision.engine_ids),
+            dual_advisory=dual_adv,
+        )
         rcpt = self._emit(
             phase=phase,
             decision="ALLOW",
@@ -583,6 +838,10 @@ class MultiJudgeAgentShellSpike:
             continuity_id=env.continuity_id,
             routing_receipt_id=routing_rid,
             shell_workload_id=shell_wid,
+            dual_advisory=dual_adv,
+            disagreement=False,
+            mesh_decision=mesh_decision,
+            abort_provenance=ap,
         )
         return SpikeReport(
             ok=True,
@@ -593,6 +852,10 @@ class MultiJudgeAgentShellSpike:
             routing=decision,
             shell_report=shell_report,
             attributions=attributions,
+            disagreement=False,
+            mesh_decision=mesh_decision,
+            mesh_accept=False,
+            abort_provenance=ap,
         )
 
     def run_dual_advisory(
@@ -712,6 +975,14 @@ class MultiJudgeAgentShellSpike:
         # Second illicit invoke of same engine_ids
         attrs2, double2, abort2 = self._invoke_selected(decision, env)
         code = abort2 or ("SPIKE_DOUBLE_INVOKE" if double2 else None)
+        ap = base_abort_provenance(
+            stage="invoke_guard",
+            outcome="INVOKE_GUARD_ABORT",
+            code=code,
+            continue_advisory=False,
+            mesh_decision="ABORT",
+            double_invoke=True,
+        )
         rcpt = self._emit(
             phase="double_invoke_probe",
             decision="ABORT",
@@ -726,6 +997,8 @@ class MultiJudgeAgentShellSpike:
             goal_id=env.goal_id,
             continuity_id=env.continuity_id,
             routing_receipt_id=decision.receipt.receipt_id if decision.receipt else None,
+            mesh_decision="ABORT",
+            abort_provenance=ap,
         )
         return SpikeReport(
             ok=False,
@@ -736,6 +1009,9 @@ class MultiJudgeAgentShellSpike:
             routing=decision,
             attributions=attrs + attrs2,
             double_invoke=bool(double2),
+            mesh_decision="ABORT",
+            mesh_accept=False,
+            abort_provenance=ap,
         )
 
 
@@ -749,6 +1025,13 @@ def verify_spike_receipt_chain(receipts: list[SpikeReceipt]) -> bool:
         if r.m1_status != M1_STATUS:
             return False
         if not r.advisory_only:
+            return False
+        # Hold cycle 3 hygiene: never Mesh ACCEPT / M1 from dual-judge receipts
+        if r.mesh_accept is not False:
+            return False
+        if r.mesh_decision == "ACCEPT":
+            return False
+        if r.disagreement and r.mesh_decision != "ABORT":
             return False
         prev = r.content_hash()
     return True
@@ -801,7 +1084,43 @@ def verify_attribution(report: SpikeReport) -> bool:
             "SPIKE_MEMBER_NOT_ACTIVE",
             "SPIKE_N_GT2_REFUSED",
             "SPIKE_FENCE",
+            "SPIKE_JUDGE_DIGEST_DISAGREE",
+            "SPIKE_DOUBLE_INVOKE",
+            "SPIKE_MISSING_ATTRIBUTION",
         ):
             return True
     attributed = {a["engine_id"] for a in report.attributions}
     return set(report.routing.engine_ids) == attributed
+
+
+def verify_abort_gt_accept(report: SpikeReport) -> bool:
+    """True iff disagreement refuses Mesh ACCEPT (ABORT > ACCEPT hygiene)."""
+    if report.mesh_accept is not False:
+        return False
+    if report.mesh_decision == "ACCEPT":
+        return False
+    if report.receipt.mesh_accept is not False:
+        return False
+    if report.receipt.mesh_decision == "ACCEPT":
+        return False
+    if report.disagreement or report.receipt.disagreement:
+        if report.mesh_decision != "ABORT":
+            return False
+        if report.receipt.mesh_decision != "ABORT":
+            return False
+        code = report.abort_code or report.receipt.abort_code
+        if code not in ("ROUTE_JUDGE_MISMATCH", "SPIKE_JUDGE_DIGEST_DISAGREE"):
+            # disagreement must carry an abort code that refuses ACCEPT
+            return False
+        ap = report.abort_provenance or report.receipt.abort_provenance
+        if ap.get("policy") != ABORT_GT_ACCEPT_POLICY:
+            return False
+        if ap.get("mesh_accept") is not False:
+            return False
+    # Agreeing dual path: still never ACCEPT / M1
+    if report.receipt.dual_advisory and report.ok:
+        if report.mesh_decision != "ADVISORY":
+            return False
+        if report.receipt.m1_status != M1_STATUS:
+            return False
+    return True

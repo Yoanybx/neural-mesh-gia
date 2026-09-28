@@ -19,6 +19,7 @@ attribution; M1=NO_CONSENSUS_YET
 | Receipts | hash-chained spike receipts; attribution complete |
 | Neg tests | T-route-spike-a / T-route-spike-b / T-route-spike-c |
 | M1 orthogonal | NO_CONSENSUS_YET; dual ≠ consensus |
+| Hold cycle 3 hygiene | disagreement → ABORT > ACCEPT (`SPIKE_JUDGE_DIGEST_DISAGREE`); mesh_accept=False |
 | live | DISABLED (no keys, no WAN, no frontier) |
 | NO_HELD held | No Raft/N>2/multi-primary/GIA/train/SaaS |
 

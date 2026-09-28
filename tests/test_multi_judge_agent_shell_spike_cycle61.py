@@ -17,6 +17,7 @@ from neural_mesh.packaging.m2_membership_rejoin import MemberState, TrustTierNam
 from neural_mesh.packaging.m3_wan_model import LatencyBand
 from neural_mesh.packaging.multi_judge_agent_shell_spike import (
     ABORT_CODES,
+    ABORT_GT_ACCEPT_POLICY,
     CHURN_SEQUENCE,
     CYCLE,
     LIVE_API_ENABLED,
@@ -29,8 +30,11 @@ from neural_mesh.packaging.multi_judge_agent_shell_spike import (
     SCHEMA_SPIKE_RECEIPT,
     SEAL_CP,
     MultiJudgeAgentShellSpike,
+    base_abort_provenance,
+    evaluate_dual_digest_hygiene,
     sample_spike_envelope,
     two_judge_registry,
+    verify_abort_gt_accept,
     verify_attribution,
     verify_no_double_invoke,
     verify_spike_receipt_chain,
@@ -73,6 +77,8 @@ def test_version_and_constants():
     )
     assert "SPIKE_DOUBLE_INVOKE" in ABORT_CODES
     assert "ROUTE_JUDGE_MISMATCH" in ABORT_CODES
+    assert "SPIKE_JUDGE_DIGEST_DISAGREE" in ABORT_CODES
+    assert ABORT_GT_ACCEPT_POLICY == "ABORT_GT_ACCEPT"
 
 
 def test_design_and_capability():
@@ -113,6 +119,15 @@ def test_happy_dual_advisory_attribution():
     assert r.receipt.advisory_only is True
     assert r.receipt.live_api is False
     assert r.receipt.dual_primary == 0
+    assert r.receipt.dual_advisory is True
+    assert r.mesh_accept is False
+    assert r.mesh_decision == "ADVISORY"
+    assert r.mesh_decision != "ACCEPT"
+    assert r.disagreement is False
+    assert r.abort_provenance["policy"] == ABORT_GT_ACCEPT_POLICY
+    assert r.abort_provenance["claim"] == "dual_advisory_agree_is_not_m1_consensus"
+    assert r.abort_provenance["mesh_accept"] is False
+    assert verify_abort_gt_accept(r)
 
 
 def test_happy_fallback_and_shell():
@@ -162,6 +177,13 @@ def test_t_route_spike_b_mismatch_double_invoke():
     assert mis.abort_code == "ROUTE_JUDGE_MISMATCH"
     # no attributions on mismatch (aborted before invoke)
     assert mis.attributions == []
+    assert mis.disagreement is True
+    assert mis.mesh_decision == "ABORT"
+    assert mis.mesh_accept is False
+    assert mis.abort_provenance["outcome"] == "DISAGREE_ABORT_MESH_ACCEPT"
+    assert mis.abort_provenance["policy"] == ABORT_GT_ACCEPT_POLICY
+    assert mis.abort_provenance["claim"] == "disagreement_abort_gt_accept"
+    assert verify_abort_gt_accept(mis)
 
     s2 = MultiJudgeAgentShellSpike()
     s2.bring_active()
@@ -290,3 +312,67 @@ def test_sample_envelope_helper():
         latency_band=LatencyBand.RTT_lo,
     )
     assert env.member_state == MemberState.ACTIVE
+
+def test_hold_cycle3_abort_gt_accept_hygiene():
+    """Hold mock cycle 3: post-invoke digest disagreement → ABORT > ACCEPT."""
+    assert ABORT_GT_ACCEPT_POLICY == "ABORT_GT_ACCEPT"
+    hy_agree = evaluate_dual_digest_hygiene(
+        [{"response_digest": "sha256:same"}, {"response_digest": "sha256:same"}]
+    )
+    assert hy_agree["disagreement"] is False
+    assert hy_agree["mesh_decision"] == "ADVISORY"
+    assert hy_agree["mesh_accept"] is False
+    assert hy_agree["claim"] == "dual_advisory_agree_is_not_m1_consensus"
+
+    hy_bad = evaluate_dual_digest_hygiene(
+        [{"response_digest": "sha256:aaa"}, {"response_digest": "sha256:bbb"}]
+    )
+    assert hy_bad["disagreement"] is True
+    assert hy_bad["mesh_decision"] == "ABORT"
+    assert hy_bad["mesh_accept"] is False
+    assert hy_bad["outcome"] == "DISAGREE_ABORT_MESH_ACCEPT"
+
+    ap = base_abort_provenance(stage="unit", code="SPIKE_JUDGE_DIGEST_DISAGREE")
+    assert ap["policy"] == ABORT_GT_ACCEPT_POLICY
+    assert ap["mesh_accept"] is False
+    assert ap["m1_status"] == M1_STATUS
+
+    s = MultiJudgeAgentShellSpike()
+    s.bring_active()
+    s.engines["judge:mock-a"].forced_digest = "sha256:" + "c" * 64
+    s.engines["judge:mock-b"].forced_digest = "sha256:" + "d" * 64
+    r = s.run_dual_advisory(mismatch=False)
+    assert r.ok is False
+    assert r.abort_code == "SPIKE_JUDGE_DIGEST_DISAGREE"
+    assert r.disagreement is True
+    assert r.mesh_decision == "ABORT"
+    assert r.mesh_accept is False
+    assert r.mesh_decision != "ACCEPT"
+    assert len(r.attributions) == 2  # evidence retained; ACCEPT refused
+    assert r.abort_provenance["stage"] == "dual_digest_hygiene"
+    assert r.abort_provenance["policy"] == ABORT_GT_ACCEPT_POLICY
+    assert r.abort_provenance["continue_advisory"] is True
+    assert r.receipt.m1_status == M1_STATUS
+    assert r.receipt.dual_advisory is True
+    assert verify_abort_gt_accept(r)
+    assert verify_spike_receipt_chain(s.spike_receipts)
+    d = r.receipt.to_dict()
+    assert d["mesh_accept"] is False
+    assert d["mesh_decision"] == "ABORT"
+    assert d["disagreement"] is True
+    assert "ACCEPT" not in (d["mesh_decision"], d["abort"]["code"] or "")
+
+
+def test_hold_cycle3_agree_never_mesh_accept_or_m1():
+    """Agreeing dual advisory stays ADVISORY; peer agree ≠ M1 consensus."""
+    s = MultiJudgeAgentShellSpike()
+    s.bring_active()
+    r = s.run_dual_advisory()
+    assert r.ok is True
+    assert r.decision == "ALLOW"  # routing allow
+    assert r.mesh_decision == "ADVISORY"  # not Mesh ACCEPT
+    assert r.mesh_accept is False
+    assert r.receipt.m1_status == M1_STATUS
+    assert all(a["m1_consensus"] is False for a in r.attributions)
+    assert verify_abort_gt_accept(r)
+

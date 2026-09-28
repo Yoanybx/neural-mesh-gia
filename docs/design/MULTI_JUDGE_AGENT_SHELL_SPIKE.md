@@ -10,6 +10,8 @@ two mock judgment engines · M2 MembershipSM churn (CP-0059)
 **Non-claim:** No live LLM · no N>2 · no Raft · no train · no GIA · no SaaS.
 M1 = **NO_CONSENSUS_YET** (dual advisory ≠ consensus protocol).
 
+**Hold mock cycle 3 (local hygiene):** disagreement → **ABORT > ACCEPT**. Post-invoke dual digests that diverge emit `SPIKE_JUDGE_DIGEST_DISAGREE` with `abort_provenance.policy=ABORT_GT_ACCEPT`; agreeing dual paths stay `mesh_decision=ADVISORY` / `mesh_accept=False` (routing ALLOW ≠ Mesh ACCEPT ≠ M1).
+
 ---
 
 ## 1. Intent
