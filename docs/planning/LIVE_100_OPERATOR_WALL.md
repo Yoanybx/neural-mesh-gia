@@ -1,14 +1,29 @@
 # Live 100% — Operator wall status pack (DESIGN ONLY)
 
-**Status:** **DESIGN ONLY** — operator-facing wall between **design-complete** gates and **operator-blocked** live seal.  
+**Status:** **DESIGN ONLY** + **OPERATOR HOLD (A)** 2026-09-28 — wall stands; live track **frozen**; next = mock/local only.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag · **does not** mint a CP · **does not** fake Gate1 signature · **does not** execute Gate5 canary.  
 **Date:** 2026-09-28 America/New_York (EDT)  
 **Author:** Grok Bot (Staff Eng — docs only)  
 **Tip at draft:** `2eca8aa` (Gate 6 acceptance metrics) atop Gate3 `0af78c8` / Gate2 `001211b` / Gate5 `45ccc16` / Gate4 `8f2eea6` / Gate1 `0b6353c` / checklist `8c771a7`  
-**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **Gate 1 UNSIGNED**
+**Package posture:** **0.18.0 HELD** · **OPERATOR HOLD (A)** · **live=DISABLED (live track FROZEN)** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **Gate 1 UNSIGNED**
 
 **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md`  
 **Council notes:** Gate1–6 `council/NOTE_GATE*.md` · `council/NOTE_LIVE_READINESS.md`
+
+---
+
+## Operator decision — HOLD (2026-09-28)
+
+| Field | Value |
+|-------|-------|
+| **Decision** | **A — HOLD** |
+| **Authority** | Operator directed continue-as-Grok-decides; safer default on council split |
+| **Split cite** | Tip `98e5752` — DeepSeek **B** (Sign Gate1 DISCUSS_ONLY) vs ChatGPT **A** (HOLD); no fake consensus |
+| **Seal note** | `council/NOTE_OPERATOR_HOLD_POST_WALL.md` |
+| **Live track** | **FROZEN** — `live=DISABLED`; Gate1 remains **UNSIGNED**; no keys; no Gemini; no D3; no push/tags; no CP |
+| **Allowed next** | Mock / local only — see `docs/planning/HOLD_MOCK_NEXT.md` |
+
+**Tip note:** Operator decision **HOLD** 2026-09-28 (EDT) atop wall pack / split `98e5752`.
 
 ---
 
@@ -94,6 +109,7 @@ Until the four blockers clear: **live=DISABLED** remains binding; RefuseTranspor
 ## 6. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` … `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 - `council/NOTE_GATE1_ACK_DRAFT.md` … `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`
 - `council/NOTE_LIVE_READINESS.md`
@@ -103,4 +119,4 @@ Until the four blockers clear: **live=DISABLED** remains binding; RefuseTranspor
 
 ---
 
-*End LIVE_100_OPERATOR_WALL — DESIGN ONLY; live=DISABLED; Gate1 UNSIGNED; Mesh 0.18 local/mock ≠ live+API 100%.*
+*End LIVE_100_OPERATOR_WALL — DESIGN ONLY; OPERATOR HOLD (A) 2026-09-28; live track FROZEN; live=DISABLED; Gate1 UNSIGNED; Mesh 0.18 local/mock ≠ live+API 100%.*

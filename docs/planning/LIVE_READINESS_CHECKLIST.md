@@ -3,6 +3,7 @@
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
 **Date:** 2026-09-28 America/New_York (EDT) — Gate2 amendment draft refresh  
+**Operator decision:** **HOLD (A)** 2026-09-28 — tip note after wall split `98e5752`; live track frozen; see `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md`
 **Tip context:** Gate2 safety-case amendment draft atop Gate5 ~`45ccc16` / Gate4 ~`8f2eea6` / Gate1 ACK draft ~`0b6353c` / checklist ~`8c771a7` / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
 **Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_SAFETY_AMENDMENT.md` / `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
@@ -162,7 +163,8 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071)
 - `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` (CP-0074)
-- `council/NOTE_OPERATOR_HOLD_POST_D2.md` · `council/NOTE_M1_NO_CONSENSUS_N2_SCOPE.md`
+- `council/NOTE_OPERATOR_HOLD_POST_D2.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_M1_NO_CONSENSUS_N2_SCOPE.md`
+- `docs/planning/HOLD_MOCK_NEXT.md` — mock-only cycles under Hold
 - `src/neural_mesh/packaging/l_judge_live_adapter_safety.py` (`RefuseTransport`)
 
 ---
