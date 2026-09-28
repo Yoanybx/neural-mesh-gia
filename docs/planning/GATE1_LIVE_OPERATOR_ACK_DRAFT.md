@@ -1,17 +1,20 @@
-# Gate 1 — Live operator ACK (DRAFT)
+# Gate 1 — Live operator ACK — **SIGNED DISCUSS_ONLY**
 
-**Status:** **DRAFT — NOT SIGNED**  
-**Effect:** This artifact is a **fillable / signable draft** for the operator (Joan / Yoan).  
+**Status:** **SIGNED — DISCUSS_ONLY** (not enable)  
+**Filename note:** Path keeps `_DRAFT` for history; content is the signed ACK. Canonical signed copy also at `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md`.  
+**Effect:** Opens live *discussion* under named fences (Gemini free-tier eval only).  
 **It does NOT** enable live · **does NOT** flip `live_adapter.enabled` / `LIVE_API_ENABLED` · **does NOT** mint keys · **does NOT** authorize real provider calls · **does NOT** start D3 · **does NOT** push/tag · **does NOT** mint a CP.
 
 **Date drafted:** 2026-09-27 America/New_York (EDT)  
-**Author (draft only):** Grok Bot (Staff Eng — docs only)  
-**Tip at draft:** `8c771a7` (Design-only: live readiness checklist) atop Google fenced spike / CP-0074  
-**Package posture:** **0.18.0 HELD** · **OPERATOR HOLD (A)** · **live=DISABLED (live track FROZEN)** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **UNSIGNED**
-**Hold hygiene:** wall `docs/planning/LIVE_100_OPERATOR_WALL.md` · checklist `docs/planning/LIVE_READINESS_CHECKLIST.md` — this draft **cannot seal** live; signature block remains empty
+**Date signed:** 2026-09-28 America/New_York (EDT)  
+**Author (draft):** Grok Bot (Staff Eng — docs only)  
+**Operator ACK:** Joan Alberto Barrios Cruz / Yoan V (operator ACK in chat 2026-09-28) — leave Hold; sign Gate1 **DISCUSS_ONLY**  
+**Tip at sign:** ~`9348651` (HOLD_STAY locked)  
+**Package posture:** **0.18.0 HELD** · **Hold A LEFT** (operator override 2026-09-28) · **live=DISABLED** (flags held false) · **Gate1 SIGNED DISCUSS_ONLY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED**  
+**Hold hygiene:** wall `docs/planning/LIVE_100_OPERATOR_WALL.md` · checklist `docs/planning/LIVE_READINESS_CHECKLIST.md` · leave-Hold note `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`
 
 **Checklist / Gate 1 exit:** `docs/planning/LIVE_READINESS_CHECKLIST.md` § Gate 1 — Operator ACK  
-**Council note:** `council/NOTE_GATE1_ACK_DRAFT.md`
+**Council notes:** `council/NOTE_GATE1_ACK_DRAFT.md` · `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`
 
 ---
 
@@ -19,12 +22,12 @@
 
 | Is | Is not |
 |----|--------|
-| Fillable Gate 1 draft the operator may edit and later **ACK** | A signed ACK today |
-| Record of intent to *discuss* or (later) *enable under fences* | An automatic `enabled=true` flip |
-| Scope string the operator must fill before any signature has force | Permission to ship keys, network transports, or real Gemini traffic |
+| **Signed** Gate 1 ACK with intent **DISCUSS_ONLY** | An enable / `enabled=true` flip |
+| Record of intent to *discuss* Gemini free-tier eval under fences | Permission to ship keys, network transports, or real Gemini traffic |
+| Scope string filled for Gemini free-tier eval only; Vertex paid **OUT** | Authorization for Gates 2–5 seal or Gate5 canary |
 | Compatible with continuing local mock / RefuseTransport work | A claim that D1/D2 sealed or Google tools APPROVE_WITH_FENCES = live-ready |
 
-**Invariant (D4 F3/F4):** flipping live requires a **separate cycle** + **this ACK (signed)** + **safety-case amendment** + Gates **2–5** (and 6 acceptance bundle). This draft alone does **not** pre-authorize that flip.
+**Invariant (D4 F3/F4):** flipping live requires a **separate cycle** + **this ACK (signed)** + **safety-case amendment** + Gates **2–5** (and 6 acceptance bundle). This ACK alone does **not** authorize that flip. Intent = **DISCUSS_ONLY**.
 
 ---
 
@@ -40,63 +43,62 @@ The following **do NOT count** as this Gate 1 ACK and **must not** be cited as s
 | Google / L_judge **mock** peer spike | Mock / RefuseTransport only; no keys; no live |
 | Live readiness checklist itself | Ordered gates design; not an unlock |
 | Any council cycle ACK / DeepSeek PASS / ChatGPT verdict | Governance alignment ≠ live operator ACK (CG1 / CG3) |
+| Prior **HOLD_STAY** council consensus | Superseded for *discussion reopen* by this operator override; does **not** substitute for this ACK |
 
 **Operator checkbox (required when signing):**  
-- [ ] I confirm none of the above substitute for this Gate 1 ACK.
+- [x] I confirm none of the above substitute for this Gate 1 ACK.
 
 ---
 
-## 2. Scope string (operator must fill / confirm)
-
-Leave blanks until the operator fills them. Unsigned blanks = **no force**.
+## 2. Scope string (operator filled / confirmed)
 
 ### 2.1 Provider(s)
 
 | Field | Operator fill |
 |-------|---------------|
-| Provider class | `[ ] Gemini free-tier eval only` · `[ ] none (discuss fences only)` · `[ ] other: _______________` |
-| Paid / Vertex | **Default OUT** — requires separate approval beyond this ACK: `[ ] still OUT` · `[ ] separate approval filed: _______________` |
-| Role of provider output | Evidence / evaluation input only — **not** Mesh SoT, consensus, or execution authority: `[ ] confirmed` |
+| Provider class | `[x] Gemini free-tier eval only` · `[ ] none (discuss fences only)` · `[ ] other: _______________` |
+| Paid / Vertex | **OUT** — `[x] still OUT` · `[ ] separate approval filed: _______________` |
+| Role of provider output | Evidence / evaluation input only — **not** Mesh SoT, consensus, or execution authority: `[x] confirmed` |
 
 ### 2.2 Environment
 
 | Field | Operator fill |
 |-------|---------------|
-| Environment | `[ ] local box / mock only` · `[ ] other (name): _______________` |
-| Network egress for live peer | `[ ] none (discuss only)` · `[ ] canary under kill-armed I5 (after Gates 2–5)` · `[ ] forbidden until filled` |
-| Config flags today | `live_adapter.enabled=false` · `LIVE_API_ENABLED=false` · RefuseTransport default **ON** — `[ ] confirmed held` |
+| Environment | `[x] local box / discuss` · `[ ] other (name): _______________` |
+| Network egress for live peer | `[x] none (discuss only)` · `[ ] canary under kill-armed I5 (after Gates 2–5)` · `[ ] forbidden until filled` — **none until Gates 2–5** |
+| Config flags today | `live_adapter.enabled=false` · `LIVE_API_ENABLED=false` · RefuseTransport default **ON** — `[x] confirmed held` |
 
 ### 2.3 Data classes allowed to leave the box
 
 | Class | Allowed? (operator) | Notes |
 |-------|---------------------|-------|
-| Redacted / synthetic prompts for eval | `[ ] Y / [ ] N` | |
-| Digests / evidence refs (no secrets) | `[ ] Y / [ ] N` | |
-| Operational Mesh SoT / continuity plaintext | **Default N** — `[ ] N held` | Forbidden unless separate schedule |
-| Raw secrets / API keys / Bearer / `sk-` | **Default N** — `[ ] N held` | Never in repo; secret_handle only |
-| Unverified continuity / orphan state | **Default N** — `[ ] N held` | |
+| Redacted / synthetic prompts for eval | `[x] Y` | Discuss/design only; no real call in this commit |
+| Digests / evidence refs (no secrets) | `[x] Y` | |
+| Operational Mesh SoT / continuity plaintext | **N held** — `[x] N held` | Forbidden unless separate schedule |
+| Raw secrets / API keys / Bearer / `sk-` | **N held** — `[x] N held` | Never in repo; secret_handle only (Gate4, outside repo) |
+| Unverified continuity / orphan state | **N held** — `[x] N held` | |
 
-**Live data schedule:** `[ ] not yet` · `[ ] attached at: _______________` (Gate 4 still required before any real call)
+**Live data schedule:** `[x] not yet` · `[ ] attached at: _______________` (Gate 4 still required before any real call)
 
 ### 2.4 Kill authority (I5)
 
 | Field | Operator fill / confirm |
 |-------|-------------------------|
 | Kill path | I5 kill → RefuseTransport + continuity **ABORT** + emergency `enabled=false` |
-| Kill armed before any canary | `[ ] confirmed` (required for any ENABLE_UNDER_FENCES intent) |
+| Kill armed before any canary | `[x] confirmed` (I5 confirmed; canary still Gates 2–5 later — not this ACK) |
 | Authority cite | D1 §3 Authority Matrix · D1 §6 Oversight I5 · D4-A / D4-D |
 
 ### 2.5 Rollback owner
 
 | Field | Operator fill |
 |-------|---------------|
-| Rollback owner | `[ ] Operator (Yoan / Joan)` · `[ ] I5 + Operator quorum (A4)` · `[ ] name: _______________` |
-| Verification | RV-1..RV-7 required post-rollback (D1 §8.4) — `[ ] confirmed` |
-| Scope | Policy/goal version supersede; in-flight ABORT; audit history append-only — `[ ] confirmed` |
+| Rollback owner | `[x] Operator (Yoan / Joan)` · `[ ] I5 + Operator quorum (A4)` · `[ ] name: _______________` |
+| Verification | RV-1..RV-7 required post-rollback (D1 §8.4) — `[x] confirmed` |
+| Scope | Policy/goal version supersede; in-flight ABORT; audit history append-only — `[x] confirmed` |
 
 ### 2.6 Explicitly OUT of scope (this ACK)
 
-Signing this ACK (when signed) **does not** authorize any of the following. Operator must leave these **OUT**:
+Signing this ACK **does not** authorize any of the following. Operator leaves these **OUT**:
 
 | Out of scope | Status |
 |--------------|--------|
@@ -109,9 +111,10 @@ Signing this ACK (when signed) **does not** authorize any of the following. Oper
 | `live=ENABLED` / mesh live adapter flip **without Gates 2–5** (+ Gate 6 bundle) | **OUT** |
 | Keys in repo / CI / evidence digests | **OUT** |
 | Claiming Gemini/mock dual agree = M1 consensus | **OUT** |
+| Real API calls in this commit / until Gates 2–5 | **OUT** |
 
 **Operator checkbox:**  
-- [ ] I confirm all rows above remain OUT under this ACK.
+- [x] I confirm all rows above remain OUT under this ACK.
 
 ---
 
@@ -130,14 +133,14 @@ Disagreement: Mesh ABORT > judge ACCEPT; I5 may stop post-advisory; no judge-ove
 
 ---
 
-## 4. Intent (pick one when signing)
+## 4. Intent (selected)
 
 | Intent code | Meaning | Still requires Gates 2–5 before any flag flip? |
 |-------------|---------|--------------------------------------------------|
 | **DISCUSS_ONLY** | Open live *discussion* under named fences; no enable | **Yes** (discussion ≠ enable) |
 | **ENABLE_UNDER_FENCES** | Intent to enable later under this scope + Gates 2–5 + safety amendment | **Yes** — this ACK alone never flips flags |
 
-**Selected intent (operator):** `[ ] DISCUSS_ONLY` · `[ ] ENABLE_UNDER_FENCES` · `[ ] unsigned / none`
+**Selected intent (operator):** `[x] DISCUSS_ONLY` · `[ ] ENABLE_UNDER_FENCES` · `[ ] unsigned / none`
 
 ---
 
@@ -152,32 +155,37 @@ Before any `live_adapter.enabled` / `LIVE_API_ENABLED` flip:
 - [ ] **Gate 6** (acceptance bundle) attached to the live cycle  
 
 **Operator checkbox (required on signature):**  
-- [ ] I understand Gates **2–5** (and Gate 6 bundle) remain required; signing this draft does **not** flip live.
+- [x] I understand Gates **2–5** (and Gate 6 bundle) remain required; signing this draft does **not** flip live.
 
 ---
 
-## 6. Signature block (UNSIGNED until operator fills)
+## 6. Signature block — **ACK DISCUSS_ONLY**
 
 | Field | Value |
 |-------|-------|
-| **Operator name** | _________________________________ (Joan / Yoan) |
-| **Date** | _______________ America/New_York |
-| **Intent** | `[ ] DISCUSS_ONLY` · `[ ] ENABLE_UNDER_FENCES` |
-| **Scope string complete** | `[ ] Yes — §§2.1–2.6 filled` |
-| **Non-implication confirmed** | `[ ] §1 checkbox` |
-| **OUT-of-scope confirmed** | `[ ] §2.6 checkbox` |
-| **Gates 2–5 still required** | `[ ] §5 checkbox` |
-| **Signature / ACK mark** | _________________________________ |
+| **Operator name** | Joan Alberto Barrios Cruz / Yoan V |
+| **Date** | 2026-09-28 America/New_York (EDT) |
+| **Intent** | `[x] DISCUSS_ONLY` · `[ ] ENABLE_UNDER_FENCES` |
+| **Scope string complete** | `[x] Yes — §§2.1–2.6 filled` |
+| **Non-implication confirmed** | `[x] §1 checkbox` |
+| **OUT-of-scope confirmed** | `[x] §2.6 checkbox` |
+| **Gates 2–5 still required** | `[x] §5 checkbox` |
+| **Signature / ACK mark** | **ACK DISCUSS_ONLY** — operator YES in chat 2026-09-28 (leave Hold; Gemini free-tier eval only; no live enable) |
 
-**Until this block is filled and marked ACK by the operator, status remains: DRAFT — NOT SIGNED.**  
-**Posture held:** **live=DISABLED**.
+**Status:** **SIGNED — DISCUSS_ONLY.**  
+**Posture held:** **live=DISABLED** (flags `live=false` held; network egress none until Gates 2–5; no keys in repo; no real API calls in this commit).
 
 ---
 
 ## 7. Related
 
+- `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md` (signed copy)
+- `docs/planning/GEMINI_FREE_NEXT_STEPS.md`
+- `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md` (Gate 1 exit)
-- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
+- `council/COUNCIL_AGREEMENT_HOLD_STAY.md` (prior; operator superseded for discussion reopen)
 - `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE1_ACK_DRAFT.md`
 - `council/NOTE_LIVE_READINESS.md`
@@ -189,4 +197,4 @@ Before any `live_adapter.enabled` / `LIVE_API_ENABLED` flip:
 
 ---
 
-*End GATE1_LIVE_OPERATOR_ACK_DRAFT — DRAFT NOT SIGNED; not an unlock; live=DISABLED.*
+*End GATE1_LIVE_OPERATOR_ACK — SIGNED DISCUSS_ONLY; not an unlock; live=DISABLED.*
