@@ -1,14 +1,17 @@
-# Gate 3 — Authority Matrix config/ops binding (DESIGN ONLY)
+# Gate 3 — Authority Matrix config/ops binding
 
-**Status:** **DESIGN ONLY** — does **not** enable live · **does not** mint or store keys · **does not** authorize real Gemini/provider calls · **does not** start D3 · **does not** push/tag · **does not** mint a CP · **does not** invent execute authority for any role.  
+**Status:** **DESIGN_SEALED** for Gate1 **DISCUSS_ONLY** / Gemini **free-tier eval** path — see `docs/planning/GATE3_DESIGN_SEALED.md`  
+**Not:** ENABLE seal · **not** `live=ENABLED` · **not** Mesh live adapter on · **not** matrix in use on live-armed production config · **does not** mint/store keys · **does not** invent execute authority for any role · **does not** invent operator ENABLE_UNDER_FENCES signature  
 **Date drafted:** 2026-09-28 America/New_York (EDT)  
-**Author (draft only):** Grok Bot (Staff Eng — docs only)  
-**Tip at draft:** `001211b` (Gate 2 safety-case amendment) atop Gate5 `45ccc16` / Gate4 `8f2eea6` / Gate1 draft `0b6353c` / checklist `8c771a7`  
-**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **Gate 1 UNSIGNED** · Gates **1–2 / 4–6 not sealed**
+**Date design-sealed (discuss/eval):** 2026-09-28 ~18:45 EDT  
+**Author (docs):** Grok Bot `<grok-bot@local>` — design seal only  
+**Tip at seal base:** `7c436f8` (Gate2 DESIGN_SEALED) atop peer wire `30fe593` / evidence `1e502c6` / leave-Hold `fc4ef9e`  
+**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **LIVE_API_ENABLED=False** · **RefuseTransport default ON** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD · Gate1 **SIGNED DISCUSS_ONLY** · Gate2 **DESIGN_SEALED** (discuss/eval)
 
 **Checklist / Gate 3 exit:** `docs/planning/LIVE_READINESS_CHECKLIST.md` § Gate 3 — Authority Matrix in use (D4-A)  
-**Council note:** `council/NOTE_GATE3_AUTHORITY_MATRIX.md`  
-**Upstream:** D1 §3 Authority Matrix (`docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md`) · D4-A · Gate1 ACK draft §3 · Gate2 amendment §1 · Gate4 data policy · Gate5 flip step (3)
+**Seal artifact:** `docs/planning/GATE3_DESIGN_SEALED.md`  
+**Council note:** `council/NOTE_GATE3_AUTHORITY_MATRIX.md` · `council/NOTE_GATE3_DESIGN_SEALED.md`  
+**Upstream:** D1 §3 Authority Matrix (`docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md`) · D4-A · Gate1 ACK **SIGNED DISCUSS_ONLY** · Gate2 DESIGN_SEALED · Gate4 data policy · Gate5 flip step (3)
 
 ---
 
@@ -16,14 +19,14 @@
 
 | Is | Is not |
 |----|--------|
-| **Config/ops binding design** that makes D1 §3 Authority Matrix **referenceable** in runtime/adapter config + ops runbooks (propose / approve / veto / execute) | Permission to flip live, ship keys, or call providers |
-| Answer to Gate 3 “In use” row — matrix not prose-only | A Gate 3 **seal** (Gate 1 unsigned → Gate 3 **cannot seal**) |
-| Compatible with mock / RefuseTransport / Google free-tier *design* dry-run | An unlock, ACK substitute, or `live=ENABLED` flip |
-| Explicit **design binding draft** — no role invents execute authority | A claim that drafting this binding completes Gate 3 exit |
+| **Config/ops binding** that makes D1 §3 Authority Matrix **referenceable** in runtime/adapter config + ops runbooks (propose / approve / veto / execute) | Permission to flip live, ship keys, or call providers as Mesh live |
+| **DESIGN_SEALED** for DISCUSS_ONLY / Gemini free **eval** (dry-run peer + secret_handle + RefuseTransport cite) | An ENABLE seal or “matrix in use” on live-armed config |
+| Compatible with mock / RefuseTransport / Google free-tier **eval dry-run** (bound) | An unlock, ACK substitute, or `live=ENABLED` flip |
+| Explicit binding — no role invents execute authority | A claim that design seal = live proof |
 
-**Invariant:** This document may be drafted while earlier gates are open. **Sealing** Gate 3 still requires Gates **1–2** satisfied first (serial). Today Gate 1 is **UNSIGNED** and Gate 2 cannot seal (Missing live proof), so Gate 3 remains **OPEN** even with this binding present.
+**Invariant:** Sealing Gate 3 for **enable** still requires ENABLE_UNDER_FENCES + Gates 1–2 enable path. Today Gate1 is **SIGNED DISCUSS_ONLY** and Gate2 is **DESIGN_SEALED** (discuss/eval) → Gate 3 **DESIGN_SEALED** for discuss/eval; enable seal **OPEN**.
 
-**Today (2026-09-28):** live=DISABLED · RefuseTransport default ON · `LIVE_API_ENABLED=false` · `live_adapter.enabled=false` · **no keys** · **no real calls** · matrix **design-bound** here; **not** live-armed in production config.
+**Today (2026-09-28 ~18:45 EDT):** live=DISABLED · RefuseTransport default ON · `LIVE_API_ENABLED=false` · `live_adapter.enabled=false` · eval secret_handle **out-of-band** · Gemini **eval dry-run + peer wire** bound · matrix **design-bound** here; **not** live-armed in production config.
 
 ---
 
@@ -31,7 +34,7 @@
 
 | Component | Can propose | Can approve | Can veto | Can execute | Matrix ID (design cite) |
 |-----------|:-----------:|:-----------:|:--------:|:-----------:|-------------------------|
-| **L_judge** (mock / future live-adapter) | **Y** | **N** | **N** | **N** | `AM-L_JUDGE` |
+| **L_judge** (mock / future live-adapter / eval dry-run peer) | **Y** | **N** | **N** | **N** | `AM-L_JUDGE` |
 | **Oversight I5** (human plane) | **Y** | **Y** (A3/A4) | **Y** | **N** | `AM-I5` |
 | **Continuity layer** | **N** | **N** | **Y** | **N** | `AM-CONTINUITY` |
 | **Operator** (human seat(s)) | **Y** | **Y** (final A3/A4; **sole** live-enable ACK) | **Y** | **Y** (only via authorized Mesh path + evidence; never silent) | `AM-OPERATOR` |
@@ -43,7 +46,7 @@
 1. **Mesh ABORT beats judge ACCEPT** — adapter/judge cannot invent ACCEPT against Mesh policy.
 2. **I5 post-advisory stop** — oversight may deny/pause/kill after advisory agreement; agreement ≠ execution authorization.
 3. **Continuity cannot launder authority** — resume restores only **verified** Mesh state.
-4. **Operator is final for live enablement** — separate Gate 1 ACK (F4); this binding does **not** pre-authorize.
+4. **Operator is final for live enablement** — separate Gate 1 ACK (F4); this binding does **not** pre-authorize ENABLE.
 5. **No judge-over-judge override** — multi-judge outputs are advisory; arbitration is Mesh policy + I5.
 
 ### Human approval classes (compose CP-0069)
@@ -85,14 +88,31 @@ live_adapter:
 
 | Binding rule | Pass | Fail |
 |--------------|------|------|
-| Config cites `authority_matrix_ref` + matrix IDs + `policy_version` | Gate5 step (3) may proceed (when Gates 1–2 sealed) | **ABORT** → RefuseTransport (Gate5 NT-5) |
+| Config cites `authority_matrix_ref` + matrix IDs + `policy_version` | Gate5 step (3) may proceed (when Gates 1–2 enable-sealed) | **ABORT** → RefuseTransport (Gate5 NT-5) |
 | L_judge role = propose-only | Binding | Role invents approve/veto/execute → refuse |
 | I5 = approve/veto/kill; **no** execute side-effects | Binding | I5 treated as sole Mesh SoT → refuse |
 | Operator = sole live-enable ACK | Binding | Tool approval / Google fence / D1 seal counted as live ACK → refuse |
 | RefuseTransport = fail-closed veto default | Binding | Missing refuse default → refuse network |
 | No role invents execute authority | Binding | Same abort |
 
-**Today:** this binding is **design text**. Production/runtime still RefuseTransport / `enabled=false`. No config flip in this docs cycle.
+**Today:** this binding is **DESIGN_SEALED** for discuss/eval cite. Production/runtime still RefuseTransport / `enabled=false`. No config flip in this docs cycle.
+
+---
+
+## 2b. DISCUSS_ONLY / Gemini free eval binding (tightened)
+
+Eval path is **not** Mesh live. Binding below locks how AM-* apply to the Gemini free dry-run peer without inventing execute or ENABLE:
+
+| Eval surface | Matrix bind | Evidence / cite | Fence |
+|--------------|-------------|-----------------|-------|
+| **Dry-run peer** (`GeminiFreeDryRunTransport`) | `AM-L_JUDGE` — propose/advisory **only**; verdict ≠ Mesh SoT ≠ execute | tip `30fe593` · `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md` · evidence `1e502c6` | Flag-gated (`--gemini-dry-run` / `GEMINI_DRY_RUN=1`); default **mock/no-network** |
+| **Mesh live peer slot** (same process) | `AM-REFUSE` — fail-closed veto | `l_judge_live_adapter_safety.py` · CP-0058 | `LIVE_API_ENABLED=False` · `live_adapter.enabled=false` · **NOT_ENABLED** |
+| **secret_handle (eval)** | `AM-OPERATOR` create/rotate/revoke oob; `AM-I5` sees handle ids / digests only; judge **never** resolve-to-execute | Handle `mesh://secrets/judge/gemini-free@v1` @ `/home/box/.config/neural-mesh/gemini.env` (outside repo; `.gitignore`) | Raw key never in git / CI / evidence digests |
+| **Gate1 intent** | `AM-OPERATOR` DISCUSS_ONLY only | `GATE1_LIVE_OPERATOR_ACK_SIGNED.md` | No invent ENABLE_UNDER_FENCES |
+| **Peer ACCEPT vs Mesh ABORT** | Disagreement rule 1 | Gate2 amendment · AM-NT-3 | Mesh ABORT wins; dry-run ACCEPT cannot launder enable |
+
+**Runbook sentence (eval):**  
+*“Gemini free dry-run peer = AM-L_JUDGE propose-only; Mesh live path = AM-REFUSE; secret_handle oob under AM-OPERATOR; Operator sole ENABLE ACK (not this seal); live=DISABLED.”*
 
 ---
 
@@ -100,9 +120,10 @@ live_adapter:
 
 | Ops moment | Cite | Required actor | Forbidden |
 |------------|------|----------------|-----------|
-| Discuss live enable | Gate1 + `AM-OPERATOR` | Operator signed ACK | Treating D4 lock / Google APPROVE_WITH_FENCES / D1 seal as ACK |
+| Discuss live enable | Gate1 + `AM-OPERATOR` | Operator signed ACK | Treating D4 lock / Google APPROVE_WITH_FENCES / D1 seal / Gate2–3 DESIGN_SEALED as ENABLE ACK |
 | Review safety amendment | Gate2 + D4-A..K | Operator / I5 review | Claiming design amendment = live proof |
 | Bind config before flip | Gate5 step (3) + this doc | Config cites matrix IDs + `policy_version` | Prose-only matrix with no config cite |
+| Eval dry-run peer | §2b + `AM-L_JUDGE` / `AM-REFUSE` | Flag-gated dry-run only | Treating dry-run as Gate5 canary or Mesh live |
 | Canary under kill-armed I5 | Gate5 step (6) + `AM-I5` / `AM-REFUSE` | I5 kill armed | Partial peer enable; judge ACCEPT overriding Mesh ABORT |
 | Kill / deny mid-path | `AM-I5` + `AM-REFUSE` | I5 → RefuseTransport + continuity ABORT + `enabled=false` | Resume as verified without re-gate |
 | Ledger / explain | D4-I + matrix ids | Digests + handle ids + policy_version | Raw secrets; judge claim of execute auth |
@@ -117,11 +138,11 @@ live_adapter:
 
 | Gate | How this binding plugs in |
 |------|---------------------------|
-| **Gate 2** | Safety amendment §1 cites D4-A unchanged; kill→RefuseTransport+ABORT honors `AM-I5` / `AM-REFUSE`; Mesh ABORT > judge ACCEPT |
-| **Gate 4** | Data schedule + secret_handle: I5 sees handle ids only (`AM-I5`); Operator create/rotate/revoke out-of-band (`AM-OPERATOR`); no judge execute over secrets |
-| **Gate 5** | Step (3) requires this binding in config/`policy_version`; NT-5 fails closed if matrix binding missing; canary output advisory only (`AM-L_JUDGE` propose-only) |
+| **Gate 2** | Safety amendment §1 cites D4-A unchanged; kill→RefuseTransport+ABORT honors `AM-I5` / `AM-REFUSE`; Mesh ABORT > judge ACCEPT; **DESIGN_SEALED** discuss/eval serial prerequisite **met** |
+| **Gate 4** | Data schedule + secret_handle: I5 sees handle ids only (`AM-I5`); Operator create/rotate/revoke out-of-band (`AM-OPERATOR`); no judge execute over secrets; eval handle provisioned — enable schedule seal still OPEN |
+| **Gate 5** | Step (3) requires this binding in config/`policy_version`; NT-5 fails closed if matrix binding missing; canary output advisory only (`AM-L_JUDGE` propose-only) — **NOT executed** |
 
-Serial seal rule: Gate 3 **cannot seal** while Gate 1 **UNSIGNED** (and Gate 2 still Missing live proof / cannot seal).
+Serial: Gate 3 **DESIGN_SEALED** for discuss/eval after Gate1 SIGNED DISCUSS_ONLY + Gate2 DESIGN_SEALED. Gate 3 **cannot seal for enable** until ENABLE_UNDER_FENCES + enable-path Gates 2–4.
 
 ---
 
@@ -131,12 +152,13 @@ Serial seal rule: Gate 3 **cannot seal** while Gate 1 **UNSIGNED** (and Gate 2 s
 |----|----------|----------|
 | AM-NT-1 | Config missing `authority_matrix_ref` / matrix IDs / `policy_version` | Refuse network; Gate5 NT-5 |
 | AM-NT-2 | L_judge marked approve or execute in config | Reject config; refuse enable |
-| AM-NT-3 | Peer advisory ACCEPT vs Mesh ABORT | Mesh ABORT wins; no silent ACCEPT |
+| AM-NT-3 | Peer advisory ACCEPT vs Mesh ABORT (incl. dry-run peer) | Mesh ABORT wins; no silent ACCEPT |
 | AM-NT-4 | I5 kill mid-canary | RefuseTransport + ABORT + `enabled=false` (`AM-I5`/`AM-REFUSE`) |
-| AM-NT-5 | Attempt to count Google fence / D1 seal as live ACK | Refuse; only `AM-OPERATOR` Gate1 signed ACK |
+| AM-NT-5 | Attempt to count Google fence / D1 seal / Gate2–3 DESIGN_SEALED as live ACK | Refuse; only `AM-OPERATOR` Gate1 signed **ENABLE** ACK |
 | AM-NT-6 | Judge-over-judge override path | Forbidden; escalate Mesh policy + I5 |
+| AM-NT-7 | Dry-run peer used while Mesh live flags true without Gate5 | Forbidden; refuse / abort — dry-run ≠ live canary |
 
-These prove **in-use binding intent**; they **do not** authorize flip.
+These prove **in-use binding intent** for discuss/eval; they **do not** authorize flip.
 
 ---
 
@@ -144,11 +166,12 @@ These prove **in-use binding intent**; they **do not** authorize flip.
 
 | Exit (checklist) | Today |
 |------------------|-------|
-| Live cycle cites matrix IDs in config/policy version | **Design binding drafted** — `GATE3_AUTHORITY_MATRIX_BINDING.md`; runtime still Refuse default / flags false |
-| No role invents execute authority | Binding in design + disagreement rules |
-| Gate 1 signed + Gate 2 sealable | Gate 1 **UNSIGNED** · Gate 2 amendment design-only / Missing live proof → Gate 3 **cannot seal** |
+| Live cycle cites matrix IDs in config/policy version | **DESIGN_SEALED** for DISCUSS_ONLY/eval cite — `GATE3_AUTHORITY_MATRIX_BINDING.md` + `GATE3_DESIGN_SEALED.md`; runtime still Refuse default / flags false |
+| No role invents execute authority | Binding + disagreement rules + §2b eval tighten |
+| Gate 1 signed + Gate 2 design-sealed (discuss) | Gate1 **SIGNED DISCUSS_ONLY** · Gate2 **DESIGN_SEALED** → Gate3 **DESIGN_SEALED** (discuss/eval) |
+| Enable path: matrix in use on live-armed config | **OPEN** — needs ENABLE_UNDER_FENCES + live-armed config cite |
 
-**Today:** binding **drafted as design**; live ops **not** armed; Gate 3 **OPEN / cannot seal**.
+**Today:** binding **DESIGN_SEALED** for discuss/eval; live ops **not** armed; enable seal **OPEN**.
 
 ---
 
@@ -157,20 +180,22 @@ These prove **in-use binding intent**; they **do not** authorize flip.
 - `live=ENABLED` / `LIVE_API_ENABLED=true` / `live_adapter.enabled=true`
 - Shipping a production config that sets matrix-bound live=true
 - Amending D1 §3 role cells (cite only)
-- API keys, real Gemini/Vertex calls, D3, push, tags, CP mint
-- Claiming Gate 3 sealed or “matrix in use” as live proof
+- API keys in git, inventing ENABLE signature, D3, push, tags, CP mint
+- Claiming Gate 3 enable-sealed or dry-run = Gate5 canary
 
 ---
 
 ## 8. Related
 
+- `docs/planning/GATE3_DESIGN_SEALED.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
-- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
-- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
-- `council/NOTE_GATE3_AUTHORITY_MATRIX.md`
+- `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- `docs/planning/GEMINI_FREE_NEXT_STEPS.md` · `GEMINI_DRY_RUN_EVIDENCE.md`
+- `council/NOTE_GATE3_AUTHORITY_MATRIX.md` · `council/NOTE_GATE3_DESIGN_SEALED.md`
+- `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (§3 Authority Matrix)
-- `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` (§3 summary)
-- `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`
+- `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md`
+- `docs/planning/GATE2_DESIGN_SEALED.md` · `GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md`
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` (step 3 · NT-5)
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md` (D4-A)
@@ -179,4 +204,4 @@ These prove **in-use binding intent**; they **do not** authorize flip.
 
 ---
 
-*End GATE3_AUTHORITY_MATRIX_BINDING — DESIGN ONLY; not an unlock; live=DISABLED; Gate 1 UNSIGNED → Gate 3 cannot seal.*
+*End GATE3_AUTHORITY_MATRIX_BINDING — DESIGN_SEALED discuss/eval; not an unlock; live=DISABLED; ENABLE seal OPEN.*
