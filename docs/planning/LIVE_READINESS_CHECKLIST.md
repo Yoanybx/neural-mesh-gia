@@ -2,12 +2,12 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 America/New_York (EDT) — Gate1 SIGNED DISCUSS_ONLY (leave Hold); Gates 2–5 DESIGN_SEALED (discuss/eval; Gate5 = procedure only)  
+**Date:** 2026-09-28 America/New_York (EDT) — Gate1 SIGNED DISCUSS_ONLY (leave Hold); Gates 2–6 DESIGN_SEALED (discuss/eval; Gate5 = procedure only; Gate6 = metrics only)  
 **Operator decision:** Hold A **LEFT** 2026-09-28 — Gate1 **SIGNED DISCUSS_ONLY** (Gemini free-tier eval only); live still **DISABLED**; see `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md` · `docs/planning/GEMINI_FREE_NEXT_STEPS.md`  
-**Tip context:** Gate5 DESIGN_SEALED (procedure) atop Gate4 `5879321` / Gate3 `ce53e7c` / Gate2 `7c436f8` / peer wire `30fe593` / dry-run `1e502c6` / leave-Hold `fc4ef9e` / Gate1 **SIGNED DISCUSS_ONLY** / **CP-0074**  
-**Wall:** `docs/planning/LIVE_100_OPERATOR_WALL.md` — Gate1 **SIGNED DISCUSS_ONLY**; Gates 2–5 **DESIGN_SEALED** (discuss/eval; Gate5 = procedure only / canary NOT AUTHORIZED); Gate 6 next = metrics DESIGN_SEALED (docs); enable path still OPEN  
+**Tip context:** Gate6 DESIGN_SEALED (metrics) atop Gate5 `d2c16d8` / Gate4 `5879321` / Gate3 `ce53e7c` / Gate2 `7c436f8` / peer wire `30fe593` / dry-run `1e502c6` / leave-Hold `fc4ef9e` / Gate1 **SIGNED DISCUSS_ONLY** / **CP-0074**  
+**Wall:** `docs/planning/LIVE_100_OPERATOR_WALL.md` — Gate1 **SIGNED DISCUSS_ONLY**; Gates 2–6 **DESIGN_SEALED** (discuss/eval; Gate5 = procedure / canary NOT AUTHORIZED; Gate6 = metrics / live measurement OPEN); live 100% still blocked on ENABLE + canary execute + enable seals  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
-**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate3: `council/NOTE_GATE3_DESIGN_SEALED.md` / `docs/planning/GATE3_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DESIGN_SEALED.md` / `docs/planning/GATE4_DESIGN_SEALED.md` / `GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `council/NOTE_GATE5_DESIGN_SEALED.md` / `docs/planning/GATE5_DESIGN_SEALED.md` / `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
+**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · ENABLE draft: `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**) · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate3: `council/NOTE_GATE3_DESIGN_SEALED.md` / `docs/planning/GATE3_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DESIGN_SEALED.md` / `docs/planning/GATE4_DESIGN_SEALED.md` / `GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `council/NOTE_GATE5_DESIGN_SEALED.md` / `docs/planning/GATE5_DESIGN_SEALED.md` / `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `council/NOTE_GATE6_DESIGN_SEALED.md` / `docs/planning/GATE6_DESIGN_SEALED.md` / `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal for enable** until earlier gates are satisfied. Checkbox state today reflects Gate1 **SIGNED DISCUSS_ONLY** + Gates **2–5 DESIGN_SEALED** (discuss/eval; Gate5 = procedure only, canary NOT AUTHORIZED) + Gate **6 design draft** (next = metrics docs seal) + dry-run peer wire + CP-0074 posture. **live=DISABLED.**
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal for enable** until earlier gates are satisfied. Checkbox state today reflects Gate1 **SIGNED DISCUSS_ONLY** + Gates **2–6 DESIGN_SEALED** (discuss/eval; Gate5 = procedure only, canary NOT AUTHORIZED; Gate6 = metrics, live measurement OPEN) + ENABLE draft **UNSIGNED** + dry-run peer wire + CP-0074 posture. **live=DISABLED.**
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -84,19 +84,19 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Fail-closed | Any missing gate → refuse network; no partial enable; abort→RefuseTransport; never partial enable | Binding (NT-1..NT-10 in runbook) |
 
 **Exit (design/discuss):** Documented flip runbook + negative tests still prove refuse-default; enable remains operator-gated; canary marked NOT AUTHORIZED under DISCUSS_ONLY.  
-**Today:** Gate5 **DESIGN_SEALED** (procedure); flip **not** executed; canary **NOT AUTHORIZED**; Gates 2–4 design-sealed for discuss/eval but **not** enable-sealed → execute **OPEN / forbidden** until ENABLE chain. **Next docs = Gate 6 metrics DESIGN_SEALED.**
+**Today:** Gate5 **DESIGN_SEALED** (procedure); flip **not** executed; canary **NOT AUTHORIZED**; Gates 2–4 design-sealed for discuss/eval but **not** enable-sealed → execute **OPEN / forbidden** until ENABLE chain. Gate6 metrics also **DESIGN_SEALED**.
 
 ### Gate 6 — Acceptance metrics (D4-E / D4-J / D4-K)
 
 | Item | Rule | Today |
 |------|------|-------|
 | Beyond pytest | Correctness / safety / reliability / human-factors categories defined | Design (D1 §10.1) + live-path attachment in Gate6 bundle |
-| Measurable pass intent | False-approval deny; containment success; missing/conflicting judges fail-closed; adversarial disagreement handled | **Bundle drafted** — refuse-default negatives, kill latency, no secret leakage, advisory-only judge, abort>accept, ledger evidence (`GATE6_LIVE_ACCEPTANCE_METRICS.md`) |
-| Signoff-before-live-discussion | D4-K ten conditions (authority, consensus status explicit, oversight bounds, continuity limits, rollback+RV, evidence chain, metrics, claim hygiene, disagreement process, no hidden review→ops) | **Checklist usable** + Gate6 §3 attachment; live discussion **not** opened |
-| Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*) |
+| Measurable pass intent | False-approval deny; containment success; missing/conflicting judges fail-closed; adversarial disagreement handled | **DESIGN_SEALED** (metrics) — refuse-default negatives, kill latency, no secret leakage, advisory-only judge, abort>accept, ledger evidence (`GATE6_LIVE_ACCEPTANCE_METRICS.md` + `GATE6_DESIGN_SEALED.md`) |
+| Signoff-before-live-discussion | D4-K ten conditions (authority, consensus status explicit, oversight bounds, continuity limits, rollback+RV, evidence chain, metrics, claim hygiene, disagreement process, no hidden review→ops) | **DESIGN_SEALED** attachment; ENABLE discussion **not** opened; dry-run metrics evidence-only ≠ live RV |
+| Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*); live measurement **OPEN** |
 
-**Exit:** Named metric bundle attached to the live ACK cycle; pytest remains necessary but insufficient alone.  
-**Today:** bundle **drafted as design**; attached for discuss context only; canary **NOT executed**; Gate5 procedure sealed → Gate 6 **next = metrics DESIGN_SEALED (docs)**; enable/canary evidence still **OPEN**.
+**Exit (design/discuss):** Named metric bundle DESIGN_SEALED for DISCUSS_ONLY; pytest remains necessary but insufficient alone; live measurement marked OPEN.  
+**Today:** Gate6 **DESIGN_SEALED** (metrics); canary **NOT executed**; live measurement **OPEN**; dry-run ≠ live RV; enable/canary evidence still **OPEN**. **Next = ENABLE_UNDER_FENCES draft (UNSIGNED) for operator.**
 
 ### Gate 7 — Optional D3 (perf A/B)
 
@@ -125,18 +125,18 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ Gate5 DESIGN_SEALED (DISCUSS_ONLY / procedure) |
-|---|------|------------------|--------------------------------------------------------|
-| 1 | Operator ACK | **Yes** (enable) | **SIGNED DISCUSS_ONLY** — Gemini free eval (`GATE1_LIVE_OPERATOR_ACK_SIGNED.md`) |
+| # | Gate | Blocks live+API? | Status @ Gate6 DESIGN_SEALED (DISCUSS_ONLY / metrics) |
+|---|------|------------------|------------------------------------------------------|
+| 1 | Operator ACK | **Yes** (enable) | **SIGNED DISCUSS_ONLY** — Gemini free eval (`GATE1_LIVE_OPERATOR_ACK_SIGNED.md`); ENABLE draft **UNSIGNED** |
 | 2 | Safety evidence (+ live amendment) | **Yes** (enable) | **DESIGN_SEALED** discuss/eval (`GATE2_DESIGN_SEALED.md`); ENABLE seal **OPEN**; Missing Mesh live proof |
 | 3 | Authority Matrix in use | **Yes** (enable) | **DESIGN_SEALED** discuss/eval (`GATE3_DESIGN_SEALED.md`); live ops not armed; ENABLE / live-armed **OPEN** |
 | 4 | Keys + data policy | **Yes** | **DESIGN_SEALED** discuss/eval (`GATE4_DESIGN_SEALED.md`); handle oob; ENABLE / Mesh live data seal **OPEN** |
 | 5 | RefuseTransport → live flag | **Yes** | **DESIGN_SEALED** procedure (`GATE5_DESIGN_SEALED.md`); canary **NOT STARTED / NOT AUTHORIZED**; flip **not executed**; Refuse default ON; `LIVE_API_ENABLED=False` |
-| 6 | Acceptance metrics / D4-K | **Yes** | Bundle **drafted as design** (`GATE6_LIVE_ACCEPTANCE_METRICS.md`); **next design seal** (docs); canary not executed |
+| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED** metrics (`GATE6_DESIGN_SEALED.md`); live measurement **OPEN**; dry-run ≠ live RV; canary not executed |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED DISCUSS_ONLY**. Gates **2–5 DESIGN_SEALED** (discuss/eval; Gate5 = procedure only). Missing for live+API **enable** = ENABLE_UNDER_FENCES operator ACK + Gates **2(enable)–6** with live proof + Gate5 canary execution. **Next design step: Gate 6 metrics DESIGN_SEALED** (docs only — still no canary). See `docs/planning/GEMINI_FREE_NEXT_STEPS.md`. Mesh **0.18 local/mock** ≠ live+API **100%**. **live=DISABLED**. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
+**Bottom line:** Gate1 **SIGNED DISCUSS_ONLY**. Gates **2–6 DESIGN_SEALED** (discuss/eval; Gate5 = procedure; Gate6 = metrics). Missing for live+API **enable** = ENABLE_UNDER_FENCES operator ACK (draft UNSIGNED) + Gates **2–5 enable** seals + Gate5 canary execution + Gate6 live measurement. **Next: operator ENABLE signature** (or council PASTE DeepSeek ACK of design-seal pack). See `docs/planning/GEMINI_FREE_NEXT_STEPS.md` · `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md`. Mesh **0.18 local/mock** ≠ live+API **100%**. **live=DISABLED**. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
 
 ---
 
@@ -160,7 +160,8 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md` · `GATE3_DESIGN_SEALED.md` · `council/NOTE_GATE3_AUTHORITY_MATRIX.md` · `council/NOTE_GATE3_DESIGN_SEALED.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `GATE4_DESIGN_SEALED.md` · `council/NOTE_GATE4_DATA_POLICY.md` · `council/NOTE_GATE4_DESIGN_SEALED.md`
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE5_DESIGN_SEALED.md` · `council/NOTE_GATE5_FLIP_RUNBOOK.md` · `council/NOTE_GATE5_DESIGN_SEALED.md`
-- `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`
+- `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md` · `GATE6_DESIGN_SEALED.md` · `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_DESIGN_SEALED.md`
+- `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**)
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071)

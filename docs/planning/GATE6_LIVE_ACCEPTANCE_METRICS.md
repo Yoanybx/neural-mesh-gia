@@ -1,14 +1,16 @@
-# Gate 6 — Live acceptance metrics bundle (DESIGN ONLY)
+# Gate 6 — Live acceptance metrics bundle (DESIGN_SEALED / metrics only)
 
-**Status:** **DESIGN ONLY** — does **not** enable live · **does not** mint or store keys · **does not** authorize real Gemini/provider calls · **does not** start D3 · **does not** push/tag · **does not** mint a CP · **does not** claim live proof.  
+**Status:** **DESIGN_SEALED** for Gate1 **DISCUSS_ONLY** / Gemini **free-tier eval** — acceptance **metrics sealed**; **live measurement OPEN** · does **not** enable live · **does not** mint or store keys · **does not** authorize real Mesh live Gemini/provider calls · **does not** start D3 · **does not** push/tag · **does not** mint a CP · **does not** invent ENABLE_UNDER_FENCES · **does not** claim live proof  
 **Date drafted:** 2026-09-28 America/New_York (EDT)  
-**Author (draft only):** Grok Bot (Staff Eng — docs only)  
-**Tip at draft:** `0af78c8` (Gate 3 Authority Matrix binding) atop Gate2 `001211b` / Gate5 `45ccc16` / Gate4 `8f2eea6` / Gate1 draft `0b6353c` / checklist  
-**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **Gate 1 UNSIGNED** · Gates **1–5 not sealed**
+**Date design-sealed:** 2026-09-28 ~18:55 EDT (America/New_York)  
+**Author (docs):** Grok Bot `<grok-bot@local>` — design seal only; **did not invent operator signature**  
+**Tip at seal base:** `d2c16d8` (Gate5 DESIGN_SEALED) atop Gate4 `5879321` / Gate3 `ce53e7c` / Gate2 `7c436f8` / peer wire `30fe593` / evidence `1e502c6` / leave-Hold `fc4ef9e`  
+**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **LIVE_API_ENABLED=False** · **RefuseTransport default ON** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · Gate1 **SIGNED DISCUSS_ONLY** · Gates **2–5 DESIGN_SEALED** (discuss/eval; Gate5 = procedure only)
 
+**Seal artifact:** `docs/planning/GATE6_DESIGN_SEALED.md`  
 **Checklist / Gate 6 exit:** `docs/planning/LIVE_READINESS_CHECKLIST.md` § Gate 6 — Acceptance metrics (D4-E / D4-J / D4-K)  
-**Council note:** `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`  
-**Upstream:** D1 §10.1–§10.3 · D1 §4.4 adversarial · D4-E / D4-J / D4-K · Gate2 amendment · Gate3 matrix binding · Gate4 data policy · Gate5 flip runbook + NT-* · CP-0058 RefuseTransport
+**Council note:** `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_DESIGN_SEALED.md`  
+**Upstream:** D1 §10.1–§10.3 · D1 §4.4 adversarial · D4-E / D4-J / D4-K · Gate2 amendment · Gate3 matrix binding · Gate4 data policy · Gate5 flip runbook + NT-* · CP-0058 RefuseTransport · dry-run `1e502c6` · peer wire `30fe593` (**evidence-only ≠ live RV**)
 
 ---
 
@@ -16,17 +18,16 @@
 
 | Is | Is not |
 |----|--------|
-| Named **metric bundle** for a future canary / acceptance cycle under kill-armed I5 | Permission to run canary, flip flags, ship keys, or call providers |
-| Answer to Gate 6 “Measurable pass intent” + D4-E/J/K live-path attachment | A Gate 6 **seal** or live proof |
-| Compatible with mock / RefuseTransport negatives today | An unlock, ACK substitute, or `live=ENABLED` |
-| Explicit: pytest necessary, **insufficient alone** | A claim that drafting metrics completes live readiness |
+| Named **DESIGN_SEALED metric bundle** for a future canary / acceptance cycle under kill-armed I5 | Permission to run canary, flip flags, ship keys, or call Mesh live providers |
+| Answer to Gate 6 “Measurable pass intent” + D4-E/J/K live-path attachment | A **live measurement** claim or live proof |
+| Compatible with mock / RefuseTransport negatives today; dry-run metrics = **evidence-only** | An unlock, ACK substitute, or `live=ENABLED` |
+| Explicit: pytest necessary, **insufficient alone**; dry-run ≠ live RV | A claim that sealing metrics completes live readiness or measures canary |
 
-**Invariant:** Bundle may be drafted while earlier gates are open. **Sealing** Gate 6 / attaching metrics to a live ACK cycle still requires Gates **1–5** satisfied (serial). Today Gate 1 is **UNSIGNED** → Gate 6 remains **OPEN**.
+**Invariant:** Bundle may **design-seal** while enable path is open. **Live measurement** / attaching metrics to a live ACK cycle still requires Gates **1–5 enable**-ready + operator **ENABLE_UNDER_FENCES** + Gate5 canary execute (serial). Today Gate1 is **SIGNED DISCUSS_ONLY** and Gates 2–5 are **DESIGN_SEALED** for discuss/eval only (ENABLE seals **OPEN**) → metrics may **design-seal**; live measurement remains **OPEN** — dry-run eval metrics are **evidence-only ≠ live RV**.
 
-**Today (2026-09-28):** live=DISABLED · RefuseTransport default ON · **no keys** · **no real calls** · metrics **design-only**; canary **NOT executed**.
+**Today (2026-09-28):** live=DISABLED · Gate1 **DISCUSS_ONLY** · RefuseTransport default ON · `LIVE_API_ENABLED=false` · **no keys in repo** · Mesh live = **no real calls** · dry-run peer **≠** canary / **≠** live RV · metrics **DESIGN_SEALED**; canary **NOT executed**; live measurement **OPEN**.
 
 ---
-
 ## 1. Evaluation categories beyond pytest (D4-E — live-path attachment)
 
 | Category | Canary / acceptance measure (design) | Mock today |
@@ -128,30 +129,33 @@ All must remain true before any live *discussion* / ACK cycle uses this bundle (
 
 | Exit (checklist) | Today |
 |------------------|-------|
-| Named metric bundle attached to the live ACK cycle | **Bundle drafted** — `GATE6_LIVE_ACCEPTANCE_METRICS.md`; **not** attached to a signed ACK (Gate 1 unsigned) |
+| Named metric bundle attached to the live ACK cycle | **Metrics DESIGN_SEALED** for DISCUSS_ONLY — `GATE6_DESIGN_SEALED.md` + this bundle; **not** attached to ENABLE ACK (ENABLE **UNSIGNED** / OPEN); live measurement **OPEN** |
 | Pytest necessary but insufficient alone | Binding |
-| Live discussion opened | **Not** opened |
+| Live discussion opened | Gate1 **SIGNED DISCUSS_ONLY**; ENABLE discussion **not** opened |
+| Live measurement on canary | **OPEN** — canary **NOT executed**; dry-run = evidence-only ≠ live RV |
 
-**Today:** bundle **drafted as design**; Gate 6 **OPEN / cannot seal**; canary **NOT executed**; live=DISABLED.
+**Today:** metrics **DESIGN_SEALED**; live measurement **OPEN**; canary **NOT executed**; live=DISABLED; ENABLE seal **OPEN**.
 
 ---
 
 ## 6. Explicit non-goals (this doc)
 
 - Executing canary or measuring live kill latency in production  
-- `live=ENABLED` / flag flips / keys / real Gemini calls  
+- Claiming dry-run / mock metrics as live RV or Gate6 live measurement  
+- `live=ENABLED` / flag flips / keys / real Mesh live Gemini calls  
 - Starting D3 / push / tags / CP mint  
-- Claiming “100% live ready” or Gate 6 sealed  
-- Faking Gate1 signature
+- Claiming “100% live ready” or ENABLE seal  
+- Inventing ENABLE_UNDER_FENCES / faking Gate1 upgrade signature
 
 ---
 
 ## 7. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
-- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
-- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
-- `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`
+- `docs/planning/GATE6_DESIGN_SEALED.md` · `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**)
+- `docs/planning/GEMINI_FREE_NEXT_STEPS.md` · `docs/planning/HOLD_MOCK_NEXT.md`
+- `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_DESIGN_SEALED.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (§10 · §4.4)
 - `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`
 - `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md`
@@ -162,4 +166,4 @@ All must remain true before any live *discussion* / ACK cycle uses this bundle (
 
 ---
 
-*End GATE6_LIVE_ACCEPTANCE_METRICS — DESIGN ONLY; not an unlock; live=DISABLED; Gate 1 UNSIGNED → Gate 6 cannot seal.*
+*End GATE6_LIVE_ACCEPTANCE_METRICS — metrics DESIGN_SEALED for DISCUSS_ONLY; live measurement OPEN; canary NOT executed; live=DISABLED; ENABLE still needs operator ACK; dry-run ≠ live RV.*

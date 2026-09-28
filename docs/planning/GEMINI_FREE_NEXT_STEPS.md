@@ -21,7 +21,8 @@
 | **3b** | **Gate4 design seal** — data policy + secret_handle schedule toward DESIGN_SEALED (eval handle already done) | **DONE (DESIGN_SEALED)** — `GATE4_DESIGN_SEALED.md` · `GATE4_LIVE_DATA_POLICY.md`; oob key load; dry-run≠RefuseTransport; ENABLE / Mesh live data seal OPEN | Treat Gate4 design seal as Mesh live enable; commit raw keys; execute Gate5 canary |
 | **4** | **Gate5 runbook design seal** — docs/canary procedure toward DESIGN_SEALED (**not** execute canary) | **DONE (DESIGN_SEALED)** — `GATE5_DESIGN_SEALED.md` · `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`; procedure sealed; canary NOT AUTHORIZED | Flip `live_adapter.enabled` / `LIVE_API_ENABLED`; run canary without ENABLE chain; invent ENABLE_UNDER_FENCES |
 | **4b** | **Gate5 canary later** — health check → single canary under kill-armed I5 → ledger evidence (Gate5 steps 1–7) | **NOT STARTED / NOT AUTHORIZED** — only after Gates 2–4 **enable**-ready + Gate1 scope upgrade if operator marks ENABLE_UNDER_FENCES; dry-run `30fe593` ≠ canary | Canary / flip without full ENABLE chain |
-| **5** | **Gate6 metrics design seal next** — acceptance metrics toward DESIGN_SEALED (docs) | **NEXT** — `GATE6_LIVE_ACCEPTANCE_METRICS.md` | Claim canary evidence without Gate5 execution; flip live flags |
+| **5** | **Gate6 metrics design seal** — acceptance metrics toward DESIGN_SEALED (docs) | **DONE (DESIGN_SEALED)** — `GATE6_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md`; live measurement OPEN; dry-run ≠ live RV | Claim canary evidence without Gate5 execution; flip live flags; invent ENABLE signature |
+| **6** | **ENABLE_UNDER_FENCES draft** — unsigned operator ACK artifact for later user signature | **DRAFTED UNSIGNED** — `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md`; bots must **not** invent signature | Sign as bot; flip flags; run canary; treat draft as signed |
 
 ---
 
@@ -33,20 +34,21 @@ Before any flag flip:
 2. Gate3 Authority Matrix in use — **DESIGN_SEALED** (discuss/eval); ENABLE / live-armed still open  
 3. Gate4 secret_handle outside repo + live data schedule — **DESIGN_SEALED** (discuss/eval); enable seal open  
 4. Gate5 runbook **DESIGN_SEALED** (docs/canary procedure) — **done**; canary execution only after ENABLE chain (**NOT AUTHORIZED** now)  
-5. Gate6 acceptance metrics DESIGN_SEALED — **next** (docs); canary evidence later  
+5. Gate6 acceptance metrics **DESIGN_SEALED** — **done** (docs); live measurement / canary evidence later  
+6. ENABLE_UNDER_FENCES ACK — **draft UNSIGNED** for operator signature later  
 
-**Intent today:** **DISCUSS_ONLY** — eval dry-run + Gates 2–5 design seal done (Gate5 = procedure only); upgrade to ENABLE_UNDER_FENCES requires a **new** operator mark (user-written).
+**Intent today:** **DISCUSS_ONLY** — eval dry-run + Gates **2–6** design seal done (Gate5 = procedure; Gate6 = metrics); upgrade to ENABLE_UNDER_FENCES requires a **new** operator mark (user-written) — draft ready, **UNSIGNED**.
 
 ---
 
 ## Related
 
 - `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` · `council/NOTE_GEMINI_DRY_RUN.md` · `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
-- `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `GATE4_DESIGN_SEALED.md` · `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE5_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md`
+- `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `GATE4_DESIGN_SEALED.md` · `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE5_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md` · `GATE6_DESIGN_SEALED.md` · `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/LIVE_100_OPERATOR_WALL.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — discuss only; live=DISABLED; eval dry-run + peer wire + Gates 2–5 DESIGN_SEALED (Gate5=procedure only); next=Gate6 metrics DESIGN_SEALED (docs only); canary NOT AUTHORIZED; no Mesh live enable.*
+*End GEMINI_FREE_NEXT_STEPS — discuss only; live=DISABLED; eval dry-run + peer wire + Gates 2–6 DESIGN_SEALED (Gate5=procedure; Gate6=metrics); next=operator ENABLE_UNDER_FENCES signature (draft UNSIGNED); canary NOT AUTHORIZED; no Mesh live enable.*
