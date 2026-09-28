@@ -1,9 +1,9 @@
 # Gemini free-tier — next steps (ENABLE_UNDER_FENCES)
 
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
-**Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** invent impl CP / auto-flip without NT-10 clearance  
+**Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`**; RefuseTransport default ON; Gates 2–4 ENABLE_READY  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final after canary); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075 authorized**  
 **Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · prior DISCUSS_ONLY + leave-Hold notes  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
@@ -25,8 +25,9 @@
 | **6** | **ENABLE_UNDER_FENCES** — operator signature | **SIGNED** — `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` (「Aprobado」 ~19:41 ET) | Invent extra unlocks; commit keys |
 | **6b** | **Gates 2–4 ENABLE_READY** — docs enable-ready seals under ENABLE | **DONE** — `GATE2/3/4_ENABLE_READY.md` | Claim live RV complete; flip without Gate5 |
 | **6c** | **Gate5 step (5) health** | **PASS** — `GATE5_HEALTH_CHECK_EVIDENCE.md` | Treat as canary / flag flip |
-| **7** | **Gate5 step (6) canary / LIVE_API_ENABLED flip** | **BLOCKED** — `may_enable=False` / `impl_cp_not_authorized` (NT-10); no Mesh live transport beyond RefuseTransport | Half-flip; invent impl CP; treat dry-run as canary |
-| **8** | **Gate6 live measurement** on canary evidence | **OPEN** — after authorized canary | Claim design metrics = live RV |
+| **7** | **Authorized impl CP (NT-10)** | **DONE** — **CP-0075** `IMPL_CP_0075_GEMINI_FREE_CANARY.md` (minimum canary binding; full LiveHttpTransport still design+spike) | Fake unlock; full codec claim |
+| **7b** | **Gate5 step (6) canary / runtime LIVE flip** | **DONE** — one canary HTTP 200 / `MESH_CANARY_OK`; module `LIVE_API_ENABLED=False` final; RefuseTransport restored — `GATE5_CANARY_EVIDENCE.md` | Treat dry-run as canary; leave half-enabled |
+| **8** | **Gate6 live measurement** on canary evidence | **DONE (sample n=1)** — `GATE6_CANARY_MEASUREMENT.md` | Claim production SLO / 100% product enable |
 
 ---
 
@@ -37,11 +38,11 @@ Before any flag flip:
 1. Gate2 — **ENABLE_READY** (docs) under SIGNED ENABLE; Mesh live RV still OPEN  
 2. Gate3 — **ENABLE_READY** (docs); runtime not live-enabled  
 3. Gate4 — **ENABLE_READY** (docs); oob key only  
-4. Gate5 runbook DESIGN_SEALED; step (5) **PASS**; step (6) **BLOCKED** (`impl_cp_not_authorized`)  
-5. Gate6 metrics DESIGN_SEALED; live measurement after canary  
+4. Gate5 runbook DESIGN_SEALED; step (5) **PASS**; step (6) **EXECUTED** (CP-0075)  
+5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** **ENABLE_UNDER_FENCES** — canary path authorized in governance; **flag flip held** until authorized impl CP clears NT-10.
+**Intent today:** ENABLE signed; CP-0075 authorized; **one** canary done; **module LIVE_API_ENABLED=False** / RefuseTransport-safe final.
 
 ---
 
@@ -56,4 +57,4 @@ Before any flag flip:
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — ENABLE_UNDER_FENCES SIGNED; Gates 2–4 ENABLE_READY; LIVE_API_ENABLED=False; next=authorized impl CP then Gate5 canary; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 + Gate5 canary done; module LIVE_API_ENABLED=False; NO_HELD unchanged.*

@@ -1,7 +1,8 @@
-"""L_judge live-adapter safety case helpers (CP-0058 / Cycle 54).
+"""L_judge live-adapter safety case helpers (CP-0058 / Cycle 54; enablement lift CP-0075).
 
-Design-only: constants, secret_handle validation, RefuseTransport mock,
-and enablement-gate evaluation. No network I/O. No API keys. No live codec.
+Constants, secret_handle validation, RefuseTransport mock, and
+enablement-gate evaluation. No network I/O here. No API keys. No live codec.
+CP-0075 authorizes may_enable=True when all gates pass (NT-10 cleared).
 """
 
 from __future__ import annotations
@@ -201,10 +202,12 @@ def evaluate_enablement_gates(
     if not prior_dry_run_proven:
         reasons.append("prior_dry_run_not_proven")
 
-    # Design posture for THIS cycle: never may_enable even if caller passes
-    # optimistic flags — live stays disabled until a future authorized impl CP.
-    # We still surface reasons; may_enable is hard-false here.
-    return EnablementResult(may_enable=False, reasons=reasons, flags=merged)
+    # Authorized impl CP (CP-0075 / Gemini free canary under fences) lifts the
+    # Cycle-54 hard-false: may_enable is True only when *no* refusal reasons
+    # remain. Default call still fails closed (impl_cp_not_authorized etc.).
+    # Permanent-false / must-stay-false assertions still block.
+    may = len(reasons) == 0
+    return EnablementResult(may_enable=may, reasons=reasons, flags=merged)
 
 
 class RefuseTransport:

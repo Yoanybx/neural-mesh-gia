@@ -109,7 +109,7 @@
 ## Postscript (2026-09-28 ~19:41 ET)
 
 ENABLE_UNDER_FENCES **SIGNED**; Gates 2–4 **ENABLE_READY**; health step (5) **PASS** (`GATE5_HEALTH_CHECK_EVIDENCE.md`).  
-Canary / `LIVE_API_ENABLED` flip still **OPEN / blocked** on authorized impl CP (`may_enable=False`). Procedure DESIGN_SEALED record retained.
+Procedure DESIGN_SEALED record retained. Canary later **EXECUTED** under **CP-0075** — see `GATE5_CANARY_EVIDENCE.md`; module `LIVE_API_ENABLED=False` final.
 
 *End GATE5_DESIGN_SEALED — procedure sealed; ENABLE signed later; LIVE_API_ENABLED=False; canary blocked on impl CP.*
 

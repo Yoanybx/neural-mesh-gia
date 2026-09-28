@@ -2,10 +2,10 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 ~19:41 EDT — Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」); Gates 2–4 **ENABLE_READY** (docs); Gates 2–6 prior DESIGN_SEALED retained; Gate5 step (5) PASS; step (6) blocked (`impl_cp_not_authorized`)  
+**Date:** 2026-09-28 ~19:48 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075** authorized; Gate5 step (5) PASS; step (6) **canary EXECUTED**; Gate6 sample measured; module LIVE_API_ENABLED=False  
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md`  
 **Tip context:** ENABLE signed atop `a816c34` (dual hygiene PASS) / Gate6 DESIGN_SEALED / Gate5 `d2c16d8` / Gates 2–4 / peer `30fe593` / dry-run `1e502c6` / leave-Hold `fc4ef9e`  
-**Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; Gates 2–4 **ENABLE_READY**; Gate5 canary / LIVE_API flip **blocked** on authorized impl CP (NT-10); Gate6 live measurement still OPEN  
+**Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075; Gate5 canary **done**; module LIVE_API=False / RefuseTransport; Gate6 sample measured  
 **Dual council hygiene ACK:** PASS at `a816c34` (hygiene only). Operator ENABLE signature **done**; remaining wall = Gate5 step (6) / impl CP + Gate6 live measurement.
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
 **Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · ENABLE draft: `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**) · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate3: `council/NOTE_GATE3_DESIGN_SEALED.md` / `docs/planning/GATE3_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DESIGN_SEALED.md` / `docs/planning/GATE4_DESIGN_SEALED.md` / `GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `council/NOTE_GATE5_DESIGN_SEALED.md` / `docs/planning/GATE5_DESIGN_SEALED.md` / `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `council/NOTE_GATE6_DESIGN_SEALED.md` / `docs/planning/GATE6_DESIGN_SEALED.md` / `GATE6_LIVE_ACCEPTANCE_METRICS.md`
@@ -38,7 +38,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Non-implication | Tool approvals, mock spikes, design seals, hygiene ACK do **not** count as ENABLE | Binding; confirmed on 「Aprobado」 signature |
 
 **Exit:** Written operator ACK recording intent to *discuss* or *enable* under named fences. Still not an automatic `enabled=true`.  
-**Today:** Gate1 exit **met for ENABLE_UNDER_FENCES**; flag flip still requires Gate5 walk + `may_enable` / authorized impl CP.
+**Today:** Gate1 exit met; CP-0075 + Gate5 canary done; module LIVE_API remains False (RefuseTransport-safe).
 
 ### Gate 2 — Safety evidence (D1 / D4-H)
 
@@ -81,7 +81,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 |------|------|-------|
 | Default binding | Every live peer slot defaults to `RefuseTransport` → `ENGINE_DISABLED` / `PEER_LIVE_DISABLED` | **In force** (CP-0058; Google spike T-gemini-c) |
 | Flag transition | `live_adapter.enabled` / `LIVE_API_ENABLED` remain **false** until Gate 1–4 enable-ready + ENABLE ACK + this gate’s acceptance tests | **false** (held); **LIVE_API_ENABLED=False** — step (6) **not** flipped |
-| Flip procedure (design) | (1)–(7) ordered walk | Steps (1)–(4) ENABLE_READY met · (5) health **PASS** (`GATE5_HEALTH_CHECK_EVIDENCE.md`) · (6)–(7) **BLOCKED** — `may_enable=False` / `impl_cp_not_authorized` (NT-10); dry-run ≠ canary |
+| Flip procedure (design) | (1)–(7) ordered walk | Steps (1)–(4) ENABLE_READY · (5) health **PASS** · (6)–(7) **EXECUTED** — CP-0075; `GATE5_CANARY_EVIDENCE.md`; dry-run ≠ canary |
 | Fail-closed | Any missing gate → refuse network; no partial enable; abort→RefuseTransport; never partial enable | Binding (NT-1..NT-10 in runbook) |
 
 **Exit (design/discuss):** Documented flip runbook + negative tests still prove refuse-default; enable remains operator-gated; canary marked NOT AUTHORIZED under DISCUSS_ONLY.  
@@ -132,12 +132,12 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 2 | Safety evidence (+ live amendment) | **Yes** (enable) | **ENABLE_READY** (`GATE2_ENABLE_READY.md`); Mesh live RV still OPEN |
 | 3 | Authority Matrix in use | **Yes** (enable) | **ENABLE_READY** (`GATE3_ENABLE_READY.md`); runtime not live-enabled |
 | 4 | Keys + data policy | **Yes** | **ENABLE_READY** (`GATE4_ENABLE_READY.md`); handle oob; secrets not in git |
-| 5 | RefuseTransport → live flag | **Yes** | Step (5) **PASS**; step (6) **BLOCKED** (`impl_cp_not_authorized`); `LIVE_API_ENABLED=False` |
+| 5 | RefuseTransport → live flag | **Yes** | Step (5) **PASS**; step (6) **EXECUTED** (CP-0075 canary HTTP 200); module `LIVE_API_ENABLED=False` final |
 | 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED** metrics; live measurement **OPEN**; canary not executed |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY** (docs). Gate5 step (5) PASS; step (6) **not flipped** (`may_enable=False` / NT-10). Gate6 metrics DESIGN_SEALED; live measurement OPEN. Missing for live+API **100%** = authorized **impl CP** + Gate5 canary execute + Gate6 live measurement. `LIVE_API_ENABLED=False`. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
+**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075** authorized; Gate5 canary **EXECUTED** (HTTP 200); Gate6 sample **MEASURED**. Module **`LIVE_API_ENABLED=False`** / RefuseTransport-safe. Full LiveHttpTransport codec still design+spike. Live+API product **100%** still not a permanent enable. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
 
 ---
 

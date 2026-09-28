@@ -150,7 +150,8 @@ def test_enablement_gates_fail_closed():
     assert "safety_case_not_verified" in res.reasons
     assert "secret_handle_invalid_or_missing" in res.reasons
 
-    # Even with optimistic inputs, THIS CP hard-refuses may_enable
+    # Permanent-false / must-stay-false assertions still refuse may_enable
+    # (CP-0075 lifts only the hard-false when *no* reasons remain).
     optimistic = evaluate_enablement_gates(
         flags={"live_adapter.enabled": True, "train_70b": True},
         secret_handle="mesh://secrets/judge/live@v1",
@@ -163,6 +164,18 @@ def test_enablement_gates_fail_closed():
     assert optimistic.may_enable is False
     assert any("permanent_false" in r or "train_70b" in r for r in optimistic.reasons)
     assert any("live_adapter.enabled" in r for r in optimistic.reasons)
+
+    # Clean gates + authorized impl CP → may_enable True (NT-10 cleared by CP-0075).
+    clean = evaluate_enablement_gates(
+        secret_handle="mesh://secrets/judge/gemini-free@v1",
+        tls_endpoint=True,
+        audit_sink=True,
+        prior_dry_run_proven=True,
+        safety_case_verified=True,
+        impl_cp_authorized=True,
+    )
+    assert clean.may_enable is True
+    assert clean.reasons == []
 
 
 def test_capability_and_agreement():

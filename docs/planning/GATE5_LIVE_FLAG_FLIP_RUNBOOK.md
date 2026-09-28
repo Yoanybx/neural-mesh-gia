@@ -1,11 +1,11 @@
 # Gate 5 — RefuseTransport → live flag flip runbook (DESIGN_SEALED / procedure only)
 
-**Status:** **DESIGN_SEALED** (procedure) + Gate1 **SIGNED ENABLE_UNDER_FENCES** (2026-09-28 ~19:41 ET) — Gates 2–4 **ENABLE_READY** (docs) · step (5) health **PASS** · step (6) canary / flag flip **NOT executed** (blocked: `may_enable=False` / `impl_cp_not_authorized` / NT-10) · does **not** mint keys into git · does **not** start D3 · does **not** push/tag · NO_HELD unchanged  
+**Status:** **DESIGN_SEALED** (procedure) + Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates 2–4 **ENABLE_READY** · step (5) **PASS** · step (6)–(7) **EXECUTED** under **CP-0075** (one Gemini free canary; module LIVE_API_ENABLED=False final / RefuseTransport) · does **not** mint keys into git · does **not** start D3 · does **not** push/tag · NO_HELD unchanged  
 **Date drafted:** 2026-09-27 America/New_York (EDT)  
 **Date design-sealed:** 2026-09-28 ~18:50 EDT (America/New_York)  
 **Author (docs):** Grok Bot `<grok-bot@local>` — design seal only; **did not invent operator signature**  
 **Tip at seal base:** `5879321` (Gate4 DESIGN_SEALED) atop Gate3 `ce53e7c` / Gate2 `7c436f8` / peer wire `30fe593` / evidence `1e502c6` / leave-Hold `fc4ef9e`  
-**Package posture:** **0.18.0 HELD** · **LIVE_API_ENABLED=False** · **RefuseTransport default ON** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · pkg0190 **NOT_OPENED** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates 2–4 **ENABLE_READY** (docs) + prior DESIGN_SEALED · Gate5 step (5) PASS · step (6) **BLOCKED** (impl CP) · **NO_HELD** stays NO_HELD
+**Package posture:** **0.18.0 HELD** · **LIVE_API_ENABLED=False** (final) · **RefuseTransport default ON** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · pkg0190 **NOT_OPENED** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates 2–4 **ENABLE_READY** · Gate5 steps (5)–(7) **evidence** · **CP-0075** · **NO_HELD** stays NO_HELD
 
 **Seal artifact:** `docs/planning/GATE5_DESIGN_SEALED.md`  
 **Checklist / Gate 5 exit:** `docs/planning/LIVE_READINESS_CHECKLIST.md` § Gate 5 — Adapter: RefuseTransport → live flag  
@@ -25,7 +25,7 @@
 
 **Invariant:** **Executing** any flip step requires Gates **1–4 enable-ready** + operator **ENABLE_UNDER_FENCES** ACK (serial). Today Gate1 is **SIGNED DISCUSS_ONLY** and Gates 2–4 are **DESIGN_SEALED** for discuss/eval only (ENABLE seals **OPEN**) → procedure may **design-seal**; canary remains **NOT STARTED / NOT AUTHORIZED** — **never partial enable**.
 
-**Today (2026-09-28 ~19:41 ET):** Gate1 **ENABLE_UNDER_FENCES SIGNED** · Gates 2–4 **ENABLE_READY** · RefuseTransport default ON · `LIVE_API_ENABLED=false` · `live_adapter.enabled=false` · **no keys in repo** · step (5) health PASS · step (6) canary **NOT executed** (impl CP block) · dry-run peer **≠** canary.
+**Today (2026-09-28 ~19:47 ET):** Gate1 **ENABLE_UNDER_FENCES SIGNED** · Gates 2–4 **ENABLE_READY** · **CP-0075** · RefuseTransport default ON · module `LIVE_API_ENABLED=false` · `live_adapter.enabled=false` · **no keys in repo** · step (5) PASS · step (6) **EXECUTED** (HTTP 200) · dry-run peer **≠** canary.
 
 ---
 
@@ -40,7 +40,7 @@
 | — | Kill path | I5 kill armed → RefuseTransport + continuity ABORT + emergency `enabled=false` | Design armed for canary |
 | — | Operator ENABLE ACK | Explicit ENABLE_UNDER_FENCES artifact | **SIGNED** |
 
-Docs preconditions (1)–(4) for enable-ready **met**. Step (5) health **PASS**. Step (6) flip still **forbidden** while `evaluate_enablement_gates` → `may_enable=False` (`impl_cp_not_authorized`) / NT-10 — **no partial enable**.
+Docs preconditions (1)–(4) **met**. Step (5) health **PASS**. Step (6) authorized by **CP-0075** when `may_enable=True` — **no partial enable**; runtime LIVE window only; module flag stays False after.
 
 ---
 
@@ -101,7 +101,7 @@ Execute **only** after §1 preconditions pass (ENABLE chain). Steps are **serial
 | Anomaly | Immediate I5 kill → RefuseTransport + ABORT + `enabled=false` |
 | Never | Partial enable of peer slots; multi-canary fan-out; Vertex paid without separate approval; treat dry-run as canary |
 
-**Today:** Step (6) **NOT STARTED** — blocked by NT-10 / `impl_cp_not_authorized` (hard `may_enable=False`); RefuseTransport retained; no LIVE_API_ENABLED flip.
+**Today:** Step (6) **EXECUTED** under CP-0075 — see `GATE5_CANARY_EVIDENCE.md`; runtime LIVE during call only; module `LIVE_API_ENABLED=False` final; RefuseTransport restored.
 
 ### Step (7) — Ledger evidence
 
@@ -131,7 +131,7 @@ These prove refuse-default; they **do not** authorize flip.
 | NT-7 | dual_primary ≠ 0 / live while continuity forbids | ABORT fence / `CONT_LIVE_DISABLED` |
 | NT-8 | CI / pytest | Mock or Refuse only; greppable ban on live-looking secret material |
 | NT-9 | Partial peer enable (one slot live, others unset) | **Forbidden** — abort → full RefuseTransport |
-| NT-10 | `evaluate_enablement_gates` default | `may_enable=False` with reasons; hard-false this product line until authorized impl CP |
+| NT-10 | `evaluate_enablement_gates` default | `may_enable=False` with reasons by default; **CP-0075** allows `may_enable=True` only when reasons empty (authorized impl + gates) |
 
 **Fail-closed rule:** Any missing gate, failed negative test, or anomaly → **abort → RefuseTransport**. Never leave a half-enabled transport binding.
 
@@ -167,8 +167,8 @@ Helpers (no Mesh live network this docs cycle):
 | Claim | Today |
 |-------|-------|
 | This runbook **DESIGN_SEALED** (procedure) | **Yes** (this document + `GATE5_DESIGN_SEALED.md`) |
-| Flip / canary executed | **No — step (6) blocked (`impl_cp_not_authorized`)** |
-| `live_adapter.enabled` / `LIVE_API_ENABLED` | **false** (not flipped) |
+| Flip / canary executed | **Yes — step (6) one canary under CP-0075** (`GATE5_CANARY_EVIDENCE.md`) |
+| `live_adapter.enabled` / module `LIVE_API_ENABLED` | **false** (runtime LIVE only during canary window; restored False) |
 | Keys minted into repo | **No** |
 | Gates 1–4 discuss/eval sealed | **Yes** (prior) |
 | Gates 1–4 **enable**-ready + ENABLE ACK | **Yes** (docs ENABLE_READY + SIGNED ENABLE) |
@@ -186,9 +186,9 @@ Helpers (no Mesh live network this docs cycle):
 | Negative tests / fail-closed specified | **DESIGN_SEALED** (procedure) |
 | Default binding RefuseTransport | **In force** |
 | Flags false | **Held** |
-| Canary | **NOT STARTED** — blocked on authorized impl CP / NT-10 |
+| Canary | **EXECUTED** (CP-0075; HTTP 200; advisory) |
 | Gates 1–4 enable + ENABLE ACK | **ENABLE_READY + SIGNED** |
-| Flip / canary | **NOT executed** (honest hold on `may_enable=False`) |
+| Flip / canary | **Executed once**; module flag **False** final |
 
 **Exit (from checklist):** Documented flip runbook + negative tests still prove refuse-default; enable remains operator-gated.  
 **Today:** procedure **DESIGN_SEALED**; flip **not** executed; execute exit **not** met.
@@ -226,7 +226,9 @@ Helpers (no Mesh live network this docs cycle):
 - `docs/schema/judge/live_adapter_safety_v0.md`
 - `src/neural_mesh/packaging/l_judge_live_adapter_safety.py` (`RefuseTransport`, `evaluate_enablement_gates`)
 - `src/neural_mesh/packaging/google_l_judge_peer_spike.py` (`LIVE_API_ENABLED=False`)
+- `src/neural_mesh/packaging/l_judge_gemini_free_canary_impl.py` (CP-0075)
+- `docs/planning/IMPL_CP_0075_GEMINI_FREE_CANARY.md` · `GATE5_CANARY_EVIDENCE.md` · `GATE6_CANARY_MEASUREMENT.md`
 
 ---
 
-*End GATE5_LIVE_FLAG_FLIP_RUNBOOK — ENABLE signed; Gates 2–4 ENABLE_READY; step 5 PASS; LIVE_API_ENABLED=False; canary blocked on impl_cp_not_authorized.*
+*End GATE5_LIVE_FLAG_FLIP_RUNBOOK — ENABLE signed; CP-0075; canary executed; module LIVE_API_ENABLED=False; RefuseTransport final.*

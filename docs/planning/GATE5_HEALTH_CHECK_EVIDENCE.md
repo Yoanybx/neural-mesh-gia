@@ -39,7 +39,7 @@ evaluate_enablement_gates(
 
 ## Step (6) canary / flip
 
-**NOT executed.** Blocked by Gate5 NT-10 / hard `may_enable=False` until **authorized impl CP** (no Mesh live transport binding beyond RefuseTransport; dry-run path ≠ LIVE_API_ENABLED canary). Rollback posture: keep RefuseTransport + `enabled=false`.
+**SUPERSEDED for step (6):** NT-10 cleared by **CP-0075** (`IMPL_CP_0075_GEMINI_FREE_CANARY.md`). Canary executed — see `GATE5_CANARY_EVIDENCE.md`. This file remains the step-(5) health record.
 
 ## Related
 
@@ -48,4 +48,4 @@ evaluate_enablement_gates(
 
 ---
 
-*End GATE5_HEALTH_CHECK_EVIDENCE — step 5 PASS; LIVE_API_ENABLED not flipped; canary blocked on impl_cp_not_authorized.*
+*End GATE5_HEALTH_CHECK_EVIDENCE — step 5 PASS (historical). Step 6 later cleared via CP-0075; see GATE5_CANARY_EVIDENCE.md.*

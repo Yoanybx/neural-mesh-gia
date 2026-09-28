@@ -18,7 +18,7 @@
 | Operator ENABLE_UNDER_FENCES | **SIGNED** |
 | Gate2 **ENABLE_READY** (this artifact) | **YES** — amendment ACK’d as enable-ready for canary path under fences |
 | Live RV-1..RV-7 under Mesh live transport | **OPEN** — Gate5 canary / post-canary measurement; dry-run ≠ live RV |
-| `LIVE_API_ENABLED` flip | **OPEN** — Gate5 walk step (6); blocked while `evaluate_enablement_gates` → `may_enable=False` (`impl_cp_not_authorized`) |
+| `LIVE_API_ENABLED` flip | **DONE (runtime window)** under CP-0075 / Gate5 canary; module constant **False** final — `GATE5_CANARY_EVIDENCE.md` |
 
 **Claim hygiene:** ENABLE_READY ≠ canary done ≠ live proof complete ≠ flag flipped.
 
@@ -45,7 +45,7 @@
 |-----|---------------|
 | Gate5 canary execution + ledger | Gate5 steps (1)–(7) under kill-armed I5 |
 | Live RV under real Mesh transport | Post-canary / rollback cycle |
-| Flag flip | Gate5 step (6) **and** authorized impl posture (`may_enable`; NT-10) |
+| Flag flip | Gate5 step (6) **executed** under CP-0075 (`may_enable`; NT-10 cleared for canary scope) |
 | Gate6 live measurement | After canary evidence |
 
 ---
