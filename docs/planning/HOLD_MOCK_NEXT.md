@@ -42,8 +42,8 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 | 1 RefuseTransport negatives refresh | Verified green at Hold tip (no code delta required) | Tip `8d0951b`; safety + peer suite green |
 | 2 Google mock peer correlation | **DONE** @ `96daa25` | Dual-advisory fields + `abort_provenance` on disagreement (`PEER_DIGEST_DISAGREE`); RefuseTransport still default; **26 passed** peer+safety; no CP mint (Hold docs+helpers pattern) |
 | 3 Mock multi-judge harness | **DONE** @ `2b4ebad` | Post-invoke digest hygiene + `abort_provenance`; disagreement → `SPIKE_JUDGE_DIGEST_DISAGREE` / `ROUTE_JUDGE_MISMATCH` with **ABORT > ACCEPT**; dual agree stays ADVISORY (`mesh_accept=False`, ≠ M1); no CP mint |
-| 4 Docs hygiene | **DONE** (this tip) | Cross-link wall / checklist / Gate1–6 drafts; UNSIGNED / cannot seal held honest; tip contexts refreshed under Hold; see `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md` |
-| 5 RV / kill-path mock drills | **DONE** (this tip) | Re-ran RefuseTransport + D1 RV suites; thin `mock_rv_verification_drill` + `mock_i5_kill_to_refuse_drill` (no live canary); see Progress tip stamp |
+| 4 Docs hygiene | **DONE** @ `f150ea4` | Cross-link wall / checklist / Gate1–6 drafts; UNSIGNED / cannot seal held honest; tip contexts refreshed under Hold; see `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md` |
+| 5 RV / kill-path mock drills | **DONE** @ `f150ea4` | Re-ran RefuseTransport + D1 RV suites (**46 passed** with thin drills); `mock_rv_verification_drill` + `mock_i5_kill_to_refuse_drill` (no live canary); no CP mint |
 
 ## Cross-links (docs hygiene)
 
