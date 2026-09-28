@@ -253,3 +253,143 @@ def test_disagree_abort_provenance_no_mesh_accept():
     assert report.abort_provenance["continue_advisory"] is True
     assert "ACCEPT" not in (report.mesh_decision, report.abort_code or "")
 
+
+
+# --- Eval dry-run flag path (NOT Mesh live) ---------------------------------
+
+
+def test_dry_run_flag_requires_explicit_opt_in():
+    from neural_mesh.packaging.google_l_judge_peer_spike import gemini_dry_run_flag_enabled
+
+    assert gemini_dry_run_flag_enabled(env={}) is False
+    assert gemini_dry_run_flag_enabled(env={"GEMINI_DRY_RUN": ""}) is False
+    assert gemini_dry_run_flag_enabled(env={"GEMINI_DRY_RUN": "0"}) is False
+    # Key-path presence must not matter — flag alone gates.
+    assert gemini_dry_run_flag_enabled(env={"GEMINI_API_KEY": "should-not-enable"}) is False
+    assert gemini_dry_run_flag_enabled(env={"GEMINI_DRY_RUN": "1"}) is True
+    assert gemini_dry_run_flag_enabled(env={"GEMINI_DRY_RUN": "true"}) is True
+    assert gemini_dry_run_flag_enabled(cli_flag=True) is True
+
+
+def test_dry_run_transport_refuses_without_flag_no_network(monkeypatch):
+    from neural_mesh.packaging.google_l_judge_peer_spike import GeminiFreeDryRunTransport
+
+    calls: list[object] = []
+
+    def boom(*_a, **_k):
+        calls.append(1)
+        raise AssertionError("urlopen must not be called without dry-run flag")
+
+    monkeypatch.setattr(
+        "neural_mesh.packaging.google_l_judge_peer_spike.urllib.request.urlopen", boom
+    )
+    t = GeminiFreeDryRunTransport(dry_run_enabled=False)
+    out = t.call({"prompt": "Reply with exactly: MESH_DRY_RUN_OK"})
+    assert out["ok"] is False
+    assert out["error_code"] == "PEER_DRY_RUN_FLAG_REQUIRED"
+    assert out["truncated"] is False
+    assert out["live_api_enabled"] is False
+    assert out["transport"] == "dry_run_refused"
+    assert calls == []
+    h = t.health()
+    assert h["live"] is False
+    assert h["dry_run_enabled"] is False
+
+
+def test_dry_run_transport_one_call_when_enabled(monkeypatch, tmp_path):
+    """With flag: one HTTP call; response sanitized; LIVE_API_ENABLED untouched."""
+    import io
+    import json as _json
+    from neural_mesh.packaging import google_l_judge_peer_spike as mod
+    from neural_mesh.packaging.google_l_judge_peer_spike import (
+        LIVE_API_ENABLED,
+        GeminiFreeDryRunTransport,
+    )
+
+    secret = tmp_path / "gemini.env"
+    secret.write_text("GEMINI_API_KEY=test-key-not-real-000\n", encoding="utf-8")
+
+    body = {
+        "candidates": [
+            {"content": {"parts": [{"text": "MESH_DRY_RUN_OK"}]}}
+        ],
+        "modelVersion": "gemini-flash-latest",
+        "usageMetadata": {
+            "promptTokenCount": 13,
+            "candidatesTokenCount": 8,
+            "totalTokenCount": 21,
+            "serviceTier": "standard",
+        },
+    }
+    raw = _json.dumps(body).encode("utf-8")
+
+    class _Resp:
+        status = 200
+
+        def read(self):
+            return raw
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    seen: dict[str, object] = {}
+
+    def fake_urlopen(req, timeout=30.0):
+        seen["url"] = req.full_url
+        seen["timeout"] = timeout
+        seen["data"] = req.data
+        return _Resp()
+
+    t = GeminiFreeDryRunTransport(
+        dry_run_enabled=True,
+        secret_env_path=str(secret),
+        model_ref="gemini-flash-latest",
+        _urlopen=fake_urlopen,
+    )
+    out = t.call({"prompt": "Reply with exactly: MESH_DRY_RUN_OK"})
+    assert out["ok"] is True
+    assert out["http_status"] == 200
+    assert out["truncated"] is True
+    assert out["transport"] == "dry_run"
+    assert out["raw_text"] == "MESH_DRY_RUN_OK"
+    assert out["ok_marker"] is True
+    assert out["live_api_enabled"] is False
+    assert LIVE_API_ENABLED is False
+    assert "test-key-not-real-000" not in _json.dumps(out)
+    assert "key=" in str(seen["url"])
+    # URL may contain key for the request; result must not.
+    assert out["secret_handle"] == mod.DRY_RUN_SECRET_HANDLE
+    assert out["model_ref"] == "gemini-flash-latest"
+
+
+def test_build_peer_spike_default_still_mock():
+    from neural_mesh.packaging.google_l_judge_peer_spike import (
+        MockGeminiPeerTransport,
+        build_peer_spike,
+    )
+
+    spike = build_peer_spike()
+    assert isinstance(spike.gemini, MockGeminiPeerTransport)
+    report = spike.run_correlation()
+    assert report.live_api_enabled is False
+    assert all(a.transport == "mock" for a in report.attributions)
+
+
+def test_cli_mock_default_no_network(monkeypatch, capsys):
+    from neural_mesh.packaging.google_l_judge_peer_spike import main
+
+    def boom(*_a, **_k):
+        raise AssertionError("network must not open in mock CLI")
+
+    monkeypatch.setattr(
+        "neural_mesh.packaging.google_l_judge_peer_spike.urllib.request.urlopen", boom
+    )
+    monkeypatch.delenv("GEMINI_DRY_RUN", raising=False)
+    rc = main([])
+    assert rc == 0
+    captured = capsys.readouterr().out
+    assert "mock" in captured
+    assert '"live_api_enabled": false' in captured.lower() or '"live_api_enabled": False' in captured

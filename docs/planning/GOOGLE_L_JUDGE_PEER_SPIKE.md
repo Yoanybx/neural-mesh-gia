@@ -75,6 +75,21 @@ Mock peer transport (`MockGeminiPeerTransport`) is **in-process only** — retur
 
 ---
 
+## 6b. Eval dry-run flag (operator-authorized; NOT Mesh live)
+
+Explicit opt-in only — default remains mock / no network:
+
+| Invoke | Effect |
+|--------|--------|
+| (default) `python -m neural_mesh.packaging.google_l_judge_peer_spike` | Mock correlation; **no** network |
+| `--gemini-dry-run` or `GEMINI_DRY_RUN=1` | ONE free-tier `generateContent` via `GeminiFreeDryRunTransport` |
+| Key file present without flag | Still **no** network (`PEER_DRY_RUN_FLAG_REQUIRED`) |
+| Envelope `use_live_gemini` | Still **RefuseTransport** / `PEER_LIVE_DISABLED` |
+
+- Model default: `gemini-flash-latest` (v1beta)
+- Secret: Gate4 path `/home/box/.config/neural-mesh/gemini.env`; handle `mesh://secrets/judge/gemini-free@v1`
+- Docs: `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
+
 ## 6. Explicit non-goals
 
 - Real Gemini HTTPS / SDK / AI Studio production traffic  
@@ -102,7 +117,7 @@ Path: `notebooks/colab/README.md` (+ optional future `.ipynb` under that directo
 |----------|------|
 | `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` | ALLOWED / FENCES / FORBIDDEN + tip state |
 | `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md` | This spike |
-| `src/neural_mesh/packaging/google_l_judge_peer_spike.py` | Mock peer + correlation helpers + RefuseTransport default |
+| `src/neural_mesh/packaging/google_l_judge_peer_spike.py` | Mock peer + correlation + RefuseTransport default + optional `GeminiFreeDryRunTransport` (flag-gated) |
 | `tests/test_google_l_judge_peer_spike.py` | Negative + mock correlation tests |
 | `notebooks/colab/README.md` | Colab path note |
 

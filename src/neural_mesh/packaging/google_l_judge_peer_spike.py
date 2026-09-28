@@ -1,21 +1,38 @@
-"""Google / Gemini optional L_judge peer spike (design-only).
+"""Google / Gemini optional L_judge peer spike (design-only + eval dry-run).
 
-Mock / dry-run helpers for treating Gemini free-tier as an optional second
-L_judge peer under ChatGPT APPROVE_WITH_FENCES. RefuseTransport default.
-No network. No API keys. live=DISABLED. Dual advisory ≠ M1 consensus.
+Mock helpers for treating Gemini free-tier as an optional second L_judge peer
+under ChatGPT APPROVE_WITH_FENCES. RefuseTransport default for Mesh live.
+Default path: **no network**, no API keys. live=DISABLED. Dual advisory ≠ M1
+consensus. LIVE_API_ENABLED stays False.
 
 Hold mock cycle 2: dual-advisory report fields + abort provenance when mock
 peers disagree (Mesh ACCEPT refused; advisory evidence may continue).
+
+Eval dry-run (NOT Mesh live): an **explicit** flag ``--gemini-dry-run`` or
+env ``GEMINI_DRY_RUN=1`` enables ONE real free-tier generateContent call via
+``GeminiFreeDryRunTransport``, loading the key from the Gate4 out-of-band
+secret file (path only). Key file presence alone never opens network.
+Does **not** flip LIVE_API_ENABLED or enable the Mesh live L_judge adapter.
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass, field
-from typing import Any
+from pathlib import Path
+from typing import Any, Mapping
 
-from neural_mesh.packaging.l_judge_live_adapter_safety import RefuseTransport
+from neural_mesh.packaging.l_judge_live_adapter_safety import (
+    RefuseTransport,
+    is_valid_secret_handle,
+)
 
 __all__ = [
     "PACKAGE_HELD",
@@ -27,12 +44,24 @@ __all__ = [
     "ABORT_CODES",
     "COLAB_PLACEHOLDER",
     "AUTHORITY_NOTE",
+    "GEMINI_DRY_RUN_ENV",
+    "DEFAULT_GEMINI_ENV_PATH",
+    "DEFAULT_DRY_RUN_MODEL",
+    "DRY_RUN_SECRET_HANDLE",
+    "DRY_RUN_OK_MARKER",
+    "DRY_RUN_PROMPT",
     "MockGeminiPeerTransport",
+    "GeminiFreeDryRunTransport",
     "PeerAttribution",
     "CorrelationReport",
     "GoogleLJudgePeerSpike",
     "default_refuse_transport",
     "sample_envelope",
+    "gemini_dry_run_flag_enabled",
+    "load_gemini_key_from_secret_file",
+    "build_peer_spike",
+    "run_gemini_dry_run_once",
+    "main",
 ]
 
 PACKAGE_HELD = "0.18.0"
@@ -51,8 +80,21 @@ ABORT_CODES: tuple[str, ...] = (
     "PEER_SECRET_FORBIDDEN",
     "PEER_SCHEMA_INVALID",
     "PEER_DIGEST_DISAGREE",
+    "PEER_DRY_RUN_FLAG_REQUIRED",
+    "PEER_DRY_RUN_AUTH",
+    "PEER_DRY_RUN_HTTP",
+    "PEER_DRY_RUN_TIMEOUT",
     "ENGINE_DISABLED",
 )
+
+# Eval dry-run only (NOT Mesh live). Explicit flag required for any network.
+GEMINI_DRY_RUN_ENV = "GEMINI_DRY_RUN"
+DEFAULT_GEMINI_ENV_PATH = Path.home() / ".config" / "neural-mesh" / "gemini.env"
+DEFAULT_DRY_RUN_MODEL = "gemini-flash-latest"  # 2.0/1.5 flash returned 404 in evidence
+DRY_RUN_SECRET_HANDLE = "mesh://secrets/judge/gemini-free@v1"  # Gate4 handle id only
+DRY_RUN_OK_MARKER = "MESH_DRY_RUN_OK"
+DRY_RUN_PROMPT = "Reply with exactly: MESH_DRY_RUN_OK"
+_GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 
 
 def _digest16(payload: dict[str, Any]) -> str:
@@ -376,7 +418,7 @@ class GoogleLJudgePeerSpike:
                 provider=str(primary_out.get("provider")),
                 model_ref=str(primary_out.get("model_ref")),
                 digest=d1,
-                transport="mock",
+                transport=str(primary_out.get("transport") or "mock"),
                 verdict=str(primary_out.get("verdict")),
             ),
             PeerAttribution(
@@ -384,7 +426,7 @@ class GoogleLJudgePeerSpike:
                 provider=str(gemini_out.get("provider")),
                 model_ref=str(gemini_out.get("model_ref")),
                 digest=d2,
-                transport="mock",
+                transport=str(gemini_out.get("transport") or "mock"),
                 verdict=str(gemini_out.get("verdict")),
             ),
         ]
@@ -395,3 +437,439 @@ class GoogleLJudgePeerSpike:
         report.provenance["dual_advisory"] = True
         report.provenance["mesh_decision"] = report.mesh_decision
         return report
+
+
+# ---------------------------------------------------------------------------
+# Eval dry-run (explicit flag only) — NOT Mesh live / LIVE_API_ENABLED
+# ---------------------------------------------------------------------------
+
+
+def gemini_dry_run_flag_enabled(
+    *,
+    env: Mapping[str, str] | None = None,
+    cli_flag: bool = False,
+) -> bool:
+    """Return True only when dry-run is explicitly requested.
+
+    Key file presence alone is never enough. Mesh live remains DISABLED.
+    """
+    if cli_flag:
+        return True
+    e = env if env is not None else os.environ
+    val = str(e.get(GEMINI_DRY_RUN_ENV, "")).strip().lower()
+    return val in ("1", "true", "yes", "on")
+
+
+def load_gemini_key_from_secret_file(path: Path | str | None = None) -> str:
+    """Load GEMINI_API_KEY from Gate4 out-of-band env file (never log value)."""
+    p = Path(path) if path is not None else DEFAULT_GEMINI_ENV_PATH
+    if not p.is_file():
+        raise FileNotFoundError(f"secret env file missing: {p}")
+    key = ""
+    for raw in p.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("GEMINI_API_KEY="):
+            key = line.split("=", 1)[1].strip().strip('"').strip("'")
+            break
+    if not key:
+        raise ValueError("GEMINI_API_KEY not found in secret env file")
+    return key
+
+
+def _redact(text: str, secret: str | None = None) -> str:
+    out = text
+    if secret:
+        out = out.replace(secret, "<REDACTED>")
+    # Belt-and-suspenders for common query form.
+    if "key=" in out:
+        parts = out.split("key=")
+        rebuilt = [parts[0]]
+        for chunk in parts[1:]:
+            if not chunk:
+                rebuilt.append("key=<REDACTED>")
+                continue
+            sep_i = len(chunk)
+            for sep in ("&", " ", '"', "'", "\n"):
+                j = chunk.find(sep)
+                if j != -1:
+                    sep_i = min(sep_i, j)
+            rebuilt.append("key=<REDACTED>" + chunk[sep_i:])
+        out = "".join(rebuilt)
+    return out
+
+
+def _extract_candidate_text(body: dict[str, Any]) -> str:
+    cands = body.get("candidates") or []
+    if not cands:
+        return ""
+    content = (cands[0] or {}).get("content") or {}
+    parts = content.get("parts") or []
+    texts: list[str] = []
+    for part in parts:
+        t = part.get("text") if isinstance(part, dict) else None
+        if t:
+            texts.append(str(t))
+    return "".join(texts).strip()
+
+
+@dataclass
+class GeminiFreeDryRunTransport:
+    """One-shot free-tier generateContent — only when ``dry_run_enabled``.
+
+    Without the explicit dry-run flag this transport refuses locally and
+    never opens a socket, even if the key file exists. This is **eval
+    dry-run**, not Mesh live: ``LIVE_API_ENABLED`` stays False and the
+    Mesh live adapter is not enabled.
+    """
+
+    dry_run_enabled: bool = False
+    peer_id: str = "gemini-free-dry-run"
+    model_ref: str = DEFAULT_DRY_RUN_MODEL
+    secret_env_path: str = str(DEFAULT_GEMINI_ENV_PATH)
+    secret_handle: str = DRY_RUN_SECRET_HANDLE
+    timeout_s: float = 30.0
+    name: str = "GeminiFreeDryRunTransport"
+    _urlopen: Any = field(default=urllib.request.urlopen, repr=False)
+
+    def call(self, bundle: dict[str, Any] | None = None, *, timeout_s: float | None = None) -> dict[str, Any]:
+        payload = dict(bundle or {})
+        to = float(timeout_s if timeout_s is not None else self.timeout_s)
+
+        if not self.dry_run_enabled:
+            return {
+                "schema": "mesh.judge.raw_engine/v0",
+                "ok": False,
+                "http_status": None,
+                "latency_ms": 0,
+                "raw_text": None,
+                "error_code": "PEER_DRY_RUN_FLAG_REQUIRED",
+                "provider": "gemini-free",
+                "model_ref": self.model_ref,
+                "truncated": False,
+                "verdict": "ABORT",
+                "digest": "",
+                "peer_id": self.peer_id,
+                "transport": "dry_run_refused",
+                "secret_handle": self.secret_handle,
+                "live_api_enabled": False,
+                "note": "explicit GEMINI_DRY_RUN / --gemini-dry-run required; key file alone is not enough",
+            }
+
+        if not is_valid_secret_handle(self.secret_handle):
+            return {
+                "schema": "mesh.judge.raw_engine/v0",
+                "ok": False,
+                "http_status": None,
+                "latency_ms": 0,
+                "raw_text": None,
+                "error_code": "PEER_DRY_RUN_AUTH",
+                "provider": "gemini-free",
+                "model_ref": self.model_ref,
+                "truncated": False,
+                "verdict": "ABORT",
+                "digest": "",
+                "peer_id": self.peer_id,
+                "transport": "dry_run",
+                "secret_handle": self.secret_handle,
+                "live_api_enabled": False,
+            }
+
+        try:
+            api_key = load_gemini_key_from_secret_file(self.secret_env_path)
+        except (OSError, ValueError) as exc:
+            return {
+                "schema": "mesh.judge.raw_engine/v0",
+                "ok": False,
+                "http_status": None,
+                "latency_ms": 0,
+                "raw_text": None,
+                "error_code": "PEER_DRY_RUN_AUTH",
+                "provider": "gemini-free",
+                "model_ref": self.model_ref,
+                "truncated": False,
+                "verdict": "ABORT",
+                "digest": "",
+                "peer_id": self.peer_id,
+                "transport": "dry_run",
+                "secret_handle": self.secret_handle,
+                "live_api_enabled": False,
+                "error_class": "auth",
+                "error_detail": type(exc).__name__,
+            }
+
+        prompt = str(payload.get("prompt") or DRY_RUN_PROMPT)
+        url = (
+            f"{_GEMINI_API_BASE}/{self.model_ref}:generateContent"
+            f"?key={api_key}"
+        )
+        body_obj = {
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"temperature": 0, "maxOutputTokens": 256},
+        }
+        data = json.dumps(body_obj).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        t0 = time.monotonic()
+        try:
+            with self._urlopen(req, timeout=to) as resp:
+                raw = resp.read()
+                status = int(getattr(resp, "status", 200) or 200)
+        except urllib.error.HTTPError as exc:
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            err_body = ""
+            try:
+                err_body = exc.read().decode("utf-8", errors="replace")[:500]
+            except Exception:  # noqa: BLE001
+                err_body = ""
+            err_body = _redact(err_body, api_key)
+            error_class = "http"
+            if exc.code == 404:
+                error_class = "model"
+            elif exc.code in (401, 403):
+                error_class = "auth"
+            elif exc.code == 429:
+                error_class = "quota"
+            return {
+                "schema": "mesh.judge.raw_engine/v0",
+                "ok": False,
+                "http_status": int(exc.code),
+                "latency_ms": latency_ms,
+                "raw_text": None,
+                "error_code": "PEER_DRY_RUN_HTTP",
+                "provider": "gemini-free",
+                "model_ref": self.model_ref,
+                "truncated": True,
+                "verdict": "ABORT",
+                "digest": "",
+                "peer_id": self.peer_id,
+                "transport": "dry_run",
+                "secret_handle": self.secret_handle,
+                "live_api_enabled": False,
+                "error_class": error_class,
+                "error_detail": _redact(str(exc), api_key)[:200],
+                "error_body_redacted": err_body,
+            }
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            return {
+                "schema": "mesh.judge.raw_engine/v0",
+                "ok": False,
+                "http_status": None,
+                "latency_ms": latency_ms,
+                "raw_text": None,
+                "error_code": "PEER_DRY_RUN_TIMEOUT",
+                "provider": "gemini-free",
+                "model_ref": self.model_ref,
+                "truncated": False,
+                "verdict": "ABORT",
+                "digest": "",
+                "peer_id": self.peer_id,
+                "transport": "dry_run",
+                "secret_handle": self.secret_handle,
+                "live_api_enabled": False,
+                "error_class": "network",
+                "error_detail": type(exc).__name__,
+            }
+        finally:
+            # Drop key reference ASAP from this frame.
+            api_key = ""  # noqa: F841
+
+        latency_ms = int((time.monotonic() - t0) * 1000)
+        try:
+            parsed = json.loads(raw.decode("utf-8"))
+        except json.JSONDecodeError:
+            return {
+                "schema": "mesh.judge.raw_engine/v0",
+                "ok": False,
+                "http_status": status,
+                "latency_ms": latency_ms,
+                "raw_text": None,
+                "error_code": "PEER_DRY_RUN_HTTP",
+                "provider": "gemini-free",
+                "model_ref": self.model_ref,
+                "truncated": True,
+                "verdict": "ABORT",
+                "digest": "",
+                "peer_id": self.peer_id,
+                "transport": "dry_run",
+                "secret_handle": self.secret_handle,
+                "live_api_enabled": False,
+                "error_class": "schema",
+            }
+
+        text = _extract_candidate_text(parsed)
+        marker_ok = DRY_RUN_OK_MARKER in text
+        digest = _digest16(
+            {
+                "peer": self.peer_id,
+                "model": self.model_ref,
+                "text": text[:200],
+                "status": status,
+            }
+        )
+        usage = parsed.get("usageMetadata") or {}
+        usage_safe = {
+            k: usage.get(k)
+            for k in (
+                "promptTokenCount",
+                "candidatesTokenCount",
+                "totalTokenCount",
+                "thoughtsTokenCount",
+                "serviceTier",
+            )
+            if k in usage
+        }
+        return {
+            "schema": "mesh.judge.raw_engine/v0",
+            "ok": status == 200,
+            "http_status": status,
+            "latency_ms": latency_ms,
+            "raw_text": text[:500],
+            "error_code": None if status == 200 else "PEER_DRY_RUN_HTTP",
+            "provider": "gemini-free",
+            "model_ref": self.model_ref,
+            "model_version": parsed.get("modelVersion"),
+            "truncated": True,
+            "verdict": "ADVISORY" if status == 200 else "ABORT",
+            "digest": digest,
+            "peer_id": self.peer_id,
+            "transport": "dry_run",
+            "secret_handle": self.secret_handle,
+            "live_api_enabled": False,
+            "ok_marker": marker_ok,
+            "response_sha256": hashlib.sha256(raw).hexdigest(),
+            "usage": usage_safe,
+            "advisory_only": True,
+            "m1_status": M1_STATUS,
+        }
+
+    def health(self) -> dict[str, Any]:
+        return {
+            "ok": True,
+            "binding": self.name,
+            "live": False,
+            "live_api_enabled": False,
+            "dry_run_enabled": bool(self.dry_run_enabled),
+            "provider": "gemini-free",
+            "secret_handle": self.secret_handle,
+        }
+
+
+def build_peer_spike(*, gemini_dry_run: bool = False) -> GoogleLJudgePeerSpike:
+    """Factory: mock default; optional dry-run Gemini peer when flag is True."""
+    if gemini_dry_run:
+        return GoogleLJudgePeerSpike(
+            gemini=GeminiFreeDryRunTransport(dry_run_enabled=True)
+        )
+    return GoogleLJudgePeerSpike()
+
+
+def run_gemini_dry_run_once(
+    *,
+    prompt: str = DRY_RUN_PROMPT,
+    model_ref: str = DEFAULT_DRY_RUN_MODEL,
+    secret_env_path: str | Path | None = None,
+    timeout_s: float = 30.0,
+) -> dict[str, Any]:
+    """Execute exactly one free-tier dry-run call; return sanitized result."""
+    transport = GeminiFreeDryRunTransport(
+        dry_run_enabled=True,
+        model_ref=model_ref,
+        secret_env_path=str(secret_env_path or DEFAULT_GEMINI_ENV_PATH),
+        timeout_s=timeout_s,
+    )
+    out = transport.call({"prompt": prompt, "request_id": "gemini-dry-run-once"})
+    # Ensure LIVE_API_ENABLED constant untouched / reported false.
+    out["live_api_enabled"] = False
+    out["mesh_live_adapter"] = "NOT_ENABLED"
+    out["LIVE_API_ENABLED_constant"] = LIVE_API_ENABLED
+    return out
+
+
+def main(argv: list[str] | None = None) -> int:
+    """CLI: mock by default; ``--gemini-dry-run`` or ``GEMINI_DRY_RUN=1`` for one real call."""
+    parser = argparse.ArgumentParser(
+        prog="python -m neural_mesh.packaging.google_l_judge_peer_spike",
+        description=(
+            "Google L_judge peer spike. Default=mock (no network). "
+            "Explicit --gemini-dry-run / GEMINI_DRY_RUN=1 enables ONE free-tier "
+            "eval call. Does NOT flip LIVE_API_ENABLED or Mesh live."
+        ),
+    )
+    parser.add_argument(
+        "--gemini-dry-run",
+        action="store_true",
+        help="Enable ONE real Gemini free-tier generateContent call (eval only).",
+    )
+    parser.add_argument(
+        "--prompt",
+        default=DRY_RUN_PROMPT,
+        help="Synthetic prompt for dry-run (default: MESH_DRY_RUN_OK marker).",
+    )
+    parser.add_argument(
+        "--model",
+        default=DEFAULT_DRY_RUN_MODEL,
+        help=f"Model id (default: {DEFAULT_DRY_RUN_MODEL}).",
+    )
+    parser.add_argument(
+        "--secret-env",
+        default=str(DEFAULT_GEMINI_ENV_PATH),
+        help="Out-of-band gemini.env path (Gate4 secret_handle store).",
+    )
+    parser.add_argument(
+        "--correlation",
+        action="store_true",
+        help="Also print mock dual-peer correlation report (gemini peer uses dry-run transport if flag set).",
+    )
+    args = parser.parse_args(argv)
+
+    dry = gemini_dry_run_flag_enabled(cli_flag=bool(args.gemini_dry_run))
+    summary: dict[str, Any] = {
+        "live_api_enabled": LIVE_API_ENABLED,
+        "mesh_live_adapter": "NOT_ENABLED",
+        "dry_run_flag": dry,
+        "secret_handle": DRY_RUN_SECRET_HANDLE,
+        "secret_env_path": args.secret_env,
+        "model_ref": args.model,
+    }
+
+    if dry:
+        result = run_gemini_dry_run_once(
+            prompt=args.prompt,
+            model_ref=args.model,
+            secret_env_path=args.secret_env,
+        )
+        summary["dry_run_result"] = result
+        # Never echo key material — result is already sanitized.
+        print(json.dumps(summary, indent=2, sort_keys=True))
+        if args.correlation:
+            spike = build_peer_spike(gemini_dry_run=True)
+            # Use mock envelope without live flags; dry-run peer already called above.
+            # For correlation demo, use a fresh dry-run transport only if needed —
+            # here we run primary mock + a disabled dry-run? Better: mock correlation.
+            corr = GoogleLJudgePeerSpike().run_correlation(sample_envelope())
+            summary_corr = {
+                "note": "correlation demo remains mock-only unless wired separately; "
+                "dry-run above is one-shot eval evidence",
+                "correlation": corr.to_dict(),
+            }
+            print(json.dumps(summary_corr, indent=2, sort_keys=True))
+        return 0 if result.get("ok") else 2
+
+    # Default: mock-only, no network.
+    spike = build_peer_spike(gemini_dry_run=False)
+    report = spike.run_correlation(sample_envelope())
+    summary["mode"] = "mock"
+    summary["correlation"] = report.to_dict()
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

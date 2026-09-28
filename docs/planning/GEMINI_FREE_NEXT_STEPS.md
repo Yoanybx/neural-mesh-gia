@@ -5,7 +5,7 @@
 **Scope:** Gemini **free-tier eval only**; Vertex paid **OUT**  
 **Posture:** **live=DISABLED**; flags `live=false` held  
 **Cite:** `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md` · `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`  
-**Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET)
+**Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
 ---
 
@@ -15,6 +15,7 @@
 |------|--------|--------|---------------|
 | **1** | **secret_handle outside repo** — provision handle in out-of-band store; record handle path / digest only | **DONE (eval)** — handle at `/home/box/.config/neural-mesh/gemini.env`; `.gitignore` covers `gemini.env` / `.config/neural-mesh/`; key never in git | Raw key in repo, CI, evidence digests, chat |
 | **2** | **Dry-run** — one-shot free `generateContent` with synthetic prompt; evidence without secrets | **DONE (eval)** — HTTP 200; model `gemini-flash-latest` (2.0/1.5 flash retired → 404 model); marker `MESH_DRY_RUN_OK`; see evidence notes | Mesh live adapter enable; flip `LIVE_API_ENABLED`; Gate5 canary without serial gates |
+| **2b** | **Peer spike dry-run wire** — mock Google L_judge peer gains explicit `--gemini-dry-run` / `GEMINI_DRY_RUN=1` path for ONE real free call; default remains mock/no-network | **DONE (eval)** — `GeminiFreeDryRunTransport` + CLI in `google_l_judge_peer_spike.py`; see `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md` | Flip `LIVE_API_ENABLED`; enable Mesh live adapter; treat dry-run as Gate5 canary |
 | **3** | **Gate5 canary later** — health check → single canary under kill-armed I5 → ledger evidence (Gate5 steps 1–7) | **NOT STARTED** — only after Gates 2–4 sealed + Gate1 scope upgrade if operator marks ENABLE_UNDER_FENCES | Canary / flip `live_adapter.enabled` / `LIVE_API_ENABLED` without full chain |
 
 ---
@@ -35,7 +36,7 @@ Before any flag flip:
 
 ## Related
 
-- `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` · `council/NOTE_GEMINI_DRY_RUN.md`
+- `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` · `council/NOTE_GEMINI_DRY_RUN.md` · `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/LIVE_100_OPERATOR_WALL.md`
@@ -43,4 +44,4 @@ Before any flag flip:
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — discuss only; live=DISABLED; eval dry-run done; no Mesh live enable.*
+*End GEMINI_FREE_NEXT_STEPS — discuss only; live=DISABLED; eval dry-run + peer-spike wire done; no Mesh live enable.*
