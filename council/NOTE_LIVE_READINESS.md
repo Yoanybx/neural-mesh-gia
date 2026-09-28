@@ -1,10 +1,11 @@
 # Operator note — Live readiness checklist (design-only)
 
-- **Date:** 2026-09-26 America/New_York (EDT)
+- **Date:** 2026-09-28 America/New_York (EDT) — Hold docs hygiene refresh
 - **Author:** Grok Bot (Staff Eng — docs only; not an unlock)
-- **Tip context:** ~`74ce42e` / Google mock spike atop **CP-0074** (`4b43bf4`)
-- **Package posture:** **0.18.0 HELD** · **live=DISABLED** · **M1=NO_CONSENSUS_YET** (N=2 permanent) · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED**
-- **Planning doc:** `docs/planning/LIVE_READINESS_CHECKLIST.md`
+- **Tip context:** Hold tip atop wall / Gate1–6 design drafts / Google mock spike / **CP-0074** (`4b43bf4`); split `98e5752`
+- **Package posture:** **0.18.0 HELD** · **OPERATOR HOLD (A)** · **live=DISABLED (FROZEN)** · **Gate1 UNSIGNED** · Gates 2–6 **cannot seal** · **M1=NO_CONSENSUS_YET** (N=2 permanent) · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED**
+- **Planning doc:** `docs/planning/LIVE_READINESS_CHECKLIST.md` · wall `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- **Hold roadmap:** `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - **CP minted:** **No** (docs+commit only; continues fenced Google spike; no cycle helpers/tests required)
 
 ## Operator ask
@@ -33,6 +34,9 @@ You asked what is missing for **live+API** after D4/D1 and the Google free-tools
 ## Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
+- `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
+- `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` (**UNSIGNED**) … `GATE6_LIVE_ACCEPTANCE_METRICS.md` (**cannot seal**)
 - `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md`
 - `council/COUNCIL_AGREEMENT_D4.md`

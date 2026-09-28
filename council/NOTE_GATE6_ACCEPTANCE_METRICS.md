@@ -29,6 +29,9 @@ Design-only Gate 6 metric bundle: refuse-default negatives; kill latency; no sec
 
 ## Related
 
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
+- Gate1 remains **UNSIGNED**; Gates 2–6 design drafts **cannot seal** under Hold
+
 - `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (§10)

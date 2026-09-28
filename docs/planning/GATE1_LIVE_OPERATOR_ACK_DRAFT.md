@@ -7,7 +7,8 @@
 **Date drafted:** 2026-09-27 America/New_York (EDT)  
 **Author (draft only):** Grok Bot (Staff Eng — docs only)  
 **Tip at draft:** `8c771a7` (Design-only: live readiness checklist) atop Google fenced spike / CP-0074  
-**Package posture:** **0.18.0 HELD** · **live=DISABLED** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED**
+**Package posture:** **0.18.0 HELD** · **OPERATOR HOLD (A)** · **live=DISABLED (live track FROZEN)** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **UNSIGNED**
+**Hold hygiene:** wall `docs/planning/LIVE_100_OPERATOR_WALL.md` · checklist `docs/planning/LIVE_READINESS_CHECKLIST.md` — this draft **cannot seal** live; signature block remains empty
 
 **Checklist / Gate 1 exit:** `docs/planning/LIVE_READINESS_CHECKLIST.md` § Gate 1 — Operator ACK  
 **Council note:** `council/NOTE_GATE1_ACK_DRAFT.md`
@@ -176,6 +177,8 @@ Before any `live_adapter.enabled` / `LIVE_API_ENABLED` flip:
 ## 7. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md` (Gate 1 exit)
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE1_ACK_DRAFT.md`
 - `council/NOTE_LIVE_READINESS.md`
 - `council/COUNCIL_AGREEMENT_D4.md` (F3/F4)

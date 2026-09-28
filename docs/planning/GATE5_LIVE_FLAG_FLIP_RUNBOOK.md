@@ -23,7 +23,7 @@
 
 **Invariant:** This runbook may be drafted while earlier gates are open. **Executing** any step still requires Gates **1–4** sealed first (serial). Today Gate 1 is **UNSIGNED** and Gates 1–4 are **not sealed**, so this procedure remains **design text only** — **never partial enable**.
 
-**Today (2026-09-27):** live=DISABLED · RefuseTransport default ON · `LIVE_API_ENABLED=false` · `live_adapter.enabled=false` · **no keys** · **no real calls** · **this runbook NOT executed**.
+**Today (2026-09-28):** live=DISABLED · **OPERATOR HOLD (A)** · RefuseTransport default ON · `LIVE_API_ENABLED=false` · `live_adapter.enabled=false` · **no keys** · **no real calls** · **this runbook NOT executed** · Gate1 **UNSIGNED** → **cannot seal**.
 
 ---
 
@@ -203,6 +203,8 @@ Helpers (no network this docs cycle):
 ## 8. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md` (Gate 5 exit)
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE5_FLIP_RUNBOOK.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md`

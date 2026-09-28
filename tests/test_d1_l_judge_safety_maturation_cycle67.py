@@ -229,3 +229,53 @@ def test_upstream_safety_continuity_oversight_present():
     assert (REPO / "docs/design/ORCHESTRATOR_OVERSIGHT_HOOKS_DESIGN.md").is_file()
     assert (REPO / "council/COUNCIL_AGREEMENT_D4.md").is_file()
     assert (REPO / "council/D4_CHATGPT_FINDINGS.md").is_file()
+
+
+def test_mock_rv_verification_drill_green_not_live():
+    """Hold mock cycle 5: RV-1..RV-7 mock-green; not live proof / not canary."""
+    from neural_mesh.packaging.d1_l_judge_safety_maturation import (
+        mock_rv_verification_drill,
+    )
+
+    report = mock_rv_verification_drill()
+    assert report["ok"] is True
+    assert report["drill"] == "RV_1_TO_7"
+    assert report["live_armed"] is False
+    assert report["canary_armed"] is False
+    assert report["live_proof"] is False
+    assert report["live_adapter.enabled"] is False
+    assert report["LIVE_API_ENABLED"] is False
+    assert report["dual_primary"] == 0
+    assert report["rollback_verification_ids"] == list(ROLLBACK_VERIFICATION_IDS)
+    for rv in ROLLBACK_VERIFICATION_IDS:
+        assert rv in report["results"]
+        assert report["results"][rv]["ok"] is True
+        assert report["results"][rv]["live_proof"] is False
+        assert report["results"][rv]["scope"] == "mock"
+
+
+def test_mock_i5_kill_to_refuse_drill_no_canary():
+    """Hold mock cycle 5: I5 kill → RefuseTransport + ABORT; flags stay false."""
+    from neural_mesh.packaging.d1_l_judge_safety_maturation import (
+        mock_i5_kill_to_refuse_drill,
+    )
+
+    report = mock_i5_kill_to_refuse_drill()
+    assert report["ok"] is True
+    assert report["drill"] == "I5_KILL_TO_REFUSE"
+    assert report["live_armed"] is False
+    assert report["canary_armed"] is False
+    assert report["kill_authority"] == "Oversight_I5"
+    assert report["i5_can_execute"] is False
+    assert report["abort_code"] == "HUMAN_ABORT"
+    assert report["continuity"] == "ABORT"
+    assert report["binding"] == "RefuseTransport"
+    assert report["live"] is False
+    assert report["live_adapter.enabled"] is False
+    assert report["LIVE_API_ENABLED"] is False
+    assert report["mesh_accept"] is False
+    assert report["emergency_enabled_false"] is True
+    assert report["refuse_call"]["error_code"] == "ENGINE_DISABLED"
+    assert report["refuse_call"]["verdict"] == "ABORT"
+    assert report["health"]["binding"] == "RefuseTransport"
+    assert report["health"]["live"] is False

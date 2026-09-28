@@ -5,10 +5,12 @@
 **Date:** 2026-09-28 America/New_York (EDT)  
 **Author:** Grok Bot (Staff Eng — docs only)  
 **Tip at draft:** `2eca8aa` (Gate 6 acceptance metrics) atop Gate3 `0af78c8` / Gate2 `001211b` / Gate5 `45ccc16` / Gate4 `8f2eea6` / Gate1 `0b6353c` / checklist `8c771a7`  
+**Hold tip (hygiene):** under OPERATOR HOLD (A) — see `docs/planning/HOLD_MOCK_NEXT.md` · seal `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · split `98e5752` · cycles 1–5 mock-only  
 **Package posture:** **0.18.0 HELD** · **OPERATOR HOLD (A)** · **live=DISABLED (live track FROZEN)** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **MESH_PERF_EXPERIMENTAL=OFF** · pkg0190 **NOT_OPENED** · **Gate 1 UNSIGNED**
 
 **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md`  
-**Council notes:** Gate1–6 `council/NOTE_GATE*.md` · `council/NOTE_LIVE_READINESS.md`
+**Council notes:** Gate1–6 `council/NOTE_GATE*.md` · `council/NOTE_LIVE_READINESS.md`  
+**Hold roadmap:** `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 
 ---
 
@@ -108,14 +110,14 @@ Until the four blockers clear: **live=DISABLED** remains binding; RefuseTranspor
 
 ## 6. Related
 
-- `docs/planning/LIVE_READINESS_CHECKLIST.md`
-- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
-- `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` … `GATE6_LIVE_ACCEPTANCE_METRICS.md`
+- `docs/planning/LIVE_READINESS_CHECKLIST.md` — ordered Gates 1–6; **UNSIGNED / cannot seal** board
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
+- `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` (**UNSIGNED**) · `GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · `GATE3_AUTHORITY_MATRIX_BINDING.md` · `GATE4_LIVE_DATA_POLICY.md` · `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md` (all **cannot seal** while Gate1 unsigned / live proof missing)
 - `council/NOTE_GATE1_ACK_DRAFT.md` … `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`
 - `council/NOTE_LIVE_READINESS.md`
-- `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md`
+- `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (RV-1..RV-7 · I5 kill)
 - `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md`
-- `src/neural_mesh/packaging/l_judge_live_adapter_safety.py`
+- `src/neural_mesh/packaging/l_judge_live_adapter_safety.py` · `src/neural_mesh/packaging/d1_l_judge_safety_maturation.py`
 
 ---
 

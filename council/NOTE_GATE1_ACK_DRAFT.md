@@ -31,6 +31,9 @@ Fillable / signable **Gate 1** draft for the operator (Joan / Yoan) to edit and 
 
 ## Related
 
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
+- Gate1 remains **UNSIGNED**; Gates 2–6 design drafts **cannot seal** under Hold
+
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `council/NOTE_LIVE_READINESS.md`

@@ -2,9 +2,10 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 America/New_York (EDT) — Gate2 amendment draft refresh  
-**Operator decision:** **HOLD (A)** 2026-09-28 — tip note after wall split `98e5752`; live track frozen; see `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md`
-**Tip context:** Gate2 safety-case amendment draft atop Gate5 ~`45ccc16` / Gate4 ~`8f2eea6` / Gate1 ACK draft ~`0b6353c` / checklist ~`8c771a7` / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
+**Date:** 2026-09-28 America/New_York (EDT) — Hold docs hygiene (cycle 4)  
+**Operator decision:** **HOLD (A)** 2026-09-28 — tip note after wall split `98e5752`; live track **FROZEN**; see `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
+**Tip context:** Hold tip atop wall `1e5ff22` / Gate6 `2eca8aa` / Gate3 `0af78c8` / Gate2 `001211b` / Gate5 `45ccc16` / Gate4 `8f2eea6` / Gate1 draft `0b6353c` (UNSIGNED) / checklist `8c771a7` / Google fenced `74ce42e` / **CP-0074** (`4b43bf4`)  
+**Wall:** `docs/planning/LIVE_100_OPERATOR_WALL.md` — Gate1 **UNSIGNED**; Gates 2–6 design-only **cannot seal**  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
 **Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_SAFETY_AMENDMENT.md` / `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
@@ -123,7 +124,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ tip ~2eca8aa+wall |
+| # | Gate | Blocks live+API? | Status @ Hold + wall (Gate1 UNSIGNED) |
 |---|------|------------------|------------------------|
 | 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
 | 2 | Safety evidence (+ live amendment) | **Yes** | Amendment **drafted as design** (`GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`); still **Missing live proof**; **cannot seal** (Gate 1 unsigned) |

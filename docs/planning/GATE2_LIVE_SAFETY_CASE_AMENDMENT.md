@@ -192,6 +192,8 @@ Extends D1 §5 (D4-C) for real-transport peer failure modes (**mock posture hold
 ## 9. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md` (Gate 2)
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE2_SAFETY_AMENDMENT.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071; D4-A..K; RV-1..RV-7; I5 kill)
 - `council/COUNCIL_AGREEMENT_D4.md` (F4)

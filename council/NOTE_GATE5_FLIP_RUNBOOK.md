@@ -31,6 +31,9 @@ Design-only ordered flip procedure: (1) Gate1 signed ACK (2) Gate2 safety amendm
 
 ## Related
 
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
+- Gate1 remains **UNSIGNED**; Gates 2–6 design drafts **cannot seal** under Hold
+
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md`

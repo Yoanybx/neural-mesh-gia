@@ -30,6 +30,9 @@ Design-only Gate 4 schedule: allowed vs forbidden egress classes, secret_handle 
 
 ## Related
 
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` · `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md`
+- Gate1 remains **UNSIGNED**; Gates 2–6 design drafts **cannot seal** under Hold
+
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md`

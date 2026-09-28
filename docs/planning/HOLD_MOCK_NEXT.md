@@ -27,8 +27,8 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 | 1 | **RefuseTransport negatives refresh** | Keep fail-closed paths green; optional extra envelope/edge cases if a gap appears | Live flag flip, real transport |
 | 2 | **Google mock peer correlation** ✅ **DONE** | Strengthen mock dual-advisory reports / abort provenance under live=DISABLED | Real Gemini, keys, Colab live |
 | 3 | **Mock multi-judge harness** ✅ **DONE** | Local evaluation hygiene; disagreement → ABORT > ACCEPT | Claiming peer agree = M1 consensus |
-| 4 | **Docs hygiene** | Cross-link wall / checklist / Gate1–6 drafts; keep “UNSIGNED / cannot seal” honest | Signing Gate1, inventing ACKs |
-| 5 | **RV / kill-path mock drills** | Re-run existing mock rollback / I5→Refuse drills if present | Arming live kill for canary |
+| 4 | **Docs hygiene** ✅ **DONE** | Cross-link wall / checklist / Gate1–6 drafts; keep “UNSIGNED / cannot seal” honest | Signing Gate1, inventing ACKs |
+| 5 | **RV / kill-path mock drills** ✅ **DONE** | Re-run existing mock rollback / I5→Refuse drills if present | Arming live kill for canary |
 
 **Skip while Hold stands:** Gate1 sign (even DISCUSS_ONLY) · secret_handle provision · Gate5 canary · D3 ACK · push/tags · CP mint · any `live_adapter.enabled` / `LIVE_API_ENABLED` flip.
 
@@ -42,6 +42,19 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 | 1 RefuseTransport negatives refresh | Verified green at Hold tip (no code delta required) | Tip `8d0951b`; safety + peer suite green |
 | 2 Google mock peer correlation | **DONE** @ `96daa25` | Dual-advisory fields + `abort_provenance` on disagreement (`PEER_DIGEST_DISAGREE`); RefuseTransport still default; **26 passed** peer+safety; no CP mint (Hold docs+helpers pattern) |
 | 3 Mock multi-judge harness | **DONE** @ `2b4ebad` | Post-invoke digest hygiene + `abort_provenance`; disagreement → `SPIKE_JUDGE_DIGEST_DISAGREE` / `ROUTE_JUDGE_MISMATCH` with **ABORT > ACCEPT**; dual agree stays ADVISORY (`mesh_accept=False`, ≠ M1); no CP mint |
+| 4 Docs hygiene | **DONE** (this tip) | Cross-link wall / checklist / Gate1–6 drafts; UNSIGNED / cannot seal held honest; tip contexts refreshed under Hold; see `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md` |
+| 5 RV / kill-path mock drills | **DONE** (this tip) | Re-ran RefuseTransport + D1 RV suites; thin `mock_rv_verification_drill` + `mock_i5_kill_to_refuse_drill` (no live canary); see Progress tip stamp |
+
+## Cross-links (docs hygiene)
+
+| Artifact | Path |
+|----------|------|
+| Operator wall | `docs/planning/LIVE_100_OPERATOR_WALL.md` |
+| Live readiness checklist | `docs/planning/LIVE_READINESS_CHECKLIST.md` |
+| Gate 1 ACK draft (**UNSIGNED**) | `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · `council/NOTE_GATE1_ACK_DRAFT.md` |
+| Gate 2–6 design drafts (**cannot seal**) | `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` … `GATE6_LIVE_ACCEPTANCE_METRICS.md` |
+| Hold seal note | `council/NOTE_OPERATOR_HOLD_POST_WALL.md` |
+| Roadmap complete note | `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md` |
 
 ## Stop conditions (reassess with operator)
 

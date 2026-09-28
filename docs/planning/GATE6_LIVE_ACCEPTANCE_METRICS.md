@@ -149,6 +149,8 @@ All must remain true before any live *discussion* / ACK cycle uses this bundle (
 ## 7. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (§10 · §4.4)
 - `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`

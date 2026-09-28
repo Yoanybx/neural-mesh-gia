@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from .release_checklist import NO_HELD_DEFAULT, GateResult
+from .l_judge_live_adapter_safety import RefuseTransport
 
 __all__ = [
     "PACKAGE_HELD",
@@ -37,6 +38,8 @@ __all__ = [
     "authority_matrix_as_rows",
     "default_maturation_gate",
     "run_d1_safety_maturation_gates",
+    "mock_rv_verification_drill",
+    "mock_i5_kill_to_refuse_drill",
 ]
 
 PACKAGE_HELD = "0.18.0"
@@ -137,6 +140,78 @@ def default_maturation_gate() -> dict[str, Any]:
         "mesh_perf_experimental": "OFF",
         "composed_cps": list(COMPOSED_CPS),
         "must_stay_false": {k: False for k in MUST_STAY_FALSE},
+    }
+
+
+def mock_rv_verification_drill() -> dict[str, Any]:
+    """Mock-only RV-1..RV-7 green report (Hold cycle 5).
+
+    Does **not** prove live transport, arm a canary, flip live flags, or mint
+    keys. Scope remains mock/local under live=DISABLED.
+    """
+    results: dict[str, dict[str, Any]] = {}
+    for rv in ROLLBACK_VERIFICATION_IDS:
+        results[rv] = {
+            "ok": True,
+            "scope": "mock",
+            "live_proof": False,
+            "detail": f"{rv} mock-green under RefuseTransport / live=DISABLED",
+        }
+    return {
+        "schema": "mesh.judge.mock_rv_drill/v0",
+        "drill": "RV_1_TO_7",
+        "ok": all(v["ok"] for v in results.values()),
+        "live_armed": False,
+        "canary_armed": False,
+        "live_proof": False,
+        "live_adapter.enabled": False,
+        "LIVE_API_ENABLED": False,
+        "dual_primary": 0,
+        "rollback_verification_ids": list(ROLLBACK_VERIFICATION_IDS),
+        "results": results,
+        "note": (
+            "Mock RV drill only. Gate2 / live RV evidence still OPEN; "
+            "Gate1 UNSIGNED → cannot seal."
+        ),
+    }
+
+
+def mock_i5_kill_to_refuse_drill() -> dict[str, Any]:
+    """Mock-only I5 kill → RefuseTransport + continuity ABORT (Hold cycle 5).
+
+    Simulates the design kill chain under live=DISABLED. Does **not** arm a
+    live canary, flip enablement flags true, or perform network I/O.
+    """
+    # I5 may approve/veto/kill but cannot execute (matrix row).
+    i5 = AUTHORITY_MATRIX["Oversight_I5"]
+    if i5 != (True, True, True, False):
+        raise RuntimeError("Oversight_I5 matrix drift; refuse mock kill drill")
+
+    rt = RefuseTransport()
+    health = rt.health()
+    refused = rt.call({"reason": "mock_i5_kill"})
+    return {
+        "schema": "mesh.judge.mock_i5_kill_drill/v0",
+        "drill": "I5_KILL_TO_REFUSE",
+        "ok": True,
+        "live_armed": False,
+        "canary_armed": False,
+        "kill_authority": "Oversight_I5",
+        "i5_can_execute": False,
+        "abort_code": "HUMAN_ABORT",
+        "continuity": "ABORT",
+        "binding": health.get("binding"),
+        "live": bool(health.get("live")),
+        "live_adapter.enabled": False,
+        "LIVE_API_ENABLED": False,
+        "refuse_call": refused,
+        "health": health,
+        "mesh_accept": False,
+        "emergency_enabled_false": True,
+        "note": (
+            "Mock I5→Refuse drill only. Does not arm Gate5 canary; "
+            "live track remains FROZEN under OPERATOR HOLD (A)."
+        ),
     }
 
 

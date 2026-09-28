@@ -176,6 +176,8 @@ Hypothetical canary schedule (**not authorized today**):
 ## 7. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md` (Gate 4 exit)
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE4_DATA_POLICY.md`
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` (§2.3 data classes)
 - `docs/design/L_JUDGE_LIVE_ADAPTER_SAFETY_CASE.md` (CP-0058 §5 secret_handle)

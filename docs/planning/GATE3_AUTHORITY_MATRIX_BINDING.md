@@ -165,6 +165,8 @@ These prove **in-use binding intent**; they **do not** authorize flip.
 ## 8. Related
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
+- `docs/planning/LIVE_100_OPERATOR_WALL.md` — operator wall; live track **FROZEN** under HOLD (A)
+- `docs/planning/HOLD_MOCK_NEXT.md` · `council/NOTE_OPERATOR_HOLD_POST_WALL.md` · `council/NOTE_HOLD_MOCK_ROADMAP_COMPLETE.md`
 - `council/NOTE_GATE3_AUTHORITY_MATRIX.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (§3 Authority Matrix)
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` (§3 summary)
