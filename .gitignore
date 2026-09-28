@@ -21,3 +21,9 @@ experiments/*/work/
 
 # Packaging bundles (CP-0024)
 dist/
+
+# Secrets / local Gemini free-eval handles (never commit)
+gemini.env
+**/gemini.env
+.config/neural-mesh/
+**/.config/neural-mesh/
