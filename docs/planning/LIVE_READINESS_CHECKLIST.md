@@ -5,7 +5,7 @@
 **Date:** 2026-09-28 America/New_York (EDT) — Gate2 amendment draft refresh  
 **Tip context:** Gate2 safety-case amendment draft atop Gate5 ~`45ccc16` / Gate4 ~`8f2eea6` / Gate1 ACK draft ~`0b6353c` / checklist ~`8c771a7` / Google fenced ~`74ce42e` / **CP-0074** (`4b43bf4`)  
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
-**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_SAFETY_AMENDMENT.md` / `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`
+**Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · Gate2: `council/NOTE_GATE2_SAFETY_AMENDMENT.md` / `docs/planning/GATE2_LIVE_SAFETY_CASE_AMENDMENT.md` · Gate4: `council/NOTE_GATE4_DATA_POLICY.md` / `docs/planning/GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
 ---
 
@@ -24,7 +24,7 @@
 
 ## 1. Ordered gates (must pass in order)
 
-Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`001211b` + Gate1 ACK **draft** (unsigned) + Gate2 live safety-case **amendment drafted as design** (not live proof; cannot seal) + Gate3 Authority Matrix **binding drafted as design** (cannot seal) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) / CP-0074 posture.
+Gates are **serial**. A later gate may be drafted in parallel as design text, but **cannot seal** until earlier gates are satisfied. Checkbox state today reflects tip ~`0af78c8` + Gate1 ACK **draft** (unsigned) + Gate2 live safety-case **amendment drafted as design** (not live proof; cannot seal) + Gate3 Authority Matrix **binding drafted as design** (cannot seal) + Gate4 data-policy **draft** (unsealed) + Gate5 flip-runbook **draft** (not executed) + Gate6 acceptance-metrics **bundle drafted as design** (cannot seal) / CP-0074 posture.
 
 ### Gate 1 — Operator ACK (live discussion / enable)
 
@@ -87,12 +87,13 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 | Item | Rule | Today |
 |------|------|-------|
-| Beyond pytest | Correctness / safety / reliability / human-factors categories defined | Design (D1 §10.1) |
-| Measurable pass intent | False-approval deny; containment success; missing/conflicting judges fail-closed; adversarial disagreement handled | Design (D1 §10.2–§4.4) |
-| Signoff-before-live-discussion | D4-K ten conditions (authority, consensus status explicit, oversight bounds, continuity limits, rollback+RV, evidence chain, metrics, claim hygiene, disagreement process, no hidden review→ops) | **Checklist usable**; live discussion **not** opened |
-| Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding |
+| Beyond pytest | Correctness / safety / reliability / human-factors categories defined | Design (D1 §10.1) + live-path attachment in Gate6 bundle |
+| Measurable pass intent | False-approval deny; containment success; missing/conflicting judges fail-closed; adversarial disagreement handled | **Bundle drafted** — refuse-default negatives, kill latency, no secret leakage, advisory-only judge, abort>accept, ledger evidence (`GATE6_LIVE_ACCEPTANCE_METRICS.md`) |
+| Signoff-before-live-discussion | D4-K ten conditions (authority, consensus status explicit, oversight bounds, continuity limits, rollback+RV, evidence chain, metrics, claim hygiene, disagreement process, no hidden review→ops) | **Checklist usable** + Gate6 §3 attachment; live discussion **not** opened |
+| Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*) |
 
-**Exit:** Named metric bundle attached to the live ACK cycle; pytest remains necessary but insufficient alone.
+**Exit:** Named metric bundle attached to the live ACK cycle; pytest remains necessary but insufficient alone.  
+**Today:** bundle **drafted as design**; **not** attached to signed ACK; canary **NOT executed**; Gate 1 **UNSIGNED** → Gate 6 **OPEN / cannot seal**.
 
 ### Gate 7 — Optional D3 (perf A/B)
 
@@ -121,18 +122,18 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ## 2. Compact status board
 
-| # | Gate | Blocks live+API? | Status @ tip ~001211b+Gate3 |
+| # | Gate | Blocks live+API? | Status @ tip ~0af78c8+Gate6 |
 |---|------|------------------|------------------------|
 | 1 | Operator ACK | **Yes** | OPEN — draft unsigned (`GATE1_LIVE_OPERATOR_ACK_DRAFT.md`) |
 | 2 | Safety evidence (+ live amendment) | **Yes** | Amendment **drafted as design** (`GATE2_LIVE_SAFETY_CASE_AMENDMENT.md`); still **Missing live proof**; **cannot seal** (Gate 1 unsigned) |
 | 3 | Authority Matrix in use | **Yes** | Binding **drafted as design** (`GATE3_AUTHORITY_MATRIX_BINDING.md`); live ops not armed; **cannot seal** (Gate 1 unsigned) |
 | 4 | Keys + data policy | **Yes** | Schedule **drafted** (`GATE4_LIVE_DATA_POLICY.md`); no-keys / no-calls held; **cannot seal** (Gate 1 unsigned) |
 | 5 | RefuseTransport → live flag | **Yes** | Runbook **drafted** (`GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`); flip **not executed**; Refuse default ON; **cannot seal** (Gates 1–4 not sealed) |
-| 6 | Acceptance metrics / D4-K | **Yes** | Design OK; live bundle OPEN |
+| 6 | Acceptance metrics / D4-K | **Yes** | Bundle **drafted as design** (`GATE6_LIVE_ACCEPTANCE_METRICS.md`); canary not executed; **cannot seal** (Gate 1 unsigned) |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Missing for live+API = Gates **1–6** (signed ACK, live safety amendment **reviewed/sealed** + live proof, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). Gates **2–5** design drafts present; Gate 3 binding **drafted as design**; Gate1 unsigned → none of 1–6 sealed. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
+**Bottom line:** Missing for live+API = Gates **1–6** (signed ACK, live safety amendment **reviewed/sealed** + live proof, matrix-bound ops, keys/data schedule, controlled flag flip, acceptance bundle). Gates **2–6** design drafts present; Gate1 unsigned → none of 1–6 sealed; no live proof / no canary. D3 optional. M1 permanent NO_CONSENSUS_YET does **not** freeze local mock judge work.
 
 ---
 
@@ -155,6 +156,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `docs/planning/GATE3_AUTHORITY_MATRIX_BINDING.md` · `council/NOTE_GATE3_AUTHORITY_MATRIX.md`
 - `docs/planning/GATE4_LIVE_DATA_POLICY.md` · `council/NOTE_GATE4_DATA_POLICY.md`
 - `docs/planning/GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `council/NOTE_GATE5_FLIP_RUNBOOK.md`
+- `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_ACCEPTANCE_METRICS.md`
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`
 - `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` (CP-0071)
