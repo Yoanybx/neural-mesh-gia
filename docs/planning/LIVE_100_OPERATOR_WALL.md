@@ -1,11 +1,11 @@
 # Live 100% — Operator wall status pack (DESIGN ONLY)
 
-**Status:** Hold A **LEFT** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **CP-0075** · Gate5 canary **EXECUTED** · Gate6 sample measured · module LIVE_API=False · live+API product permanent-enable **NOT** claimed.  
-**Does not** mint keys into git · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD · **does not** ship full LiveHttpTransport.  
-**Date:** 2026-09-28 ~19:48 ET (America/New_York)  
+**Status:** Hold A **LEFT** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **CP-0075** canary **EXECUTED** · dual canary hygiene ACK · **CP-0076 DESIGN_ONLY** residual sealed · Gate6 sample measured · module LIVE_API=False · live+API product permanent-enable **NOT** claimed.  
+**Does not** mint keys into git · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD · **does not** ship / authorize full LiveHttpTransport codec.  
+**Date:** 2026-09-28 ~19:54 ET (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
-**Tip at update base:** `a816c34` (dual hygiene PASS) + this ENABLE / ENABLE_READY docs cycle  
-**Package posture:** **0.18.0 HELD** · **Hold A LEFT** · **LIVE_API_ENABLED=False** (final after canary) · **CP-0075** · **Gate1 SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
+**Tip at update base:** `ca85688` (CP-0075) + dual Option 1 ACK → CP-0076 DESIGN_ONLY  
+**Package posture:** **0.18.0 HELD** · **Hold A LEFT** · **LIVE_API_ENABLED=False** · **CP-0075** · **CP-0076 DESIGN_ONLY** · **Gate1 SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
 
 **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md`  
 **Next steps:** `docs/planning/GEMINI_FREE_NEXT_STEPS.md`  
@@ -26,7 +26,7 @@
 | **Gate1** | **SIGNED — ENABLE_UNDER_FENCES** — 「Aprobado」 ~19:41 ET — `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` (prior DISCUSS_ONLY retained) |
 | **Live track** | Module **LIVE_API_ENABLED=False**; CP-0075 canary **done**; RefuseTransport final |
 | **Design + enable-ready** | Gates **2–6 DESIGN_SEALED**; Gates **2–4 ENABLE_READY**; Gate5 steps (5)–(7) evidence on disk |
-| **Allowed next** | Optional further canaries only via re-walk Gate5; full LiveHttpTransport still design+spike. No keys in git / D3 / push / tags / NO_HELD unlocks |
+| **Allowed next** | Optional Gate6 metric completion design (Option 2) or STOP; full LiveHttpTransport = **CP-0076 DESIGN_ONLY** (impl needs new CP). No keys in git / D3 / push / tags / NO_HELD unlocks |
 
 ---
 
@@ -35,7 +35,7 @@
 | Track | Meaning | Status today |
 |-------|---------|--------------|
 | **Mesh 0.18 local/mock path** | RefuseTransport · mock multi-judge · Google **mock**/flag-gated dry-run peer · local evaluation harnesses under fences · M1 NO_CONSENSUS_YET does **not** freeze this track | **Usable / in force** under live=DISABLED |
-| **Live+API 100%** | Gates **1–6** enable path: ENABLE ACK · Gates 2–4 ENABLE_READY · Gate5 canary under I5 · Gate6 metrics **measured** · controlled enable | **Canary path met** under fences; **permanent product enable NOT claimed** — module LIVE_API=False; full codec residual |
+| **Live+API 100%** | Gates **1–6** enable path: ENABLE ACK · Gates 2–4 ENABLE_READY · Gate5 canary under I5 · Gate6 metrics **measured** · controlled enable | **Canary path met** under fences; **permanent product enable NOT claimed** — module LIVE_API=False; full codec = CP-0076 **DESIGN_ONLY** (not authorized) |
 
 **Invariant:** Completing all *designable* gate docs (Gates 2–6 DESIGN_SEALED) ≠ live=ENABLED ≠ “100% live ready.” Mesh 0.18 local/mock success does **not** imply live+API 100%. Dry-run `30fe593`/`1e502c6` = **evidence-only ≠ live RV**.
 
@@ -51,11 +51,12 @@
 | Gate 2 ENABLE_READY | `GATE2_ENABLE_READY.md` (+ DESIGN_SEALED) | this cycle | **ENABLE_READY**; live RV OPEN |
 | Gate 3 ENABLE_READY | `GATE3_ENABLE_READY.md` | this cycle | **ENABLE_READY**; runtime not live-enabled |
 | Gate 4 ENABLE_READY | `GATE4_ENABLE_READY.md` | this cycle | **ENABLE_READY**; oob secrets |
-| Gate 5 flip runbook | `GATE5_DESIGN_SEALED.md` · runbook · `GATE5_HEALTH_CHECK_EVIDENCE.md` | `d2c16d8`+ | Procedure sealed; step (5) PASS; step (6) **BLOCKED** |
-| Gate 6 acceptance metrics | `GATE6_DESIGN_SEALED.md` | prior | Metrics sealed; live measurement **OPEN** |
+| Gate 5 flip runbook | `GATE5_DESIGN_SEALED.md` · runbook · evidence | `ca85688` | Procedure sealed; steps (5)–(7) **EXECUTED** (CP-0075) |
+| Gate 6 acceptance metrics | `GATE6_DESIGN_SEALED.md` · measurement | prior+ | Metrics sealed; sample **MEASURED** (n=1 ≠ SLO) |
+| LiveHttpTransport residual | `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · CP-0076 | this cycle | **DESIGN_ONLY**; does **not** authorize impl |
 | This operator wall | `LIVE_100_OPERATOR_WALL.md` | this cycle | N/A |
 
-**ENABLE signature wall cleared.** Remaining blockers = §2 (impl CP / canary / Gate6 measure).
+**ENABLE + canary wall cleared under fences.** Remaining = optional Option 2 metric completion / future **impl** CP for codec (not CP-0076).
 
 ---
 
@@ -96,7 +97,7 @@
 | **Mesh 0.18 local/mock ready (under fences)** | Mock / RefuseTransport / dry-run path usable; M1 does not freeze local judge API work | Network Mesh live judge calls OK |
 | **Live+API 100%** | Operator clears §2 blockers + serial enable seals 1–6 with live proof | Achieved today — **NO** |
 
-**Today’s honest posture:** Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates **2–4 ENABLE_READY**; **CP-0075**; Gate5 canary **EXECUTED**; Gate6 sample **MEASURED**; module **`LIVE_API_ENABLED=False`** / RefuseTransport-safe; full live codec residual; NO_HELD unchanged.
+**Today’s honest posture:** Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates **2–4 ENABLE_READY**; **CP-0075** canary **EXECUTED**; dual council hygiene ACK (Option 1); **CP-0076 DESIGN_ONLY** residual sealed (NOT authorizing impl); Gate6 sample **MEASURED** (n=1 ≠ SLO); module **`LIVE_API_ENABLED=False`** / RefuseTransport-safe; NO_HELD unchanged.
 
 ---
 
@@ -113,7 +114,9 @@
 
 ## 6. Related
 
-- `docs/planning/LIVE_READINESS_CHECKLIST.md` — ordered Gates 1–6; Gate1 **SIGNED DISCUSS_ONLY**; Gates 2–6 **DESIGN_SEALED** discuss/eval; enable still OPEN  
+- `docs/planning/LIVE_READINESS_CHECKLIST.md` — ordered Gates 1–6; ENABLE signed; CP-0075/0076 posture  
+- `docs/planning/LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `DESIGN_CP_0076_LIVE_HTTP_TRANSPORT_RESIDUAL.md`  
+- `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`  
 - `docs/planning/GEMINI_FREE_NEXT_STEPS.md` · `council/NOTE_LEAVE_HOLD_GATE1_DISCUSS_ONLY.md`  
 - `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · ENABLE_READY seals · `GATE5_HEALTH_CHECK_EVIDENCE.md`  
 - `docs/planning/GATE1_LIVE_OPERATOR_ACK_SIGNED.md` · `GATE2_DESIGN_SEALED.md` · `GATE3_DESIGN_SEALED.md` · `GATE4_DESIGN_SEALED.md` · `GATE5_DESIGN_SEALED.md` · `GATE6_DESIGN_SEALED.md`  

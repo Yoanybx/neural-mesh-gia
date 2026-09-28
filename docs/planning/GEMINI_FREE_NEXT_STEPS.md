@@ -3,8 +3,8 @@
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
 **Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`** (module final after canary); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075 authorized**  
-**Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · prior DISCUSS_ONLY + leave-Hold notes  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final after canary); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075 authorized**; **CP-0076 DESIGN_ONLY** LiveHttpTransport residual sealed (dual council Option 1)  
+**Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · prior DISCUSS_ONLY + leave-Hold notes · dual canary hygiene ACK  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
 ---
@@ -20,14 +20,16 @@
 | **3** | **Gate3 design seal** — Authority Matrix config/ops binding (dry-run peer, secret_handle, RefuseTransport) | **DONE (DESIGN_SEALED)** — `GATE3_DESIGN_SEALED.md` · `GATE3_AUTHORITY_MATRIX_BINDING.md`; ENABLE / live-armed OPEN | Treat Gate3 design seal as enable seal; flip live flags |
 | **3b** | **Gate4 design seal** — data policy + secret_handle schedule toward DESIGN_SEALED (eval handle already done) | **DONE (DESIGN_SEALED)** — `GATE4_DESIGN_SEALED.md` · `GATE4_LIVE_DATA_POLICY.md`; oob key load; dry-run≠RefuseTransport; ENABLE / Mesh live data seal OPEN | Treat Gate4 design seal as Mesh live enable; commit raw keys; execute Gate5 canary |
 | **4** | **Gate5 runbook design seal** — docs/canary procedure toward DESIGN_SEALED (**not** execute canary) | **DONE (DESIGN_SEALED)** — `GATE5_DESIGN_SEALED.md` · `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md`; procedure sealed; canary NOT AUTHORIZED | Flip `live_adapter.enabled` / `LIVE_API_ENABLED`; run canary without ENABLE chain; invent ENABLE_UNDER_FENCES |
-| **4b** | **Gate5 canary later** — health check → single canary under kill-armed I5 → ledger evidence (Gate5 steps 1–7) | **NOT STARTED / NOT AUTHORIZED** — only after Gates 2–4 **enable**-ready + Gate1 scope upgrade if operator marks ENABLE_UNDER_FENCES; dry-run `30fe593` ≠ canary | Canary / flip without full ENABLE chain |
+| **4b** | **Gate5 canary** — health check → single canary under kill-armed I5 → ledger evidence (Gate5 steps 1–7) | **DONE** — CP-0075; `GATE5_CANARY_EVIDENCE.md` / ledger / Gate6 sample; dual council hygiene ACK; dry-run `30fe593` ≠ canary (historical) | Re-canary / flip without re-walk; treat as SLO |
 | **5** | **Gate6 metrics design seal** — acceptance metrics toward DESIGN_SEALED (docs) | **DONE (DESIGN_SEALED)** — `GATE6_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md`; live measurement OPEN; dry-run ≠ live RV | Claim canary evidence without Gate5 execution; flip live flags; invent ENABLE signature |
 | **6** | **ENABLE_UNDER_FENCES** — operator signature | **SIGNED** — `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` (「Aprobado」 ~19:41 ET) | Invent extra unlocks; commit keys |
 | **6b** | **Gates 2–4 ENABLE_READY** — docs enable-ready seals under ENABLE | **DONE** — `GATE2/3/4_ENABLE_READY.md` | Claim live RV complete; flip without Gate5 |
 | **6c** | **Gate5 step (5) health** | **PASS** — `GATE5_HEALTH_CHECK_EVIDENCE.md` | Treat as canary / flag flip |
 | **7** | **Authorized impl CP (NT-10)** | **DONE** — **CP-0075** `IMPL_CP_0075_GEMINI_FREE_CANARY.md` (minimum canary binding; full LiveHttpTransport still design+spike) | Fake unlock; full codec claim |
 | **7b** | **Gate5 step (6) canary / runtime LIVE flip** | **DONE** — one canary HTTP 200 / `MESH_CANARY_OK`; module `LIVE_API_ENABLED=False` final; RefuseTransport restored — `GATE5_CANARY_EVIDENCE.md` | Treat dry-run as canary; leave half-enabled |
-| **8** | **Gate6 live measurement** on canary evidence | **DONE (sample n=1)** — `GATE6_CANARY_MEASUREMENT.md` | Claim production SLO / 100% product enable |
+| **8** | **Gate6 live measurement** on canary evidence | **DONE (sample n=1)** — `GATE6_CANARY_MEASUREMENT.md`; dual ACK: advisory≠SoT · n=1≠SLO | Claim production SLO / 100% product enable |
+| **9** | **Full LiveHttpTransport residual design** (dual Option 1) | **DONE (DESIGN_ONLY)** — **CP-0076** `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · schema `live_http_transport_v0.md` · neg descriptors T-lht-*; **does NOT authorize impl**; LIVE_API stays False | Codec impl; LIVE flip; claim CP-0075 = full adapter |
+| **10** | **Optional Gate6 metric completion design** (DeepSeek Option 2) | **OPEN / not chosen this cycle** | Premature Gate6 seal from n=1 |
 
 ---
 
@@ -42,7 +44,7 @@ Before any flag flip:
 5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** ENABLE signed; CP-0075 authorized; **one** canary done; **module LIVE_API_ENABLED=False** / RefuseTransport-safe final.
+**Intent today:** ENABLE signed; CP-0075 canary done; dual hygiene ACK; **CP-0076 DESIGN_ONLY** residual sealed; **module LIVE_API_ENABLED=False** / RefuseTransport-safe final; codec **not** authorized.
 
 ---
 
@@ -53,8 +55,10 @@ Before any flag flip:
 - `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · `GATE5_DESIGN_SEALED.md` · `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- `docs/planning/LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `DESIGN_CP_0076_LIVE_HTTP_TRANSPORT_RESIDUAL.md`
+- `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 + Gate5 canary done; module LIVE_API_ENABLED=False; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 canary done; dual ACK; CP-0076 DESIGN_ONLY residual sealed; module LIVE_API_ENABLED=False; NO_HELD unchanged.*
