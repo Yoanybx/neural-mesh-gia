@@ -40,7 +40,7 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 | Cycle | State | Tip / note |
 |-------|-------|------------|
 | 1 RefuseTransport negatives refresh | Verified green at Hold tip (no code delta required) | Tip `8d0951b`; safety + peer suite green |
-| 2 Google mock peer correlation | **DONE** (in tip) | Dual-advisory fields + `abort_provenance` on disagreement (`PEER_DIGEST_DISAGREE`); RefuseTransport still default; **26 passed** peer+safety; no CP mint (Hold docs+helpers pattern) |
+| 2 Google mock peer correlation | **DONE** @ `96daa25` | Dual-advisory fields + `abort_provenance` on disagreement (`PEER_DIGEST_DISAGREE`); RefuseTransport still default; **26 passed** peer+safety; no CP mint (Hold docs+helpers pattern) |
 
 ## Stop conditions (reassess with operator)
 

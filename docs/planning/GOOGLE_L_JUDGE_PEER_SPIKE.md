@@ -118,6 +118,6 @@ Path: `notebooks/colab/README.md` (+ optional future `.ipynb` under that directo
 | M1 | **NO_CONSENSUS_YET** |
 | Cycle tip at write | `b3e84fb` / sealed feature `4b43bf4` (CP-0074); this spike is design-only under fences |
 
-**Hold mock cycle 2:** dual-advisory report fields + abort provenance on mock peer disagreement (see HOLD_MOCK_NEXT Progress; in tip).
+**Hold mock cycle 2:** dual-advisory report fields + abort provenance on mock peer disagreement (feature tip `96daa25`).
 
 **ONE_LINE:** Gemini free tier is a fenced optional mock second L_judge peer for correlation/independence dry-runs; RefuseTransport default; no keys; live=DISABLED.
