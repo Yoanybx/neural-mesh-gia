@@ -41,7 +41,7 @@ Live+API 100% remains **blocked**; design drafts are **not** seals.
 |-------|-------|------------|
 | 1 RefuseTransport negatives refresh | Verified green at Hold tip (no code delta required) | Tip `8d0951b`; safety + peer suite green |
 | 2 Google mock peer correlation | **DONE** @ `96daa25` | Dual-advisory fields + `abort_provenance` on disagreement (`PEER_DIGEST_DISAGREE`); RefuseTransport still default; **26 passed** peer+safety; no CP mint (Hold docs+helpers pattern) |
-| 3 Mock multi-judge harness | **DONE** (in tip) | Post-invoke digest hygiene + `abort_provenance`; disagreement → `SPIKE_JUDGE_DIGEST_DISAGREE` / `ROUTE_JUDGE_MISMATCH` with **ABORT > ACCEPT**; dual agree stays ADVISORY (`mesh_accept=False`, ≠ M1); no CP mint |
+| 3 Mock multi-judge harness | **DONE** @ `2b4ebad` | Post-invoke digest hygiene + `abort_provenance`; disagreement → `SPIKE_JUDGE_DIGEST_DISAGREE` / `ROUTE_JUDGE_MISMATCH` with **ABORT > ACCEPT**; dual agree stays ADVISORY (`mesh_accept=False`, ≠ M1); no CP mint |
 
 ## Stop conditions (reassess with operator)
 
