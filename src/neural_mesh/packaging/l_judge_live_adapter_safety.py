@@ -1,8 +1,9 @@
-"""L_judge live-adapter safety case helpers (CP-0058 / Cycle 54; enablement lift CP-0075).
+"""L_judge live-adapter safety case helpers (CP-0058 / Cycle 54; enablement lift CP-0075/CP-0078).
 
 Constants, secret_handle validation, RefuseTransport mock, and
-enablement-gate evaluation. No network I/O here. No API keys. No live codec.
+enablement-gate evaluation. No network I/O here. No API keys in this module.
 CP-0075 authorizes may_enable=True when all gates pass (NT-10 cleared).
+CP-0078 ships packaging LiveHttpTransport v0 (still default-off; LIVE_API_ENABLED=False).
 """
 
 from __future__ import annotations
@@ -64,6 +65,8 @@ ABORT_CODES: tuple[str, ...] = (
     "FENCE",
     "POLICY_ABORT",
     "HUMAN_ABORT",
+    "CONT_IDEMPOTENCY_CONFLICT",
+    "CONT_LIVE_DISABLED",
 )
 
 RATE_LIMIT_FLOORS: dict[str, int | float] = {
@@ -79,7 +82,7 @@ RATE_LIMIT_FLOORS: dict[str, int | float] = {
 MUST_STAY_FALSE: tuple[str, ...] = (
     "live_adapter.enabled",
     "live_api_in_ci",
-    "src_live_codec_shipped",
+    # src_live_codec_shipped cleared by CP-0078 (packaging LiveHttpTransport v0 shipped; still default-off)
     "mesh_is_frontier_model",
     "train_70b",
     "gia_unlocked",
@@ -186,8 +189,7 @@ def evaluate_enablement_gates(
         reasons.append("live_adapter.enabled_must_stay_false_until_evidence")
     if merged.get("live_api_in_ci"):
         reasons.append("live_api_in_ci_must_stay_false")
-    if merged.get("src_live_codec_shipped"):
-        reasons.append("src_live_codec_shipped_must_stay_false_this_cp")
+    # src_live_codec_shipped may be True under CP-0078 (codec shipped, still default-off).
 
     if not safety_case_verified:
         reasons.append("safety_case_not_verified")

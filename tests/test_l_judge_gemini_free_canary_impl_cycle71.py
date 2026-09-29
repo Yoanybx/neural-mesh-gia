@@ -183,11 +183,15 @@ def test_docs_and_no_secrets():
 
 
 def test_no_full_live_codec_shipped():
+    # CP-0075 canary itself did not ship LiveHttpTransport; CP-0078 may ship packaging codec.
     src = REPO / "src" / "neural_mesh"
-    banned = list(src.glob("judge*.py")) + list(src.glob("**/live_http*.py"))
-    banned += list(src.glob("**/live_adapter_http*.py"))
+    banned = list(src.glob("judge*.py")) + list(src.glob("**/live_adapter_http*.py"))
+    banned += [p for p in src.glob("**/live_http*.py") if p.name != "l_judge_live_http_transport.py"]
     assert banned == [], f"unexpected live codec files: {banned}"
     assert (src / "packaging" / "l_judge_gemini_free_canary_impl.py").is_file()
+    # Canary auth record remains honest: this CP did not ship the full codec.
+    from neural_mesh.packaging.l_judge_gemini_free_canary_impl import impl_cp_authorization_record
+    assert impl_cp_authorization_record()["full_live_http_codec_shipped"] is False
 
 
 def test_refuse_transport_still_default_binding():

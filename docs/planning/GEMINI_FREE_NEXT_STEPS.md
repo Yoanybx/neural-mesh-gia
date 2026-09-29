@@ -3,7 +3,7 @@
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
 **Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`** (module final after canary); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075 authorized**; **CP-0076 DESIGN_ONLY** residual sealed; DeepSeek CP-0076 hygiene ACK; **CP-0077 DESIGN_ONLY** Gate6 metric completion (n≥N; M-KILL/M-ABORT/M-LEDGER)  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075** canary; **CP-0076 DESIGN_ONLY**; **CP-0077** Gate6 metric design; **CP-0078 IMPL** LiveHttpTransport v0 (still default-off)  
 **Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · dual canary hygiene ACK · `REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md`  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
@@ -31,8 +31,9 @@
 | **9** | **Full LiveHttpTransport residual design** (dual Option 1) | **DONE (DESIGN_ONLY)** — **CP-0076** `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · schema `live_http_transport_v0.md` · neg descriptors T-lht-*; **does NOT authorize impl**; LIVE_API stays False | Codec impl; LIVE flip; claim CP-0075 = full adapter |
 | **10** | **Gate6 metric completion design** (DeepSeek Option 2 / CP-0076 NEXT #1) | **DONE (DESIGN_ONLY)** — **CP-0077** `GATE6_METRIC_COMPLETION_DESIGN.md`; **n≥N_min=5**; M-KILL live / M-ABORT / M-LEDGER designed; **n=1 cannot seal** | Premature Gate6 live seal; multi-canary execute; permanent LIVE flip |
 | **11** | **Multi-canary measurement pack** (n≥N + edges) | **OPEN** — needs operator/runbook; not authorized by CP-0077 | Claim seal from n=1; skip E-KILL/E-ABORT |
-| **12** | **Codec impl CP** (after CP-0076 design) | **OPEN** — CP-0076 does **NOT** authorize impl | Ship LiveHttpTransport under design CP |
+| **12** | **Codec impl CP** (after CP-0076 design) | **DONE** — **CP-0078** `IMPL_CP_0078_LIVE_HTTP_TRANSPORT.md` (v0 unary; runtime LIVE+I5; module LIVE false) | Claim permanent enable; streaming |
 | **13** | **Permanent LIVE_API enable policy / runbook** | **OPEN** — do **not** permanently flip without runbook | Leave module LIVE true after canary |
+| **14** | **F4 product-enable ACK** (if treating as listo beyond ENABLE_UNDER_FENCES) | **OPEN** — ENABLE_UNDER_FENCES signed for canary/fenced path; permanent product enable still operator | Invent F4 unlock |
 
 ---
 
@@ -47,7 +48,7 @@ Before any flag flip:
 5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** ENABLE signed; CP-0075 canary done; dual hygiene ACK; **CP-0076 DESIGN_ONLY** residual sealed; DeepSeek CP-0076 hygiene ACK (NEXT #1 executed as **CP-0077**); metric completion **designed** (n=1 cannot seal); **module LIVE_API_ENABLED=False**; codec **not** authorized; multi-canary + permanent enable policy still **OPEN**.
+**Intent today:** ENABLE signed; CP-0075 canary done; CP-0076/0077 DESIGN_ONLY; **CP-0078** LiveHttpTransport v0 **authorized/shipped** (default-off); **module LIVE_API_ENABLED=False**; multi-canary n≥5 + permanent enable policy + F4 product-enable still **OPEN**.
 
 ---
 
@@ -66,4 +67,4 @@ Before any flag flip:
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 canary done; CP-0076 DESIGN_ONLY; CP-0077 metric completion DESIGN_ONLY; module LIVE_API_ENABLED=False; n=1≠seal; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 canary; CP-0076/0077 DESIGN_ONLY; CP-0078 LiveHttpTransport v0 shipped (default-off); module LIVE_API_ENABLED=False; n=1≠seal; multi-canary+permanent enable OPEN; NO_HELD unchanged.*

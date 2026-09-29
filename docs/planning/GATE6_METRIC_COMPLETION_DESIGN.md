@@ -184,7 +184,7 @@ Permanent enable policy (separate) — NOT this CP; module LIVE stays False with
 | M-LEDGER kill/abort completeness across n | **OPEN** | |
 | **Codec impl** authorization | **OPEN** | CP-0076 = design only; needs **future impl CP** |
 | Permanent `LIVE_API_ENABLED` enable policy / runbook | **OPEN** | Do **not** permanently flip without runbook |
-| Full LiveHttpTransport shipped + default-off | **OPEN** | `src_live_codec_shipped=false` |
+| Full LiveHttpTransport shipped + default-off | **DONE (CP-0078 v0)** | `src_live_codec_shipped=true`; module LIVE false; streaming residual |
 | NO_HELD / D3 / M1 / keys-in-git / push-tags | **Unchanged fences** | Not part of 「listo」 unlock |
 
 **Bottom line:** Canary path under fences is met for **one** free-tier sample. Product-ready live is **not** listo until codec auth + multi-canary metric completion + permanent-enable policy land under fences.

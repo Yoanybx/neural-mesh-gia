@@ -1,6 +1,7 @@
 # LiveHttpTransport residual — FULL design (DESIGN ONLY)
 
-**Status:** **DESIGN_ONLY** — formalizes what a full `LiveHttpTransport` codec must contain; **does NOT authorize codec implementation**; **does NOT enable live**  
+**Status:** **DESIGN_ONLY** (historical seal) — formalized residual codec; **impl now authorized by CP-0078** (packaging v0; still does **NOT** permanently enable live)  
+**Impl:** `docs/planning/IMPL_CP_0078_LIVE_HTTP_TRANSPORT.md` · `src/neural_mesh/packaging/l_judge_live_http_transport.py`  
 **Cycle / Checkpoint:** 72 / **CP-0076** (DESIGN_ONLY)  
 **Date:** 2026-09-28 ~19:54 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
@@ -292,4 +293,4 @@ Aligns with continuity T-cont-* and oversight T-ovs-* families; live measurement
 
 ---
 
-*End LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN — DESIGN_ONLY; does NOT authorize codec impl; does NOT enable live; CP-0075 canary path remains separate minimum.*
+*End LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN — DESIGN_ONLY seal retained; CP-0078 implements packaging v0 under fences; does NOT permanently enable live; CP-0075 canary path remains separate minimum.*

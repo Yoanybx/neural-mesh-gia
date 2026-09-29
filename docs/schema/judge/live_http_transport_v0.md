@@ -11,9 +11,9 @@
 | Field | Type | Notes |
 |-------|------|-------|
 | `schema` | string | `mesh.judge.live_http_transport/v0` |
-| `enabled` | bool | **must be false** under this DESIGN_ONLY CP |
+| `enabled` | bool | **must be false** as product default (runtime LIVE window only under fences) |
 | `mode` | string | `unary` \| `streaming` \| `stream_unary_fallback` — default design `unary` |
-| `streaming_allowed` | bool | **false** until future impl evidence |
+| `streaming_allowed` | bool | **false** (v0 unary only; streaming residual) |
 | `secret_handle` | string\|null | `mesh://secrets/...@vN` ref only |
 | `tls_required` | bool | **true** |
 | `forbid_plaintext` | bool | **true** |
@@ -32,15 +32,15 @@
 | `refuse_transport_default` | bool | **true** |
 | `must_stay_false` | object | see below |
 
-### must_stay_false (under CP-0076)
+### must_stay_false / status (under CP-0078)
 
 | Key | Value |
 |-----|-------|
-| `live_adapter.enabled` | false |
-| `LIVE_API_ENABLED` | false |
+| `live_adapter.enabled` | false (product default) |
+| `LIVE_API_ENABLED` | false (module default) |
 | `live_api_in_ci` | false |
-| `src_live_codec_shipped` | false |
-| `codec_impl_authorized_by_this_cp` | false |
+| `src_live_codec_shipped` | **true** (packaging v0 under CP-0078) |
+| `codec_impl_authorized_by_cp_0078` | **true** |
 | `mesh_is_frontier_model` | false (permanent) |
 | `train_70b` | false (permanent) |
 | `gia_unlocked` | false (NO_HELD) |

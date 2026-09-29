@@ -31,7 +31,7 @@
 |-----|----------------------|
 | `live_adapter.enabled` | false |
 | `live_api_in_ci` | false |
-| `src_live_codec_shipped` | false |
+| `src_live_codec_shipped` | **true** under CP-0078 (packaging v0; still default-off) |
 | `mesh_is_frontier_model` | false (permanent) |
 | `train_70b` | false (permanent) |
 | `gia_unlocked` | false (NO_HELD) |
@@ -50,6 +50,6 @@ Invalid: raw `sk-…`, `api_key=…`, `Authorization: Bearer …` material in re
 
 `ENGINE_DISABLED` · `ENGINE_AUTH` · `ENGINE_TLS` · `PLAINTEXT_FORBIDDEN` ·
 `ENGINE_HTTP` · `ENGINE_TIMEOUT` · `ENGINE_RATE_LIMIT` · `SCHEMA_INVALID` ·
-`NO_AUDIT` · `FENCE` · `POLICY_ABORT` · `HUMAN_ABORT`
+`NO_AUDIT` · `FENCE` · `POLICY_ABORT` · `HUMAN_ABORT` · `CONT_IDEMPOTENCY_CONFLICT` · `CONT_LIVE_DISABLED`
 
 **NO_HELD:** Raft,N>2,multi-primary,ML,R2,R3,plaintext,Vault-ACME-req,GIA,SLO_chase,tag_schema,EVERY_fsync

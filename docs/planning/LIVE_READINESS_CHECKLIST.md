@@ -2,7 +2,7 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 ~22:29 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075** canary done; **CP-0076 DESIGN_ONLY** residual sealed; DeepSeek CP-0076 hygiene ACK; **CP-0077 DESIGN_ONLY** Gate6 metric completion (n≥N); module LIVE_API_ENABLED=False  
+**Date:** 2026-09-28 ~22:35 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075** canary; **CP-0076/0077 DESIGN_ONLY**; **CP-0078 IMPL** LiveHttpTransport v0 (default-off); module LIVE_API_ENABLED=False  
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md`  
 **Tip context:** residual design atop `ca85688` (CP-0075) / ENABLE signed / dual design-seal hygiene `a816c34` / Gate6 DESIGN_SEALED / Gates 2–4 / peer `30fe593` / dry-run `1e502c6`  
 **Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075 canary **done**; **CP-0076 DESIGN_ONLY**; **CP-0077** metric completion DESIGN_ONLY; module LIVE_API=False / RefuseTransport  
@@ -73,7 +73,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Seal dependency | Serial gates: Gate 4 enable-ready when handle + canary data schedule ACK’d under ENABLE | **ENABLE_READY** — `GATE4_ENABLE_READY.md`; oob handle held; Gate5 canary still OPEN |
 
 **Exit (design/discuss):** Written data-handling schedule + secret_handle lifecycle for DISCUSS_ONLY/eval; eval handle oob; still no keys committed.  
-**Today:** Gate4 **ENABLE_READY**; secrets oob only; Gate5 canary done under CP-0075; full codec still DESIGN_ONLY (CP-0076).
+**Today:** Gate4 **ENABLE_READY**; secrets oob only; Gate5 canary done under CP-0075; LiveHttpTransport v0 under CP-0078 (default-off).
 
 ### Gate 5 — Adapter: RefuseTransport → live flag
 
@@ -85,7 +85,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Fail-closed | Any missing gate → refuse network; no partial enable; abort→RefuseTransport; never partial enable | Binding (NT-1..NT-10 in runbook) |
 
 **Exit (design/discuss):** Documented flip runbook + negative tests still prove refuse-default; enable remains operator-gated; canary marked NOT AUTHORIZED under DISCUSS_ONLY.  
-**Today:** Gate5 procedure DESIGN_SEALED; step (5) PASS; step (6)–(7) **EXECUTED** (CP-0075); module LIVE_API=False. Gate6 metrics DESIGN_SEALED; sample measured (n=1 ≠ SLO). Full LiveHttpTransport = **CP-0076 DESIGN_ONLY** residual (not shipped).
+**Today:** Gate5 procedure DESIGN_SEALED; step (5) PASS; step (6)–(7) **EXECUTED** (CP-0075); module LIVE_API=False. Gate6 metrics DESIGN_SEALED; sample measured (n=1 ≠ SLO). LiveHttpTransport v0 = **CP-0078 IMPL** (default-off; design was CP-0076).
 
 ### Gate 6 — Acceptance metrics (D4-E / D4-J / D4-K)
 
@@ -97,7 +97,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*); live measurement **OPEN** |
 
 **Exit (design/discuss):** Named metric bundle DESIGN_SEALED for DISCUSS_ONLY; pytest remains necessary but insufficient alone; live measurement marked OPEN.  
-**Today:** Gate6 **DESIGN_SEALED** (metrics); canary sample **MEASURED** (n=1 ≠ SLO); metric **completion design** = **CP-0077 DESIGN_ONLY** (M-KILL live / M-ABORT / M-LEDGER + **n≥N_min=5**; **n=1 cannot seal**). Live measurement seal **OPEN**. Full LiveHttpTransport = **CP-0076 DESIGN_ONLY** (impl unauthorized).
+**Today:** Gate6 **DESIGN_SEALED** (metrics); canary sample **MEASURED** (n=1 ≠ SLO); metric **completion design** = **CP-0077 DESIGN_ONLY** (**n≥N_min=5**; **n=1 cannot seal**). Live measurement seal **OPEN**. LiveHttpTransport v0 = **CP-0078** (shipped default-off). Remaining listo: multi-canary + permanent enable + F4.
 
 ### Gate 7 — Optional D3 (perf A/B)
 

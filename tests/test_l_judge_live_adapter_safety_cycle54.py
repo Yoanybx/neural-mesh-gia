@@ -191,11 +191,13 @@ def test_capability_and_agreement():
 
 def test_no_src_live_codec():
     src = REPO / "src" / "neural_mesh"
-    banned = list(src.glob("judge*.py")) + list(src.glob("**/live_http*.py"))
-    banned += list(src.glob("**/live_adapter_http*.py"))
+    # Root judge*.py / unauthorized live_http*.py names still forbidden.
+    # CP-0078 authorized packaging codec: l_judge_live_http_transport.py (allowed).
+    banned = list(src.glob("judge*.py")) + list(src.glob("**/live_adapter_http*.py"))
+    banned += [p for p in src.glob("**/live_http*.py") if p.name != "l_judge_live_http_transport.py"]
     assert banned == [], f"unexpected live codec files: {banned}"
-    # Helper module is packaging safety only — allowed
     assert (src / "packaging" / "l_judge_live_adapter_safety.py").is_file()
+    assert (src / "packaging" / "l_judge_live_http_transport.py").is_file()
 
 
 def test_no_gia_raft_train_claims():

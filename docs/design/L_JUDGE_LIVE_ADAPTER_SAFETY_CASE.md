@@ -110,6 +110,8 @@ Inherited from CP-0052 / CP-0057, consolidated for the safety case:
 | No audit sink | `NO_AUDIT` | no-audit=no-action |
 | Prior dry_run missing for live_advisory | `POLICY_ABORT` | none |
 | Human I5 pause/deny/kill | `HUMAN_ABORT` | kill-switch |
+| Idempotency key conflict (compose CP-0068 / CP-0078) | `CONT_IDEMPOTENCY_CONFLICT` | none |
+| Live path missing continuity key / live-disabled compose | `CONT_LIVE_DISABLED` | none |
 | Rate limit exceeded | `ENGINE_RATE_LIMIT` | no further call |
 | Adapter would override Mesh ABORT | `POLICY_ABORT` | Mesh wins |
 
@@ -176,7 +178,7 @@ flip them (GOV.6):
 |--------------|-----------|----------------|
 | `live_adapter.enabled` | `false` | Impl CP + operator secret_handle + dry_run gate tests |
 | `live_api_in_ci` | `false` | Explicit operator opt-in + secret present |
-| `src_live_codec_shipped` | `false` | Authorized impl CP (still default-off) |
+| `src_live_codec_shipped` | `true` under **CP-0078** | Authorized impl CP shipped packaging v0 (still default-off) |
 | `mesh_is_frontier_model` | `false` | **Permanent** non-claim |
 | `train_70b` / fine-tune | `false` | **Permanent** DO_NOT_TRAIN_70B_NOW |
 | `gia_unlocked` | `false` | **NO_HELD** |

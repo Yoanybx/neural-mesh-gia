@@ -1,11 +1,11 @@
 # Live 100% — Operator wall status pack (DESIGN ONLY)
 
-**Status:** Hold A **LEFT** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **CP-0075** canary **EXECUTED** · **CP-0076 DESIGN_ONLY** residual · DeepSeek CP-0076 hygiene ACK · **CP-0077 DESIGN_ONLY** Gate6 metric completion · Gate6 sample n=1 (≠seal) · module LIVE_API=False · product permanent-enable **NOT** claimed.  
-**Does not** mint keys into git · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD · **does not** ship / authorize full LiveHttpTransport codec · **does not** permanently flip LIVE_API without runbook.  
-**Date:** 2026-09-28 ~22:29 ET (America/New_York)  
+**Status:** Hold A **LEFT** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **CP-0075** canary **EXECUTED** · **CP-0076/0077 DESIGN_ONLY** · **CP-0078 IMPL** LiveHttpTransport v0 · Gate6 sample n=1 (≠seal) · module LIVE_API=False · product permanent-enable **NOT** claimed.  
+**Does not** mint keys into git · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD · **does not** permanently flip LIVE_API without runbook · streaming still residual.  
+**Date:** 2026-09-28 ~22:35 ET (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
-**Tip at update base:** `e739c82` (CP-0076) + DeepSeek NEXT #1 → CP-0077 DESIGN_ONLY  
-**Package posture:** **0.18.0 HELD** · **Hold A LEFT** · **LIVE_API_ENABLED=False** · **CP-0075** · **CP-0076 DESIGN_ONLY** · **CP-0077 DESIGN_ONLY** · **Gate1 SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
+**Tip at update base:** `46858e1` (CP-0077) → **CP-0078** LiveHttpTransport impl  
+**Package posture:** **0.18.0 HELD** · **Hold A LEFT** · **LIVE_API_ENABLED=False** · **CP-0075** · **CP-0076/0077 DESIGN_ONLY** · **CP-0078 IMPL** · **Gate1 SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
 
 **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md`  
 **Next steps:** `docs/planning/GEMINI_FREE_NEXT_STEPS.md`  
@@ -26,7 +26,7 @@
 | **Gate1** | **SIGNED — ENABLE_UNDER_FENCES** — 「Aprobado」 ~19:41 ET — `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` (prior DISCUSS_ONLY retained) |
 | **Live track** | Module **LIVE_API_ENABLED=False**; CP-0075 canary **done**; RefuseTransport final |
 | **Design + enable-ready** | Gates **2–6 DESIGN_SEALED**; Gates **2–4 ENABLE_READY**; Gate5 steps (5)–(7) evidence on disk |
-| **Allowed next** | STOP coherent; or later multi-canary measurement under runbook (not authorized here). Full LiveHttpTransport = **CP-0076 DESIGN_ONLY** (impl needs new CP). Permanent enable policy **OPEN**. No keys in git / D3 / push / tags / NO_HELD unlocks |
+| **Allowed next** | Multi-canary measurement pack n≥N (CP-0077; not executed here). Permanent enable policy/runbook **OPEN**. F4 product-enable still open if 「listo」. No keys in git / D3 / push / tags / NO_HELD unlocks |
 
 ---
 
@@ -35,7 +35,7 @@
 | Track | Meaning | Status today |
 |-------|---------|--------------|
 | **Mesh 0.18 local/mock path** | RefuseTransport · mock multi-judge · Google **mock**/flag-gated dry-run peer · local evaluation harnesses under fences · M1 NO_CONSENSUS_YET does **not** freeze this track | **Usable / in force** under live=DISABLED |
-| **Live+API 100%** | Gates **1–6** enable path + multi-canary n≥N + codec impl + permanent enable policy | **Canary sample met** (n=1); **NOT product-ready** — needs codec impl auth · multi-canary · permanent enable runbook; module LIVE_API=False; CP-0076/0077 DESIGN_ONLY |
+| **Live+API 100%** | Gates **1–6** enable path + multi-canary n≥N + codec impl + permanent enable policy | **Canary sample met** (n=1); **codec v0 shipped (CP-0078)**; **NOT product-ready** — needs multi-canary n≥5 · permanent enable runbook · F4 if product-enable; module LIVE_API=False |
 
 **Invariant:** Completing all *designable* gate docs (Gates 2–6 DESIGN_SEALED) ≠ live=ENABLED ≠ “100% live ready.” Mesh 0.18 local/mock success does **not** imply live+API 100%. Dry-run `30fe593`/`1e502c6` = **evidence-only ≠ live RV**.
 
@@ -53,11 +53,12 @@
 | Gate 4 ENABLE_READY | `GATE4_ENABLE_READY.md` | this cycle | **ENABLE_READY**; oob secrets |
 | Gate 5 flip runbook | `GATE5_DESIGN_SEALED.md` · runbook · evidence | `ca85688` | Procedure sealed; steps (5)–(7) **EXECUTED** (CP-0075) |
 | Gate 6 acceptance metrics | `GATE6_DESIGN_SEALED.md` · measurement | prior+ | Metrics sealed; sample **MEASURED** (n=1 ≠ SLO) |
-| LiveHttpTransport residual | `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · CP-0076 | `e739c82` | **DESIGN_ONLY**; does **not** authorize impl |
-| Gate6 metric completion | `GATE6_METRIC_COMPLETION_DESIGN.md` · CP-0077 | this cycle | **DESIGN_ONLY**; **n=1 cannot seal**; does **not** measure |
+| LiveHttpTransport residual | `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · CP-0076 | `e739c82` | **DESIGN_ONLY** (upstream) |
+| Gate6 metric completion | `GATE6_METRIC_COMPLETION_DESIGN.md` · CP-0077 | `46858e1` | **DESIGN_ONLY**; **n=1 cannot seal** |
+| LiveHttpTransport impl | `IMPL_CP_0078_LIVE_HTTP_TRANSPORT.md` · evidence | this cycle | **AUTHORIZED IMPL** v0; module LIVE false |
 | This operator wall | `LIVE_100_OPERATOR_WALL.md` | this cycle | N/A |
 
-**ENABLE + single canary wall cleared under fences.** Remaining for 「listo」: **codec impl auth** · **multi-canary n≥N** · **permanent enable policy/runbook**.
+**ENABLE + single canary + codec v0 under fences.** Remaining for 「listo」: **multi-canary n≥N** · **permanent enable policy/runbook** · **F4 product-enable** if required.
 
 ---
 
@@ -67,7 +68,8 @@
 |---------|----------------------|---------------------|
 | **Sign ENABLE_UNDER_FENCES** | ~~UNSIGNED draft~~ → **DONE** 「Aprobado」 ~19:41 ET | Recorded on SIGNED artifact |
 | **Gates 2–4 ENABLE_READY** | Docs ENABLE-ready seals | **DONE** this cycle (live RV still OPEN) |
-| **Authorized impl CP** | ~~blocked~~ → **DONE CP-0075** | Full LiveHttpTransport still residual |
+| **Authorized impl CP (canary)** | ~~blocked~~ → **DONE CP-0075** | Canary minimum |
+| **Authorized impl CP (codec)** | ~~OPEN~~ → **DONE CP-0078** | Streaming + permanent enable still residual |
 | **Execute Gate 5 canary** | ~~blocked~~ → **DONE** (`GATE5_CANARY_EVIDENCE.md`) | Dry-run ≠ canary (still true historically) |
 | **Gate6 live measurement** | ~~OPEN~~ → **DONE sample** (`GATE6_CANARY_MEASUREMENT.md`) | n=1 ≠ production SLO |
 
@@ -98,14 +100,14 @@
 | **Mesh 0.18 local/mock ready (under fences)** | Mock / RefuseTransport / dry-run path usable; M1 does not freeze local judge API work | Network Mesh live judge calls OK |
 | **Live+API 100%** | Operator clears §2 blockers + serial enable seals 1–6 with live proof | Achieved today — **NO** |
 
-**Today’s honest posture:** Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates **2–4 ENABLE_READY**; **CP-0075** canary **EXECUTED**; **CP-0076 DESIGN_ONLY** residual (NOT authorizing impl); DeepSeek CP-0076 hygiene ACK → **CP-0077 DESIGN_ONLY** metric completion (**n≥N_min=5**; M-KILL/M-ABORT/M-LEDGER designed; **n=1 cannot seal**); module **`LIVE_API_ENABLED=False`**; product-ready live **NOT** listo; NO_HELD unchanged.
+**Today’s honest posture:** Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates **2–4 ENABLE_READY**; **CP-0075** canary **EXECUTED**; **CP-0076/0077 DESIGN_ONLY**; **CP-0078** LiveHttpTransport v0 **shipped** (default-off); module **`LIVE_API_ENABLED=False`**; product-ready live **NOT** listo (multi-canary + permanent enable + F4); NO_HELD unchanged.
 
 ---
 
 ## 5. Explicit non-goals (this pack)
 
 - `live=ENABLED` / flag flips / real Mesh live provider traffic  
-- Inventing authorized impl CP / half-flipping LIVE_API_ENABLED  
+- Half-flipping LIVE_API_ENABLED / claiming permanent enable from codec ship  
 - Claiming dry-run metrics as live RV / Gate5 canary  
 - Committing keys or secret_handle material into repo  
 - Starting D3, push, tags, NO_HELD unlocks  
@@ -131,4 +133,4 @@
 
 ---
 
-*End LIVE_100_OPERATOR_WALL — Gate1 ENABLE SIGNED; CP-0075 canary done; CP-0076/0077 DESIGN_ONLY; LIVE_API_ENABLED=False; n=1≠seal; product-ready live still blocked (codec + multi-canary + permanent enable policy).*
+*End LIVE_100_OPERATOR_WALL — Gate1 ENABLE SIGNED; CP-0075 canary; CP-0076/0077 DESIGN_ONLY; CP-0078 LiveHttpTransport v0; LIVE_API_ENABLED=False; n=1≠seal; listo still blocked (multi-canary + permanent enable + F4).*
