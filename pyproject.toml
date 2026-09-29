@@ -70,6 +70,7 @@ markers = [
     "google_l_judge_peer_spike: Google/Gemini optional L_judge peer spike (mock/RefuseTransport; APPROVE_WITH_FENCES; live=DISABLED; no keys)",
     "l_judge_gemini_free_canary_impl_cycle71: CP-0075 Gemini free Gate5 canary impl (authorized under fences; LIVE_API default False; no keys in git)",
     "l_judge_live_http_transport_cycle74: CP-0078 LiveHttpTransport v0 (authorized under fences; LIVE_API default False; no keys in git)",
+    "l_judge_multi_canary_pack_cycle75: CP-0079 multi-canary pack n≥5 + permanent enable policy (LIVE_API default False)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

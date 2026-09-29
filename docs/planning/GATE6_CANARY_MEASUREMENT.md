@@ -1,6 +1,6 @@
 # Gate 6 — Canary measurement (post Gate5 canary)
 
-**Status:** **MEASURED** on CP-0075 / Gate5 canary evidence (Gemini free; advisory)  
+**Status:** **MEASURED** on CP-0075 n=1 (historical) · **superseding pack** CP-0079 n=6 → `GATE6_MULTI_CANARY_MEASUREMENT.md`  
 **Date:** 2026-09-28 ~19:47 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
 **Upstream evidence:** `GATE5_CANARY_EVIDENCE.md` · `GATE5_CANARY_LEDGER.json`  
@@ -31,4 +31,4 @@
 
 ---
 
-*End GATE6_CANARY_MEASUREMENT — sample metrics on one canary; n=1≠seal; RefuseTransport-safe final.*
+*End GATE6_CANARY_MEASUREMENT — historical n=1; see GATE6_MULTI_CANARY_MEASUREMENT for n=6 pack; RefuseTransport-safe final.*

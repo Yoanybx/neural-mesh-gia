@@ -1,0 +1,591 @@
+{
+  "LIVE_API_ENABLED_module_default": false,
+  "LIVE_API_ENABLED_module_final": false,
+  "design_cp": "CP-0077",
+  "enablement_canary": {
+    "flags": {
+      "engine_is_goal_sot": false,
+      "gia_unlocked": false,
+      "live_adapter.enabled": false,
+      "live_api_in_ci": false,
+      "mesh_is_frontier_model": false,
+      "n_gt_2": false,
+      "raft_runtime": false,
+      "saas_settlement": false,
+      "silent_accept_on_error": false,
+      "train_70b": false
+    },
+    "may_enable": true,
+    "reasons": []
+  },
+  "enablement_lht": {
+    "flags": {
+      "engine_is_goal_sot": false,
+      "gia_unlocked": false,
+      "live_adapter.enabled": false,
+      "live_api_in_ci": false,
+      "mesh_is_frontier_model": false,
+      "n_gt_2": false,
+      "raft_runtime": false,
+      "saas_settlement": false,
+      "silent_accept_on_error": false,
+      "train_70b": false
+    },
+    "may_enable": true,
+    "reasons": []
+  },
+  "impl_cp": "CP-0079",
+  "n_min": 5,
+  "pack": {
+    "LIVE_API_ENABLED_module_default": false,
+    "advisory_only": true,
+    "attempts": [
+      {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort_code": null,
+        "advisory_only": true,
+        "attempt_index": 1,
+        "binding_final": "RefuseTransport",
+        "edge_id": "E-HAPPY",
+        "error_code": null,
+        "http_status": 200,
+        "i5_armed": true,
+        "i5_killed": false,
+        "idempotency_key": "idem-e-happy-1-d60cfee5c5",
+        "latency_ms": 6303,
+        "ledger_kinds": [
+          "request",
+          "invoke",
+          "goal",
+          "continuity",
+          "policy_version",
+          "handle"
+        ],
+        "live_api_enabled_during": true,
+        "live_api_enabled_final": false,
+        "mesh_accept": false,
+        "metrics_hit": [
+          "M-ADV-1",
+          "M-REFUSE-1",
+          "M-LEDGER-1"
+        ],
+        "mode": "real_http",
+        "network": true,
+        "notes": [
+          "marker present or soft-ok"
+        ],
+        "ok": true,
+        "policy_version": "CP-0079",
+        "request_id": "gate5-multi-e-happy-1-d60cfee5c5",
+        "result": {
+          "LIVE_API_ENABLED_module_default": false,
+          "advisory_only": true,
+          "attempt": 1,
+          "attempts": 1,
+          "digest": "0d2a9356ee2757f9",
+          "error_code": null,
+          "http_status": 200,
+          "idempotency_key": "idem-e-happy-1-d60cfee5c5",
+          "idempotent_replay": false,
+          "impl_cp": "CP-0078",
+          "latency_ms": 6303,
+          "live_api_enabled": true,
+          "mesh_accept": false,
+          "mode": "unary",
+          "model_ref": "gemini-flash-latest",
+          "network": true,
+          "ok": true,
+          "payload_digest": "06de6fa4a2c54886",
+          "peer_id": "live-http-transport",
+          "provider": "gemini-free",
+          "raw_text_truncated": "MESH_MULTI_CANARY_OK",
+          "response_sha256": "cbfda662b1fc7868aab66d6fdc6a65479c980593c235535039324ebaba055625",
+          "schema": "mesh.judge.raw_engine/v0",
+          "secret_handle": "mesh://secrets/judge/gemini-free@v1",
+          "src_live_codec_shipped": true,
+          "transport": "live_http",
+          "verdict": "ADVISORY"
+        },
+        "schema": "mesh.judge.gate5_multi_canary_attempt/v0",
+        "verdict": "ADVISORY"
+      },
+      {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort_code": "HUMAN_ABORT",
+        "advisory_only": true,
+        "attempt_index": 2,
+        "binding_final": "RefuseTransport",
+        "edge_id": "E-KILL",
+        "error_code": "ENGINE_DISABLED",
+        "http_status": null,
+        "i5_armed": true,
+        "i5_killed": true,
+        "idempotency_key": "idem-e-kill-2-4ea77111d7",
+        "latency_ms": 0,
+        "ledger_kinds": [
+          "oversight",
+          "abort",
+          "request",
+          "policy_version"
+        ],
+        "live_api_enabled_during": true,
+        "live_api_enabled_final": false,
+        "mesh_accept": false,
+        "metrics_hit": [
+          "M-KILL-1-LIVE",
+          "M-KILL-2-BUDGET",
+          "M-LEDGER-2"
+        ],
+        "mode": "mock_local",
+        "network": false,
+        "notes": [
+          "kill\u2192refuse latency_ms=0 (descriptive; ops budget OPEN)"
+        ],
+        "ok": true,
+        "policy_version": "CP-0079",
+        "request_id": "gate5-multi-e-kill-2-4ea77111d7",
+        "result": {
+          "kill": {
+            "binding": "RefuseTransport",
+            "continuity": "ABORT",
+            "enabled": false,
+            "kill_to_refuse_latency_ms": 0,
+            "ok": true,
+            "reason": "E-KILL mid-window pack"
+          },
+          "post_kill_call": {
+            "LIVE_API_ENABLED_module_default": false,
+            "abort": {
+              "code": "ENGINE_DISABLED",
+              "reason": "live disabled; RefuseTransport default"
+            },
+            "error_code": "ENGINE_DISABLED",
+            "http_status": null,
+            "impl_cp": "CP-0078",
+            "latency_ms": 0,
+            "live_api_enabled": false,
+            "model_ref": "none",
+            "note": "LiveHttpTransport refused: need runtime LIVE_API + I5 armed; module LIVE_API_ENABLED default remains False",
+            "ok": false,
+            "provider": "gemini-free",
+            "schema": "mesh.judge.raw_engine/v0",
+            "secret_handle": "mesh://secrets/judge/gemini-free@v1",
+            "src_live_codec_shipped": true,
+            "transport": "refuse",
+            "truncated": false,
+            "verdict": "ABORT"
+          }
+        },
+        "schema": "mesh.judge.gate5_multi_canary_attempt/v0",
+        "verdict": "ABORT"
+      },
+      {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort_code": "POLICY_ABORT",
+        "advisory_only": true,
+        "attempt_index": 3,
+        "binding_final": "RefuseTransport",
+        "edge_id": "E-ABORT-ACCEPT",
+        "error_code": "POLICY_ABORT",
+        "http_status": null,
+        "i5_armed": true,
+        "i5_killed": false,
+        "idempotency_key": "idem-e-abort-accept-3-28d1520bd0",
+        "latency_ms": 0,
+        "ledger_kinds": [
+          "request",
+          "abort",
+          "policy_version",
+          "continuity"
+        ],
+        "live_api_enabled_during": false,
+        "live_api_enabled_final": false,
+        "mesh_accept": false,
+        "metrics_hit": [
+          "M-ABORT-1",
+          "M-LEDGER-1"
+        ],
+        "mode": "mock_local",
+        "network": false,
+        "notes": [
+          "Mesh ABORT wins over peer ACCEPT; no silent ACCEPT"
+        ],
+        "ok": true,
+        "policy_version": "CP-0079",
+        "request_id": "gate5-multi-e-abort-accept-3-28d1520bd0",
+        "result": {
+          "abort": {
+            "code": "POLICY_ABORT",
+            "reason": "Mesh ABORT > peer ACCEPT (E-ABORT-ACCEPT)"
+          },
+          "binding": "RefuseTransport",
+          "mesh_accept": false,
+          "peer": {
+            "advisory_only": true,
+            "digest": "peer-accept-sim",
+            "mesh_accept": false,
+            "verdict": "ACCEPT"
+          },
+          "verdict": "ABORT"
+        },
+        "schema": "mesh.judge.gate5_multi_canary_attempt/v0",
+        "verdict": "ABORT"
+      },
+      {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort_code": "ENGINE_AUTH",
+        "advisory_only": true,
+        "attempt_index": 4,
+        "binding_final": "RefuseTransport",
+        "edge_id": "E-AUTH",
+        "error_code": "ENGINE_AUTH",
+        "http_status": null,
+        "i5_armed": true,
+        "i5_killed": false,
+        "idempotency_key": "idem-e-auth-4-138758d4d1",
+        "latency_ms": 0,
+        "ledger_kinds": [
+          "request",
+          "abort",
+          "handle",
+          "policy_version"
+        ],
+        "live_api_enabled_during": true,
+        "live_api_enabled_final": false,
+        "mesh_accept": false,
+        "metrics_hit": [
+          "M-REFUSE",
+          "M-SEC-1",
+          "M-LEDGER-1"
+        ],
+        "mode": "mock_local",
+        "network": false,
+        "notes": [
+          "invalid handle refused; no raw key invent"
+        ],
+        "ok": true,
+        "policy_version": "CP-0079",
+        "request_id": "gate5-multi-e-auth-4-138758d4d1",
+        "result": {
+          "LIVE_API_ENABLED_module_default": false,
+          "abort": {
+            "code": "ENGINE_AUTH",
+            "reason": "invalid or missing secret_handle"
+          },
+          "advisory_only": true,
+          "digest": "",
+          "error_code": "ENGINE_AUTH",
+          "http_status": null,
+          "impl_cp": "CP-0078",
+          "latency_ms": 0,
+          "live_api_enabled": true,
+          "mesh_accept": false,
+          "model_ref": "gemini-flash-latest",
+          "ok": false,
+          "peer_id": "live-http-transport",
+          "provider": "gemini-free",
+          "schema": "mesh.judge.raw_engine/v0",
+          "secret_handle": "not-a-valid-handle",
+          "src_live_codec_shipped": true,
+          "transport": "live_http",
+          "truncated": false,
+          "verdict": "ABORT"
+        },
+        "schema": "mesh.judge.gate5_multi_canary_attempt/v0",
+        "verdict": "ABORT"
+      },
+      {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort_code": "impl_cp_or_gates",
+        "advisory_only": true,
+        "attempt_index": 5,
+        "binding_final": "RefuseTransport",
+        "edge_id": "E-ANOMALY",
+        "error_code": "ENGINE_DISABLED",
+        "http_status": null,
+        "i5_armed": false,
+        "i5_killed": false,
+        "idempotency_key": "idem-e-anomaly-5-ce2b8651e6",
+        "latency_ms": 0,
+        "ledger_kinds": [
+          "abort",
+          "policy_version",
+          "request"
+        ],
+        "live_api_enabled_during": false,
+        "live_api_enabled_final": false,
+        "mesh_accept": false,
+        "metrics_hit": [
+          "M-ABORT-2",
+          "M-REFUSE-1"
+        ],
+        "mode": "mock_local",
+        "network": false,
+        "notes": [
+          "missing gate \u2192 full RefuseTransport; never partial enable"
+        ],
+        "ok": true,
+        "policy_version": "CP-0079",
+        "request_id": "gate5-multi-e-anomaly-5-ce2b8651e6",
+        "result": {
+          "enablement": {
+            "flags": {
+              "engine_is_goal_sot": false,
+              "gia_unlocked": false,
+              "live_adapter.enabled": false,
+              "live_api_in_ci": false,
+              "mesh_is_frontier_model": false,
+              "n_gt_2": false,
+              "raft_runtime": false,
+              "saas_settlement": false,
+              "silent_accept_on_error": false,
+              "train_70b": false
+            },
+            "may_enable": false,
+            "reasons": [
+              "impl_cp_not_authorized"
+            ]
+          },
+          "refuse": {
+            "abort": {
+              "code": "ENGINE_DISABLED",
+              "reason": "live disabled; RefuseTransport default"
+            },
+            "error_code": "ENGINE_DISABLED",
+            "http_status": null,
+            "latency_ms": 0,
+            "model_ref": "none",
+            "ok": false,
+            "provider": "refuse",
+            "schema": "mesh.judge.raw_engine/v0",
+            "truncated": false,
+            "verdict": "ABORT"
+          }
+        },
+        "schema": "mesh.judge.gate5_multi_canary_attempt/v0",
+        "verdict": "ABORT"
+      },
+      {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort_code": "HUMAN_ABORT",
+        "advisory_only": true,
+        "attempt_index": 6,
+        "binding_final": "RefuseTransport",
+        "edge_id": "E-RESUME",
+        "error_code": "ENGINE_DISABLED",
+        "http_status": null,
+        "i5_armed": true,
+        "i5_killed": true,
+        "idempotency_key": "idem-e-resume-6-baa98b0c63",
+        "latency_ms": 0,
+        "ledger_kinds": [
+          "oversight",
+          "abort",
+          "policy_version"
+        ],
+        "live_api_enabled_during": true,
+        "live_api_enabled_final": false,
+        "mesh_accept": false,
+        "metrics_hit": [
+          "M-KILL-3-RESUME"
+        ],
+        "mode": "mock_local",
+        "network": false,
+        "notes": [
+          "auto-resume without Gate5 re-walk correctly refused (M-KILL-3)"
+        ],
+        "ok": true,
+        "policy_version": "CP-0079",
+        "request_id": "gate5-multi-e-resume-6-baa98b0c63",
+        "result": {
+          "i5_allow_network": false,
+          "illegal_resume_attempt": true,
+          "post_resume_call": {
+            "LIVE_API_ENABLED_module_default": false,
+            "abort": {
+              "code": "ENGINE_DISABLED",
+              "reason": "live disabled; RefuseTransport default"
+            },
+            "error_code": "ENGINE_DISABLED",
+            "http_status": null,
+            "impl_cp": "CP-0078",
+            "latency_ms": 0,
+            "live_api_enabled": false,
+            "model_ref": "none",
+            "note": "LiveHttpTransport refused: need runtime LIVE_API + I5 armed; module LIVE_API_ENABLED default remains False",
+            "ok": false,
+            "provider": "gemini-free",
+            "schema": "mesh.judge.raw_engine/v0",
+            "secret_handle": "mesh://secrets/judge/gemini-free@v1",
+            "src_live_codec_shipped": true,
+            "transport": "refuse",
+            "truncated": false,
+            "verdict": "ABORT"
+          }
+        },
+        "schema": "mesh.judge.gate5_multi_canary_attempt/v0",
+        "verdict": "ABORT"
+      }
+    ],
+    "authorization": {
+      "compose": [
+        "CP-0075",
+        "CP-0078"
+      ],
+      "design_cp": "CP-0077",
+      "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+      "impl_cp": "CP-0079",
+      "lht": {
+        "authorized": true,
+        "binding": "LiveHttpTransport (unary v0) behind runtime LIVE + I5",
+        "canary_cp_compose": "CP-0075",
+        "cycle": 74,
+        "design_cp": "CP-0076",
+        "forbidden": [
+          "permanent LIVE_API_ENABLED=True",
+          "live_api_in_ci=true",
+          "Vertex paid",
+          "keys in git",
+          "NO_HELD unlocks",
+          "D3 / MESH_PERF_EXPERIMENTAL",
+          "silent ACCEPT on error",
+          "half-ACCEPT on stream break",
+          "advisory as Mesh SoT / M1"
+        ],
+        "full_live_http_codec_shipped": true,
+        "gates_required": [
+          "Gate1 ENABLE_UNDER_FENCES SIGNED",
+          "Gate2\u20134 ENABLE_READY",
+          "CP-0076 DESIGN_ONLY residual",
+          "I5 kill armed for live window",
+          "evaluate_enablement_gates may_enable",
+          "runtime LIVE window (not module default)"
+        ],
+        "impl_cp": "CP-0078",
+        "live_adapter_enabled_product_default": false,
+        "live_api_enabled_module_default": false,
+        "model_ref": "gemini-flash-latest",
+        "note": "Authorized minimum LiveHttpTransport v0 under fences. Module LIVE_API_ENABLED remains False; RefuseTransport default when live off.",
+        "package_held": "0.18.0",
+        "permanent_live_enable": false,
+        "provider": "gemini-free",
+        "schema": "mesh.judge.live_http_transport_impl/v0",
+        "scope": "live_http_transport_v0_gemini_free_under_fences",
+        "secret_handle": "mesh://secrets/judge/gemini-free@v1",
+        "src_live_codec_shipped": true,
+        "streaming_shipped": false
+      },
+      "n_min": 5,
+      "permanent_live_enable": false
+    },
+    "binding_final": "RefuseTransport",
+    "claim_hygiene": "sample\u2260SLO\u2260product-ready; n\u2265N is seal-*candidate* only",
+    "cycle": 75,
+    "design_cp": "CP-0077",
+    "finished_at_epoch": 1790649546.7176058,
+    "i5_killed_count": 2,
+    "impl_cp": "CP-0079",
+    "latency_aggregate": {
+      "max": 6303,
+      "median": 0,
+      "min": 0,
+      "note": "descriptive only \u2014 ops kill budget still OPEN",
+      "p50": 0,
+      "p95_approx": 6303
+    },
+    "latency_ms_all": [
+      6303,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "live_api_enabled_module_final": false,
+    "m1_status": "NO_CONSENSUS_YET",
+    "may_enable": true,
+    "mesh_accept": false,
+    "n": 6,
+    "n_abort": 3,
+    "n_edge": 5,
+    "n_kill_live": 1,
+    "n_ledger_kill": 1,
+    "n_min": 5,
+    "n_mock": 5,
+    "n_real_http": 1,
+    "notes": [
+      "final posture: module LIVE_API_ENABLED=False; runtime False; RefuseTransport; permanent enable requires LIVE_API_PERMANENT_ENABLE_POLICY + F4 (not this pack)"
+    ],
+    "ok": true,
+    "outcome_histogram": {
+      "E-ABORT-ACCEPT:POLICY_ABORT": 1,
+      "E-ANOMALY:impl_cp_or_gates": 1,
+      "E-AUTH:ENGINE_AUTH": 1,
+      "E-HAPPY:HTTP_200": 1,
+      "E-KILL:HUMAN_ABORT": 1,
+      "E-RESUME:HUMAN_ABORT": 1
+    },
+    "package_held": "0.18.0",
+    "quota_notes": [],
+    "reasons": [],
+    "schema": "mesh.judge.gate5_multi_canary_pack/v0",
+    "seal_blocked_reasons": [],
+    "seal_candidate": true,
+    "src_live_codec_shipped": true,
+    "started_at_epoch": 1790649537.4136536
+  },
+  "plan": [
+    {
+      "edge_id": "E-HAPPY",
+      "metrics": [
+        "M-ADV-1",
+        "M-REFUSE-1",
+        "M-LEDGER-1"
+      ],
+      "mode": "real_http"
+    },
+    {
+      "edge_id": "E-KILL",
+      "metrics": [
+        "M-KILL-1-LIVE",
+        "M-KILL-2-BUDGET",
+        "M-LEDGER-2"
+      ],
+      "mode": "mock_local"
+    },
+    {
+      "edge_id": "E-ABORT-ACCEPT",
+      "metrics": [
+        "M-ABORT-1",
+        "M-LEDGER-1"
+      ],
+      "mode": "mock_local"
+    },
+    {
+      "edge_id": "E-AUTH",
+      "metrics": [
+        "M-REFUSE",
+        "M-SEC-1",
+        "M-LEDGER-1"
+      ],
+      "mode": "mock_local"
+    },
+    {
+      "edge_id": "E-ANOMALY",
+      "metrics": [
+        "M-ABORT-2",
+        "M-REFUSE-1"
+      ],
+      "mode": "mock_local"
+    },
+    {
+      "edge_id": "E-RESUME",
+      "metrics": [
+        "M-KILL-3-RESUME"
+      ],
+      "mode": "mock_local"
+    }
+  ],
+  "runtime_live_after": false,
+  "runtime_live_before": false
+}

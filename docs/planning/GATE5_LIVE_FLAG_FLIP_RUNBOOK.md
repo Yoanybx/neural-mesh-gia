@@ -101,7 +101,7 @@ Execute **only** after §1 preconditions pass (ENABLE chain). Steps are **serial
 | Anomaly | Immediate I5 kill → RefuseTransport + ABORT + `enabled=false` |
 | Never | Partial enable of peer slots; multi-canary fan-out; Vertex paid without separate approval; treat dry-run as canary |
 
-**Today:** Step (6) **EXECUTED** under CP-0075 — see `GATE5_CANARY_EVIDENCE.md`; runtime LIVE during call only; module `LIVE_API_ENABLED=False` final; RefuseTransport restored.
+**Today:** Step (6) **EXECUTED** under CP-0075 — see `GATE5_CANARY_EVIDENCE.md`; multi-canary pack under **CP-0079** (`GATE5_MULTI_CANARY_*`); runtime LIVE during call only; module `LIVE_API_ENABLED=False` final; RefuseTransport restored. Permanent True → §8 + F4.
 
 ### Step (7) — Ledger evidence
 
@@ -209,7 +209,27 @@ Helpers (no Mesh live network this docs cycle):
 
 ---
 
-## 8. Related
+
+
+---
+
+## 8. Permanent enable vs canary window (policy binding)
+
+**Policy doc:** `docs/planning/LIVE_API_PERMANENT_ENABLE_POLICY.md` (CP-0079 companion)
+
+| Mode | When allowed | Flag posture |
+|------|--------------|--------------|
+| **Canary / multi-canary window** | ENABLE_UNDER_FENCES signed · Gates 2–4 ENABLE_READY · CP-0075/0078 · I5 armed · `may_enable` | Runtime LIVE **True only inside session**; **module** `LIVE_API_ENABLED` stays **False**; restore RefuseTransport after each attempt |
+| **Multi-canary pack (n≥N_min=5)** | CP-0077 sample policy + CP-0079 harness; edges E-KILL/E-ABORT/… | Same restore-False after pack; ledger `GATE5_MULTI_CANARY_*` |
+| **Permanent product LIVE True** | Policy §3 P1–P9 **including operator F4 product-enable ACK** | Module / `live_adapter.enabled` may stay True only after F4; **not** authorized by ENABLE_UNDER_FENCES alone |
+
+**Default after canary or pack (binding preference):** leave **module LIVE_API_ENABLED=False** even though ENABLE is signed — until permanent policy §3 + F4 are explicit.
+
+**Must return False:** kill / anomaly / failed NT / missing gate / CI / quota abort path / ENABLE revoked / F4 absent.
+
+**Re-enable after kill (M-KILL-3):** requires A3/A4 + full Gate5 (1)–(7) re-walk — auto-resume = FAIL (see E-RESUME in multi-canary pack).
+
+## 9. Related
 
 - `docs/planning/GATE5_DESIGN_SEALED.md`
 - `docs/planning/LIVE_READINESS_CHECKLIST.md` (Gate 5 exit)
@@ -231,4 +251,4 @@ Helpers (no Mesh live network this docs cycle):
 
 ---
 
-*End GATE5_LIVE_FLAG_FLIP_RUNBOOK — ENABLE signed; CP-0075; canary executed; module LIVE_API_ENABLED=False; RefuseTransport final.*
+*End GATE5_LIVE_FLAG_FLIP_RUNBOOK — ENABLE signed; CP-0075 canary; CP-0079 multi-canary + permanent enable policy; module LIVE_API_ENABLED=False default; RefuseTransport final.*

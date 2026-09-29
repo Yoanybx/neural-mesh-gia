@@ -2,7 +2,7 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 ~22:35 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075** canary; **CP-0076/0077 DESIGN_ONLY**; **CP-0078 IMPL** LiveHttpTransport v0 (default-off); module LIVE_API_ENABLED=False  
+**Date:** 2026-09-28 ~22:40 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075..0079**; multi-canary n=6; permanent enable policy (default-off); module LIVE_API_ENABLED=False  
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md`  
 **Tip context:** residual design atop `ca85688` (CP-0075) / ENABLE signed / dual design-seal hygiene `a816c34` / Gate6 DESIGN_SEALED / Gates 2–4 / peer `30fe593` / dry-run `1e502c6`  
 **Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075 canary **done**; **CP-0076 DESIGN_ONLY**; **CP-0077** metric completion DESIGN_ONLY; module LIVE_API=False / RefuseTransport  
@@ -97,7 +97,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*); live measurement **OPEN** |
 
 **Exit (design/discuss):** Named metric bundle DESIGN_SEALED for DISCUSS_ONLY; pytest remains necessary but insufficient alone; live measurement marked OPEN.  
-**Today:** Gate6 **DESIGN_SEALED** (metrics); canary sample **MEASURED** (n=1 ≠ SLO); metric **completion design** = **CP-0077 DESIGN_ONLY** (**n≥N_min=5**; **n=1 cannot seal**). Live measurement seal **OPEN**. LiveHttpTransport v0 = **CP-0078** (shipped default-off). Remaining listo: multi-canary + permanent enable + F4.
+**Today:** Gate6 **DESIGN_SEALED**; **CP-0079** pack **n=6 seal-candidate** (`GATE6_MULTI_CANARY_MEASUREMENT.md`); permanent policy on disk (default False). Remaining listo: **F4** · M-KILL-2 ops budget · M-ABORT-3.
 
 ### Gate 7 — Optional D3 (perf A/B)
 
@@ -133,11 +133,11 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 3 | Authority Matrix in use | **Yes** (enable) | **ENABLE_READY** (`GATE3_ENABLE_READY.md`); runtime not live-enabled |
 | 4 | Keys + data policy | **Yes** | **ENABLE_READY** (`GATE4_ENABLE_READY.md`); handle oob; secrets not in git |
 | 5 | RefuseTransport → live flag | **Yes** | Step (5) **PASS**; step (6) **EXECUTED** (CP-0075 canary HTTP 200); module `LIVE_API_ENABLED=False` final |
-| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED** metrics; sample **MEASURED** (n=1 ≠ SLO); **CP-0077** completion design (n≥N); live seal **OPEN**; permanent enable **not** claimed |
+| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED**; **CP-0079** n=6 seal-candidate; permanent **policy** done (default False); F4 **OPEN** |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075** canary **EXECUTED**; **CP-0076 DESIGN_ONLY** residual (no impl auth); **CP-0077 DESIGN_ONLY** metric completion (**n=1 cannot seal**). Module **`LIVE_API_ENABLED=False`**. Product-ready live still needs: **codec impl auth**, **multi-canary n≥N**, **permanent enable policy/runbook**. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
+**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075..0079** under fences (canary + LHT v0 + multi-canary n=6 + permanent policy). Module **`LIVE_API_ENABLED=False`**. Product-ready 「listo」 still needs: **F4 product-enable** · M-KILL-2 ops budget · M-ABORT-3. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
 
 ---
 

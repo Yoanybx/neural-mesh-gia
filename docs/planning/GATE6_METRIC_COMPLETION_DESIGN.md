@@ -178,12 +178,12 @@ Permanent enable policy (separate) — NOT this CP; module LIVE stays False with
 | Blocker | Status | Notes |
 |---------|--------|-------|
 | Gate6 metric **design** completion (this CP) | **DONE (DESIGN_ONLY)** | Does not measure |
-| Multi-canary **n≥N** + edge pack measured | **OPEN** | n=1 today |
-| M-KILL **live** + budget + resume drill | **OPEN** | Unit ≠ live |
-| M-ABORT forced drills | **OPEN** | |
-| M-LEDGER kill/abort completeness across n | **OPEN** | |
+| Multi-canary **n≥N** + edge pack measured | **DONE (CP-0079 n=6)** | seal_candidate; see `GATE6_MULTI_CANARY_MEASUREMENT.md` |
+| M-KILL **live** + budget + resume drill | **PARTIAL** | live kill+resume in CP-0079; **ops budget OPEN** |
+| M-ABORT forced drills | **PARTIAL** | ABORT-1/2 in CP-0079; **ABORT-3 conflict OPEN** |
+| M-LEDGER kill/abort completeness across n | **DONE (pack)** | oversight+abort on E-KILL |
 | **Codec impl** authorization | **OPEN** | CP-0076 = design only; needs **future impl CP** |
-| Permanent `LIVE_API_ENABLED` enable policy / runbook | **OPEN** | Do **not** permanently flip without runbook |
+| Permanent `LIVE_API_ENABLED` enable policy / runbook | **DONE (policy)** | `LIVE_API_PERMANENT_ENABLE_POLICY.md`; default False; F4 still OPEN |
 | Full LiveHttpTransport shipped + default-off | **DONE (CP-0078 v0)** | `src_live_codec_shipped=true`; module LIVE false; streaming residual |
 | NO_HELD / D3 / M1 / keys-in-git / push-tags | **Unchanged fences** | Not part of 「listo」 unlock |
 
