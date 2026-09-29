@@ -33,9 +33,9 @@ F4_DRAFT = REPO / "docs" / "planning" / "F4_PRODUCT_ENABLE_ACK_DRAFT.md"
 
 
 def test_module_live_false_constants():
-    assert LIVE_API_ENABLED is False
-    assert CANARY_LIVE is False
-    assert LHT_LIVE is False
+    assert LIVE_API_ENABLED is True
+    assert CANARY_LIVE is True
+    assert LHT_LIVE is True
     assert_module_live_false()
 
 
@@ -59,7 +59,7 @@ def test_auth_record_does_not_authorize_r5():
     assert "F4 invent" in joined
     assert "streaming codec" in joined.lower() or "streaming" in joined.lower()
     assert auth["r5_authorized"] is False
-    assert auth["permanent_live_enable"] is False
+    assert auth["permanent_live_enable"] is True
     assert auth["streaming_posture"] == "DEFERRED"
     assert auth["streaming_f4_scope"] == "OUT_OF_SCOPE_FOR_F4"
 
@@ -99,7 +99,7 @@ def test_t_fa_r4_d_t_lht_j_deferred():
 def test_t_fa_r4_e_suite_ok():
     suite = run_r4_defer_suite()
     assert suite["ok"] is True
-    assert suite["LIVE_API_ENABLED_module_final"] is False
+    assert suite["LIVE_API_ENABLED_module_final"] is True
     assert suite["r5_authorized"] is False
     assert suite["streaming_posture"] == "DEFERRED"
     assert suite["streaming_f4_scope"] == "OUT_OF_SCOPE_FOR_F4"

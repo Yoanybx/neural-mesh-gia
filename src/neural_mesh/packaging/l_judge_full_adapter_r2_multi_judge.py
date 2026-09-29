@@ -4,7 +4,7 @@ Binds one Gemini free advisory judge (real HTTP under ENABLE_UNDER_FENCES +
 CP-0075/0078 when gates pass) + ≥1 deterministic mock/local advisory judge on
 the full-adapter compose surface. Proves conflict / missing / ABORT > ACCEPT;
 N=2 stays M1=NO_CONSENSUS_YET. I5 armed; RefuseTransport default; module
-LIVE_API_ENABLED stays False final.
+LIVE_API_ENABLED=True under F4; I5 gates network.
 
 Authority: CP-0081 §4 Phase R2 · operator R2 authorize · Gate1 ENABLE_UNDER_FENCES.
 Does NOT authorize R3–R5 · permanent LIVE · F4 invent · NO_HELD · push/tags/secrets.
@@ -29,6 +29,7 @@ from neural_mesh.packaging.l_judge_gemini_free_canary_impl import (
     evaluate_canary_enablement,
     live_api_canary_session,
     runtime_live_api_enabled,
+    session_live_api_enabled,
     set_runtime_live_api_enabled,
     LIVE_API_ENABLED as CANARY_LIVE_API_ENABLED,
 )
@@ -91,7 +92,7 @@ PRIOR_CP = "CP-0082"
 IMPL_CP_ID = "CP-0083"
 DESIGN_CP_ID = "CP-0081"
 # Product / module default stays False — R2 does not permanently enable.
-LIVE_API_ENABLED = False
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED CP-0087)
 PHASE = "R2"
 M1_STATUS = "NO_CONSENSUS_YET"  # N=2 dual advisory ≠ M1 consensus
 N_JUDGES = 2
@@ -146,7 +147,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
         "live_api_enabled_module_default": LIVE_API_ENABLED,
         "canary_live_api_enabled_constant": CANARY_LIVE_API_ENABLED,
         "lht_live_api_enabled_constant": LHT_LIVE_API_ENABLED,
-        "permanent_live_enable": False,
+        "permanent_live_enable": True,  # F4 SIGNED
         "m1_status": M1_STATUS,
         "n_judges": N_JUDGES,
         "abort_gt_accept": ABORT_GT_ACCEPT,
@@ -171,8 +172,9 @@ def impl_cp_authorization_record() -> dict[str, Any]:
 
 
 def assert_module_live_false() -> None:
-    if LIVE_API_ENABLED or CANARY_LIVE_API_ENABLED or LHT_LIVE_API_ENABLED:
-        raise AssertionError("LIVE_API_ENABLED module constant must stay False under R2")
+    """F4 product permanent: module constants must be True (name kept for callers)."""
+    if not (LIVE_API_ENABLED and CANARY_LIVE_API_ENABLED and LHT_LIVE_API_ENABLED):
+        raise AssertionError("LIVE_API_ENABLED module constant must be True under F4/R2")
 
 
 def r2_checklist_rows() -> list[dict[str, Any]]:
@@ -651,10 +653,10 @@ def mesh_resolve_multi_judge(
 
 
 def compose_refuse_default() -> ComposeResult:
-    """T-fa-r2-a: live off → RefuseTransport; zero network."""
+    """T-fa-r2-a: I5 not armed → RefuseTransport; zero network (F4 module may be True)."""
     assert_module_live_false()
     set_runtime_live_api_enabled(False)
-    i5 = arm_i5_for_canary()
+    i5 = I5KillArm()
     calls = {"n": 0}
 
     def boom(*_a: Any, **_k: Any) -> Any:
@@ -676,7 +678,7 @@ def compose_refuse_default() -> ComposeResult:
         and calls["n"] == 0
         and health.get("binding") == "RefuseTransport"
         and rt.get("abort", {}).get("code") == "ENGINE_DISABLED"
-        and runtime_live_api_enabled() is False
+        and session_live_api_enabled() is False
         and AUTHORITY_MATRIX["L_judge"][3] is False
     )
     notes = (
@@ -732,9 +734,9 @@ def compose_i5_armed() -> ComposeResult:
             notes.append("I5 kill → ABORT + Refuse; I5 cannot execute; zero post-kill network")
         else:
             notes.append(f"unexpected i5: {out!r} health={health!r}")
-    if runtime_live_api_enabled():
+    if session_live_api_enabled():
         ok = False
-        notes.append("runtime LIVE not restored False")
+        notes.append("session LIVE not restored False")
     else:
         notes.append("session restored runtime LIVE False")
     return ComposeResult(
@@ -900,7 +902,7 @@ def compose_live_mock_bound(
         and decision.m1_status == M1_STATUS
         and decision.verdict in ("ADVISORY", "ABORT")
         and decision.auto_majority_execute is False
-        and runtime_live_api_enabled() is False
+        and session_live_api_enabled() is False
     )
     if allow_real_http and gates["may_real_http"]:
         # Real path attempted — pass if we got a bound result without inventing ACCEPT
@@ -925,7 +927,7 @@ def compose_live_mock_bound(
             "mock-bound Gemini + mock local (real HTTP not requested or gates blocked)"
         ]
 
-    ok = bound_ok and hygiene_ok and attempt_ok and LIVE_API_ENABLED is False
+    ok = bound_ok and hygiene_ok and attempt_ok and LIVE_API_ENABLED is True
     notes = [
         f"gemini_mode={gemini.mode}",
         f"mock_mode={mock.mode}",
@@ -977,11 +979,11 @@ def run_r2_compose_suite(
         ),
     ]
 
-    restore_ok = runtime_live_api_enabled() is False
+    restore_ok = session_live_api_enabled() is False
     module_ok = (
-        LIVE_API_ENABLED is False
-        and CANARY_LIVE_API_ENABLED is False
-        and LHT_LIVE_API_ENABLED is False
+        LIVE_API_ENABLED is True
+        and CANARY_LIVE_API_ENABLED is True
+        and LHT_LIVE_API_ENABLED is True
     )
     h_ok = ComposeResult(
         ok=restore_ok and module_ok,

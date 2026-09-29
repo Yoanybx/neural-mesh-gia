@@ -4,7 +4,7 @@ Composes packaging LiveHttpTransport v0 + Gemini free canary path under fences.
 Docs/tests descriptors only — **does not** permanently enable LIVE, raise n_real_http,
 authorize R2–R5, invent F4, or unlock NO_HELD.
 
-Authority: CP-0081 DESIGN_ONLY phases · operator R1 authorize · LIVE_API_ENABLED=False.
+Authority: CP-0081 DESIGN_ONLY phases · F4 SIGNED (CP-0087) · LIVE_API_ENABLED=True.
 """
 
 from __future__ import annotations
@@ -17,6 +17,7 @@ from neural_mesh.packaging.l_judge_gemini_free_canary_impl import (
     arm_i5_for_canary,
     live_api_canary_session,
     runtime_live_api_enabled,
+    session_live_api_enabled,
     set_runtime_live_api_enabled,
     LIVE_API_ENABLED as CANARY_LIVE_API_ENABLED,
 )
@@ -55,7 +56,7 @@ PRIOR_CP = "CP-0081"
 IMPL_CP_ID = "CP-0082"
 DESIGN_CP_ID = "CP-0081"
 # Product / module default stays False — R1 does not permanently enable.
-LIVE_API_ENABLED = False
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED CP-0087)
 PHASE = "R1"
 
 # Negative-test descriptor IDs for full-adapter R1 compose surface.
@@ -64,7 +65,7 @@ DESCRIPTOR_IDS: tuple[str, ...] = (
     "T-fa-r1-b",  # I5 kill → ABORT + subsequent Refuse
     "T-fa-r1-c",  # advisory ≠ SoT; mesh_accept stays false
     "T-fa-r1-d",  # session restore → runtime LIVE False + Refuse binding
-    "T-fa-r1-e",  # module LIVE_API_ENABLED False on both canary + LHT surfaces
+    "T-fa-r1-e",  # module LIVE_API_ENABLED True under F4 on canary + LHT surfaces
 )
 
 SOT_BOUNDARIES: tuple[str, ...] = (
@@ -98,7 +99,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
             "R3 Gate6 live-measurement seal / raise n_real_http",
             "R4 streaming DEFER or streaming RV",
             "R5 F4 product ACK / permanent module True",
-            "permanent LIVE_API_ENABLED",
+            "live_api_in_ci / Vertex / NO_HELD",
             "F4 invent",
             "NO_HELD unlock",
             "push/tags/secrets",
@@ -106,7 +107,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
         "live_api_enabled_module_default": LIVE_API_ENABLED,
         "canary_live_api_enabled_constant": CANARY_LIVE_API_ENABLED,
         "lht_live_api_enabled_constant": LHT_LIVE_API_ENABLED,
-        "permanent_live_enable": False,
+        "permanent_live_enable": True,  # F4 SIGNED
         "package_held": PACKAGE_HELD,
         "cycle": CYCLE,
         "surfaces": ["LiveHttpTransport", "GeminiFreeCanary", "RefuseTransport", "I5KillArm"],
@@ -114,9 +115,9 @@ def impl_cp_authorization_record() -> dict[str, Any]:
 
 
 def assert_module_live_false() -> None:
-    """Hard fence: packaging module constants must stay False."""
-    if LIVE_API_ENABLED or CANARY_LIVE_API_ENABLED or LHT_LIVE_API_ENABLED:
-        raise AssertionError("LIVE_API_ENABLED module constant must stay False under R1")
+    """F4 product permanent: module constants must be True (name kept for callers)."""
+    if not (LIVE_API_ENABLED and CANARY_LIVE_API_ENABLED and LHT_LIVE_API_ENABLED):
+        raise AssertionError("LIVE_API_ENABLED module constant must be True under F4/R1")
 
 def _mesh_accept_of(out: Mapping[str, Any] | None) -> bool:
     """Missing mesh_accept on refuse path counts as false (advisory never SoT)."""
@@ -190,7 +191,7 @@ def r1_checklist_rows() -> list[dict[str, Any]]:
         {
             "id": "I5-2",
             "topic": "Module fence",
-            "rule": "Module LIVE_API_ENABLED stays False on canary + LHT surfaces",
+            "rule": "Module LIVE_API_ENABLED=True under F4 on canary + LHT surfaces",
             "prove": "constants False after suite",
             "descriptor": "T-fa-r1-e",
         },
@@ -236,10 +237,10 @@ def _fake_ok_transport(
 
 
 def compose_refuse_when_live_off() -> ComposeResult:
-    """T-fa-r1-a: live off → RefuseTransport; zero network on full-adapter surface."""
-    assert_module_live_false()
+    """T-fa-r1-a: I5 not armed → RefuseTransport; zero network (module may be True under F4)."""
+    assert_module_live_false()  # under F4: asserts product True
     set_runtime_live_api_enabled(False)
-    i5 = arm_i5_for_canary()
+    i5 = I5KillArm()  # not armed → allow_network False
     calls = {"n": 0}
 
     def boom(*_a: Any, **_k: Any) -> Any:
@@ -257,7 +258,8 @@ def compose_refuse_when_live_off() -> ComposeResult:
         and _mesh_accept_of(out) is False
         and calls["n"] == 0
         and health.get("binding") == "RefuseTransport"
-        and runtime_live_api_enabled() is False
+        and session_live_api_enabled() is False
+        and i5.allow_network() is False
     )
     if not ok:
         notes.append(f"unexpected refuse compose: {out!r} health={health!r} calls={calls['n']}")
@@ -373,7 +375,7 @@ def compose_advisory_not_sot() -> ComposeResult:
             and out.get("verdict") == "ADVISORY"
             and out.get("advisory_only") is True
             and out.get("mesh_accept") is False
-            and out.get("LIVE_API_ENABLED_module_default") is False
+            and out.get("LIVE_API_ENABLED_module_default") is True
             and calls["n"] == 1
         )
         if not ok:
@@ -384,9 +386,9 @@ def compose_advisory_not_sot() -> ComposeResult:
         for boundary in SOT_BOUNDARIES:
             if "never become Mesh ACCEPT" in boundary or "ADVISORY ≠ SoT" in boundary:
                 notes.append(f"boundary cited: {boundary[:48]}…")
-    if runtime_live_api_enabled():
+    if session_live_api_enabled():
         ok = False
-        notes.append("runtime LIVE not restored after advisory session")
+        notes.append("session LIVE not restored after advisory session")
     return ComposeResult(
         ok=ok,
         descriptor="T-fa-r1-c",
@@ -408,11 +410,11 @@ def run_r1_compose_suite() -> dict[str, Any]:
         compose_advisory_not_sot(),
     ]
     # T-fa-r1-d / T-fa-r1-e covered by suite post-conditions
-    restore_ok = runtime_live_api_enabled() is False
+    restore_ok = session_live_api_enabled() is False
     module_ok = (
-        LIVE_API_ENABLED is False
-        and CANARY_LIVE_API_ENABLED is False
-        and LHT_LIVE_API_ENABLED is False
+        LIVE_API_ENABLED is True
+        and CANARY_LIVE_API_ENABLED is True
+        and LHT_LIVE_API_ENABLED is True
     )
     d_ok = ComposeResult(
         ok=restore_ok,

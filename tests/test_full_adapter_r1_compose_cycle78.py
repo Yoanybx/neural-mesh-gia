@@ -64,12 +64,12 @@ def test_constants_and_authorization():
     assert PRIOR_CP == DESIGN_CP_ID == "CP-0081"
     assert CYCLE == 78
     assert PHASE == "R1"
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
     assert is_impl_cp_authorized() is True
     auth = impl_cp_authorization_record()
     assert auth["authorized"] is True
     assert auth["phase"] == "R1"
-    assert auth["permanent_live_enable"] is False
+    assert auth["permanent_live_enable"] is True
     assert "R2 multi-judge live/mock-bound RV" in auth["does_not_authorize"]
     assert "R5 F4 product ACK / permanent module True" in auth["does_not_authorize"]
     assert set(DESCRIPTOR_IDS) == {
@@ -101,8 +101,8 @@ def test_t_fa_r1_a_refuse_when_live_off():
     assert res.mesh_accept is False
     assert res.binding == "RefuseTransport"
     assert res.result["error_code"] == "ENGINE_DISABLED"
-    assert runtime_live_api_enabled() is False
-    assert LIVE_API_ENABLED is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
+    assert LIVE_API_ENABLED is True
 
 
 def test_t_fa_r1_b_i5_kill_compose():
@@ -114,7 +114,7 @@ def test_t_fa_r1_b_i5_kill_compose():
     assert res.mesh_accept is False
     assert res.result["verdict"] == "ABORT"
     assert res.result["error_code"] in ("ENGINE_DISABLED", "HUMAN_ABORT")
-    assert runtime_live_api_enabled() is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
 
 
 def test_t_fa_r1_c_advisory_not_sot_mesh_accept_false():
@@ -126,7 +126,7 @@ def test_t_fa_r1_c_advisory_not_sot_mesh_accept_false():
     assert res.result["advisory_only"] is True
     assert res.result["verdict"] == "ADVISORY"
     assert res.result["mesh_accept"] is False
-    assert runtime_live_api_enabled() is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
 
 
 def test_run_r1_compose_suite_all_pass():
@@ -135,7 +135,7 @@ def test_run_r1_compose_suite_all_pass():
     assert suite["phase"] == "R1"
     assert suite["impl_cp"] == "CP-0082"
     assert suite["r2_r5_authorized"] is False
-    assert suite["LIVE_API_ENABLED_module_final"] is False
+    assert suite["LIVE_API_ENABLED_module_final"] is True
     assert suite["runtime_live_api_enabled_final"] is False
     ids = {d["descriptor"] for d in suite["descriptors"]}
     assert ids == set(DESCRIPTOR_IDS)

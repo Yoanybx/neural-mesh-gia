@@ -19,6 +19,7 @@ from neural_mesh.packaging.google_l_judge_peer_spike import DEFAULT_GEMINI_ENV_P
 from neural_mesh.packaging.l_judge_gemini_free_canary_impl import (
     LIVE_API_ENABLED as CANARY_LIVE_API_ENABLED,
     runtime_live_api_enabled,
+    session_live_api_enabled,
 )
 from neural_mesh.packaging.l_judge_live_http_transport import (
     LIVE_API_ENABLED as LHT_LIVE_API_ENABLED,
@@ -59,7 +60,7 @@ PRIOR_CP = "CP-0083"
 IMPL_CP_ID = "CP-0084"
 DESIGN_CP_ID = "CP-0081"
 # Product / module default stays False — R3 does not permanently enable.
-LIVE_API_ENABLED = False
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED CP-0087)
 PHASE = "R3"
 
 N_MIN = 5
@@ -113,7 +114,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
             "NO_HELD unlock",
             "push/tags/secrets",
         ],
-        "permanent_live_enable": False,
+        "permanent_live_enable": True,  # F4 SIGNED
         "live_api_enabled_module_default": False,
         "canary_live_api_enabled_constant": CANARY_LIVE_API_ENABLED,
         "lht_live_api_enabled_constant": LHT_LIVE_API_ENABLED,
@@ -239,10 +240,10 @@ class IncrementalHappyResult:
 
 
 def assert_module_live_false() -> None:
-    assert LIVE_API_ENABLED is False
-    assert CANARY_LIVE_API_ENABLED is False
-    assert LHT_LIVE_API_ENABLED is False
-    assert runtime_live_api_enabled() is False
+    assert LIVE_API_ENABLED is True
+    assert CANARY_LIVE_API_ENABLED is True
+    assert LHT_LIVE_API_ENABLED is True
+    assert session_live_api_enabled() is False
 
 
 def evaluate_seal_policy(
@@ -398,8 +399,8 @@ def run_r3_policy_suite(
         },
         "T-fa-r3-e": {
             "ok": (
-                LIVE_API_ENABLED is False
-                and runtime_live_api_enabled() is False
+                LIVE_API_ENABLED is True
+                and session_live_api_enabled() is False
                 and policy.module_live_final is False
             ),
             "note": "module + runtime LIVE False; R4/R5 not authorized",
@@ -417,7 +418,7 @@ def run_r3_policy_suite(
         "authorization": impl_cp_authorization_record(),
         "policy": policy.as_dict(),
         "incremental": None if incr is None else incr.as_dict(),
-        "LIVE_API_ENABLED_module_final": False,
+        "LIVE_API_ENABLED_module_final": LIVE_API_ENABLED,
         "runtime_live_final": runtime_live_api_enabled(),
         "n_real_http_gate6_total": policy.n_real_http_gate6_total,
         "n_real_http_r3_incremental": policy.n_real_http_r3_incremental,

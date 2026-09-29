@@ -10,7 +10,7 @@ Minimum live-enablement binding (not a full L_judge LiveHttpTransport codec):
   ``LIVE_API_ENABLED`` flip + kill-armed I5.
 * Does **not** ship ``src/neural_mesh/judge_*.py`` live codec.
 * Does **not** unlock NO_HELD / GIA / Raft / N>2 / train / SaaS / D3 / pkg0190.
-* Module constant ``LIVE_API_ENABLED`` stays **False** after canary (RefuseTransport-safe).
+* Module constant ``LIVE_API_ENABLED`` = **True** under F4 product ACK SIGNED (I5 still gates).
 * Keys stay out-of-band (``~/.config/neural-mesh/gemini.env``); never logged.
 
 Authority: Gate1 SIGNED ENABLE_UNDER_FENCES (「Aprobado」) · Gates 2–4 ENABLE_READY ·
@@ -68,6 +68,7 @@ __all__ = [
     "is_impl_cp_authorized",
     "evaluate_canary_enablement",
     "runtime_live_api_enabled",
+    "session_live_api_enabled",
     "set_runtime_live_api_enabled",
     "live_api_canary_session",
     "GeminiFreeCanaryTransport",
@@ -81,8 +82,8 @@ CYCLE = 71
 SEAL_CP = "CP-0075"
 PRIOR_CP = "CP-0074"
 IMPL_CP_ID = "CP-0075"
-# Module / product-line default stays False (RefuseTransport-safe after canary).
-LIVE_API_ENABLED = False
+# F4 product permanent (ACK SIGNED + CP-0087) — RefuseTransport when I5 not armed.
+LIVE_API_ENABLED = True
 CANARY_SECRET_HANDLE = DRY_RUN_SECRET_HANDLE  # mesh://secrets/judge/gemini-free@v1
 CANARY_MODEL = DEFAULT_DRY_RUN_MODEL  # gemini-flash-latest
 CANARY_PROMPT = "Reply with exactly: MESH_CANARY_OK"
@@ -102,13 +103,24 @@ def set_runtime_live_api_enabled(value: bool) -> None:
     _runtime_live_api_enabled = bool(value)
 
 
-def runtime_live_api_enabled(*, env: Mapping[str, str] | None = None) -> bool:
-    """True iff module default, process runtime, or env opts into live canary."""
-    if LIVE_API_ENABLED or PEER_SPIKE_LIVE_API_ENABLED or _runtime_live_api_enabled:
+def session_live_api_enabled(*, env: Mapping[str, str] | None = None) -> bool:
+    """Process/env LIVE *session* window only (not the product module constant)."""
+    if _runtime_live_api_enabled:
         return True
     e = env if env is not None else os.environ
     val = str(e.get(RUNTIME_LIVE_ENV, "")).strip().lower()
     return val in ("1", "true", "yes", "on")
+
+
+def runtime_live_api_enabled(*, env: Mapping[str, str] | None = None) -> bool:
+    """True if product module authorized (F4) OR session/env live window.
+
+    Network still requires I5.allow_network(). After canary, clear *session*
+    via set_runtime_live_api_enabled(False); product module may stay True.
+    """
+    if LIVE_API_ENABLED or PEER_SPIKE_LIVE_API_ENABLED:
+        return True
+    return session_live_api_enabled(env=env)
 
 
 def is_impl_cp_authorized() -> bool:
@@ -156,7 +168,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
         "nt10": "cleared when impl_cp_authorized=True and other gates pass (no reasons)",
         "note": (
             "Minimum path for Gate5 canary only. Not a full L_judge LiveHttpTransport. "
-            "Module LIVE_API_ENABLED remains False after canary (RefuseTransport-safe)."
+            "Module LIVE_API_ENABLED=True under F4 SIGNED; I5/RefuseTransport still gate network."
         ),
     }
 
@@ -350,7 +362,7 @@ class GeminiFreeCanaryTransport:
             refused["secret_handle"] = self.secret_handle
             refused["note"] = (
                 "canary refused: need runtime LIVE_API + I5 armed; "
-                "module LIVE_API_ENABLED default remains False"
+                "module LIVE_API_ENABLED product default under F4; I5 gates network"
             )
             return refused
 
@@ -454,7 +466,7 @@ def run_gate5_canary_once(
         ledger.abort_code = "impl_cp_or_gates"
         ledger.verdict = "ABORT"
         ledger.notes.append("may_enable=False; canary not started; RefuseTransport retained")
-        ledger.live_api_enabled_final = runtime_live_api_enabled()
+        ledger.live_api_enabled_final = bool(LIVE_API_ENABLED)
         ledger.binding_final = "RefuseTransport"
         return ledger
 
@@ -534,10 +546,10 @@ def run_gate5_canary_once(
         # Always leave RefuseTransport-safe.
         set_runtime_live_api_enabled(False)
         i5.enabled = False
-        ledger.live_api_enabled_final = runtime_live_api_enabled()
+        ledger.live_api_enabled_final = bool(LIVE_API_ENABLED)
         ledger.binding_final = "RefuseTransport"
         ledger.notes.append(
-            "final posture: runtime LIVE_API=False; module LIVE_API_ENABLED=False; RefuseTransport"
+            "final posture: session LIVE cleared; module LIVE_API_ENABLED under F4; I5/RefuseTransport gate"
         )
 
     return ledger

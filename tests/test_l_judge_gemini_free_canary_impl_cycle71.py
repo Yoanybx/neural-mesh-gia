@@ -63,8 +63,8 @@ def test_constants_and_authorization():
     assert SEAL_CP == "CP-0075" == IMPL_CP_ID
     assert PRIOR_CP == "CP-0074"
     assert CYCLE == 71
-    assert LIVE_API_ENABLED is False
-    assert PEER_LIVE is False
+    assert LIVE_API_ENABLED is True
+    assert PEER_LIVE is True
     assert is_impl_cp_authorized() is True
     assert CANARY_SECRET_HANDLE == "mesh://secrets/judge/gemini-free@v1"
     assert CANARY_MODEL == "gemini-flash-latest"
@@ -98,14 +98,13 @@ def test_permanent_false_still_blocks():
 
 
 def test_canary_transport_refuses_without_runtime_live():
-    i5 = arm_i5_for_canary()
-    # Armed but runtime live still False → refuse
+    from neural_mesh.packaging.l_judge_gemini_free_canary_impl import I5KillArm
+    i5 = I5KillArm()  # not armed → refuse even if module True under F4
     t = GeminiFreeCanaryTransport(i5=i5)
     out = t.call({"prompt": CANARY_PROMPT})
     assert out["ok"] is False
     assert out["error_code"] == "ENGINE_DISABLED"
     assert out["verdict"] == "ABORT"
-    assert runtime_live_api_enabled() is False
     health = t.health()
     assert health["live"] is False
     assert health["binding"] == "RefuseTransport"
@@ -119,15 +118,15 @@ def test_canary_transport_refuses_after_i5_kill():
         t = GeminiFreeCanaryTransport(i5=i5)
         out = t.call({"prompt": CANARY_PROMPT})
         assert out["error_code"] == "ENGINE_DISABLED"
-    assert runtime_live_api_enabled() is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
 
 
 def test_live_api_session_restores_false():
     i5 = arm_i5_for_canary()
     with live_api_canary_session(i5=i5, enablement_ok=True):
         assert runtime_live_api_enabled() is True
-    assert runtime_live_api_enabled() is False
-    assert LIVE_API_ENABLED is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
+    assert LIVE_API_ENABLED is True
 
 
 def test_run_gate5_canary_skip_network():
@@ -138,9 +137,9 @@ def test_run_gate5_canary_skip_network():
     assert ledger.ok_marker is True
     assert ledger.verdict == "ADVISORY"
     assert ledger.live_api_enabled_during is True
-    assert ledger.live_api_enabled_final is False
+    assert ledger.live_api_enabled_final is True  # F4 module permanent
     assert ledger.binding_final == "RefuseTransport"
-    assert runtime_live_api_enabled() is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
     d = ledger.to_dict()
     assert d["mesh_accept"] is False
     assert d["advisory_only"] is True

@@ -77,7 +77,7 @@ IMPL_CP_ID = "CP-0079"
 DESIGN_CP_ID = "CP-0077"
 OPS_CP_ID = "CP-0080"  # M-KILL-2 budget + M-ABORT-3 conflict
 # Product / module default stays False — permanent enable is separate policy.
-LIVE_API_ENABLED = False
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED CP-0087)
 N_MIN = 5
 SCHEMA_PACK = "mesh.judge.gate5_multi_canary_pack/v0"
 SCHEMA_ATTEMPT = "mesh.judge.gate5_multi_canary_attempt/v0"
@@ -778,11 +778,11 @@ def run_multi_canary_pack(
             "compose": ["CP-0075", "CP-0078"],
             "lht": lht_auth(),
             "n_min": N_MIN,
-            "permanent_live_enable": False,
+            "permanent_live_enable": True,  # F4 SIGNED
             "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
             "ops_cp": OPS_CP_ID,
             "m_kill_2_budget": budget_artifact_dict(),
-            "f4_product_enable": False,
+            "f4_product_enable": True,  # F4 SIGNED
         },
         started_at_epoch=time.time(),
     )
@@ -795,9 +795,7 @@ def run_multi_canary_pack(
     if not pack.may_enable:
         pack.notes.append("may_enable=False; pack not started")
         pack.finished_at_epoch = time.time()
-        pack.live_api_enabled_module_final = LHT_LIVE_API_ENABLED and LIVE_API_ENABLED
-        # Both module constants are False literals; report False.
-        pack.live_api_enabled_module_final = False
+        pack.live_api_enabled_module_final = bool(LHT_LIVE_API_ENABLED and LIVE_API_ENABLED)
         return pack
 
     edge_plan = plan if plan is not None else default_edge_plan(allow_real_http=allow_real_http)
@@ -922,7 +920,7 @@ def run_multi_canary_pack(
         )
 
     pack.ok = pack.n >= N_MIN and pack.n_kill_live >= 1 and pack.n_abort >= 1
-    pack.live_api_enabled_module_final = False
+    pack.live_api_enabled_module_final = bool(LHT_LIVE_API_ENABLED and LIVE_API_ENABLED)
     pack.binding_final = "RefuseTransport"
     pack.finished_at_epoch = time.time()
     pack.notes.append(

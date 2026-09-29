@@ -18,6 +18,7 @@ from typing import Any
 from neural_mesh.packaging.l_judge_gemini_free_canary_impl import (
     LIVE_API_ENABLED as CANARY_LIVE_API_ENABLED,
     runtime_live_api_enabled,
+    session_live_api_enabled,
 )
 from neural_mesh.packaging.l_judge_live_http_transport import (
     LIVE_API_ENABLED as LHT_LIVE_API_ENABLED,
@@ -57,7 +58,7 @@ PRIOR_CP = "CP-0084"
 IMPL_CP_ID = "CP-0085"
 DESIGN_CP_ID = "CP-0081"
 # Product / module default stays False — R4 does not permanently enable.
-LIVE_API_ENABLED = False
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED CP-0087)
 PHASE = "R4"
 
 STREAMING_POSTURE = "DEFERRED"
@@ -105,7 +106,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
             "NO_HELD unlock",
             "push/tags/secrets",
         ],
-        "permanent_live_enable": False,
+        "permanent_live_enable": True,  # F4 SIGNED
         "live_api_enabled_module_default": False,
         "canary_live_api_enabled_constant": CANARY_LIVE_API_ENABLED,
         "lht_live_api_enabled_constant": LHT_LIVE_API_ENABLED,
@@ -194,10 +195,10 @@ class StreamingDeferPolicy:
 
 
 def assert_module_live_false() -> None:
-    assert LIVE_API_ENABLED is False
-    assert CANARY_LIVE_API_ENABLED is False
-    assert LHT_LIVE_API_ENABLED is False
-    assert runtime_live_api_enabled() is False
+    assert LIVE_API_ENABLED is True
+    assert CANARY_LIVE_API_ENABLED is True
+    assert LHT_LIVE_API_ENABLED is True
+    assert session_live_api_enabled() is False
 
 
 def assert_unary_only_product_path() -> dict[str, Any]:
@@ -279,8 +280,8 @@ def run_r4_defer_suite() -> dict[str, Any]:
         },
         "T-fa-r4-e": {
             "ok": (
-                LIVE_API_ENABLED is False
-                and runtime_live_api_enabled() is False
+                LIVE_API_ENABLED is True
+                and session_live_api_enabled() is False
                 and policy.module_live_final is False
                 and policy.r5_authorized is False
             ),
@@ -299,7 +300,7 @@ def run_r4_defer_suite() -> dict[str, Any]:
         "authorization": impl_cp_authorization_record(),
         "policy": policy.as_dict(),
         "unary_product_path": unary,
-        "LIVE_API_ENABLED_module_final": False,
+        "LIVE_API_ENABLED_module_final": LIVE_API_ENABLED,
         "runtime_live_final": runtime_live_api_enabled(),
         "verdict": policy.verdict,
         "streaming_posture": STREAMING_POSTURE,

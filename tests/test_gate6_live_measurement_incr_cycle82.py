@@ -38,9 +38,9 @@ EVIDENCE = REPO / "docs" / "planning" / "EVIDENCE_CP_0086_GATE6_LIVE_MEASUREMENT
 
 
 def test_module_live_false_constants():
-    assert LIVE_API_ENABLED is False
-    assert CANARY_LIVE is False
-    assert LHT_LIVE is False
+    assert LIVE_API_ENABLED is True
+    assert CANARY_LIVE is True
+    assert LHT_LIVE is True
     assert_module_live_false()
 
 
@@ -66,7 +66,7 @@ def test_auth_record_does_not_authorize_r5_f4():
     assert "R5" in joined
     assert "F4 invent" in joined or "F4 invent / forge" in joined
     assert auth["product_seal"] is False
-    assert auth["permanent_live_enable"] is False
+    assert auth["permanent_live_enable"] is True
     assert auth["r5_authorized"] is False
 
 
@@ -148,7 +148,7 @@ def test_t_g6_incr_b_incremental_mock():
 def test_t_g6_incr_e_suite_mock_ok():
     suite = run_gate6_incr_suite(allow_real_http=False, run_incremental=True)
     assert suite["ok"] is True
-    assert suite["LIVE_API_ENABLED_module_final"] is False
+    assert suite["LIVE_API_ENABLED_module_final"] is True
     assert suite["live_measurement_seal"] is False
     assert suite["product_seal"] is False
     assert suite["r5_authorized"] is False

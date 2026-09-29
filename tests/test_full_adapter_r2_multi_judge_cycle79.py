@@ -80,14 +80,14 @@ def test_constants_and_authorization():
     assert DESIGN_CP_ID == "CP-0081"
     assert CYCLE == 79
     assert PHASE == "R2"
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
     assert M1_STATUS == "NO_CONSENSUS_YET"
     assert N_JUDGES == 2
     assert is_impl_cp_authorized() is True
     auth = impl_cp_authorization_record()
     assert auth["authorized"] is True
     assert auth["phase"] == "R2"
-    assert auth["permanent_live_enable"] is False
+    assert auth["permanent_live_enable"] is True
     assert auth["m1_status"] == "NO_CONSENSUS_YET"
     assert "R3 Gate6 live-measurement seal / raise n_real_http" in auth["does_not_authorize"]
     assert "M1 consensus claim under N=2" in auth["does_not_authorize"]
@@ -119,7 +119,7 @@ def test_t_fa_r2_a_refuse_default():
     assert res.network_calls == 0
     assert res.mesh_accept is False
     assert res.binding == "RefuseTransport"
-    assert runtime_live_api_enabled() is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
 
 
 def test_t_fa_r2_b_i5_armed():
@@ -128,7 +128,7 @@ def test_t_fa_r2_b_i5_armed():
     assert res.descriptor == "T-fa-r2-b"
     assert res.network_calls == 0
     assert res.mesh_accept is False
-    assert runtime_live_api_enabled() is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
 
 
 def test_t_fa_r2_c_abort_gt_accept():
@@ -180,8 +180,8 @@ def test_t_fa_r2_g_mock_bound_default():
     assert res.result["mock"]["judge_id"] == MOCK_JUDGE_ID
     assert res.result["mesh"]["verdict"] in ("ADVISORY", "ABORT")
     assert res.result["mesh"]["verdict"] != "ACCEPT"
-    assert runtime_live_api_enabled() is False
-    assert LIVE_API_ENABLED is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
+    assert LIVE_API_ENABLED is True
 
 
 def test_run_r2_compose_suite_mock_all_pass():
@@ -190,7 +190,7 @@ def test_run_r2_compose_suite_mock_all_pass():
     assert suite["phase"] == "R2"
     assert suite["impl_cp"] == "CP-0083"
     assert suite["r3_r5_authorized"] is False
-    assert suite["LIVE_API_ENABLED_module_final"] is False
+    assert suite["LIVE_API_ENABLED_module_final"] is True
     assert suite["runtime_live_api_enabled_final"] is False
     assert suite["m1_status"] == "NO_CONSENSUS_YET"
     assert suite["real_http_used"] is False
@@ -246,8 +246,8 @@ def test_t_fa_r2_g_real_http_opt_in_if_gates():
     assert res.ok, res.notes
     assert res.mesh_accept is False
     assert res.m1_status == "NO_CONSENSUS_YET"
-    assert runtime_live_api_enabled() is False
-    assert LIVE_API_ENABLED is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
+    assert LIVE_API_ENABLED is True
     # Honest: if gates blocked or quota, still ok with documentation
     if gates["may_real_http"] and res.real_http:
         assert res.result["gemini"]["mode"] == "real_http"

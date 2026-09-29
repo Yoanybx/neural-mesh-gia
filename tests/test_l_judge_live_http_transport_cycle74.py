@@ -2,7 +2,7 @@
 
 Markers: l_judge_live_http_transport_cycle74
 Covers T-lht-* descriptors that are unit-testable now (mock HTTP; no live CI).
-Module LIVE_API_ENABLED stays False; may_enable fail-closed without auth.
+Module LIVE_API_ENABLED=True under F4 SIGNED; may_enable fail-closed without auth; I5 gates network.
 """
 
 from __future__ import annotations
@@ -98,18 +98,18 @@ def test_constants_and_authorization():
     assert PRIOR_CP == "CP-0077"
     assert DESIGN_CP_ID == "CP-0076"
     assert CYCLE == 74
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
     assert SRC_LIVE_CODEC_SHIPPED is True
     assert is_impl_cp_authorized() is True
     auth = impl_cp_authorization_record()
     assert auth["authorized"] is True
     assert auth["src_live_codec_shipped"] is True
     assert auth["full_live_http_codec_shipped"] is True
-    assert auth["permanent_live_enable"] is False
-    assert auth["live_api_enabled_module_default"] is False
+    assert auth["permanent_live_enable"] is True
+    assert auth["live_api_enabled_module_default"] is True
     pol = default_lht_policy()
     assert pol["enabled"] is False
-    assert pol["LIVE_API_ENABLED"] is False
+    assert pol["LIVE_API_ENABLED"] is True
     assert pol["streaming_allowed"] is False
     assert pol["max_retries"] == 1
 
@@ -134,15 +134,16 @@ def test_src_live_codec_no_longer_blocks_enablement():
     assert "src_live_codec_shipped" not in MUST_STAY_FALSE
     res = evaluate_lht_enablement(flags={"src_live_codec_shipped": True})
     assert res.may_enable is True
-    # Product live still blocked if asserted
-    blocked = evaluate_lht_enablement(flags={"live_adapter.enabled": True})
-    assert blocked.may_enable is False
-    assert any("live_adapter.enabled" in r for r in blocked.reasons)
+    # F4 SIGNED: live_adapter.enabled=True authorized (no longer a refusal)
+    allowed = evaluate_lht_enablement(flags={"live_adapter.enabled": True})
+    assert allowed.may_enable is True
+    assert allowed.reasons == []
 
 
 def test_t_lht_a_refuse_when_live_off():
-    """T-lht-a: enabled=false / RefuseTransport → ENGINE_DISABLED; zero network."""
-    i5 = arm_i5_for_canary()
+    """T-lht-a: I5 not armed → RefuseTransport; zero network (module may be True under F4)."""
+    from neural_mesh.packaging.l_judge_gemini_free_canary_impl import I5KillArm
+    i5 = I5KillArm()
     calls = {"n": 0}
 
     def boom(*_a, **_k):
@@ -155,9 +156,8 @@ def test_t_lht_a_refuse_when_live_off():
     assert out["error_code"] == "ENGINE_DISABLED"
     assert out["verdict"] == "ABORT"
     assert calls["n"] == 0
-    assert runtime_live_api_enabled() is False
     assert t.health()["binding"] == "RefuseTransport"
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
 
 
 def test_t_lht_b_invalid_secret_handle():
@@ -295,7 +295,7 @@ def test_t_lht_k_live_api_in_ci_stays_refused():
     res = evaluate_lht_enablement(flags={"live_api_in_ci": True})
     assert res.may_enable is False
     assert "live_api_in_ci_must_stay_false" in res.reasons
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
 
 
 def test_t_lht_l_codec_authorized_under_impl_cp_not_design_only():
@@ -347,9 +347,9 @@ def test_happy_path_mock_http_advisory_only():
         assert out["verdict"] == "ADVISORY"
         assert out["mesh_accept"] is False
         assert out["advisory_only"] is True
-        assert out["LIVE_API_ENABLED_module_default"] is False
-    assert runtime_live_api_enabled() is False
-    assert LIVE_API_ENABLED is False
+        assert out["LIVE_API_ENABLED_module_default"] is True
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
+    assert LIVE_API_ENABLED is True
 
 
 def test_canary_compose_still_works():
@@ -359,10 +359,10 @@ def test_canary_compose_still_works():
         run_gate5_canary_once,
     )
 
-    assert CANARY_LIVE is False
+    assert CANARY_LIVE is True
     ledger = run_gate5_canary_once(skip_network=True, request_id="compose-check")
     assert ledger.may_enable is True
-    assert ledger.live_api_enabled_final is False
+    assert ledger.live_api_enabled_final is True  # F4 module permanent
     assert ledger.binding_final == "RefuseTransport"
 
 
@@ -386,7 +386,7 @@ def test_docs_and_no_secrets():
 def test_refuse_transport_still_default_when_off():
     rt = RefuseTransport()
     assert rt.health()["live"] is False
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
 
 
 def test_payload_digest_stable():

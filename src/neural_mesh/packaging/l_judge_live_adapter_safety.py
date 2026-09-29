@@ -3,7 +3,7 @@
 Constants, secret_handle validation, RefuseTransport mock, and
 enablement-gate evaluation. No network I/O here. No API keys in this module.
 CP-0075 authorizes may_enable=True when all gates pass (NT-10 cleared).
-CP-0078 ships packaging LiveHttpTransport v0 (still default-off; LIVE_API_ENABLED=False).
+CP-0078 ships packaging LiveHttpTransport v0. F4 product ACK SIGNED (CP-0087): LIVE_API_ENABLED / live_adapter.enabled authorized True in ACK'd env; I5 still gates.
 """
 
 from __future__ import annotations
@@ -24,6 +24,7 @@ __all__ = [
     "ABORT_CODES",
     "RATE_LIMIT_FLOORS",
     "MUST_STAY_FALSE",
+    "PRODUCT_AUTHORIZED_TRUE",
     "PERMANENT_FALSE",
     "is_valid_secret_handle",
     "looks_like_raw_secret",
@@ -79,10 +80,14 @@ RATE_LIMIT_FLOORS: dict[str, int | float] = {
 }
 
 # Flags that must remain false until evidence (safety case §8).
+# live_adapter.enabled lifted from must-stay-false under F4 product ACK SIGNED (CP-0087).
+# Still listed in PRODUCT_AUTHORIZED_TRUE for documentation / default_safety_gate awareness.
+PRODUCT_AUTHORIZED_TRUE: tuple[str, ...] = (
+    "live_adapter.enabled",  # authorized True in ACK'd local env under F4 SIGNED
+)
 MUST_STAY_FALSE: tuple[str, ...] = (
-    "live_adapter.enabled",
     "live_api_in_ci",
-    # src_live_codec_shipped cleared by CP-0078 (packaging LiveHttpTransport v0 shipped; still default-off)
+    # src_live_codec_shipped cleared by CP-0078 (packaging LiveHttpTransport v0 shipped)
     "mesh_is_frontier_model",
     "train_70b",
     "gia_unlocked",
@@ -125,8 +130,13 @@ def looks_like_raw_secret(text: str) -> bool:
 
 
 def default_safety_gate() -> dict[str, Any]:
-    """Return the design-default safety gate (live disabled)."""
+    """Return the design-default safety gate.
+
+    Network still RefuseTransport-default. Under F4 SIGNED, ``live_adapter.enabled``
+    may be True in ACK'd env (see PRODUCT_AUTHORIZED_TRUE); I5 still gates network.
+    """
     must_false = {k: False for k in MUST_STAY_FALSE}
+    product_auth = {k: False for k in PRODUCT_AUTHORIZED_TRUE}
     return {
         "schema": SCHEMA_SAFETY,
         "enabled": False,
@@ -138,6 +148,8 @@ def default_safety_gate() -> dict[str, Any]:
         "require_audit_sink": True,
         **{k: RATE_LIMIT_FLOORS[k] for k in RATE_LIMIT_FLOORS},
         "must_stay_false": must_false,
+        "product_authorized_true": product_auth,
+        "f4_product_ack": "docs/planning/F4_PRODUCT_ENABLE_ACK_SIGNED.md",
     }
 
 
@@ -173,6 +185,8 @@ def evaluate_enablement_gates(
     never performs network I/O and never flips permanent-false flags.
     """
     merged = {k: False for k in MUST_STAY_FALSE}
+    for k in PRODUCT_AUTHORIZED_TRUE:
+        merged.setdefault(k, False)
     if flags:
         for k, v in flags.items():
             if k in merged:
@@ -185,11 +199,11 @@ def evaluate_enablement_gates(
         if merged.get(k):
             reasons.append(f"permanent_false_asserted:{k}")
 
-    if merged.get("live_adapter.enabled"):
-        reasons.append("live_adapter.enabled_must_stay_false_until_evidence")
+    # F4 SIGNED (CP-0087): live_adapter.enabled=true authorized in ACK'd env — no longer a refusal.
+    # Flag still accepted via flags= for callers; absence/default False remains fail-closed for other gates.
     if merged.get("live_api_in_ci"):
         reasons.append("live_api_in_ci_must_stay_false")
-    # src_live_codec_shipped may be True under CP-0078 (codec shipped, still default-off).
+    # src_live_codec_shipped may be True under CP-0078 (codec shipped).
 
     if not safety_case_verified:
         reasons.append("safety_case_not_verified")

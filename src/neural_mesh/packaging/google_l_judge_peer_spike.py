@@ -65,7 +65,7 @@ __all__ = [
 ]
 
 PACKAGE_HELD = "0.18.0"
-LIVE_API_ENABLED = False  # must stay False (live=DISABLED)
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED); I5 still gates network
 M1_STATUS = "NO_CONSENSUS_YET"
 SCHEMA_PEER = "mesh.judge.google_peer_spike/v0"
 SCHEMA_CORRELATION = "mesh.judge.google_peer_correlation/v0"
@@ -321,14 +321,17 @@ class GoogleLJudgePeerSpike:
             )
             return report
 
-        # Live path is always refused while LIVE_API_ENABLED is False.
-        if env.get("live_api_enabled") or env.get("use_live_gemini"):
+        # Explicit live-gemini *slot request* still RefuseTransport here.
+        # Product LIVE_API_ENABLED=True (F4) does not open this spike slot;
+        # Mesh live HTTP uses canary/LHT under I5. sample_envelope may report
+        # live_api_enabled=module for honesty without triggering this path.
+        if env.get("use_live_gemini") or env.get("request_live_gemini_slot"):
             refused = self.refuse.call(env)
             report.ok = False
             report.mesh_decision = "ABORT"
-            report.live_api_enabled = False
+            report.live_api_enabled = bool(LIVE_API_ENABLED)
             report.abort_code = "PEER_LIVE_DISABLED"
-            report.abort_reason = "live=DISABLED; RefuseTransport default"
+            report.abort_reason = "live gemini slot refused; use canary/LHT under I5"
             report.attributions.append(
                 PeerAttribution(
                     peer_id="gemini-live-slot",
@@ -375,7 +378,7 @@ class GoogleLJudgePeerSpike:
         report.mesh_accept = False
         report.advisory_only = True
         report.m1_status = M1_STATUS
-        report.live_api_enabled = False
+        report.live_api_enabled = bool(LIVE_API_ENABLED)
         report.refuse_transport_default = True
         if equal:
             report.independence_risk = "HIGH" if self.force_correlation else "MEDIUM"

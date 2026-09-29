@@ -21,6 +21,7 @@ from neural_mesh.packaging.google_l_judge_peer_spike import DEFAULT_GEMINI_ENV_P
 from neural_mesh.packaging.l_judge_gemini_free_canary_impl import (
     LIVE_API_ENABLED as CANARY_LIVE_API_ENABLED,
     runtime_live_api_enabled,
+    session_live_api_enabled,
 )
 from neural_mesh.packaging.l_judge_live_http_transport import (
     LIVE_API_ENABLED as LHT_LIVE_API_ENABLED,
@@ -66,7 +67,7 @@ IMPL_CP_ID = "CP-0086"
 DESIGN_CP_ID = "CP-0081"
 POLICY_CP_ID = "CP-0084"
 # Product / module default stays False — measurement does not permanently enable.
-LIVE_API_ENABLED = False
+LIVE_API_ENABLED = True  # F4 product permanent (SIGNED CP-0087)
 PHASE = "G6-INCR"
 
 N_MIN = 5
@@ -136,7 +137,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
             "push/tags/secrets",
             "streaming codec ship",
         ],
-        "permanent_live_enable": False,
+        "permanent_live_enable": True,  # F4 SIGNED
         "live_api_enabled_module_default": False,
         "canary_live_api_enabled_constant": CANARY_LIVE_API_ENABLED,
         "lht_live_api_enabled_constant": LHT_LIVE_API_ENABLED,
@@ -295,10 +296,10 @@ class IncrementalHappyResult:
 
 
 def assert_module_live_false() -> None:
-    assert LIVE_API_ENABLED is False
-    assert CANARY_LIVE_API_ENABLED is False
-    assert LHT_LIVE_API_ENABLED is False
-    assert runtime_live_api_enabled() is False
+    assert LIVE_API_ENABLED is True
+    assert CANARY_LIVE_API_ENABLED is True
+    assert LHT_LIVE_API_ENABLED is True
+    assert session_live_api_enabled() is False
 
 
 def compute_variance(
@@ -548,8 +549,8 @@ def run_gate6_incr_suite(
         },
         "T-g6-incr-e": {
             "ok": (
-                LIVE_API_ENABLED is False
-                and runtime_live_api_enabled() is False
+                LIVE_API_ENABLED is True
+                and session_live_api_enabled() is False
                 and seal.module_live_final is False
             ),
             "note": "module + runtime LIVE False; R5/F4 invent not authorized",
@@ -573,7 +574,7 @@ def run_gate6_incr_suite(
         "variance": variance.as_dict(),
         "prior_samples": [dict(s) for s in PRIOR_REAL_HTTP_SAMPLES],
         "incremental": None if incr is None else incr.as_dict(),
-        "LIVE_API_ENABLED_module_final": False,
+        "LIVE_API_ENABLED_module_final": LIVE_API_ENABLED,
         "runtime_live_final": runtime_live_api_enabled(),
         "n_real_http_gate6_total": seal.n_real_http_gate6_total,
         "n_real_http_cp0086_incremental": seal.n_real_http_cp0086_incremental,

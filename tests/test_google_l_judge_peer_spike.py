@@ -43,7 +43,7 @@ PKG = REPO / "src" / "neural_mesh" / "packaging" / "google_l_judge_peer_spike.py
 def test_version_and_constants():
     assert __version__ == "0.18.0"
     assert PACKAGE_HELD == "0.18.0"
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
     assert M1_STATUS == "NO_CONSENSUS_YET"
     assert N_CAP == 2
     assert SCHEMA_PEER == "mesh.judge.google_peer_spike/v0"
@@ -118,7 +118,7 @@ def test_mock_peers_disagree_no_consensus_claim():
     assert report.mesh_accept is False
     assert report.mesh_decision == "ABORT"
     assert report.m1_status == "NO_CONSENSUS_YET"
-    assert report.live_api_enabled is False
+    assert report.live_api_enabled is True  # F4 module
     assert report.refuse_transport_default is True
     assert report.independence_risk == "LOW"
     assert report.abort_code is None  # advisory evidence continues
@@ -230,7 +230,7 @@ def test_dual_advisory_report_fields_and_refuse_default():
     assert d["mesh_accept"] is False
     assert d["refuse_transport_default"] is True
     assert d["m1_status"] == "NO_CONSENSUS_YET"
-    assert d["live_api_enabled"] is False
+    assert d["live_api_enabled"] is True  # F4 module
     assert d["abort_provenance"]["binding"] == "RefuseTransport"
     # Agree or disagree — never Mesh ACCEPT / M1 consensus from mock peers.
     assert d["mesh_decision"] in ("ADVISORY", "ABORT")
@@ -288,7 +288,7 @@ def test_dry_run_transport_refuses_without_flag_no_network(monkeypatch):
     assert out["ok"] is False
     assert out["error_code"] == "PEER_DRY_RUN_FLAG_REQUIRED"
     assert out["truncated"] is False
-    assert out["live_api_enabled"] is False
+    assert out["live_api_enabled"] is True  # F4 module
     assert out["transport"] == "dry_run_refused"
     assert calls == []
     h = t.health()
@@ -356,8 +356,8 @@ def test_dry_run_transport_one_call_when_enabled(monkeypatch, tmp_path):
     assert out["transport"] == "dry_run"
     assert out["raw_text"] == "MESH_DRY_RUN_OK"
     assert out["ok_marker"] is True
-    assert out["live_api_enabled"] is False
-    assert LIVE_API_ENABLED is False
+    assert out["live_api_enabled"] is True  # F4 module
+    assert LIVE_API_ENABLED is True
     assert "test-key-not-real-000" not in _json.dumps(out)
     assert "key=" in str(seen["url"])
     # URL may contain key for the request; result must not.
@@ -374,7 +374,7 @@ def test_build_peer_spike_default_still_mock():
     spike = build_peer_spike()
     assert isinstance(spike.gemini, MockGeminiPeerTransport)
     report = spike.run_correlation()
-    assert report.live_api_enabled is False
+    assert report.live_api_enabled is True  # F4 module
     assert all(a.transport == "mock" for a in report.attributions)
 
 

@@ -1,16 +1,16 @@
 # Live 100% — Operator wall status pack (DESIGN ONLY)
 
-**Status:** Hold A **LEFT** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **CP-0075..0086** · multi-canary **n=6** + drills · Gate6 **seal_candidate** + **live-measurement SEALED** (CP-0086 n=3) · permanent enable **policy** on disk · module LIVE_API=False · F4 **DESIGN_SEALED** / product ACK **UNSIGNED** · full-adapter RV **R0–R4 DONE / R5 OPEN** · streaming **DEFERRED** / OUT_OF_F4 · 「listo」 **bajo fences YES** / product permanent **NO**.  
+**Status:** Hold A **LEFT** · Gate1 **SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **CP-0075..0087** · Gate6 live-measurement **SEALED** · F4 product ACK **SIGNED** · R5 **DONE** · module product-path **LIVE_API=True** (I5 gates) · streaming **DEFERRED** · 「listo」 bajo fences **YES** / product permanent **YES (ACK’d local Gemini free)** · residual test hygiene → `council/NOTE_CP_0087_F4_R5_RESIDUAL.md`.  
 **Does not** mint keys into git · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD · **does not** permanently flip LIVE_API without F4 signed ACK · **does not** invent F4.  
 **Date:** 2026-09-28 ~23:20 ET (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
 **Tip at update base:** `344daec` (CP-0085 R4 DONE) → **CP-0086** Gate6 live-measurement incr  
-**Package posture:** **0.18.0 HELD** · **Hold A LEFT** · **LIVE_API_ENABLED=False** · **CP-0075..0086** · **Gate1 SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
+**Package posture:** **0.18.0 HELD** · **Hold A LEFT** · **LIVE_API_ENABLED=True** (product path) · **CP-0075..0087** · **Gate1 SIGNED ENABLE_UNDER_FENCES** · Gates **2–4 ENABLE_READY** · **M1=NO_CONSENSUS_YET** · **D3 NOT ACKed** · **NO_HELD** stays NO_HELD
 
 **Checklist:** `docs/planning/LIVE_READINESS_CHECKLIST.md`  
 **Next steps:** `docs/planning/GEMINI_FREE_NEXT_STEPS.md`  
 **ENABLE SIGNED:** `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md`  
-**F4:** `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_DRAFT.md` (**UNSIGNED**)  
+**F4:** `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_SIGNED.md` (**SIGNED**) · draft historical  
 **Council notes:** Gate1–6 `council/NOTE_GATE*.md` · `council/NOTE_CP_0080_F4_KILL_ABORT.md` · `council/NOTE_DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md` · `council/NOTE_CP_0082_FULL_ADAPTER_R1_COMPOSE.md` · `council/NOTE_CP_0083_FULL_ADAPTER_R2_MULTI_JUDGE.md` · `council/NOTE_CP_0084_GATE6_LIVE_MEASUREMENT_SEAL_POLICY.md` · `council/NOTE_CP_0085_STREAMING_DEFER_SEAL.md` · `council/NOTE_CP_0086_GATE6_LIVE_MEASUREMENT_INCR.md`
 
 ---

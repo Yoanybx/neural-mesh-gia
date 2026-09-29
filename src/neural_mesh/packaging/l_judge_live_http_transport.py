@@ -5,7 +5,7 @@ Minimum honest codec+transport implementing CP-0076 DESIGN_ONLY residual:
 * Unary HTTP codec (TLS-only) with retries / backoff / idempotency / timeouts
 * Error taxonomy → Mesh ABORT codes; ABORT/cancel hooks compose I5
 * Default binding remains RefuseTransport when runtime LIVE off or I5 refuse
-* Module constant ``LIVE_API_ENABLED`` stays **False** (not permanent product enable)
+* Module constant ``LIVE_API_ENABLED`` = **True** under F4 product ACK SIGNED (I5 still gates)
 * CI must not enable live (``live_api_in_ci`` stays false)
 
 Authority: CP-0076 design · Gate1 ENABLE_UNDER_FENCES · CP-0075 canary compose ·
@@ -76,8 +76,8 @@ SEAL_CP = "CP-0078"
 PRIOR_CP = "CP-0077"
 IMPL_CP_ID = "CP-0078"
 DESIGN_CP_ID = "CP-0076"
-# Product / module default stays False — never permanent enable under this CP.
-LIVE_API_ENABLED = False
+# F4 product permanent (ACK SIGNED + CP-0087) — I5 still gates network.
+LIVE_API_ENABLED = True
 SRC_LIVE_CODEC_SHIPPED = True  # packaging LiveHttpTransport v0 under CP-0078
 
 SCHEMA_IMPL = "mesh.judge.live_http_transport_impl/v0"
@@ -169,8 +169,8 @@ def impl_cp_authorization_record() -> dict[str, Any]:
         "full_live_http_codec_shipped": True,  # packaging v0; still default-off
         "streaming_shipped": False,
         "live_api_enabled_module_default": LIVE_API_ENABLED,
-        "live_adapter_enabled_product_default": False,
-        "permanent_live_enable": False,
+        "live_adapter_enabled_product_default": True,  # F4 SIGNED
+        "permanent_live_enable": True,  # F4 SIGNED
         "canary_cp_compose": "CP-0075",
         "gates_required": [
             "Gate1 ENABLE_UNDER_FENCES SIGNED",
@@ -181,8 +181,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
             "runtime LIVE window (not module default)",
         ],
         "forbidden": [
-            "permanent LIVE_API_ENABLED=True",
-            "live_api_in_ci=true",
+            "live_api_in_ci=true",  # still forbidden; permanent True authorized under F4
             "Vertex paid",
             "keys in git",
             "NO_HELD unlocks",
@@ -193,7 +192,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
         ],
         "note": (
             "Authorized minimum LiveHttpTransport v0 under fences. "
-            "Module LIVE_API_ENABLED remains False; RefuseTransport default when live off."
+            "Module LIVE_API_ENABLED=True under F4 SIGNED; RefuseTransport when I5 not armed."
         ),
     }
 

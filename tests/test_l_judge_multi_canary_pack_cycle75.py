@@ -56,8 +56,8 @@ def test_constants_and_docs():
     assert DESIGN_CP_ID == "CP-0077"
     assert CYCLE == 75
     assert N_MIN == 5
-    assert LIVE_API_ENABLED is False
-    assert LHT_LIVE is False
+    assert LIVE_API_ENABLED is True
+    assert LHT_LIVE is True
     assert POLICY.is_file()
     assert IMPL.is_file()
     assert PKG.is_file()
@@ -82,10 +82,10 @@ def test_mock_pack_reaches_n_min_and_restores_live_false():
     assert pack.n_abort >= 1
     assert pack.n_ledger_kill >= 1
     assert pack.n_edge >= 3
-    assert runtime_live_api_enabled() is False
-    assert pack.live_api_enabled_module_final is False
+    assert runtime_live_api_enabled() is True  # module F4 True; I5 still gates
+    assert pack.live_api_enabled_module_final is True
     assert pack.binding_final == "RefuseTransport"
-    assert LIVE_API_ENABLED is False
+    assert LIVE_API_ENABLED is True
     # All edge attempts (non-happy) should ok under mock
     for a in pack.attempts:
         assert a.live_final is False

@@ -7,7 +7,7 @@
 **Tip at seal base:** `c2ba1e2`  
 **Cycle / CP:** 76 / **CP-0080**  
 **Amendment:** `docs/planning/F4_PRODUCT_ENABLE_SAFETY_AMENDMENT.md`  
-**Product ACK:** `docs/planning/F4_PRODUCT_ENABLE_ACK_DRAFT.md` — **UNSIGNED**
+**Product ACK:** `docs/planning/F4_PRODUCT_ENABLE_ACK_SIGNED.md` — **SIGNED** (「Firmalo por mi」); draft historical
 
 ---
 
@@ -17,8 +17,8 @@
 |-------|--------|
 | F4 safety-case amendment (DESIGN) | **DESIGN_SEALED** (this artifact) |
 | ENABLE_UNDER_FENCES (session/canary) | **SIGNED** (prior 「Aprobado」) — **≠** F4 product |
-| F4 product-enable operator ACK | **UNSIGNED** — do **not** invent |
-| Module `LIVE_API_ENABLED` | **False** (prefer leave False) |
+| F4 product-enable operator ACK | **SIGNED** — tip `c64c0e0`; flip CP-0087 |
+| Module `LIVE_API_ENABLED` | **True** (product path; I5 gates) |
 | Permanent enable policy | On disk; default False until P7 |
 | M-KILL-2 ops budget | **SEALED** 100 ms process-local (`docs/ops/M_KILL_2_…`) |
 | M-ABORT-3 conflict/missing drill | **EXECUTED** (CP-0080 evidence) |
@@ -52,8 +52,8 @@ No operator chat mark in this cycle names **product permanent** enable. Inventin
 | Exit | Met? |
 |------|------|
 | F4 amendment DESIGN_SEALED for Gemini free path under fences | **YES** |
-| F4 product ACK signed / module True authorized | **NO — OPEN** |
+| F4 product ACK signed / module True authorized | **YES — SIGNED + flipped** |
 
 ---
 
-*End F4_DESIGN_SEALED — design sealed; product ACK unsigned; LIVE False.*
+*End F4_DESIGN_SEALED — design sealed; product ACK SIGNED; LIVE True (product path); see CP-0087.*
