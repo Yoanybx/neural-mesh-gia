@@ -1,12 +1,15 @@
-"""CP-0079 — Multi-canary measurement pack (n≥N_min=5) under fences.
+"""CP-0079 multi-canary pack (+ CP-0080 M-KILL-2 budget / M-ABORT-3 conflict).
 
 Runs ≥5 independent Gate5/Gate6 canary *attempts* with required edge mix
 (CP-0077): E-KILL, E-ABORT-ACCEPT, E-AUTH, E-ANOMALY/E-RESUME, + happy-path.
+CP-0080 adds ops kill→refuse budget evaluation (M-KILL-2) and E-CONFLICT
+(M-ABORT-3 conflicting/missing judges fail-closed).
 
 Authority: Gate1 ENABLE_UNDER_FENCES · CP-0075 · CP-0078 LiveHttpTransport ·
-CP-0077 sample policy (N_min=5). Module LIVE_API_ENABLED stays False after pack.
+CP-0077 sample policy (N_min=5) · CP-0080 ops budget + abort-3.
+Module LIVE_API_ENABLED stays False after pack.
 Quota: free-tier — space real HTTP; edges prefer local/mock when possible.
-Does NOT unlock NO_HELD / permanent product LIVE / D3 / keys-in-git.
+Does NOT unlock NO_HELD / permanent product LIVE / D3 / keys-in-git / F4.
 """
 
 from __future__ import annotations
@@ -34,6 +37,11 @@ from neural_mesh.packaging.l_judge_live_adapter_safety import (
     evaluate_enablement_gates,
     is_valid_secret_handle,
 )
+from neural_mesh.packaging.m_kill_2_ops_budget import (
+    KILL_TO_REFUSE_CEILING_MS,
+    budget_artifact_dict,
+    evaluate_kill_to_refuse_budget,
+)
 from neural_mesh.packaging.l_judge_live_http_transport import (
     LIVE_API_ENABLED as LHT_LIVE_API_ENABLED,
     SRC_LIVE_CODEC_SHIPPED,
@@ -49,6 +57,7 @@ __all__ = [
     "PRIOR_CP",
     "IMPL_CP_ID",
     "DESIGN_CP_ID",
+    "OPS_CP_ID",
     "LIVE_API_ENABLED",
     "N_MIN",
     "SCHEMA_PACK",
@@ -66,6 +75,7 @@ SEAL_CP = "CP-0079"
 PRIOR_CP = "CP-0078"
 IMPL_CP_ID = "CP-0079"
 DESIGN_CP_ID = "CP-0077"
+OPS_CP_ID = "CP-0080"  # M-KILL-2 budget + M-ABORT-3 conflict
 # Product / module default stays False — permanent enable is separate policy.
 LIVE_API_ENABLED = False
 N_MIN = 5
@@ -253,6 +263,11 @@ def default_edge_plan(*, allow_real_http: bool = True) -> list[dict[str, Any]]:
             "mode": "mock_local",
             "metrics": ["M-KILL-3-RESUME"],
         },
+        {
+            "edge_id": "E-CONFLICT",
+            "mode": "mock_local",
+            "metrics": ["M-ABORT-3"],
+        },
     ]
     return plan
 
@@ -418,7 +433,12 @@ def _run_kill(*, index: int) -> MultiCanaryAttempt:
             att.abort_code = "HUMAN_ABORT"
             att.error_code = refused.get("error_code") or "ENGINE_DISABLED"
             # Success for this edge = kill worked + post-kill refused (no invent ACCEPT)
-            att.ok = (
+            att.ledger_kinds = ["oversight", "abort", "request", "policy_version"]
+            budget = evaluate_kill_to_refuse_budget(
+                observed_ms=kill_latency_ms,
+                ledger_kinds=att.ledger_kinds,
+            )
+            chain_ok = (
                 bool(kill_info.get("ok"))
                 and kill_info.get("continuity") == "ABORT"
                 and kill_info.get("enabled") is False
@@ -426,10 +446,16 @@ def _run_kill(*, index: int) -> MultiCanaryAttempt:
                 and refused.get("verdict") == "ABORT"
                 and refused.get("mesh_accept") is not True
             )
-            att.ledger_kinds = ["oversight", "abort", "request", "policy_version"]
+            att.result["kill_budget"] = budget.to_dict()
+            att.result["kill"]["kill_to_refuse_ceiling_ms"] = KILL_TO_REFUSE_CEILING_MS
+            # Success = kill chain + M-KILL-2 budget within ceiling + ledger kinds
+            att.ok = chain_ok and budget.ok
             att.notes.append(
-                f"kill→refuse latency_ms={kill_latency_ms} (descriptive; ops budget OPEN)"
+                f"kill→refuse latency_ms={kill_latency_ms} "
+                f"ceiling_ms={KILL_TO_REFUSE_CEILING_MS} "
+                f"budget_ok={budget.ok} (M-KILL-2 CP-0080)"
             )
+            att.notes.extend(list(budget.notes))
             att.network = False
     finally:
         set_runtime_live_api_enabled(False)
@@ -628,6 +654,114 @@ def _run_resume(*, index: int) -> MultiCanaryAttempt:
     return att
 
 
+
+def _run_conflict(*, index: int) -> MultiCanaryAttempt:
+    """E-CONFLICT: conflicting judges + missing judge → fail-closed (M-ABORT-3).
+
+    Sub-drill A — dual judges disagree (ACCEPT vs REJECT): Mesh ABORT, no
+    auto-majority execute; escalate I5 conceptually (advisory only).
+    Sub-drill B — expected judge missing: fail-closed ABORT; never invent ACCEPT.
+    """
+    rid, ikey = _new_ids("E-CONFLICT", index)
+    att = MultiCanaryAttempt(
+        attempt_index=index,
+        edge_id="E-CONFLICT",
+        request_id=rid,
+        idempotency_key=ikey,
+        mode="mock_local",
+        metrics_hit=["M-ABORT-3"],
+    )
+    t0 = time.monotonic()
+    # --- Sub-A: conflicting judges ---
+    judge_a = {
+        "peer_id": "judge-a",
+        "verdict": "ACCEPT",
+        "advisory_only": True,
+        "digest": "conflict-a-accept",
+    }
+    judge_b = {
+        "peer_id": "judge-b",
+        "verdict": "REJECT",
+        "advisory_only": True,
+        "digest": "conflict-b-reject",
+    }
+    conflict_mesh = {
+        "verdict": "ABORT",
+        "abort": {
+            "code": "JUDGE_CONFLICT",
+            "reason": "Conflicting judges → fail-closed; no auto-majority execute",
+        },
+        "mesh_accept": False,
+        "escalate_i5": True,
+        "judges": [judge_a, judge_b],
+        "binding": "RefuseTransport",
+        "auto_majority_execute": False,
+    }
+    conflict_ok = (
+        conflict_mesh["verdict"] == "ABORT"
+        and conflict_mesh["mesh_accept"] is False
+        and conflict_mesh["auto_majority_execute"] is False
+        and conflict_mesh["escalate_i5"] is True
+        and judge_a["verdict"] != judge_b["verdict"]
+    )
+    # --- Sub-B: missing judge ---
+    present = [judge_a]
+    expected = ["judge-a", "judge-b"]
+    missing = [j for j in expected if j not in {p["peer_id"] for p in present}]
+    missing_mesh = {
+        "verdict": "ABORT",
+        "abort": {
+            "code": "JUDGE_MISSING",
+            "reason": f"Missing judges {missing} → fail-closed; no invent ACCEPT",
+        },
+        "mesh_accept": False,
+        "escalate_i5": True,
+        "judges_present": [p["peer_id"] for p in present],
+        "judges_expected": expected,
+        "judges_missing": missing,
+        "binding": "RefuseTransport",
+        "auto_majority_execute": False,
+    }
+    missing_ok = (
+        missing_mesh["verdict"] == "ABORT"
+        and missing_mesh["mesh_accept"] is False
+        and bool(missing)
+        and missing_mesh["auto_majority_execute"] is False
+    )
+    refused = RefuseTransport().call(
+        {"reason": "E-CONFLICT fail-closed", "request_id": rid}
+    )
+    att.latency_ms = int((time.monotonic() - t0) * 1000)
+    att.result = {
+        "sub_a_conflict": conflict_mesh,
+        "sub_b_missing": missing_mesh,
+        "refuse": _safe_result(refused),
+        "metric": "M-ABORT-3",
+    }
+    att.verdict = "ABORT"
+    att.abort_code = "JUDGE_CONFLICT"
+    att.error_code = refused.get("error_code") or "ENGINE_DISABLED"
+    att.mesh_accept = False
+    att.ok = (
+        conflict_ok
+        and missing_ok
+        and refused.get("verdict") == "ABORT"
+        and refused.get("mesh_accept") is not True
+        and runtime_live_api_enabled() is False
+    )
+    att.network = False
+    att.live_during = False
+    att.live_final = runtime_live_api_enabled()
+    att.binding_final = "RefuseTransport"
+    att.i5_armed = True
+    att.ledger_kinds = ["abort", "oversight", "policy_version", "request", "continuity"]
+    att.notes.append(
+        "M-ABORT-3: conflicting judges + missing judge → fail-closed ABORT; "
+        "no auto-majority execute (CP-0080)"
+    )
+    return att
+
+
 def run_multi_canary_pack(
     *,
     allow_real_http: bool = True,
@@ -646,6 +780,9 @@ def run_multi_canary_pack(
             "n_min": N_MIN,
             "permanent_live_enable": False,
             "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+            "ops_cp": OPS_CP_ID,
+            "m_kill_2_budget": budget_artifact_dict(),
+            "f4_product_enable": False,
         },
         started_at_epoch=time.time(),
     )
@@ -678,6 +815,7 @@ def run_multi_canary_pack(
         "E-AUTH": lambda i, spec: _run_auth(index=i),
         "E-ANOMALY": lambda i, spec: _run_anomaly(index=i),
         "E-RESUME": lambda i, spec: _run_resume(index=i),
+        "E-CONFLICT": lambda i, spec: _run_conflict(index=i),
     }
 
     for i, spec in enumerate(edge_plan, start=1):
@@ -710,7 +848,7 @@ def run_multi_canary_pack(
     pack.n_abort = sum(
         1
         for a in pack.attempts
-        if a.edge_id in ("E-ABORT-ACCEPT", "E-ANOMALY", "E-AUTH") and a.ok
+        if a.edge_id in ("E-ABORT-ACCEPT", "E-ANOMALY", "E-AUTH", "E-CONFLICT") and a.ok
     )
     pack.n_ledger_kill = sum(
         1
@@ -729,7 +867,7 @@ def run_multi_canary_pack(
             "max": xs[-1],
             "p50": int(statistics.median(xs)),
             "p95_approx": xs[min(len(xs) - 1, max(0, int(round(0.95 * (len(xs) - 1)))))],
-            "note": "descriptive only — ops kill budget still OPEN",
+            "note": "includes M-KILL-2 ops ceiling check (CP-0080); see kill_budget on E-KILL",
         }
     hist: dict[str, int] = {}
     for a in pack.attempts:
@@ -789,7 +927,7 @@ def run_multi_canary_pack(
     pack.finished_at_epoch = time.time()
     pack.notes.append(
         "final posture: module LIVE_API_ENABLED=False; runtime False; RefuseTransport; "
-        "permanent enable requires LIVE_API_PERMANENT_ENABLE_POLICY + F4 (not this pack)"
+        "permanent enable requires LIVE_API_PERMANENT_ENABLE_POLICY + F4 product ACK (F4 design sealed; ACK unsigned — not this pack)"
     )
     set_runtime_live_api_enabled(False)
     return pack

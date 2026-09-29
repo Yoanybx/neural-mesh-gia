@@ -179,8 +179,8 @@ Permanent enable policy (separate) — NOT this CP; module LIVE stays False with
 |---------|--------|-------|
 | Gate6 metric **design** completion (this CP) | **DONE (DESIGN_ONLY)** | Does not measure |
 | Multi-canary **n≥N** + edge pack measured | **DONE (CP-0079 n=6)** | seal_candidate; see `GATE6_MULTI_CANARY_MEASUREMENT.md` |
-| M-KILL **live** + budget + resume drill | **PARTIAL** | live kill+resume in CP-0079; **ops budget OPEN** |
-| M-ABORT forced drills | **PARTIAL** | ABORT-1/2 in CP-0079; **ABORT-3 conflict OPEN** |
+| M-KILL **live** + budget + resume drill | **PASS (pack+ops)** | kill+resume CP-0079; **ops budget 100 ms PASS** (CP-0080) |
+| M-ABORT forced drills | **PASS (pack)** | ABORT-1/2 CP-0079; **ABORT-3 conflict PASS** (CP-0080) |
 | M-LEDGER kill/abort completeness across n | **DONE (pack)** | oversight+abort on E-KILL |
 | **Codec impl** authorization | **OPEN** | CP-0076 = design only; needs **future impl CP** |
 | Permanent `LIVE_API_ENABLED` enable policy / runbook | **DONE (policy)** | `LIVE_API_PERMANENT_ENABLE_POLICY.md`; default False; F4 still OPEN |

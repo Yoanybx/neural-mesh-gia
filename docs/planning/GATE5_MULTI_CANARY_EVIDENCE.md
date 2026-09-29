@@ -59,7 +59,7 @@
 | min | 0 |
 | median / p50 | 0 |
 | max / p95_approx | 6303 |
-| Note | ops kill→refuse budget still **OPEN** (M-KILL-2) |
+| Note | M-KILL-2 budget **SEALED** 100 ms + PASS in CP-0080 (`docs/ops/M_KILL_2_…`) |
 
 ## Hygiene
 

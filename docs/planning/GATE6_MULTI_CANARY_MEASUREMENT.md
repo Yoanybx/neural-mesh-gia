@@ -1,21 +1,21 @@
-# Gate 6 — Multi-canary measurement (CP-0079 pack)
+# Gate 6 — Multi-canary measurement (CP-0079 pack + CP-0080 drills)
 
-**Status:** **MEASURED** pack n=6 under CP-0077 sample policy · **seal_candidate=true** · **≠** product-ready 「listo」 · **≠** permanent LIVE  
-**Date:** 2026-09-28 ~22:39 EDT (America/New_York)  
+**Status:** **MEASURED** pack n=6 (CP-0079) + CP-0080 M-KILL-2/M-ABORT-3 · **seal_candidate=true** · product permanent 「listo」 **blocked on F4 ACK unsigned**  
+**Date:** 2026-09-28 ~22:43 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
-**Upstream:** `GATE5_MULTI_CANARY_EVIDENCE.md` · `GATE5_MULTI_CANARY_LEDGER.json`  
+**Upstream:** `GATE5_MULTI_CANARY_EVIDENCE.md` · `GATE5_CP0080_DRILL_LEDGER.json` · `EVIDENCE_CP_0080_KILL_ABORT_DRILLS.md`  
 **Design:** `GATE6_METRIC_COMPLETION_DESIGN.md` (CP-0077) · `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
-**Does not** unlock NO_HELD · **does not** flip module LIVE permanently · F4 still OPEN.
+**Does not** unlock NO_HELD · **does not** flip module LIVE permanently · F4 product ACK **UNSIGNED**.
 
 ## Sample policy check
 
 | Rule | Required | Observed |
 |------|----------|----------|
-| n ≥ N_min | 5 | **6** |
-| N_edge ≥ 3 | 3 | **5** |
+| n ≥ N_min | 5 | **6** (CP-0079) / **7** mock re-run with E-CONFLICT (CP-0080) |
+| N_edge ≥ 3 | 3 | **≥5** |
 | N_kill_live ≥ 1 | 1 | **1** (E-KILL) |
-| N_abort ≥ 1 | 1 | **3** |
+| N_abort ≥ 1 | 1 | **≥3** (+ E-CONFLICT) |
 | N_ledger_kill ≥ 1 | 1 | **1** (oversight+abort) |
 | Independence | separate ids + LIVE false between | **Yes** |
 | Final RefuseTransport + module LIVE false | Yes | **Yes** |
@@ -28,26 +28,28 @@
 | M-SEC-* | **PASS** | No secrets in ledger; E-AUTH invalid handle |
 | M-ADV-* | **PASS** | Happy ADVISORY; mesh_accept=false |
 | M-KILL-1-LIVE | **PASS (pack)** | Mid-window I5 kill → RefuseTransport + continuity ABORT |
-| M-KILL-2-BUDGET | **PARTIAL** | Latency recorded (0 ms kill path); **ops budget still OPEN** |
+| M-KILL-2-BUDGET | **PASS (CP-0080)** | Ops ceiling **100 ms**; observed **0 ms**; ledger ok |
 | M-KILL-3-RESUME | **PASS (pack)** | E-RESUME auto-resume correctly failed |
 | M-ABORT-1 | **PASS (pack)** | E-ABORT-ACCEPT Mesh ABORT > peer ACCEPT |
 | M-ABORT-2 | **PASS (pack)** | E-ANOMALY missing gate → Refuse |
-| M-ABORT-3 | **DESIGN** | E-CONFLICT not in this pack (residual) |
+| M-ABORT-3 | **PASS (CP-0080)** | E-CONFLICT conflicting + missing judges fail-closed |
 | M-LEDGER-1..2 | **PASS (pack)** | kinds present; kill has oversight+abort |
-| M-LEDGER-3 | **PASS** | claim hygiene: seal_candidate ≠ 100% / ≠ listo |
+| M-LEDGER-3 | **PASS** | claim hygiene: seal_candidate ≠ 100% / ≠ product listo |
 
 ## Explicit limits
 
-- seal_candidate ≠ Gate6 **final product seal** without ops kill budget + F4 + review  
-- M-ABORT-3 (conflict judges) not drilled this pack  
-- Streaming not shipped · CI live forbidden  
+- seal_candidate ≠ Gate6 **final product seal** without **signed** F4 product ACK + review  
 - Module `LIVE_API_ENABLED=False` retained per permanent enable policy  
+- Streaming not shipped · CI live forbidden  
+- F4 **DESIGN_SEALED**; product ACK **UNSIGNED** (ENABLE_UNDER_FENCES ≠ permanent)
 
 ## Related
 
 - Prior n=1: `GATE6_CANARY_MEASUREMENT.md` (historical)  
 - Policy: `LIVE_API_PERMANENT_ENABLE_POLICY.md`  
+- Budget: `docs/ops/M_KILL_2_OPS_KILL_REFUSE_BUDGET.md`  
+- F4: `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_DRAFT.md`
 
 ---
 
-*End GATE6_MULTI_CANARY_MEASUREMENT — n=6 seal-candidate; M-KILL-2 budget OPEN; F4 OPEN; LIVE False.*
+*End GATE6_MULTI_CANARY_MEASUREMENT — M-KILL-2/M-ABORT-3 PASS; F4 ACK unsigned; LIVE False.*

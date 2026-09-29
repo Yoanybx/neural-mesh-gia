@@ -3,7 +3,7 @@
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
 **Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075** canary; **CP-0076/0077 DESIGN_ONLY**; **CP-0078** LHT v0; **CP-0079** multi-canary n=6 + permanent enable policy (still default-off)  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075..0080** (canary · LHT · multi-canary · policy · F4 design · M-KILL-2 · M-ABORT-3); F4 product ACK **UNSIGNED**  
 **Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · dual canary hygiene ACK · `REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md`  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
@@ -33,7 +33,9 @@
 | **11** | **Multi-canary measurement pack** (n≥N + edges) | **DONE** — **CP-0079** n=6; `GATE5_MULTI_CANARY_EVIDENCE.md`; seal_candidate; module LIVE false | Claim F4/product listo; skip edges |
 | **12** | **Codec impl CP** (after CP-0076 design) | **DONE** — **CP-0078** `IMPL_CP_0078_LIVE_HTTP_TRANSPORT.md` (v0 unary; runtime LIVE+I5; module LIVE false) | Claim permanent enable; streaming |
 | **13** | **Permanent LIVE_API enable policy / runbook** | **DONE (policy)** — `LIVE_API_PERMANENT_ENABLE_POLICY.md` + Gate5 §8; **default still False**; F4 product-enable OPEN | Flip module True without F4 |
-| **14** | **F4 product-enable ACK** (if treating as listo beyond ENABLE_UNDER_FENCES) | **OPEN** — ENABLE_UNDER_FENCES signed for canary/fenced path; permanent product enable still operator | Invent F4 unlock |
+| **14** | **F4 product-enable** (permanent vs session) | **DESIGN_SEALED** + ACK **UNSIGNED** — `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_DRAFT.md`; ENABLE ≠ product | Invent F4 signature; flip module True |
+| **15** | **M-KILL-2 ops kill→refuse budget** | **DONE** — ceiling **100 ms** process-local; drill PASS (`docs/ops/M_KILL_2_…`) | Invent network SLO as product |
+| **16** | **M-ABORT-3 conflict/missing judges** | **DONE** — E-CONFLICT fail-closed PASS (CP-0080) | Auto-majority execute |
 
 ---
 
@@ -48,7 +50,7 @@ Before any flag flip:
 5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** ENABLE signed; CP-0075–0079 under fences; multi-canary **n=6** measured; permanent **policy** on disk; **module LIVE_API_ENABLED=False**; remaining 「listo」: **F4 product-enable** · M-KILL-2 ops budget · M-ABORT-3 conflict drill · streaming (optional).
+**Intent today:** ENABLE signed; CP-0075–0080 under fences; multi-canary + kill/abort drills **PASS**; F4 **DESIGN_SEALED**; **module LIVE_API_ENABLED=False**; 「listo」 **bajo fences**; remaining for product permanent: **operator F4 product ACK** · streaming (optional).
 
 ---
 
@@ -62,10 +64,11 @@ Before any flag flip:
 - `docs/planning/LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `DESIGN_CP_0076_LIVE_HTTP_TRANSPORT_RESIDUAL.md`
 - `docs/planning/GATE6_METRIC_COMPLETION_DESIGN.md` · `DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `docs/planning/IMPL_CP_0079_MULTI_CANARY_PACK.md` · `LIVE_API_PERMANENT_ENABLE_POLICY.md` · `GATE5_MULTI_CANARY_EVIDENCE.md` · `GATE6_MULTI_CANARY_MEASUREMENT.md`
+- `docs/planning/IMPL_CP_0080_F4_KILL_ABORT.md` · `F4_DESIGN_SEALED.md` · `docs/ops/M_KILL_2_OPS_KILL_REFUSE_BUDGET.md` · `EVIDENCE_CP_0080_KILL_ABORT_DRILLS.md`
 - `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
 - `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md` · `council/NOTE_DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075–0079; multi-canary n=6; permanent policy done (default False); F4 OPEN; module LIVE_API_ENABLED=False; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075–0080; listo bajo fences; F4 ACK unsigned; module LIVE_API_ENABLED=False; NO_HELD unchanged.*

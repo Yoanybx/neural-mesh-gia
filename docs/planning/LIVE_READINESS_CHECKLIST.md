@@ -97,7 +97,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*); live measurement **OPEN** |
 
 **Exit (design/discuss):** Named metric bundle DESIGN_SEALED for DISCUSS_ONLY; pytest remains necessary but insufficient alone; live measurement marked OPEN.  
-**Today:** Gate6 **DESIGN_SEALED**; **CP-0079** pack **n=6 seal-candidate** (`GATE6_MULTI_CANARY_MEASUREMENT.md`); permanent policy on disk (default False). Remaining listo: **F4** · M-KILL-2 ops budget · M-ABORT-3.
+**Today:** Gate6 **DESIGN_SEALED**; **CP-0079** n=6 seal-candidate + **CP-0080** M-KILL-2 **PASS** / M-ABORT-3 **PASS**; permanent policy default False; F4 **DESIGN_SEALED** / product ACK **UNSIGNED**. Listo **bajo fences**; product permanent blocked on F4 ACK.
 
 ### Gate 7 — Optional D3 (perf A/B)
 
@@ -133,11 +133,11 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 3 | Authority Matrix in use | **Yes** (enable) | **ENABLE_READY** (`GATE3_ENABLE_READY.md`); runtime not live-enabled |
 | 4 | Keys + data policy | **Yes** | **ENABLE_READY** (`GATE4_ENABLE_READY.md`); handle oob; secrets not in git |
 | 5 | RefuseTransport → live flag | **Yes** | Step (5) **PASS**; step (6) **EXECUTED** (CP-0075 canary HTTP 200); module `LIVE_API_ENABLED=False` final |
-| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED**; **CP-0079** n=6 seal-candidate; permanent **policy** done (default False); F4 **OPEN** |
+| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED**; **CP-0079** n=6 + **CP-0080** M-KILL-2/M-ABORT-3 **PASS**; policy default False; F4 design sealed / ACK **UNSIGNED** |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075..0079** under fences (canary + LHT v0 + multi-canary n=6 + permanent policy). Module **`LIVE_API_ENABLED=False`**. Product-ready 「listo」 still needs: **F4 product-enable** · M-KILL-2 ops budget · M-ABORT-3. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
+**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075..0080** under fences (canary + LHT + multi-canary + policy + kill budget + abort-3 + F4 design). Module **`LIVE_API_ENABLED=False`**. 「Listo」 **bajo fences YES**; product permanent needs **signed F4 product ACK** (draft unsigned). NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
 
 ---
 

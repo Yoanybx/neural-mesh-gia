@@ -64,9 +64,9 @@ All of the following are **required**. Missing any → **must** stay False.
 | P2 | Gates 2–4 **ENABLE_READY** + Gate5 runbook walked | **Met** (docs + canary) |
 | P3 | Authorized impl path (CP-0075 canary + CP-0078 LiveHttpTransport v0) | **Met** (v0 unary; streaming residual) |
 | P4 | Multi-canary pack **n≥N_min=5** + edge mix (CP-0077) measured with ledger | **This cycle (CP-0079)** — see evidence |
-| P5 | Gate6 live-measurement **seal attempt** green (M-KILL live / M-ABORT / M-LEDGER) — n=1 cannot seal | **OPEN until pack seal-candidate + review** |
+| P5 | Gate6 live-measurement **seal attempt** green (M-KILL live / M-ABORT / M-LEDGER) — n=1 cannot seal | **Met pack** (CP-0079 n=6 seal-candidate) + **M-KILL-2 budget PASS** + **M-ABORT-3 PASS** (CP-0080); final product seal still needs F4/P7 |
 | P6 | **This policy** acknowledged on disk | **This document** |
-| P7 | Operator **F4 product-enable ACK** naming permanent module/`live_adapter` True (separate from ENABLE_UNDER_FENCES canary intent) | **OPEN** — do **not** invent |
+| P7 | Operator **F4 product-enable ACK** naming permanent module/`live_adapter` True (separate from ENABLE_UNDER_FENCES canary intent) | **OPEN (UNSIGNED draft)** — `F4_PRODUCT_ENABLE_ACK_DRAFT.md`; F4 amendment **DESIGN_SEALED**; do **not** invent |
 | P8 | Kill-armed I5 + rollback owner on duty; audit sink up; secrets oob only | Ops ongoing |
 | P9 | No CI live; free-tier bounds unless separate paid ACK | Binding |
 
@@ -133,6 +133,7 @@ Operator signed ENABLE for the fenced path. **This policy** states the default a
 - `IMPL_CP_0079_MULTI_CANARY_PACK.md` · `GATE5_MULTI_CANARY_EVIDENCE.md`  
 - `LIVE_READINESS_CHECKLIST.md` · `LIVE_100_OPERATOR_WALL.md` · `GEMINI_FREE_NEXT_STEPS.md`  
 - `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md`
+- `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_DRAFT.md` · `docs/ops/M_KILL_2_OPS_KILL_REFUSE_BUDGET.md`
 
 ---
 
