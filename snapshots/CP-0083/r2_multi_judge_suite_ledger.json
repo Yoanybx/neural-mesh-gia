@@ -1,0 +1,655 @@
+{
+  "LIVE_API_ENABLED_module_final": false,
+  "abort_gt_accept": "ABORT_GT_ACCEPT",
+  "authorization": {
+    "abort_gt_accept": "ABORT_GT_ACCEPT",
+    "authority_matrix_cite": {
+      "L_judge": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "Operator": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "Oversight_I5": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "RefuseTransport": [
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    "authorized": true,
+    "authorizes": [
+      "R2 multi-judge live/mock-bound RV under Authority Matrix",
+      "one Gemini free advisory + \u22651 deterministic mock advisory",
+      "conflict / missing / ABORT>ACCEPT descriptors + compose",
+      "optional one real HTTP under ENABLE_UNDER_FENCES + CP-0075/0078 when gates pass"
+    ],
+    "canary_live_api_enabled_constant": false,
+    "cycle": 79,
+    "design_cp": "CP-0081",
+    "does_not_authorize": [
+      "R3 Gate6 live-measurement seal / raise n_real_http",
+      "R4 streaming DEFER or streaming RV",
+      "R5 F4 product ACK / permanent module True",
+      "permanent LIVE_API_ENABLED",
+      "F4 invent",
+      "M1 consensus claim under N=2",
+      "NO_HELD unlock",
+      "push/tags/secrets"
+    ],
+    "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+    "impl_cp": "CP-0083",
+    "lht_live_api_enabled_constant": false,
+    "live_api_enabled_module_default": false,
+    "m1_status": "NO_CONSENSUS_YET",
+    "n_judges": 2,
+    "package_held": "0.18.0",
+    "permanent_live_enable": false,
+    "phase": "R2",
+    "prior_cp": "CP-0082",
+    "schema": "mesh.judge.full_adapter_r2_multi_judge_auth/v0",
+    "surfaces": [
+      "LiveHttpTransport",
+      "GeminiFreeCanary",
+      "MockLocalAdvisory",
+      "RefuseTransport",
+      "I5KillArm",
+      "AuthorityMatrix"
+    ]
+  },
+  "binding_final": "RefuseTransport",
+  "checklist": [
+    {
+      "descriptor": "T-fa-r2-g",
+      "id": "MJ-1",
+      "prove": "compose_live_mock_bound binds both judge ids",
+      "rule": "\u22651 Gemini free advisory + \u22651 mock/local advisory under matrix",
+      "topic": "Dual advisory bind"
+    },
+    {
+      "descriptor": "T-fa-r2-c",
+      "id": "MJ-2",
+      "prove": "compose_abort_gt_accept",
+      "rule": "Mesh ABORT beats any judge ACCEPT; no judge-over-judge execute",
+      "topic": "ABORT > ACCEPT"
+    },
+    {
+      "descriptor": "T-fa-r2-d",
+      "id": "MJ-3",
+      "prove": "compose_conflict",
+      "rule": "Conflicting digests/verdicts \u2192 Mesh ABORT; escalate I5; no auto-majority",
+      "topic": "Conflict fail-closed"
+    },
+    {
+      "descriptor": "T-fa-r2-e",
+      "id": "MJ-4",
+      "prove": "compose_missing_judge",
+      "rule": "Expected judge missing \u2192 ABORT; never invent ACCEPT",
+      "topic": "Missing judge fail-closed"
+    },
+    {
+      "descriptor": "T-fa-r2-f",
+      "id": "MJ-5",
+      "prove": "compose_agree_no_m1",
+      "rule": "N=2 dual advisory (even agree) \u2260 M1 consensus; mesh_accept=false",
+      "topic": "M1 NO_CONSENSUS_YET"
+    },
+    {
+      "descriptor": "T-fa-r2-a",
+      "id": "REF-R2",
+      "prove": "compose_refuse_default",
+      "rule": "live off \u2192 ENGINE_DISABLED; zero network",
+      "topic": "RefuseTransport default"
+    },
+    {
+      "descriptor": "T-fa-r2-b",
+      "id": "I5-R2",
+      "prove": "compose_i5_armed",
+      "rule": "Kill-armed; kill \u2192 Refuse + ABORT; no post-kill network",
+      "topic": "I5 armed"
+    },
+    {
+      "descriptor": "T-fa-r2-h",
+      "id": "FENCE-R2",
+      "prove": "suite post-condition T-fa-r2-h",
+      "rule": "Module LIVE_API_ENABLED False final on canary + LHT + R2",
+      "topic": "Module fence"
+    }
+  ],
+  "descriptors": [
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-a",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "refuse when live off; zero network; L_judge cannot execute"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "health": {
+          "binding": "RefuseTransport",
+          "i5_armed": true,
+          "i5_killed": false,
+          "impl_cp": "CP-0078",
+          "live": false,
+          "live_api_enabled": false,
+          "live_api_enabled_module_default": false,
+          "mode": "unary",
+          "ok": true,
+          "provider": "gemini-free",
+          "src_live_codec_shipped": true
+        },
+        "lht": {
+          "LIVE_API_ENABLED_module_default": false,
+          "abort": {
+            "code": "ENGINE_DISABLED",
+            "reason": "live disabled; RefuseTransport default"
+          },
+          "error_code": "ENGINE_DISABLED",
+          "http_status": null,
+          "impl_cp": "CP-0078",
+          "latency_ms": 0,
+          "live_api_enabled": false,
+          "model_ref": "none",
+          "note": "LiveHttpTransport refused: need runtime LIVE_API + I5 armed; module LIVE_API_ENABLED default remains False",
+          "ok": false,
+          "provider": "gemini-free",
+          "raw_text": null,
+          "schema": "mesh.judge.raw_engine/v0",
+          "secret_handle": "mesh://secrets/judge/gemini-free@v1",
+          "src_live_codec_shipped": true,
+          "transport": "refuse",
+          "truncated": false,
+          "verdict": "ABORT"
+        },
+        "refuse": {
+          "abort": {
+            "code": "ENGINE_DISABLED",
+            "reason": "live disabled; RefuseTransport default"
+          },
+          "error_code": "ENGINE_DISABLED",
+          "http_status": null,
+          "latency_ms": 0,
+          "model_ref": "none",
+          "ok": false,
+          "provider": "refuse",
+          "raw_text": null,
+          "schema": "mesh.judge.raw_engine/v0",
+          "truncated": false,
+          "verdict": "ABORT"
+        }
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-b",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "I5 kill \u2192 ABORT + Refuse; I5 cannot execute; zero post-kill network",
+        "session restored runtime LIVE False"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "LIVE_API_ENABLED_module_default": false,
+        "abort": {
+          "code": "ENGINE_DISABLED",
+          "reason": "live disabled; RefuseTransport default"
+        },
+        "error_code": "ENGINE_DISABLED",
+        "http_status": null,
+        "impl_cp": "CP-0078",
+        "latency_ms": 0,
+        "live_api_enabled": false,
+        "model_ref": "none",
+        "note": "LiveHttpTransport refused: need runtime LIVE_API + I5 armed; module LIVE_API_ENABLED default remains False",
+        "ok": false,
+        "provider": "gemini-free",
+        "raw_text": null,
+        "schema": "mesh.judge.raw_engine/v0",
+        "secret_handle": "mesh://secrets/judge/gemini-free@v1",
+        "src_live_codec_shipped": true,
+        "transport": "refuse",
+        "truncated": false,
+        "verdict": "ABORT"
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-c",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "Mesh ABORT > judge ACCEPT; no silent ACCEPT"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "abort_code": "POLICY_ABORT",
+        "advisory_only": true,
+        "authority": {
+          "I5_execute": false,
+          "L_judge_execute": false,
+          "Operator_execute": true
+        },
+        "auto_majority_execute": false,
+        "binding": "RefuseTransport",
+        "escalate_i5": true,
+        "judges": [
+          {
+            "advisory_only": true,
+            "digest": "accept-claim-a",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:gemini-free",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MOCK_ACCEPT_CLAIM",
+            "response_digest": "accept-claim-a",
+            "verdict": "ACCEPT"
+          },
+          {
+            "advisory_only": true,
+            "digest": "accept-claim-b",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:mock-local",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MOCK_ACCEPT_CLAIM",
+            "response_digest": "accept-claim-b",
+            "verdict": "ACCEPT"
+          }
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "mesh_accept": false,
+        "n_judges": 2,
+        "policy": "ABORT_GT_ACCEPT",
+        "reason": "Mesh ABORT > peer ACCEPT (T-fa-r2-c)",
+        "verdict": "ABORT"
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-d",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "conflict \u2192 fail-closed ABORT; escalate I5"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "abort_code": "JUDGE_CONFLICT",
+        "advisory_only": true,
+        "authority": {
+          "I5_execute": false,
+          "L_judge_execute": false,
+          "Operator_execute": true
+        },
+        "auto_majority_execute": false,
+        "binding": "RefuseTransport",
+        "escalate_i5": true,
+        "judges": [
+          {
+            "advisory_only": true,
+            "digest": "conflict-digest-aaa",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:gemini-free",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+            "response_digest": "conflict-digest-aaa",
+            "verdict": "ADVISORY"
+          },
+          {
+            "advisory_only": true,
+            "digest": "conflict-digest-bbb",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:mock-local",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+            "response_digest": "conflict-digest-bbb",
+            "verdict": "ADVISORY"
+          }
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "mesh_accept": false,
+        "n_judges": 2,
+        "policy": "ABORT_GT_ACCEPT",
+        "reason": "Conflicting judges \u2192 fail-closed; no auto-majority execute",
+        "verdict": "ABORT"
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-e",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "missing judge \u2192 fail-closed; no invent ACCEPT"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "abort_code": "JUDGE_MISSING",
+        "advisory_only": true,
+        "authority": {
+          "I5_execute": false,
+          "L_judge_execute": false,
+          "Operator_execute": true
+        },
+        "auto_majority_execute": false,
+        "binding": "RefuseTransport",
+        "escalate_i5": true,
+        "judges": [
+          {
+            "advisory_only": true,
+            "digest": "only-one",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:mock-local",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+            "response_digest": "only-one",
+            "verdict": "ADVISORY"
+          }
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "mesh_accept": false,
+        "n_judges": 1,
+        "policy": "ABORT_GT_ACCEPT",
+        "reason": "Missing judges ['judge:gemini-free'] \u2192 fail-closed; no invent ACCEPT",
+        "verdict": "ABORT"
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-f",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "agree dual advisory \u2260 M1; N=2 stays NO_CONSENSUS_YET"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "abort_code": null,
+        "advisory_only": true,
+        "authority": {
+          "I5_execute": false,
+          "L_judge_execute": false,
+          "Operator_execute": true
+        },
+        "auto_majority_execute": false,
+        "binding": "RefuseTransport",
+        "escalate_i5": false,
+        "judges": [
+          {
+            "advisory_only": true,
+            "digest": "29c921a6e584c7cf",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:gemini-free",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+            "response_digest": "29c921a6e584c7cf",
+            "verdict": "ADVISORY"
+          },
+          {
+            "advisory_only": true,
+            "digest": "29c921a6e584c7cf",
+            "error_code": null,
+            "http_status": null,
+            "judge_id": "judge:mock-local",
+            "mesh_accept": false,
+            "mode": "mock_local",
+            "network": false,
+            "notes": [
+              "deterministic mock advisory; never Mesh SoT"
+            ],
+            "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+            "response_digest": "29c921a6e584c7cf",
+            "verdict": "ADVISORY"
+          }
+        ],
+        "m1_status": "NO_CONSENSUS_YET",
+        "mesh_accept": false,
+        "n_judges": 2,
+        "policy": "ABORT_GT_ACCEPT",
+        "reason": "dual advisory agree \u2260 M1 consensus; mesh_accept=false",
+        "verdict": "ADVISORY"
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-g",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 1,
+      "notes": [
+        "gemini_mode=real_http",
+        "mock_mode=mock_local",
+        "mesh_verdict=ADVISORY",
+        "m1=NO_CONSENSUS_YET",
+        "real_http=True",
+        "gates_may=True",
+        "real HTTP 200 advisory bound with mock; mesh_accept=false",
+        "real HTTP under ENABLE_UNDER_FENCES + CP-0075/0078"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": true,
+      "result": {
+        "gates": {
+          "canary_may_enable": true,
+          "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+          "enable_ack_present": true,
+          "impl_cp_authorized": true,
+          "lht_may_enable": true,
+          "may_real_http": true,
+          "note": "may_real_http authorizes fenced session only; module LIVE stays False",
+          "oob_key_present": true,
+          "reasons": []
+        },
+        "gemini": {
+          "advisory_only": true,
+          "digest": "c09522bbdce8ab90",
+          "error_code": null,
+          "http_status": 200,
+          "judge_id": "judge:gemini-free",
+          "mesh_accept": false,
+          "mode": "real_http",
+          "network": true,
+          "notes": [
+            "real HTTP under ENABLE_UNDER_FENCES + CP-0075/0078"
+          ],
+          "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+          "response_digest": "c09522bbdce8ab90",
+          "verdict": "ADVISORY"
+        },
+        "mesh": {
+          "abort_code": null,
+          "advisory_only": true,
+          "authority": {
+            "I5_execute": false,
+            "L_judge_execute": false,
+            "Operator_execute": true
+          },
+          "auto_majority_execute": false,
+          "binding": "RefuseTransport",
+          "escalate_i5": false,
+          "judges": [
+            {
+              "advisory_only": true,
+              "digest": "c09522bbdce8ab90",
+              "error_code": null,
+              "http_status": 200,
+              "judge_id": "judge:gemini-free",
+              "mesh_accept": false,
+              "mode": "real_http",
+              "network": true,
+              "notes": [
+                "real HTTP under ENABLE_UNDER_FENCES + CP-0075/0078"
+              ],
+              "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+              "response_digest": "c09522bbdce8ab90",
+              "verdict": "ADVISORY"
+            },
+            {
+              "advisory_only": true,
+              "digest": "c09522bbdce8ab90",
+              "error_code": null,
+              "http_status": null,
+              "judge_id": "judge:mock-local",
+              "mesh_accept": false,
+              "mode": "mock_local",
+              "network": false,
+              "notes": [
+                "deterministic mock advisory; never Mesh SoT"
+              ],
+              "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+              "response_digest": "c09522bbdce8ab90",
+              "verdict": "ADVISORY"
+            }
+          ],
+          "m1_status": "NO_CONSENSUS_YET",
+          "mesh_accept": false,
+          "n_judges": 2,
+          "policy": "ABORT_GT_ACCEPT",
+          "reason": "dual advisory agree \u2260 M1 consensus; mesh_accept=false",
+          "verdict": "ADVISORY"
+        },
+        "mock": {
+          "advisory_only": true,
+          "digest": "c09522bbdce8ab90",
+          "error_code": null,
+          "http_status": null,
+          "judge_id": "judge:mock-local",
+          "mesh_accept": false,
+          "mode": "mock_local",
+          "network": false,
+          "notes": [
+            "deterministic mock advisory; never Mesh SoT"
+          ],
+          "raw_text_truncated": "MESH_R2_MULTI_JUDGE_OK",
+          "response_digest": "c09522bbdce8ab90",
+          "verdict": "ADVISORY"
+        }
+      }
+    },
+    {
+      "LIVE_API_ENABLED_module_default": false,
+      "binding": "RefuseTransport",
+      "descriptor": "T-fa-r2-h",
+      "impl_cp": "CP-0083",
+      "m1_status": "NO_CONSENSUS_YET",
+      "mesh_accept": false,
+      "network_calls": 0,
+      "notes": [
+        "module+runtime LIVE False; RefuseTransport default"
+      ],
+      "ok": true,
+      "phase": "R2",
+      "real_http": false,
+      "result": {
+        "canary": false,
+        "lht": false,
+        "r2": false,
+        "runtime": false
+      }
+    }
+  ],
+  "design_cp": "CP-0081",
+  "gates": {
+    "canary_may_enable": true,
+    "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+    "enable_ack_present": true,
+    "impl_cp_authorized": true,
+    "lht_may_enable": true,
+    "may_real_http": true,
+    "note": "may_real_http authorizes fenced session only; module LIVE stays False",
+    "oob_key_present": true,
+    "reasons": []
+  },
+  "impl_cp": "CP-0083",
+  "m1_status": "NO_CONSENSUS_YET",
+  "n_judges": 2,
+  "ok": true,
+  "phase": "R2",
+  "prior_cp": "CP-0082",
+  "r3_r5_authorized": false,
+  "real_http_used": true,
+  "runtime_live_api_enabled_final": false,
+  "schema": "mesh.judge.full_adapter_r2_multi_judge_suite/v0"
+}

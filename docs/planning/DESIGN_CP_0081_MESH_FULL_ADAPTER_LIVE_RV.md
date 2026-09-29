@@ -48,7 +48,7 @@
 | Gate6 n≥N + more real HTTP if required | Yes — seal_candidate ≠ final; more HTTP needs future CP |
 | F4 product ACK dependency | Yes — UNSIGNED; ENABLE ≠ product |
 | Streaming residual | Yes — unary v0; T-lht-j; DEFER or future RV |
-| Ordered phases R0–R5 | Yes — R0 here; R1 later via CP-0082 |
+| Ordered phases R0–R5 | Yes — R0 here; R1=CP-0082 DONE; R2=CP-0083 DONE; R3+ OPEN |
 | Prefer LIVE False | Explicit |
 
 ---
@@ -72,7 +72,7 @@ This CP **must not** be cited as authority for:
 | Track | Status |
 |-------|--------|
 | Listo bajo fences (Gemini free canary/measure) | **YES** (unchanged) |
-| Full Mesh adapter live RV | **OPEN** — R0 designed; **R1 DONE** (CP-0082); R2–R4 not executed |
+| Full Mesh adapter live RV | **OPEN** — R0–R2 DONE (CP-0081/0082/0083); **R3 OPEN** |
 | Product permanent LIVE | **NO** — F4 ACK **UNSIGNED**; prefer leave False |
 
 ---

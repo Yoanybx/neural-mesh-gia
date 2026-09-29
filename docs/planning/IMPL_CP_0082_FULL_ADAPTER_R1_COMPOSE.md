@@ -44,7 +44,7 @@
 | I5 kill compose | **PASS** |
 | Advisory ≠ SoT / `mesh_accept=false` | **PASS** |
 | Module LIVE | **False** |
-| R2–R5 | **NOT authorized** (R2 **OPEN**) |
+| R2–R5 | **NOT authorized by this CP** (R2 later via **CP-0083**) |
 
 ---
 
@@ -67,7 +67,7 @@ This CP **must not** be cited as authority for:
 | Track | Status |
 |-------|--------|
 | Listo bajo fences | **YES** (unchanged) |
-| Full Mesh adapter live RV | **OPEN** — R0+R1 done; **R2 OPEN** |
+| Full Mesh adapter live RV | **OPEN** — R0+R1 done here; R2 via CP-0083 |
 | Product permanent LIVE | **NO** — F4 ACK **UNSIGNED**; prefer leave False |
 
 ---
