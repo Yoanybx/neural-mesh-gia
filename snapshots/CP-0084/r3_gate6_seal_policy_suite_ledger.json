@@ -1,0 +1,164 @@
+{
+  "LIVE_API_ENABLED_module_final": false,
+  "authorization": {
+    "authorized": true,
+    "authorizes": [
+      "R3 Gate6 live-measurement seal policy (candidate vs seal bar)",
+      "honest n_real_http accounting",
+      "limited incremental real HAPPY under ENABLE_UNDER_FENCES + free-tier quota"
+    ],
+    "canary_live_api_enabled_constant": false,
+    "cycle": 80,
+    "design_cp": "CP-0081",
+    "does_not_authorize": [
+      "R4 streaming DEFER or streaming RV",
+      "R5 F4 product ACK / permanent module True",
+      "Gate6 live-measurement final seal claim",
+      "Gate6 product seal claim",
+      "permanent LIVE_API_ENABLED",
+      "F4 invent",
+      "NO_HELD unlock",
+      "push/tags/secrets"
+    ],
+    "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+    "impl_cp": "CP-0084",
+    "lht_live_api_enabled_constant": false,
+    "live_api_enabled_module_default": false,
+    "live_measurement_seal": false,
+    "n_min": 5,
+    "n_real_http_min_live_measurement_seal": 3,
+    "n_real_http_pack_baseline": 1,
+    "package_held": "0.18.0",
+    "permanent_live_enable": false,
+    "phase": "R3",
+    "prior_cp": "CP-0083",
+    "product_seal": false,
+    "schema": "mesh.judge.full_adapter_r3_gate6_seal_policy_auth/v0",
+    "seal_candidate": true
+  },
+  "binding_final": "RefuseTransport",
+  "checklist": [
+    {
+      "descriptor": "T-fa-r3-a",
+      "id": "G6-POL-1",
+      "prove": "CP-0079 / GATE6_MULTI_CANARY_MEASUREMENT",
+      "rule": "N_min=5 met as pack n=6 (1 real, 5 mock)",
+      "topic": "seal_candidate"
+    },
+    {
+      "descriptor": "T-fa-r3-b",
+      "id": "G6-POL-2",
+      "prove": "evaluate_seal_policy",
+      "rule": "Requires n_real_http \u2265 3 + variance; candidate alone insufficient",
+      "topic": "live-measurement seal bar"
+    },
+    {
+      "descriptor": "T-fa-r3-c",
+      "id": "G6-POL-3",
+      "prove": "F4_PRODUCT_ENABLE_ACK_DRAFT UNSIGNED",
+      "rule": "Needs live-measurement seal + signed F4 product ACK + P7; ENABLE \u2260 product",
+      "topic": "product seal"
+    },
+    {
+      "descriptor": "T-fa-r3-d",
+      "id": "G6-POL-4",
+      "prove": "run_incremental_happy_if_allowed",
+      "rule": "R3 may add limited real HAPPY under free-tier; document quota honestly; leave LIVE False",
+      "topic": "incremental real HTTP"
+    },
+    {
+      "descriptor": "T-fa-r3-e",
+      "id": "G6-POL-5",
+      "prove": "assert_module_live_false + auth record",
+      "rule": "Module LIVE False; R4/R5 not authorized; no F4 invent / NO_HELD / push",
+      "topic": "fences"
+    }
+  ],
+  "descriptors": {
+    "T-fa-r3-a": {
+      "note": "candidate True; live-measurement seal False",
+      "ok": true
+    },
+    "T-fa-r3-b": {
+      "note": "bar=3; total=2; bar_met=False",
+      "ok": true
+    },
+    "T-fa-r3-c": {
+      "note": "product seal blocked on unsigned F4",
+      "ok": true
+    },
+    "T-fa-r3-d": {
+      "note": "incremental real_http=True quota=False",
+      "ok": true
+    },
+    "T-fa-r3-e": {
+      "note": "module + runtime LIVE False; R4/R5 not authorized",
+      "ok": true
+    }
+  },
+  "impl_cp": "CP-0084",
+  "incremental": {
+    "attempted": true,
+    "binding_final": "RefuseTransport",
+    "error_code": null,
+    "http_status": 200,
+    "latency_ms": 7799,
+    "live_final": false,
+    "notes": [
+      "marker present or soft-ok"
+    ],
+    "ok": true,
+    "quota_hit": false,
+    "real_http": true,
+    "request_id": "gate5-multi-e-happy-84-108050fa02",
+    "result_safe": {
+      "advisory_only": true,
+      "digest": "0d2a9356ee2757f9",
+      "error_code": null,
+      "http_status": 200,
+      "latency_ms": 7799,
+      "mesh_accept": false,
+      "model_ref": "gemini-flash-latest",
+      "network": true,
+      "ok": true,
+      "provider": "gemini-free",
+      "transport": "live_http",
+      "verdict": "ADVISORY"
+    },
+    "verdict": "ADVISORY"
+  },
+  "live_measurement_seal": false,
+  "measured_at_unix": 1790651670,
+  "n_real_http_gate6_total": 2,
+  "n_real_http_r3_incremental": 1,
+  "ok": true,
+  "phase": "R3",
+  "policy": {
+    "bar_met": false,
+    "f4_ack_signed": false,
+    "impl_cp": "CP-0084",
+    "live_measurement_seal": false,
+    "module_live_final": false,
+    "n_min": 5,
+    "n_real_http_gate6_total": 2,
+    "n_real_http_min_live_measurement_seal": 3,
+    "n_real_http_pack_baseline": 1,
+    "n_real_http_r3_incremental": 1,
+    "phase": "R3",
+    "product_seal": false,
+    "reasons": [
+      "seal_candidate MET: pack n=6 (1 real, 5 mock) \u2265 N_min=5",
+      "live-measurement seal NOT MET: n_real_http_gate6_total=2 < N_real_http_min=3",
+      "policy: candidate remains until F4/operator fills real-HTTP bar via future CP",
+      "product seal NOT MET: F4 product ACK UNSIGNED"
+    ],
+    "schema": "mesh.judge.full_adapter_r3_gate6_seal_policy/v0",
+    "seal_candidate": true,
+    "verdict": "POLICY_SEALED_CANDIDATE_REMAINS"
+  },
+  "product_seal": false,
+  "r4_r5_authorized": false,
+  "runtime_live_final": false,
+  "schema": "mesh.judge.full_adapter_r3_gate6_seal_policy_suite/v0",
+  "verdict": "POLICY_SEALED_CANDIDATE_REMAINS"
+}

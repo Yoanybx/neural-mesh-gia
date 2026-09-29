@@ -1,6 +1,6 @@
 # Gate 6 — Multi-canary measurement (CP-0079 pack + CP-0080 drills)
 
-**Status:** **MEASURED** **pack n=6 (1 real, 5 mock)** (CP-0079) + CP-0080 M-KILL-2/M-ABORT-3 · **seal_candidate=true** (on n=6 total, not 5 live) · product permanent 「listo」 **blocked on F4 ACK unsigned**  
+**Status:** **MEASURED** **pack n=6 (1 real, 5 mock)** (CP-0079) + CP-0080 M-KILL-2/M-ABORT-3 · **seal_candidate=true** · **CP-0084 R3 policy:** live-measurement seal **OPEN** (`n_real_http_gate6_total=2` &lt; bar 3) · product permanent 「listo」 **blocked on F4 ACK unsigned**  
 **Date:** 2026-09-28 ~22:43 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
 **Upstream:** `GATE5_MULTI_CANARY_EVIDENCE.md` · `GATE5_CP0080_DRILL_LEDGER.json` · `EVIDENCE_CP_0080_KILL_ABORT_DRILLS.md`  
@@ -38,8 +38,9 @@
 
 ## Explicit limits
 
-- Prefer phrasing **「pack n=6 (1 real, 5 mock)」** — `n_real_http=1` · `n_mock=5`; seal_candidate on **n=6 total**, **not** “5 live”  
-- seal_candidate ≠ Gate6 **final product seal** without **signed** F4 product ACK + review  
+- Prefer phrasing **「pack n=6 (1 real, 5 mock)」** — pack `n_real_http=1` · `n_mock=5`; seal_candidate on **n=6 total**, **not** “5 live”  
+- **CP-0084:** Gate6 cumulative `n_real_http_gate6_total=2` (pack 1 + R3 incr 1); live-measurement bar **N_real_http_min=3** **not met**; candidate remains  
+- seal_candidate ≠ Gate6 **live-measurement seal** ≠ **final product seal** without **signed** F4 product ACK + more real HTTP  
 - Module `LIVE_API_ENABLED=False` retained per permanent enable policy  
 - Streaming not shipped · CI live forbidden  
 - F4 **DESIGN_SEALED**; product ACK **UNSIGNED** (ENABLE_UNDER_FENCES ≠ permanent)  
@@ -54,4 +55,4 @@
 
 ---
 
-*End GATE6_MULTI_CANARY_MEASUREMENT — M-KILL-2/M-ABORT-3 PASS; F4 ACK unsigned; LIVE False.*
+*End GATE6_MULTI_CANARY_MEASUREMENT — M-KILL-2/M-ABORT-3 PASS; CP-0084 candidate remains; F4 ACK unsigned; LIVE False.*

@@ -94,7 +94,7 @@ This checklist / CP-0082 **must not** be cited as authority for:
 | **R0** | **DONE** — CP-0081 DESIGN_ONLY |
 | **R1** | **DONE** — this checklist + CP-0082 + descriptors + unit compose |
 | **R2** | **DONE** — CP-0083 multi-judge live/mock-bound |
-| **R3** | **OPEN** — Gate6 live-measurement seal policy |
+| **R3** | **DONE** — CP-0084 Gate6 seal policy (candidate remains) |
 | **R4** | **OPEN** — streaming DEFER or RV (optional) |
 | **R5** | **OPEN** — operator F4 product ACK only |
 
@@ -102,4 +102,4 @@ This checklist / CP-0082 **must not** be cited as authority for:
 
 ---
 
-*End MESH_FULL_ADAPTER_R1 checklist — R1 DONE; R2 DONE (CP-0083); R3 OPEN; LIVE False; F4 unsigned.*
+*End MESH_FULL_ADAPTER_R1 checklist — R1 DONE; R2 DONE (CP-0083); R3 DONE (CP-0084); R4 OPEN; LIVE False; F4 unsigned.*

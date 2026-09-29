@@ -74,6 +74,7 @@ markers = [
     "m_kill_2_abort3_cycle76: CP-0080 F4 design seal + M-KILL-2 ops budget + M-ABORT-3 conflict drill (LIVE_API default False)",
     "full_adapter_r1_compose_cycle78: CP-0082 Phase R1 SoT+Refuse+I5 compose (LIVE_API default False; R2-R5 not authorized)",
     "full_adapter_r2_multi_judge_cycle79: CP-0083 Phase R2 multi-judge live/mock-bound RV (LIVE_API default False; R3-R5 not authorized; M1=NO_CONSENSUS_YET)",
+    "full_adapter_r3_gate6_seal_policy_cycle80: CP-0084 Phase R3 Gate6 live-measurement seal policy (LIVE_API default False; R4-R5 not authorized; candidate remains)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",
