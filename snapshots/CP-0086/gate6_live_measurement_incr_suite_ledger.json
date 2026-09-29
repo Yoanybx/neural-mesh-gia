@@ -1,0 +1,207 @@
+{
+  "LIVE_API_ENABLED_module_final": false,
+  "authorization": {
+    "authorized": true,
+    "authorizes": [
+      "Gate6 +1 incremental real HAPPY under ENABLE_UNDER_FENCES + free-tier",
+      "honest n_real_http_gate6_total update toward N_real_http_min=3",
+      "Gate6 live-measurement seal attempt when n\u22653 + variance honesty"
+    ],
+    "canary_live_api_enabled_constant": false,
+    "cycle": 82,
+    "design_cp": "CP-0081",
+    "does_not_authorize": [
+      "R5 F4 product ACK / permanent module True",
+      "Gate6 product seal claim",
+      "F4 invent / forge signature",
+      "permanent LIVE_API_ENABLED",
+      "NO_HELD unlock",
+      "push/tags/secrets",
+      "streaming codec ship"
+    ],
+    "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+    "f4_ack_draft": "docs/planning/F4_PRODUCT_ENABLE_ACK_DRAFT.md",
+    "impl_cp": "CP-0086",
+    "lht_live_api_enabled_constant": false,
+    "live_api_enabled_module_default": false,
+    "n_min": 5,
+    "n_real_http_min_live_measurement_seal": 3,
+    "n_real_http_pack_baseline": 1,
+    "n_real_http_r3_incremental_prior": 1,
+    "package_held": "0.18.0",
+    "permanent_live_enable": false,
+    "phase": "G6-INCR",
+    "policy_cp": "CP-0084",
+    "prior_cp": "CP-0085",
+    "product_seal": false,
+    "r5_authorized": false,
+    "schema": "mesh.judge.gate6_live_measurement_incr_auth/v0",
+    "seal_candidate": true
+  },
+  "binding_final": "RefuseTransport",
+  "checklist": [
+    {
+      "descriptor": "T-g6-incr-a",
+      "id": "G6-INCR-1",
+      "prove": "evaluate_live_measurement_seal",
+      "rule": "pack baseline 1 + R3 incr 1 = prior total 2; bar N_real_http_min=3",
+      "topic": "prior accounting"
+    },
+    {
+      "descriptor": "T-g6-incr-b",
+      "id": "G6-INCR-2",
+      "prove": "run_incremental_happy_if_allowed",
+      "rule": "At most one real HAPPY under free-tier; document quota; leave LIVE False",
+      "topic": "incremental real HTTP"
+    },
+    {
+      "descriptor": "T-g6-incr-c",
+      "id": "G6-INCR-3",
+      "prove": "compute_variance",
+      "rule": "Record per-attempt latency + min/median/max; no single-point live-ready claim",
+      "topic": "variance honesty"
+    },
+    {
+      "descriptor": "T-g6-incr-d",
+      "id": "G6-INCR-4",
+      "prove": "evaluate_live_measurement_seal",
+      "rule": "Seal live-measurement only if n\u22653 + variance; product seal stays False (F4 UNSIGNED)",
+      "topic": "live-measurement seal"
+    },
+    {
+      "descriptor": "T-g6-incr-e",
+      "id": "G6-INCR-5",
+      "prove": "assert_module_live_false + auth record",
+      "rule": "Module LIVE False; RefuseTransport final; no F4 invent / NO_HELD / push",
+      "topic": "fences"
+    }
+  ],
+  "descriptors": {
+    "T-g6-incr-a": {
+      "note": "prior=1+1; total=3; bar=3",
+      "ok": true
+    },
+    "T-g6-incr-b": {
+      "note": "incremental real_http=True quota=False http=200",
+      "ok": true
+    },
+    "T-g6-incr-c": {
+      "note": "n=3 min=1942 med=6303.0 max=7799 variance_ok=True",
+      "ok": true
+    },
+    "T-g6-incr-d": {
+      "note": "live_measurement_seal=True product_seal=False verdict=LIVE_MEASUREMENT_SEALED_PRODUCT_OPEN",
+      "ok": true
+    },
+    "T-g6-incr-e": {
+      "note": "module + runtime LIVE False; R5/F4 invent not authorized",
+      "ok": true
+    }
+  },
+  "impl_cp": "CP-0086",
+  "incremental": {
+    "attempted": true,
+    "binding_final": "RefuseTransport",
+    "error_code": null,
+    "http_status": 200,
+    "latency_ms": 1942,
+    "live_final": false,
+    "notes": [
+      "marker present or soft-ok"
+    ],
+    "ok": true,
+    "quota_hit": false,
+    "real_http": true,
+    "request_id": "gate5-multi-e-happy-86-1c3182ac4e",
+    "result_safe": {
+      "advisory_only": true,
+      "digest": "0d2a9356ee2757f9",
+      "error_code": null,
+      "http_status": 200,
+      "latency_ms": 1942,
+      "mesh_accept": false,
+      "model_ref": "gemini-flash-latest",
+      "network": true,
+      "ok": true,
+      "provider": "gemini-free",
+      "transport": "live_http",
+      "verdict": "ADVISORY"
+    },
+    "verdict": "ADVISORY"
+  },
+  "live_measurement_seal": true,
+  "measured_at_unix": 1790652028,
+  "n_real_http_cp0086_incremental": 1,
+  "n_real_http_gate6_total": 3,
+  "ok": true,
+  "phase": "G6-INCR",
+  "policy_cp": "CP-0084",
+  "prior_samples": [
+    {
+      "cp": "CP-0079",
+      "http_status": 200,
+      "latency_ms": 6303,
+      "model_ref": "gemini-flash-latest",
+      "source": "pack E-HAPPY",
+      "verdict": "ADVISORY"
+    },
+    {
+      "cp": "CP-0084",
+      "http_status": 200,
+      "latency_ms": 7799,
+      "model_ref": "gemini-flash-latest",
+      "source": "R3 incremental T-fa-r3-d",
+      "verdict": "ADVISORY"
+    }
+  ],
+  "product_seal": false,
+  "r5_authorized": false,
+  "runtime_live_final": false,
+  "schema": "mesh.judge.gate6_live_measurement_incr_suite/v0",
+  "seal": {
+    "bar_met": true,
+    "f4_ack_signed": false,
+    "impl_cp": "CP-0086",
+    "live_measurement_seal": true,
+    "module_live_final": false,
+    "n_min": 5,
+    "n_real_http_cp0086_incremental": 1,
+    "n_real_http_gate6_total": 3,
+    "n_real_http_min_live_measurement_seal": 3,
+    "n_real_http_pack_baseline": 1,
+    "n_real_http_r3_incremental_prior": 1,
+    "phase": "G6-INCR",
+    "policy_cp": "CP-0084",
+    "product_seal": false,
+    "reasons": [
+      "seal_candidate MET: pack n=6 (1 real, 5 mock) \u2265 N_min=5",
+      "prior real HTTP: pack=1 + R3=1 + CP-0086=1 \u2192 total=3",
+      "live-measurement seal MET: n_real_http=3 \u2265 3 + variance honesty",
+      "product seal NOT MET: F4 product ACK UNSIGNED (do not invent)"
+    ],
+    "schema": "mesh.judge.gate6_live_measurement_seal_attempt/v0",
+    "seal_candidate": true,
+    "variance_ok": true,
+    "verdict": "LIVE_MEASUREMENT_SEALED_PRODUCT_OPEN"
+  },
+  "variance": {
+    "all_advisory": true,
+    "http_200_count": 3,
+    "latency_max_ms": 7799,
+    "latency_median_ms": 6303.0,
+    "latency_min_ms": 1942,
+    "latency_ms_list": [
+      6303,
+      7799,
+      1942
+    ],
+    "n_samples": 3,
+    "notes": [
+      "prior samples from CP-0079 pack + CP-0084 R3 ledger (descriptive only)",
+      "includes CP-0086 incremental sample",
+      "variance recorded: min/median/max over \u22653 independent real HAPPY (descriptive; not product SLO)"
+    ],
+    "variance_ok": true
+  },
+  "verdict": "LIVE_MEASUREMENT_SEALED_PRODUCT_OPEN"
+}

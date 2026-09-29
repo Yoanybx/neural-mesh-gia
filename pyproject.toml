@@ -76,6 +76,7 @@ markers = [
     "full_adapter_r2_multi_judge_cycle79: CP-0083 Phase R2 multi-judge live/mock-bound RV (LIVE_API default False; R3-R5 not authorized; M1=NO_CONSENSUS_YET)",
     "full_adapter_r3_gate6_seal_policy_cycle80: CP-0084 Phase R3 Gate6 live-measurement seal policy (LIVE_API default False; R4-R5 not authorized; candidate remains)",
     "full_adapter_r4_streaming_defer_cycle81: CP-0085 Phase R4 streaming DEFER / OUT_OF_SCOPE_FOR_F4 (LIVE_API default False; R5 not authorized; unary-only)",
+    "gate6_live_measurement_incr_cycle82: CP-0086 Gate6 live-measurement +1 real HTTP seal attempt (LIVE_API default False; product seal OPEN; F4 not invented)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

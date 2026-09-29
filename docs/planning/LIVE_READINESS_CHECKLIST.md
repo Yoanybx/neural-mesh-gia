@@ -6,7 +6,7 @@
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md` · `MESH_FULL_ADAPTER_LIVE_RV_DESIGN.md` · `DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md`  
 **Tip context:** `f30c4bb` → **CP-0082** Phase R1 compose / ENABLE signed / CP-0075..0081 chain / Gate6 DESIGN_SEALED / Gates 2–4  
 **Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075..0085 **done** under fences; **R4 DONE** / **R5 OPEN**; streaming DEFERRED; Gate6 candidate remains; module LIVE_API=False / RefuseTransport  
-**Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS → CP-0076. **DeepSeek handoff audit:** PASS_WITH_GAPS; NEXT-3 → **CP-0081**; R1–R4 → **CP-0082..0085** (does **not** authorize R5 / flip LIVE / invent F4).
+**Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS → CP-0076. **DeepSeek handoff audit:** PASS_WITH_GAPS; NEXT-3 → **CP-0081**; R1–R4 → **CP-0082..0085**; Gate6 live-measurement → **CP-0086** (does **not** authorize R5 / flip LIVE / invent F4).
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
 **Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · ENABLE draft: `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**) · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate3: `council/NOTE_GATE3_DESIGN_SEALED.md` / `docs/planning/GATE3_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DESIGN_SEALED.md` / `docs/planning/GATE4_DESIGN_SEALED.md` / `GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `council/NOTE_GATE5_DESIGN_SEALED.md` / `docs/planning/GATE5_DESIGN_SEALED.md` / `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `council/NOTE_GATE6_DESIGN_SEALED.md` / `docs/planning/GATE6_DESIGN_SEALED.md` / `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
@@ -49,7 +49,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Kill path | I5 kill → RefuseTransport + continuity ABORT remains default until amended | Binding (amended wording in Gate2 doc §4; **not** live-armed) |
 
 **Exit (design/discuss):** Live-safety amendment reviewed; mock RV drills still green; no silent codec; Gate1 DISCUSS_ONLY signed.  
-**Today:** Gate2 **ENABLE_READY** under SIGNED ENABLE; mock RV green; Gate5 canary executed (advisory evidence); Mesh full-adapter live RV still OPEN (**R0–R4 DONE** CP-0081..0085; streaming DEFERRED; **R5 OPEN** operator F4; Gate6 live-measurement seal OPEN / candidate remains); `LIVE_API_ENABLED=False`.
+**Today:** Gate2 **ENABLE_READY** under SIGNED ENABLE; mock RV green; Gate5 canary executed (advisory evidence); Mesh full-adapter live RV still OPEN (**R0–R4 DONE** CP-0081..0085; streaming DEFERRED; Gate6 live-measurement **SEALED** CP-0086; **R5 OPEN** operator F4); `LIVE_API_ENABLED=False`.
 
 ### Gate 3 — Authority Matrix in use (D4-A)
 

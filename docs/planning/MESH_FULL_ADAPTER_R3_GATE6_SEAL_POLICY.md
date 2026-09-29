@@ -1,6 +1,6 @@
 # Mesh full-adapter R3 — Gate6 live-measurement seal policy
 
-**Status:** **R3 DONE** (policy sealed) — Gate6 **live-measurement seal** and **product seal** remain **OPEN**  
+**Status:** **R3 DONE** (policy sealed) — Gate6 **live-measurement seal** later **SEALED** by **CP-0086** (n=3); **product seal** remains **OPEN**  
 **Does NOT** flip `LIVE_API_ENABLED` · **does NOT** invent F4 · **does NOT** authorize R4/R5 · **does NOT** claim Gate6 product sealed  
 **Cycle / Checkpoint:** 80 / **CP-0084**  
 **Date:** 2026-09-28 ~23:13 EDT (America/New_York)  
@@ -26,7 +26,7 @@
 | Level | Requirement | Status @ CP-0084 |
 |-------|-------------|------------------|
 | **seal_candidate** | n ≥ N_min=5 total attempts + edge mix (CP-0077); may be **1 real + mocks** | **MET** — pack n=6 (1 real, 5 mock) CP-0079 |
-| **Gate6 live-measurement seal** | seal_candidate **plus** `n_real_http ≥ N_real_http_min=3` independent real HAPPY (free-tier, kill-armed) + variance/ledger honesty; **not** mock substitution for the real count | **NOT MET** — `n_real_http_gate6_total=2` (pack 1 + R3 incr 1) **&lt; 3** |
+| **Gate6 live-measurement seal** | seal_candidate **plus** `n_real_http ≥ N_real_http_min=3` independent real HAPPY (free-tier, kill-armed) + variance/ledger honesty; **not** mock substitution for the real count | **SEALED @ CP-0086** — `n_real_http_gate6_total=3` (pack 1 + R3 incr 1 + CP-0086 incr 1) |
 | **Gate6 product seal / permanent** | live-measurement seal **plus** **signed** F4 product ACK + P7 walk | **NOT MET** — F4 ACK **UNSIGNED** |
 
 **Invariant:** seal_candidate ≠ live-measurement seal ≠ product permanent 「listo」.  
@@ -53,7 +53,7 @@ Raising `N_real_http_min` above pack’s single real sample is **justified** as 
 | ID | Topic | Rule | Status |
 |----|-------|------|--------|
 | G6-POL-1 | seal_candidate | N_min=5 as pack n=6 | **DONE** |
-| G6-POL-2 | live-measurement bar | n_real_http ≥ 3 | **OPEN** (2&lt;3) |
+| G6-POL-2 | live-measurement bar | n_real_http ≥ 3 | **SEALED @ CP-0086** (3≥3) |
 | G6-POL-3 | product seal | F4 signed + live-measurement | **OPEN** |
 | G6-POL-4 | incremental | Limited real HAPPY under fences | **DONE** (+1 HTTP 200) |
 | G6-POL-5 | fences | LIVE False; R4/R5 off | **DONE** |
@@ -79,4 +79,4 @@ Raising `N_real_http_min` above pack’s single real sample is **justified** as 
 
 ---
 
-*End MESH_FULL_ADAPTER_R3_GATE6_SEAL_POLICY — R3 policy DONE; live-measurement/product seals OPEN; LIVE False.*
+*End MESH_FULL_ADAPTER_R3_GATE6_SEAL_POLICY — R3 policy DONE; live-measurement later SEALED @ CP-0086; product OPEN; LIVE False.*

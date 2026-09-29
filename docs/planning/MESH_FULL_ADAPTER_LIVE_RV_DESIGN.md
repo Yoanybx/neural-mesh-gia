@@ -1,6 +1,6 @@
 # Mesh full-adapter live RV — DESIGN ONLY (beyond Gemini free canary/measure)
 
-**Status:** **DESIGN_ONLY parent** — honest RV plan; **R0–R4 DONE** (CP-0081..0085); **R5 OPEN** — operator F4 product ACK only; streaming **DEFERRED** / OUT_OF_F4; Gate6 live-measurement / product seals still OPEN (candidate remains)  
+**Status:** **DESIGN_ONLY parent** — honest RV plan; **R0–R4 DONE** (CP-0081..0085); **R5 OPEN** — operator F4 product ACK only; streaming **DEFERRED** / OUT_OF_F4; Gate6 **live-measurement SEALED** (CP-0086 n=3); product seal still OPEN (F4 UNSIGNED)  
 **Does NOT** authorize codec push beyond CP-0078 v0 · **does NOT** flip `LIVE_API_ENABLED` · **does NOT** invent F4 product ACK · **does NOT** unlock NO_HELD  
 **Cycle / Checkpoint:** 77 / **CP-0081** (DESIGN_ONLY)  
 **Date:** 2026-09-28 ~23:02 EDT (America/New_York)  
@@ -137,7 +137,7 @@ Full-adapter RV design may proceed **with module False**. Product permanent rema
 | **R0** | This doc + CP-0081 DESIGN_ONLY seal | **DONE** (CP-0081) |
 | **R1** | Full-adapter SoT + RefuseTransport + I5 compose checklist (docs/tests descriptors) | **DONE** — **CP-0082** thin IMPL (checklist + descriptors + unit compose); LIVE stays False |
 | **R2** | Multi-judge live/mock-bound RV under matrix | **DONE** — **CP-0083** (Gemini free + mock; conflict/missing/ABORT>ACCEPT; M1=NO_CONSENSUS_YET); LIVE stays False |
-| **R3** | Gate6 live-measurement seal policy (raise n_real_http if required) | **DONE** — **CP-0084** (policy sealed; n_real_http_gate6_total=2 &lt; bar 3; candidate remains; LIVE False) |
+| **R3** | Gate6 live-measurement seal policy (raise n_real_http if required) | **DONE** — **CP-0084** policy; bar filled + live-measurement **SEALED** by **CP-0086** (n=3); LIVE False |
 | **R4** | Streaming DEFER seal **or** streaming RV | **DONE** — **CP-0085** DEFER / **OUT_OF_SCOPE_FOR_F4**; unary-only product |
 | **R5** | F4 product ACK (operator) → only then discuss permanent module True | **OPEN** — **Operator only** — no invent |
 
@@ -165,12 +165,12 @@ This design **must not** be cited as authority for:
 |-----------|-------|
 | **F4 product ACK signed** (if permanent LIVE wanted) | Operator |
 | Prefer leave module **False** | Ops default |
-| Full-adapter RV phase R5 (+ more real HTTP if operator raises bar) | Operator F4 + future measurement CP (R0–R4 DONE CP-0081..0085) |
+| Full-adapter RV phase R5 | Operator F4 only (R0–R4 DONE CP-0081..0085; Gate6 live-measurement SEALED CP-0086) |
 | Streaming residual | **DEFERRED** (CP-0085) — OUT_OF_SCOPE_FOR_F4; future RV only if named |
-| More real HTTP **only if** Gate6 seal policy raised | Operator + future measurement CP |
+| Gate6 live-measurement | **SEALED** CP-0086 (n_real_http=3); product still needs F4 |
 | NO_HELD / D3 / Vertex / keys-in-git | Stay out |
 
-**Today:** Track A listo bajo fences **YES** · Track B OPEN (R0–R4 DONE CP-0081..0085; **R5 OPEN** operator F4; Gate6 live-measurement seal OPEN / candidate remains; streaming DEFERRED) · Track C **NO**.
+**Today:** Track A listo bajo fences **YES** · Track B OPEN (R0–R4 DONE CP-0081..0085; Gate6 live-measurement **SEALED** CP-0086; **R5 OPEN** operator F4; streaming DEFERRED) · Track C **NO**.
 
 ---
 
