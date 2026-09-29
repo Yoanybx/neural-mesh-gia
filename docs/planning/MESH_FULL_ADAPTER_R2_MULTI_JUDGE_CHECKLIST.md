@@ -93,4 +93,4 @@ This checklist / CP-0083 **must not** be cited as authority for:
 
 ---
 
-*End MESH_FULL_ADAPTER_R2 checklist — R2 DONE; R3 DONE (CP-0084); R4 OPEN; LIVE False; F4 unsigned.*
+*End MESH_FULL_ADAPTER_R2 checklist — R2 DONE; R3 DONE (CP-0084); R4 DONE (CP-0085 DEFER); R5 OPEN (operator); LIVE False; F4 unsigned.*

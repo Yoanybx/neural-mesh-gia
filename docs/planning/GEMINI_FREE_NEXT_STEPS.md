@@ -3,7 +3,7 @@
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
 **Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075..0084** (… full-adapter R0–R3); F4 product ACK **UNSIGNED**; tip base **`56cdaa0`→CP-0084**  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075..0085** (… full-adapter R0–R4); F4 product ACK **UNSIGNED**; tip base **`fa67df5`→CP-0085**; streaming **DEFERRED**  
 **Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · dual canary hygiene ACK · `REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md`  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
@@ -38,6 +38,9 @@
 | **16** | **M-ABORT-3 conflict/missing judges** | **DONE** — E-CONFLICT fail-closed PASS (CP-0080) | Auto-majority execute |
 | **17** | **Full Mesh adapter live RV design** (DeepSeek NEXT-3) | **DONE (DESIGN_ONLY)** — **CP-0081** `MESH_FULL_ADAPTER_LIVE_RV_DESIGN.md`; multi-judge/SoT/Refuse/I5/Gate6/F4/streaming residuals named; **does NOT** flip LIVE / invent F4 / raise n_real_http | Codec beyond v0; permanent LIVE; claim full RV sealed |
 | **18** | **Full-adapter R1 SoT+Refuse+I5 compose** | **DONE** — **CP-0082** checklist + descriptors T-fa-r1-a..e + unit compose on LiveHttpTransport+canary; **does NOT** authorize R2–R5 / flip LIVE / invent F4 | R2 multi-judge; R3 more HTTP; permanent LIVE |
+| **18b** | **Full-adapter R2 multi-judge** | **DONE** — **CP-0083** | R3+ |
+| **18c** | **Full-adapter R3 Gate6 seal policy** | **DONE** — **CP-0084**; candidate remains; n_real=2&lt;3 | Gate6 final seal; R4 invent |
+| **19** | **Full-adapter R4 streaming DEFER** | **DONE** — **CP-0085** DEFERRED / OUT_OF_SCOPE_FOR_F4; unary-only; **does NOT** authorize R5 / flip LIVE / invent F4 | Streaming codec ship; R5 invent |
 
 ---
 
@@ -52,7 +55,7 @@ Before any flag flip:
 5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** ENABLE signed; CP-0075–0084 under fences; multi-canary + kill/abort drills **PASS**; F4 **DESIGN_SEALED**; full-adapter **R0–R3 DONE / R4 OPEN**; Gate6 **candidate remains**; **module LIVE_API_ENABLED=False**; 「listo」 **bajo fences**; remaining for product permanent: **operator F4 product ACK** · more real HTTP · streaming (optional).
+**Intent today:** ENABLE signed; CP-0075–0085 under fences; multi-canary + kill/abort drills **PASS**; F4 **DESIGN_SEALED**; full-adapter **R0–R4 DONE / R5 OPEN**; streaming **DEFERRED**; Gate6 **candidate remains**; **module LIVE_API_ENABLED=False**; 「listo」 **bajo fences**; remaining for product permanent: **operator F4 product ACK** · more real HTTP.
 
 ---
 
@@ -70,10 +73,11 @@ Before any flag flip:
 - `docs/planning/MESH_FULL_ADAPTER_LIVE_RV_DESIGN.md` · `DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md` · `council/NOTE_DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md`
 - `docs/planning/MESH_FULL_ADAPTER_R1_SOT_REFUSE_I5_COMPOSE_CHECKLIST.md` · `IMPL_CP_0082_FULL_ADAPTER_R1_COMPOSE.md` · `council/NOTE_CP_0082_FULL_ADAPTER_R1_COMPOSE.md`
 - `IMPL_CP_0083_FULL_ADAPTER_R2_MULTI_JUDGE.md` · `MESH_FULL_ADAPTER_R3_GATE6_SEAL_POLICY.md` · `IMPL_CP_0084_GATE6_LIVE_MEASUREMENT_SEAL_POLICY.md` · `council/NOTE_CP_0084_GATE6_LIVE_MEASUREMENT_SEAL_POLICY.md`
+- `MESH_FULL_ADAPTER_R4_STREAMING_DEFER_SEAL.md` · `IMPL_CP_0085_STREAMING_DEFER_SEAL.md` · `council/NOTE_CP_0085_STREAMING_DEFER_SEAL.md`
 - `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
 - `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md` · `council/NOTE_DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — tip 56cdaa0→CP-0084; ENABLE SIGNED; CP-0075–0084; listo bajo fences; R3 DONE / R4 OPEN; Gate6 candidate remains; F4 ACK unsigned; module LIVE_API_ENABLED=False; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — tip fa67df5→CP-0085; ENABLE SIGNED; CP-0075–0085; listo bajo fences; R4 DONE / R5 OPEN; streaming DEFERRED; Gate6 candidate remains; F4 ACK unsigned; module LIVE_API_ENABLED=False; NO_HELD unchanged.*

@@ -1,6 +1,6 @@
 # Mesh full-adapter live RV — DESIGN ONLY (beyond Gemini free canary/measure)
 
-**Status:** **DESIGN_ONLY parent** — honest RV plan; **R0–R3 DONE** (CP-0081..0084); **R4 OPEN** — streaming DEFER/RV; Gate6 live-measurement / product seals still OPEN (candidate remains)  
+**Status:** **DESIGN_ONLY parent** — honest RV plan; **R0–R4 DONE** (CP-0081..0085); **R5 OPEN** — operator F4 product ACK only; streaming **DEFERRED** / OUT_OF_F4; Gate6 live-measurement / product seals still OPEN (candidate remains)  
 **Does NOT** authorize codec push beyond CP-0078 v0 · **does NOT** flip `LIVE_API_ENABLED` · **does NOT** invent F4 product ACK · **does NOT** unlock NO_HELD  
 **Cycle / Checkpoint:** 77 / **CP-0081** (DESIGN_ONLY)  
 **Date:** 2026-09-28 ~23:02 EDT (America/New_York)  
@@ -126,7 +126,7 @@ Full-adapter RV design may proceed **with module False**. Product permanent rema
 | v0 codec | **Unary only** (CP-0078) |
 | Streaming | Optional residual (CP-0076); **T-lht-j** stream mid-break → ABORT / no half-ACCEPT |
 | Product ACK scope | Streaming **OUT** of F4 product ACK unless separately named |
-| RV stance | Close with explicit **DEFER** (unary-only product) **or** future streaming RV CP — not silent |
+| RV stance | **DEFER sealed** (CP-0085) — unary-only product; future streaming RV CP only if operator names |
 
 ---
 
@@ -138,7 +138,7 @@ Full-adapter RV design may proceed **with module False**. Product permanent rema
 | **R1** | Full-adapter SoT + RefuseTransport + I5 compose checklist (docs/tests descriptors) | **DONE** — **CP-0082** thin IMPL (checklist + descriptors + unit compose); LIVE stays False |
 | **R2** | Multi-judge live/mock-bound RV under matrix | **DONE** — **CP-0083** (Gemini free + mock; conflict/missing/ABORT>ACCEPT; M1=NO_CONSENSUS_YET); LIVE stays False |
 | **R3** | Gate6 live-measurement seal policy (raise n_real_http if required) | **DONE** — **CP-0084** (policy sealed; n_real_http_gate6_total=2 &lt; bar 3; candidate remains; LIVE False) |
-| **R4** | Streaming DEFER seal **or** streaming RV | **OPEN** (optional); OUT of F4 unless named |
+| **R4** | Streaming DEFER seal **or** streaming RV | **DONE** — **CP-0085** DEFER / **OUT_OF_SCOPE_FOR_F4**; unary-only product |
 | **R5** | F4 product ACK (operator) → only then discuss permanent module True | **OPEN** — **Operator only** — no invent |
 
 **Hard:** No phase implies push/tags/secrets/NO_HELD/D3/Vertex.
@@ -165,12 +165,12 @@ This design **must not** be cited as authority for:
 |-----------|-------|
 | **F4 product ACK signed** (if permanent LIVE wanted) | Operator |
 | Prefer leave module **False** | Ops default |
-| Full-adapter RV phases R4 (+ more real HTTP if operator raises bar) | Future CPs under fences (R0–R3 DONE CP-0081..0084) |
-| Streaming residual (defer or RV) | Future / optional |
+| Full-adapter RV phase R5 (+ more real HTTP if operator raises bar) | Operator F4 + future measurement CP (R0–R4 DONE CP-0081..0085) |
+| Streaming residual | **DEFERRED** (CP-0085) — OUT_OF_SCOPE_FOR_F4; future RV only if named |
 | More real HTTP **only if** Gate6 seal policy raised | Operator + future measurement CP |
 | NO_HELD / D3 / Vertex / keys-in-git | Stay out |
 
-**Today:** Track A listo bajo fences **YES** · Track B OPEN (R0–R3 DONE CP-0081..0084; **R4 OPEN**; Gate6 live-measurement seal OPEN / candidate remains) · Track C **NO**.
+**Today:** Track A listo bajo fences **YES** · Track B OPEN (R0–R4 DONE CP-0081..0085; **R5 OPEN** operator F4; Gate6 live-measurement seal OPEN / candidate remains; streaming DEFERRED) · Track C **NO**.
 
 ---
 
@@ -180,6 +180,7 @@ This design **must not** be cited as authority for:
 - `MESH_FULL_ADAPTER_R1_SOT_REFUSE_I5_COMPOSE_CHECKLIST.md` · `IMPL_CP_0082_FULL_ADAPTER_R1_COMPOSE.md` · `council/NOTE_CP_0082_FULL_ADAPTER_R1_COMPOSE.md`  
 - `MESH_FULL_ADAPTER_R2_MULTI_JUDGE_CHECKLIST.md` · `IMPL_CP_0083_FULL_ADAPTER_R2_MULTI_JUDGE.md` · `council/NOTE_CP_0083_FULL_ADAPTER_R2_MULTI_JUDGE.md`  
 - `MESH_FULL_ADAPTER_R3_GATE6_SEAL_POLICY.md` · `IMPL_CP_0084_GATE6_LIVE_MEASUREMENT_SEAL_POLICY.md` · `council/NOTE_CP_0084_GATE6_LIVE_MEASUREMENT_SEAL_POLICY.md`  
+- `MESH_FULL_ADAPTER_R4_STREAMING_DEFER_SEAL.md` · `IMPL_CP_0085_STREAMING_DEFER_SEAL.md` · `council/NOTE_CP_0085_STREAMING_DEFER_SEAL.md`  
 - `IMPL_CP_0075` … `IMPL_CP_0080` · `DESIGN_CP_0076` · `DESIGN_CP_0077`  
 - `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `GATE6_METRIC_COMPLETION_DESIGN.md`  
 - `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_DRAFT.md` (**UNSIGNED**)  
@@ -188,4 +189,4 @@ This design **must not** be cited as authority for:
 
 ---
 
-*End MESH_FULL_ADAPTER_LIVE_RV_DESIGN — DESIGN_ONLY parent; R0–R3 DONE (CP-0081..0084); R4 OPEN; LIVE_API_ENABLED=False; F4 ACK unsigned; Gate6 candidate remains; NO_HELD unchanged; M1=NO_CONSENSUS_YET.*
+*End MESH_FULL_ADAPTER_LIVE_RV_DESIGN — DESIGN_ONLY parent; R0–R4 DONE (CP-0081..0085); R5 OPEN (operator F4); streaming DEFERRED; LIVE_API_ENABLED=False; F4 ACK unsigned; Gate6 candidate remains; NO_HELD unchanged; M1=NO_CONSENSUS_YET.*

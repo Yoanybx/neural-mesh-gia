@@ -1,0 +1,168 @@
+{
+  "LIVE_API_ENABLED_module_final": false,
+  "authorization": {
+    "authorized": true,
+    "authorizes": [
+      "R4 streaming DEFER seal (unary-only product)",
+      "OUT_OF_SCOPE_FOR_F4 binding unless operator separately names streaming",
+      "honest close of R4 residual without silent omission"
+    ],
+    "canary_live_api_enabled_constant": false,
+    "cycle": 81,
+    "design_cp": "CP-0081",
+    "does_not_authorize": [
+      "R5 F4 product ACK / permanent module True",
+      "streaming codec ship / live streaming RV",
+      "Gate6 live-measurement final seal claim",
+      "Gate6 product seal claim",
+      "permanent LIVE_API_ENABLED",
+      "F4 invent",
+      "NO_HELD unlock",
+      "push/tags/secrets"
+    ],
+    "enable_ack": "docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md",
+    "f4_ack_draft": "docs/planning/F4_PRODUCT_ENABLE_ACK_DRAFT.md",
+    "impl_cp": "CP-0085",
+    "lht_live_api_enabled_constant": false,
+    "live_api_enabled_module_default": false,
+    "package_held": "0.18.0",
+    "permanent_live_enable": false,
+    "phase": "R4",
+    "prior_cp": "CP-0084",
+    "product_codec_mode": "unary",
+    "r5_authorized": false,
+    "schema": "mesh.judge.full_adapter_r4_streaming_defer_auth/v0",
+    "streaming_allowed": false,
+    "streaming_f4_scope": "OUT_OF_SCOPE_FOR_F4",
+    "streaming_posture": "DEFERRED",
+    "streaming_shipped": false
+  },
+  "binding_final": "RefuseTransport",
+  "checklist": [
+    {
+      "descriptor": "T-fa-r4-a",
+      "id": "STR-DEF-1",
+      "prove": "assert_unary_only_product_path",
+      "rule": "CP-0078 v0 unary-only remains SoT product path",
+      "topic": "unary product"
+    },
+    {
+      "descriptor": "T-fa-r4-b",
+      "id": "STR-DEF-2",
+      "prove": "evaluate_streaming_defer_policy",
+      "rule": "Streaming OUT_OF_SCOPE_FOR_F4 unless operator separately names it",
+      "topic": "F4 scope"
+    },
+    {
+      "descriptor": "T-fa-r4-c",
+      "id": "STR-DEF-3",
+      "prove": "LHT describe + constants",
+      "rule": "streaming_allowed=False; streaming_shipped=False",
+      "topic": "flags"
+    },
+    {
+      "descriptor": "T-fa-r4-d",
+      "id": "STR-DEF-4",
+      "prove": "policy notes cite CP-0076 T-lht-j",
+      "rule": "Design residual deferred; no half-ACCEPT; no live streaming RV this CP",
+      "topic": "T-lht-j residual"
+    },
+    {
+      "descriptor": "T-fa-r4-e",
+      "id": "STR-DEF-5",
+      "prove": "assert_module_live_false + auth record",
+      "rule": "Module LIVE False; R5 not authorized; no F4 invent / NO_HELD / push",
+      "topic": "fences"
+    }
+  ],
+  "descriptors": {
+    "T-fa-r4-a": {
+      "note": "unary product path (CP-0078 v0)",
+      "ok": true
+    },
+    "T-fa-r4-b": {
+      "note": "streaming OUT_OF_SCOPE_FOR_F4",
+      "ok": true
+    },
+    "T-fa-r4-c": {
+      "note": "streaming_allowed=False; streaming_shipped=False",
+      "ok": true
+    },
+    "T-fa-r4-d": {
+      "note": "T-lht-j deferred; no streaming RV executed",
+      "ok": true
+    },
+    "T-fa-r4-e": {
+      "note": "module + runtime LIVE False; R5 not authorized",
+      "ok": true
+    }
+  },
+  "impl_cp": "CP-0085",
+  "measured_at_unix": 1790651842,
+  "ok": true,
+  "phase": "R4",
+  "policy": {
+    "f4_ack_signed": false,
+    "impl_cp": "CP-0085",
+    "module_live_final": false,
+    "phase": "R4",
+    "product_codec_mode": "unary",
+    "r5_authorized": false,
+    "reasons": [
+      "product codec path = unary only (CP-0078 v0)",
+      "streaming_posture=DEFERRED (explicit seal; not silent)",
+      "streaming F4 scope=OUT_OF_SCOPE_FOR_F4 unless operator separately names",
+      "T-lht-j remains design residual (CP-0076); deferred as product path",
+      "R5 F4 product ACK is operator-only \u2014 bots must not invent signature",
+      "F4 product ACK UNSIGNED (unchanged)"
+    ],
+    "schema": "mesh.judge.full_adapter_r4_streaming_defer_policy/v0",
+    "streaming_allowed": false,
+    "streaming_f4_scope": "OUT_OF_SCOPE_FOR_F4",
+    "streaming_posture": "DEFERRED",
+    "streaming_shipped": false,
+    "t_lht_j_deferred": true,
+    "verdict": "STREAMING_DEFERRED_OUT_OF_F4"
+  },
+  "r5_authorized": false,
+  "runtime_live_final": false,
+  "schema": "mesh.judge.full_adapter_r4_streaming_defer_suite/v0",
+  "streaming_allowed": false,
+  "streaming_f4_scope": "OUT_OF_SCOPE_FOR_F4",
+  "streaming_posture": "DEFERRED",
+  "streaming_shipped": false,
+  "unary_product_path": {
+    "lht_enabled_default": false,
+    "mode": "unary",
+    "policy_keys": [
+      "LIVE_API_ENABLED",
+      "audit_required",
+      "backoff",
+      "compose_continuity",
+      "compose_oversight",
+      "design_cp",
+      "enabled",
+      "forbid_plaintext",
+      "idempotency_required",
+      "impl_cp",
+      "live_api_in_ci",
+      "max_calls_per_hour",
+      "max_calls_per_minute",
+      "max_concurrent",
+      "max_raw_bytes",
+      "max_retries",
+      "mode",
+      "refuse_transport_default",
+      "schema",
+      "secret_handle",
+      "soft_timeout_s",
+      "src_live_codec_shipped",
+      "streaming_allowed",
+      "timeout_s",
+      "tls_required"
+    ],
+    "streaming_allowed": false,
+    "streaming_shipped": false
+  },
+  "verdict": "STREAMING_DEFERRED_OUT_OF_F4"
+}
