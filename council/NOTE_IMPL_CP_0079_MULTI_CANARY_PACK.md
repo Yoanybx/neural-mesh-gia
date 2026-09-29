@@ -8,5 +8,6 @@
 - Permanent enable policy written; Gate5 runbook §8 updated; default after pack = module LIVE **False**.
 - F4 product-enable still OPEN; NO_HELD unchanged; no push/tags/secrets.
 - Evidence: `GATE5_MULTI_CANARY_*` · Gate6 measurement update.
+- **Claim hygiene (I-5):** prefer **「pack n=6 (1 real, 5 mock)」**; `n_real_http=1` · `n_mock=5`; seal_candidate = **n=6 total**, not 5 live.
 
 *End note.*

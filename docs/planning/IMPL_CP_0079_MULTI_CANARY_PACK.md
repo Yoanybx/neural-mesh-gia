@@ -19,6 +19,19 @@
 | Honest real+mock mix under free-tier quota | Permanent module `LIVE_API_ENABLED=True` |
 | Leaves module LIVE **False** after pack | NO_HELD / D3 / keys-in-git unlock |
 
+### Claim hygiene (I-5 / DeepSeek handoff audit)
+
+Prefer phrasing **「pack n=6 (1 real, 5 mock)」**:
+
+| Field | Binding |
+|-------|---------|
+| **n** | **6** total attempts (meets N_min=5 sample policy) |
+| **n_real_http** | **1** (E-HAPPY Gemini free HTTP 200) |
+| **n_mock** | **5** (E-KILL / E-ABORT-ACCEPT / E-AUTH / E-ANOMALY / E-RESUME) |
+| **seal_candidate** | **true** on **n=6 total**, **not** on “5 live” / “n=5 real HTTP” |
+
+Do **not** claim five live HTTP canaries, five live samples, or “n=5 live sealed.” seal_candidate ≠ Gate6 final product seal ≠ F4 product ACK.
+
 ---
 
 ## 1. Artifacts

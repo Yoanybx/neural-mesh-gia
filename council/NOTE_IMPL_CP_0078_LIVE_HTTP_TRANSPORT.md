@@ -19,6 +19,10 @@ Mint **CP-0078** authorizing packaging `LiveHttpTransport` v0 for Gemini free un
 
 Multi-canary pack **n≥N_min=5** (CP-0077) · permanent enable policy/runbook · F4 if product-enable · streaming still out.
 
+## Claim hygiene (I-11)
+
+**Authorize ≠ activate.** CP-0078 authorize = merge LiveHttpTransport **v0 default-off**; does **NOT** activate live / flip module True / satisfy F4.
+
 ## Fences
 
 No secrets · no push/tags · **NO_HELD unchanged** · advisory ≠ SoT · n=1 ≠ seal

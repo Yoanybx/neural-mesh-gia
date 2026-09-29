@@ -1,6 +1,6 @@
 # Gate 6 — Multi-canary measurement (CP-0079 pack + CP-0080 drills)
 
-**Status:** **MEASURED** pack n=6 (CP-0079) + CP-0080 M-KILL-2/M-ABORT-3 · **seal_candidate=true** · product permanent 「listo」 **blocked on F4 ACK unsigned**  
+**Status:** **MEASURED** **pack n=6 (1 real, 5 mock)** (CP-0079) + CP-0080 M-KILL-2/M-ABORT-3 · **seal_candidate=true** (on n=6 total, not 5 live) · product permanent 「listo」 **blocked on F4 ACK unsigned**  
 **Date:** 2026-09-28 ~22:43 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
 **Upstream:** `GATE5_MULTI_CANARY_EVIDENCE.md` · `GATE5_CP0080_DRILL_LEDGER.json` · `EVIDENCE_CP_0080_KILL_ABORT_DRILLS.md`  
@@ -12,7 +12,7 @@
 
 | Rule | Required | Observed |
 |------|----------|----------|
-| n ≥ N_min | 5 | **6** (CP-0079) / **7** mock re-run with E-CONFLICT (CP-0080) |
+| n ≥ N_min | 5 | **6** = 1 real + 5 mock (CP-0079) / **7** mock re-run with E-CONFLICT (CP-0080) |
 | N_edge ≥ 3 | 3 | **≥5** |
 | N_kill_live ≥ 1 | 1 | **1** (E-KILL) |
 | N_abort ≥ 1 | 1 | **≥3** (+ E-CONFLICT) |
@@ -38,10 +38,12 @@
 
 ## Explicit limits
 
+- Prefer phrasing **「pack n=6 (1 real, 5 mock)」** — `n_real_http=1` · `n_mock=5`; seal_candidate on **n=6 total**, **not** “5 live”  
 - seal_candidate ≠ Gate6 **final product seal** without **signed** F4 product ACK + review  
 - Module `LIVE_API_ENABLED=False` retained per permanent enable policy  
 - Streaming not shipped · CI live forbidden  
-- F4 **DESIGN_SEALED**; product ACK **UNSIGNED** (ENABLE_UNDER_FENCES ≠ permanent)
+- F4 **DESIGN_SEALED**; product ACK **UNSIGNED** (ENABLE_UNDER_FENCES ≠ permanent)  
+- M-KILL-2 budget is **process-local** (≤100 ms); not a network/provider RTT SLO
 
 ## Related
 

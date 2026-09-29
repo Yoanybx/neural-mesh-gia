@@ -1,6 +1,6 @@
 # Gate 5 — Multi-canary pack evidence (CP-0079)
 
-**Status:** Pack **EXECUTED** · n=6 ≥ N_min=5 · edges PASS · final binding **RefuseTransport** · module **LIVE_API_ENABLED=False**  
+**Status:** Pack **EXECUTED** · **pack n=6 (1 real, 5 mock)** ≥ N_min=5 · edges PASS · final binding **RefuseTransport** · module **LIVE_API_ENABLED=False**  
 **Date:** 2026-09-28 ~22:39 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
 **Tip at capture base:** `ee0c0c6` (+ CP-0079 in same cycle)  
@@ -35,7 +35,7 @@
 | n_ledger_kill | **1** |
 | n_real_http | **1** |
 | n_mock | **5** |
-| seal_candidate | **true** (sample policy met — **≠** Gate6 final seal / ≠ product 「listo」) |
+| seal_candidate | **true** on **n=6 total** (1 real + 5 mock) — sample policy met — **≠** “5 live” · **≠** Gate6 final seal · **≠** product 「listo」 |
 | Module LIVE final | **False** |
 | Runtime LIVE final | **False** |
 | Binding final | **RefuseTransport** |
@@ -65,7 +65,8 @@
 
 - No raw key / `AIza` / Bearer in ledger or this doc  
 - Handle id only · `mesh_accept=false` · `advisory_only=true` · M1=NO_CONSENSUS_YET  
-- Prior CP-0075 n=1 remains historical sample; this pack is independent n=6  
+- Prior CP-0075 n=1 remains historical sample; this pack is independent **pack n=6 (1 real, 5 mock)**  
+- **Claim hygiene (I-5):** `n_real_http=1` · `n_mock=5` · seal_candidate = **n=6 total**, not 5 live HTTP  
 
 ## Related
 
@@ -74,4 +75,4 @@
 
 ---
 
-*End GATE5_MULTI_CANARY_EVIDENCE — n=6; HTTP 200 happy; edges PASS; LIVE False; RefuseTransport final.*
+*End GATE5_MULTI_CANARY_EVIDENCE — pack n=6 (1 real, 5 mock); HTTP 200 happy; edges PASS; LIVE False; RefuseTransport final.*

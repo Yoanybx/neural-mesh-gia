@@ -21,6 +21,15 @@
 
 **Hard fences held:** module **`LIVE_API_ENABLED=False`** · RefuseTransport default when live off · **NO_HELD unchanged** · no push/tags/secrets.
 
+### Claim hygiene (I-11 / DeepSeek handoff audit)
+
+**Authorize ≠ activate.** CP-0078 **authorize** means: merge LiveHttpTransport **v0** into the tree **default-off** (module False · RefuseTransport when live off). It does **NOT**:
+
+- activate live / flip module `LIVE_API_ENABLED=True`
+- permanently enable the adapter / product path
+- satisfy F4 product ACK
+- complete Gate6 live-measurement seal
+
 ---
 
 ## 1. Artifacts

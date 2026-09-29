@@ -31,6 +31,7 @@ Prefer **unit + mock HTTP**; no permanent LIVE flip. Optional single fenced CLI 
 
 ## Not claimed
 
+- **Activate live** — authorize = merge v0 **default-off**; does **NOT** activate live / flip module True (I-11)  
 - Gate6 live seal / n≥5 multi-canary  
 - Permanent product enable  
 - Streaming codec  
