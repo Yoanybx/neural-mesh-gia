@@ -72,6 +72,7 @@ markers = [
     "l_judge_live_http_transport_cycle74: CP-0078 LiveHttpTransport v0 (authorized under fences; LIVE_API default False; no keys in git)",
     "l_judge_multi_canary_pack_cycle75: CP-0079 multi-canary pack n≥5 + permanent enable policy (LIVE_API default False)",
     "m_kill_2_abort3_cycle76: CP-0080 F4 design seal + M-KILL-2 ops budget + M-ABORT-3 conflict drill (LIVE_API default False)",
+    "full_adapter_r1_compose_cycle78: CP-0082 Phase R1 SoT+Refuse+I5 compose (LIVE_API default False; R2-R5 not authorized)",
     "identity_cycle34: CP-0038 0.18_H1 identity + attestation + trust tiers",
     "recovery_cycle35: CP-0039 0.18_H2 recovery + rebuild / ABORT snapshot restore",
     "fence_cycle36: CP-0040 0.18_H3 dual-primary fence / ABORT demote+re-elect",

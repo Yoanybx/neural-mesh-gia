@@ -2,11 +2,11 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 ~23:02 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075..0081**; multi-canary n=6; permanent enable policy (default-off); full-adapter RV DESIGN_ONLY; module LIVE_API_ENABLED=False  
+**Date:** 2026-09-28 ~23:06 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075..0082**; multi-canary n=6; permanent enable policy (default-off); full-adapter R1 DONE / R2 OPEN; module LIVE_API_ENABLED=False  
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md` · `MESH_FULL_ADAPTER_LIVE_RV_DESIGN.md` · `DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md`  
-**Tip context:** `4158fcc` (DeepSeek PASS_WITH_GAPS) → **CP-0081** full-adapter RV DESIGN_ONLY / ENABLE signed / CP-0075..0080 chain / Gate6 DESIGN_SEALED / Gates 2–4  
-**Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075..0080 **done** under fences; **CP-0081 DESIGN_ONLY** full-adapter RV; module LIVE_API=False / RefuseTransport  
-**Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS → CP-0076. **DeepSeek handoff audit:** PASS_WITH_GAPS; NEXT-3 → **CP-0081** (does **not** measure live / flip LIVE / invent F4).
+**Tip context:** `f30c4bb` → **CP-0082** Phase R1 compose / ENABLE signed / CP-0075..0081 chain / Gate6 DESIGN_SEALED / Gates 2–4  
+**Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075..0081 **done** under fences; **CP-0082 R1 DONE** / **R2 OPEN**; module LIVE_API=False / RefuseTransport  
+**Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS → CP-0076. **DeepSeek handoff audit:** PASS_WITH_GAPS; NEXT-3 → **CP-0081**; R1 → **CP-0082** (does **not** authorize R2–R5 / flip LIVE / invent F4).
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
 **Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · ENABLE draft: `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**) · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate3: `council/NOTE_GATE3_DESIGN_SEALED.md` / `docs/planning/GATE3_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DESIGN_SEALED.md` / `docs/planning/GATE4_DESIGN_SEALED.md` / `GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `council/NOTE_GATE5_DESIGN_SEALED.md` / `docs/planning/GATE5_DESIGN_SEALED.md` / `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `council/NOTE_GATE6_DESIGN_SEALED.md` / `docs/planning/GATE6_DESIGN_SEALED.md` / `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
@@ -49,7 +49,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Kill path | I5 kill → RefuseTransport + continuity ABORT remains default until amended | Binding (amended wording in Gate2 doc §4; **not** live-armed) |
 
 **Exit (design/discuss):** Live-safety amendment reviewed; mock RV drills still green; no silent codec; Gate1 DISCUSS_ONLY signed.  
-**Today:** Gate2 **ENABLE_READY** under SIGNED ENABLE; mock RV green; Gate5 canary executed (advisory evidence); Mesh full-adapter live RV still OPEN (**CP-0081 DESIGN_ONLY** plan; prior LHT residual was CP-0076); `LIVE_API_ENABLED=False`.
+**Today:** Gate2 **ENABLE_READY** under SIGNED ENABLE; mock RV green; Gate5 canary executed (advisory evidence); Mesh full-adapter live RV still OPEN (**R1 DONE** CP-0082; **R2 OPEN**; prior design CP-0081 / LHT CP-0076); `LIVE_API_ENABLED=False`.
 
 ### Gate 3 — Authority Matrix in use (D4-A)
 
@@ -97,7 +97,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*); live measurement **OPEN** |
 
 **Exit (design/discuss):** Named metric bundle DESIGN_SEALED for DISCUSS_ONLY; pytest remains necessary but insufficient alone; live measurement marked OPEN.  
-**Today:** Gate6 **DESIGN_SEALED**; **CP-0079** n=6 seal-candidate + **CP-0080** M-KILL-2 **PASS** / M-ABORT-3 **PASS**; permanent policy default False; F4 **DESIGN_SEALED** / product ACK **UNSIGNED**; **CP-0081** full-adapter RV DESIGN_ONLY. Listo **bajo fences**; full-adapter RV OPEN; product permanent blocked on F4 ACK.
+**Today:** Gate6 **DESIGN_SEALED**; **CP-0079** n=6 seal-candidate + **CP-0080** M-KILL-2 **PASS** / M-ABORT-3 **PASS**; permanent policy default False; F4 **DESIGN_SEALED** / product ACK **UNSIGNED**; **CP-0081** DESIGN + **CP-0082 R1 DONE** / **R2 OPEN**. Listo **bajo fences**; full-adapter RV OPEN (R1 compose done); product permanent blocked on F4 ACK.
 
 ### Gate 7 — Optional D3 (perf A/B)
 
@@ -129,7 +129,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | # | Gate | Blocks live+API? | Status @ Gate6 DESIGN_SEALED (DISCUSS_ONLY / metrics) |
 |---|------|------------------|------------------------------------------------------|
 | 1 | Operator ACK | **Yes** (enable) | **SIGNED ENABLE_UNDER_FENCES** (`GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md`); prior DISCUSS_ONLY retained |
-| 2 | Safety evidence (+ live amendment) | **Yes** (enable) | **ENABLE_READY** (`GATE2_ENABLE_READY.md`); Mesh full-adapter live RV still OPEN (CP-0081 DESIGN_ONLY) |
+| 2 | Safety evidence (+ live amendment) | **Yes** (enable) | **ENABLE_READY** (`GATE2_ENABLE_READY.md`); Mesh full-adapter live RV OPEN (R1 DONE CP-0082; R2 OPEN) |
 | 3 | Authority Matrix in use | **Yes** (enable) | **ENABLE_READY** (`GATE3_ENABLE_READY.md`); runtime not live-enabled |
 | 4 | Keys + data policy | **Yes** | **ENABLE_READY** (`GATE4_ENABLE_READY.md`); handle oob; secrets not in git |
 | 5 | RefuseTransport → live flag | **Yes** | Step (5) **PASS**; step (6) **EXECUTED** (CP-0075 canary HTTP 200); module `LIVE_API_ENABLED=False` final |
@@ -137,7 +137,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075..0081** under fences (canary + LHT + multi-canary + policy + kill budget + abort-3 + F4 design + full-adapter RV DESIGN_ONLY). Tip **`4158fcc`**. Module **`LIVE_API_ENABLED=False`**. 「Listo」 **bajo fences YES**; full-adapter RV **OPEN (designed)**; product permanent needs **signed F4 product ACK** (draft unsigned). NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
+**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075..0082** under fences (canary + LHT + multi-canary + policy + kill budget + abort-3 + F4 design + full-adapter R0 + **R1 compose**). Tip base **`f30c4bb`**. Module **`LIVE_API_ENABLED=False`**. 「Listo」 **bajo fences YES**; full-adapter RV **R1 DONE / R2 OPEN**; product permanent needs **signed F4 product ACK** (draft unsigned). NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
 
 ---
 
@@ -164,6 +164,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md` · `GATE6_DESIGN_SEALED.md` · `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_DESIGN_SEALED.md`
 - `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (historical)
 - `docs/planning/LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `DESIGN_CP_0076_LIVE_HTTP_TRANSPORT_RESIDUAL.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
+- `docs/planning/MESH_FULL_ADAPTER_R1_SOT_REFUSE_I5_COMPOSE_CHECKLIST.md` · `IMPL_CP_0082_FULL_ADAPTER_R1_COMPOSE.md` · `council/NOTE_CP_0082_FULL_ADAPTER_R1_COMPOSE.md`
 - `docs/planning/GATE6_METRIC_COMPLETION_DESIGN.md` · `DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md` · `council/NOTE_DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md` · `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · dual REPLY_*_GATE5_CANARY_HYGIENE_ACK.md
   - `docs/planning/GATE2_ENABLE_READY.md` · `GATE3_ENABLE_READY.md` · `GATE4_ENABLE_READY.md` · `GATE5_HEALTH_CHECK_EVIDENCE.md`
@@ -177,4 +178,4 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 
 ---
 
-*End LIVE_READINESS_CHECKLIST — tip 4158fcc; CP-0075..0081; design-only; not an unlock; LIVE_API_ENABLED=False.*
+*End LIVE_READINESS_CHECKLIST — tip f30c4bb→CP-0082; CP-0075..0082; R1 DONE / R2 OPEN; not an unlock; LIVE_API_ENABLED=False.*

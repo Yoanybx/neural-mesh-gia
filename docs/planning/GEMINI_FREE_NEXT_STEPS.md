@@ -3,7 +3,7 @@
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
 **Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075..0081** (canary · LHT · multi-canary · policy · F4 design · M-KILL-2 · M-ABORT-3 · full-adapter RV DESIGN_ONLY); F4 product ACK **UNSIGNED**; tip **`4158fcc`**  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075..0082** (canary · LHT · multi-canary · policy · F4 design · M-KILL-2 · M-ABORT-3 · full-adapter R0 DESIGN + **R1 compose**); F4 product ACK **UNSIGNED**; tip base **`f30c4bb`**  
 **Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · dual canary hygiene ACK · `REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md`  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
@@ -37,6 +37,7 @@
 | **15** | **M-KILL-2 ops kill→refuse budget** | **DONE** — ceiling **100 ms** process-local; drill PASS (`docs/ops/M_KILL_2_…`) | Invent network SLO as product |
 | **16** | **M-ABORT-3 conflict/missing judges** | **DONE** — E-CONFLICT fail-closed PASS (CP-0080) | Auto-majority execute |
 | **17** | **Full Mesh adapter live RV design** (DeepSeek NEXT-3) | **DONE (DESIGN_ONLY)** — **CP-0081** `MESH_FULL_ADAPTER_LIVE_RV_DESIGN.md`; multi-judge/SoT/Refuse/I5/Gate6/F4/streaming residuals named; **does NOT** flip LIVE / invent F4 / raise n_real_http | Codec beyond v0; permanent LIVE; claim full RV sealed |
+| **18** | **Full-adapter R1 SoT+Refuse+I5 compose** | **DONE** — **CP-0082** checklist + descriptors T-fa-r1-a..e + unit compose on LiveHttpTransport+canary; **does NOT** authorize R2–R5 / flip LIVE / invent F4 | R2 multi-judge; R3 more HTTP; permanent LIVE |
 
 ---
 
@@ -51,7 +52,7 @@ Before any flag flip:
 5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** ENABLE signed; CP-0075–0081 under fences; multi-canary + kill/abort drills **PASS**; F4 **DESIGN_SEALED**; full-adapter RV **DESIGN_ONLY**; **module LIVE_API_ENABLED=False**; 「listo」 **bajo fences**; remaining for product permanent: **operator F4 product ACK** · full-adapter R1–R4 · streaming (optional).
+**Intent today:** ENABLE signed; CP-0075–0082 under fences; multi-canary + kill/abort drills **PASS**; F4 **DESIGN_SEALED**; full-adapter **R1 DONE / R2 OPEN**; **module LIVE_API_ENABLED=False**; 「listo」 **bajo fences**; remaining for product permanent: **operator F4 product ACK** · full-adapter R2–R4 · streaming (optional).
 
 ---
 
@@ -67,10 +68,11 @@ Before any flag flip:
 - `docs/planning/IMPL_CP_0079_MULTI_CANARY_PACK.md` · `LIVE_API_PERMANENT_ENABLE_POLICY.md` · `GATE5_MULTI_CANARY_EVIDENCE.md` · `GATE6_MULTI_CANARY_MEASUREMENT.md`
 - `docs/planning/IMPL_CP_0080_F4_KILL_ABORT.md` · `F4_DESIGN_SEALED.md` · `docs/ops/M_KILL_2_OPS_KILL_REFUSE_BUDGET.md` · `EVIDENCE_CP_0080_KILL_ABORT_DRILLS.md`
 - `docs/planning/MESH_FULL_ADAPTER_LIVE_RV_DESIGN.md` · `DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md` · `council/NOTE_DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md`
+- `docs/planning/MESH_FULL_ADAPTER_R1_SOT_REFUSE_I5_COMPOSE_CHECKLIST.md` · `IMPL_CP_0082_FULL_ADAPTER_R1_COMPOSE.md` · `council/NOTE_CP_0082_FULL_ADAPTER_R1_COMPOSE.md`
 - `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
 - `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md` · `council/NOTE_DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — tip 4158fcc; ENABLE SIGNED; CP-0075–0081; listo bajo fences; full-adapter RV DESIGN_ONLY; F4 ACK unsigned; module LIVE_API_ENABLED=False; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — tip f30c4bb→CP-0082; ENABLE SIGNED; CP-0075–0082; listo bajo fences; R1 DONE / R2 OPEN; F4 ACK unsigned; module LIVE_API_ENABLED=False; NO_HELD unchanged.*

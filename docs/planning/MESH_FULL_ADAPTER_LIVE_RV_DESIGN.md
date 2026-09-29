@@ -1,6 +1,6 @@
 # Mesh full-adapter live RV — DESIGN ONLY (beyond Gemini free canary/measure)
 
-**Status:** **DESIGN_ONLY** — honest RV plan for **full Mesh live adapter** beyond the fenced Gemini free canary/measure path  
+**Status:** **DESIGN_ONLY parent** — honest RV plan; **R0+R1 DONE** (CP-0081/0082); **R2 OPEN** — still beyond fenced Gemini free canary/measure for full Mesh live RV seal  
 **Does NOT** authorize codec push beyond CP-0078 v0 · **does NOT** flip `LIVE_API_ENABLED` · **does NOT** invent F4 product ACK · **does NOT** unlock NO_HELD  
 **Cycle / Checkpoint:** 77 / **CP-0081** (DESIGN_ONLY)  
 **Date:** 2026-09-28 ~23:02 EDT (America/New_York)  
@@ -134,12 +134,12 @@ Full-adapter RV design may proceed **with module False**. Product permanent rema
 
 | Phase | Intent | Authorize now? |
 |-------|--------|----------------|
-| **R0** | This doc + CP-0081 DESIGN_ONLY seal | **YES** (this CP) |
-| **R1** | Full-adapter SoT + RefuseTransport + I5 compose checklist (docs/tests descriptors) | Needs future DESIGN/IMPL CP — **not** this |
-| **R2** | Multi-judge live/mock-bound RV under matrix | Needs future measurement CP + operator gates |
-| **R3** | Gate6 live-measurement seal policy (raise n_real_http if required) | Needs future measurement CP — leave LIVE False |
-| **R4** | Streaming DEFER seal **or** streaming RV | Optional; OUT of F4 unless named |
-| **R5** | F4 product ACK (operator) → only then discuss permanent module True | **Operator only** — no invent |
+| **R0** | This doc + CP-0081 DESIGN_ONLY seal | **DONE** (CP-0081) |
+| **R1** | Full-adapter SoT + RefuseTransport + I5 compose checklist (docs/tests descriptors) | **DONE** — **CP-0082** thin IMPL (checklist + descriptors + unit compose); LIVE stays False |
+| **R2** | Multi-judge live/mock-bound RV under matrix | **OPEN** — needs future measurement CP + operator gates — **not** authorized by CP-0082 |
+| **R3** | Gate6 live-measurement seal policy (raise n_real_http if required) | **OPEN** — needs future measurement CP — leave LIVE False |
+| **R4** | Streaming DEFER seal **or** streaming RV | **OPEN** (optional); OUT of F4 unless named |
+| **R5** | F4 product ACK (operator) → only then discuss permanent module True | **OPEN** — **Operator only** — no invent |
 
 **Hard:** No phase implies push/tags/secrets/NO_HELD/D3/Vertex.
 
@@ -165,18 +165,19 @@ This design **must not** be cited as authority for:
 |-----------|-------|
 | **F4 product ACK signed** (if permanent LIVE wanted) | Operator |
 | Prefer leave module **False** | Ops default |
-| Full-adapter RV phases R1–R4 | Future CPs under fences |
+| Full-adapter RV phases R2–R4 | Future CPs under fences (R1 DONE CP-0082) |
 | Streaming residual (defer or RV) | Future / optional |
 | More real HTTP **only if** Gate6 seal policy raised | Operator + future measurement CP |
 | NO_HELD / D3 / Vertex / keys-in-git | Stay out |
 
-**Today:** Track A listo bajo fences **YES** · Track B OPEN (designed here) · Track C **NO**.
+**Today:** Track A listo bajo fences **YES** · Track B OPEN (R0 designed; **R1 compose DONE** CP-0082; R2+ OPEN) · Track C **NO**.
 
 ---
 
 ## 7. Related
 
-- `DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md` · `council/NOTE_DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md`  
+- `DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md` · `council/NOTE_DESIGN_CP_0081_MESH_FULL_ADAPTER_LIVE_RV.md`
+- `MESH_FULL_ADAPTER_R1_SOT_REFUSE_I5_COMPOSE_CHECKLIST.md` · `IMPL_CP_0082_FULL_ADAPTER_R1_COMPOSE.md` · `council/NOTE_CP_0082_FULL_ADAPTER_R1_COMPOSE.md`  
 - `IMPL_CP_0075` … `IMPL_CP_0080` · `DESIGN_CP_0076` · `DESIGN_CP_0077`  
 - `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `GATE6_METRIC_COMPLETION_DESIGN.md`  
 - `F4_DESIGN_SEALED.md` · `F4_PRODUCT_ENABLE_ACK_DRAFT.md` (**UNSIGNED**)  
@@ -185,4 +186,4 @@ This design **must not** be cited as authority for:
 
 ---
 
-*End MESH_FULL_ADAPTER_LIVE_RV_DESIGN — DESIGN_ONLY; LIVE_API_ENABLED=False; F4 ACK unsigned; NO_HELD unchanged.*
+*End MESH_FULL_ADAPTER_LIVE_RV_DESIGN — DESIGN_ONLY parent; R1 DONE (CP-0082); R2 OPEN; LIVE_API_ENABLED=False; F4 ACK unsigned; NO_HELD unchanged.*
