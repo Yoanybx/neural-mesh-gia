@@ -2,9 +2,9 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 ~22:40 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075..0079**; multi-canary n=6; permanent enable policy (default-off); module LIVE_API_ENABLED=False  
+**Date:** 2026-09-28 ~22:40 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075..0080**; multi-canary n=6; permanent enable policy (default-off); module LIVE_API_ENABLED=False  
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md`  
-**Tip context:** residual design atop `ca85688` (CP-0075) / ENABLE signed / dual design-seal hygiene `a816c34` / Gate6 DESIGN_SEALED / Gates 2–4 / peer `30fe593` / dry-run `1e502c6`  
+**Tip context:** residual design atop `9ac4b12` (CP-0080) / ENABLE signed / dual design-seal hygiene `a816c34` / Gate6 DESIGN_SEALED / Gates 2–4 / peer `30fe593` / dry-run `1e502c6`  
 **Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075 canary **done**; **CP-0076 DESIGN_ONLY**; **CP-0077** metric completion DESIGN_ONLY; module LIVE_API=False / RefuseTransport  
 **Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS → CP-0076. **DeepSeek CP-0076 hygiene ACK:** PASS; NEXT #1 → **CP-0077** (does **not** measure live / authorize codec / permanent enable).
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
@@ -45,7 +45,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Item | Rule | Today |
 |------|------|-------|
 | Safety-case maturation | D1 artifacts cite D4-A..K; fail-closed RefuseTransport; containment + rollback **verification** (RV-*) | **Design sealed** (CP-0071) — evidence exists as *design*, not as live proof |
-| Live amendment | Any live path needs safety-case **amendment** for real transport, keys, blast radius, compromise response | **ENABLE_READY** — `GATE2_ENABLE_READY.md` (+ prior DESIGN_SEALED); live RV under Mesh transport still **OPEN** (canary) |
+| Live amendment | Any live path needs safety-case **amendment** for real transport, keys, blast radius, compromise response | **ENABLE_READY** — `GATE2_ENABLE_READY.md` (+ prior DESIGN_SEALED); live RV under Mesh transport still **OPEN** (post-canary) |
 | Kill path | I5 kill → RefuseTransport + continuity ABORT remains default until amended | Binding (amended wording in Gate2 doc §4; **not** live-armed) |
 
 **Exit (design/discuss):** Live-safety amendment reviewed; mock RV drills still green; no silent codec; Gate1 DISCUSS_ONLY signed.  
@@ -70,7 +70,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | secret_handle only | Versioned handles; I5 sees handle ids / digests, never raw secrets | **DESIGN_SEALED** (discuss/eval) — `GATE4_LIVE_DATA_POLICY.md` + `GATE4_DESIGN_SEALED.md`; handle `mesh://secrets/judge/gemini-free@v1`; path `/home/box/.config/neural-mesh/gemini.env` oob; CP-0058 / D1 §7.2 |
 | Data classes | What may leave the box (prompts, digests, redacted envelopes) vs forbidden (operational Mesh SoT, plaintext secrets, unverified continuity) | **DESIGN_SEALED** (allowed vs forbidden classes); Mesh live egress still **N** until enable chain |
 | Provider bounds | Free-tier Gemini (if ever) stays evaluation evidence; Vertex paid needs separate approval | Google fences; dry-run flag-gated (`30fe593`/`1e502c6`); Mesh live = RefuseTransport |
-| Seal dependency | Serial gates: Gate 4 enable-ready when handle + canary data schedule ACK’d under ENABLE | **ENABLE_READY** — `GATE4_ENABLE_READY.md`; oob handle held; Gate5 canary still OPEN |
+| Seal dependency | Serial gates: Gate 4 enable-ready when handle + canary data schedule ACK’d under ENABLE | **ENABLE_READY** — `GATE4_ENABLE_READY.md`; oob handle held; Gate5 canary **EXECUTED** (CP-0075) |
 
 **Exit (design/discuss):** Written data-handling schedule + secret_handle lifecycle for DISCUSS_ONLY/eval; eval handle oob; still no keys committed.  
 **Today:** Gate4 **ENABLE_READY**; secrets oob only; Gate5 canary done under CP-0075; LiveHttpTransport v0 under CP-0078 (default-off).

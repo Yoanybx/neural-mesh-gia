@@ -1,7 +1,7 @@
 # Gate 2 — ENABLE_READY (docs seal under ENABLE_UNDER_FENCES)
 
 **Status:** **ENABLE_READY** (docs) for Gemini **free-tier canary path under fences**  
-**Not:** live RV already measured · **not** Gate5 canary executed · **not** `LIVE_API_ENABLED=true` · **not** Mesh live proven · **not** NO_HELD unlock  
+**Non-goals:** full live RV is not yet measured · **not** `LIVE_API_ENABLED=true` · **not** Mesh live proven · **not** NO_HELD unlock  
 **Date sealed (enable-ready):** 2026-09-28 ~19:41 EDT (America/New_York)  
 **Author (docs):** Grok Bot `<grok-bot@local>`  
 **Operator ENABLE ACK:** `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` — **「Aprobado」** 2026-09-28 ~19:41 ET  
@@ -17,10 +17,10 @@
 | DESIGN_SEALED (discuss/eval) | **YES** (prior) |
 | Operator ENABLE_UNDER_FENCES | **SIGNED** |
 | Gate2 **ENABLE_READY** (this artifact) | **YES** — amendment ACK’d as enable-ready for canary path under fences |
-| Live RV-1..RV-7 under Mesh live transport | **OPEN** — Gate5 canary / post-canary measurement; dry-run ≠ live RV |
+| Live RV-1..RV-7 under Mesh live transport | **OPEN** — post-canary / rollback measurement; CP-0075 canary evidence ≠ full live RV |
 | `LIVE_API_ENABLED` flip | **DONE (runtime window)** under CP-0075 / Gate5 canary; module constant **False** final — `GATE5_CANARY_EVIDENCE.md` |
 
-**Claim hygiene:** ENABLE_READY ≠ canary done ≠ live proof complete ≠ flag flipped.
+**Claim hygiene:** ENABLE_READY ≠ full live proof complete ≠ flag flipped; CP-0075 is executed advisory evidence, not Mesh ACCEPT/SoT.
 
 ---
 
@@ -35,18 +35,18 @@
 | secret_handle hygiene | `mesh://secrets/judge/gemini-free@v1` · oob `/home/box/.config/neural-mesh/gemini.env` | Yes (oob; no keys in git) |
 | Prior dry-run evidence | `1e502c6` / `30fe593` · model `gemini-flash-latest` · HTTP 200 · `MESH_DRY_RUN_OK` | Eval prior only — **≠** canary / live RV |
 | Mock RV-1..RV-7 | Still mock-green (D1) | Yes |
-| I5 kill path (design) | Kill → RefuseTransport + continuity ABORT + emergency `enabled=false` | Armed in design for canary |
+| I5 kill path (design) | Kill → RefuseTransport + continuity ABORT + emergency `enabled=false` | Used for CP-0075; required for any re-walk |
 
 ---
 
 ## 2. Still OPEN after this seal
 
-| Gap | Blocked until |
-|-----|---------------|
-| Gate5 canary execution + ledger | Gate5 steps (1)–(7) under kill-armed I5 |
-| Live RV under real Mesh transport | Post-canary / rollback cycle |
-| Flag flip | Gate5 step (6) **executed** under CP-0075 (`may_enable`; NT-10 cleared for canary scope) |
-| Gate6 live measurement | After canary evidence |
+| Gap | Status / remaining condition |
+|-----|-----------------------------|
+| Gate5 canary execution + ledger | **DONE — CP-0075**; any re-walk remains under kill-armed I5 |
+| Live RV under real Mesh transport | **OPEN** — post-canary / rollback cycle |
+| Flag flip | Gate5 step (6) **executed** under CP-0075 (`may_enable`; NT-10 cleared for canary scope); final flag remains **False** |
+| Gate6 live measurement | **OPEN** — subsequent evidence / measurement cycle |
 
 ---
 
@@ -66,9 +66,9 @@
 
 | Exit | Met? |
 |------|------|
-| Gate2 **enable-ready** under ENABLE ACK + amendment reviewed + mock RV green + live proof *path* = Gate5 canary | **YES — ENABLE_READY (docs)** |
+| Gate2 **enable-ready** under ENABLE ACK + amendment reviewed + mock RV green + CP-0075 canary evidence | **YES — ENABLE_READY (docs)** |
 | Gate2 live proof complete / RV under Mesh live | **NO — OPEN** |
 
 ---
 
-*End GATE2_ENABLE_READY — docs ENABLE-ready; canary/flip still Gate5; no invented live RV.*
+*End GATE2_ENABLE_READY — docs ENABLE-ready; CP-0075 canary executed; no invented full live RV or permanent flag flip.*
