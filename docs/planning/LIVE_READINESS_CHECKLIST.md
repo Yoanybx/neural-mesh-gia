@@ -2,11 +2,11 @@
 
 **Status:** DESIGN ONLY — ordered gates for any future **live+API discussion**.  
 **Does not** enable live · **does not** mint keys · **does not** call Gemini/providers · **does not** start D3 · **does not** push/tag.  
-**Date:** 2026-09-28 ~19:54 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075** canary done; dual canary hygiene ACK; **CP-0076 DESIGN_ONLY** LiveHttpTransport residual sealed; module LIVE_API_ENABLED=False  
+**Date:** 2026-09-28 ~22:29 ET — Gate1 **SIGNED ENABLE_UNDER_FENCES**; Gates 2–4 **ENABLE_READY**; **CP-0075** canary done; **CP-0076 DESIGN_ONLY** residual sealed; DeepSeek CP-0076 hygiene ACK; **CP-0077 DESIGN_ONLY** Gate6 metric completion (n≥N); module LIVE_API_ENABLED=False  
 **Operator decision:** Hold A **LEFT**; Gate1 upgraded DISCUSS_ONLY → **ENABLE_UNDER_FENCES**; `LIVE_API_ENABLED` still **False**; see leave-Hold note + `GEMINI_FREE_NEXT_STEPS.md`  
 **Tip context:** residual design atop `ca85688` (CP-0075) / ENABLE signed / dual design-seal hygiene `a816c34` / Gate6 DESIGN_SEALED / Gates 2–4 / peer `30fe593` / dry-run `1e502c6`  
-**Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075 canary **done**; dual Option 1 ACK; **CP-0076 DESIGN_ONLY**; module LIVE_API=False / RefuseTransport  
-**Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS; ranked NEXT Option 1 executed as CP-0076 DESIGN_ONLY (does **not** authorize codec impl).
+**Wall:** `LIVE_100_OPERATOR_WALL.md` — ENABLE **SIGNED**; CP-0075 canary **done**; **CP-0076 DESIGN_ONLY**; **CP-0077** metric completion DESIGN_ONLY; module LIVE_API=False / RefuseTransport  
+**Dual council canary hygiene ACK:** DeepSeek + ChatGPT PASS → CP-0076. **DeepSeek CP-0076 hygiene ACK:** PASS; NEXT #1 → **CP-0077** (does **not** measure live / authorize codec / permanent enable).
 **Authority base:** `council/COUNCIL_AGREEMENT_D4.md` (F3/F4) · `docs/planning/D1_L_JUDGE_SAFETY_CASE_MATURATION.md` · `docs/planning/M1_NO_CONSENSUS_N2_SCOPE.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`  
 **Council note:** `council/NOTE_LIVE_READINESS.md` · Gate1 draft: `council/NOTE_GATE1_ACK_DRAFT.md` / `docs/planning/GATE1_LIVE_OPERATOR_ACK_DRAFT.md` · ENABLE draft: `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**) · Gate2: `council/NOTE_GATE2_DESIGN_SEALED.md` / `docs/planning/GATE2_DESIGN_SEALED.md` · Gate3: `council/NOTE_GATE3_DESIGN_SEALED.md` / `docs/planning/GATE3_DESIGN_SEALED.md` · Gate4: `council/NOTE_GATE4_DESIGN_SEALED.md` / `docs/planning/GATE4_DESIGN_SEALED.md` / `GATE4_LIVE_DATA_POLICY.md` · Gate5: `council/NOTE_GATE5_FLIP_RUNBOOK.md` / `council/NOTE_GATE5_DESIGN_SEALED.md` / `docs/planning/GATE5_DESIGN_SEALED.md` / `GATE5_LIVE_FLAG_FLIP_RUNBOOK.md` · Gate6: `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` / `council/NOTE_GATE6_DESIGN_SEALED.md` / `docs/planning/GATE6_DESIGN_SEALED.md` / `GATE6_LIVE_ACCEPTANCE_METRICS.md`
 
@@ -97,7 +97,7 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | Evidence | Digests + policy version + audit completeness; no secrets in explain | Binding (M-LEDGER-* / M-SEC-*); live measurement **OPEN** |
 
 **Exit (design/discuss):** Named metric bundle DESIGN_SEALED for DISCUSS_ONLY; pytest remains necessary but insufficient alone; live measurement marked OPEN.  
-**Today:** Gate6 **DESIGN_SEALED** (metrics); canary sample **MEASURED** (n=1 ≠ SLO; dual ACK); full LiveHttpTransport residual = **CP-0076 DESIGN_ONLY**. Optional next = Gate6 metric completion design (Option 2) — not required for posture coherence.
+**Today:** Gate6 **DESIGN_SEALED** (metrics); canary sample **MEASURED** (n=1 ≠ SLO); metric **completion design** = **CP-0077 DESIGN_ONLY** (M-KILL live / M-ABORT / M-LEDGER + **n≥N_min=5**; **n=1 cannot seal**). Live measurement seal **OPEN**. Full LiveHttpTransport = **CP-0076 DESIGN_ONLY** (impl unauthorized).
 
 ### Gate 7 — Optional D3 (perf A/B)
 
@@ -133,11 +133,11 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 | 3 | Authority Matrix in use | **Yes** (enable) | **ENABLE_READY** (`GATE3_ENABLE_READY.md`); runtime not live-enabled |
 | 4 | Keys + data policy | **Yes** | **ENABLE_READY** (`GATE4_ENABLE_READY.md`); handle oob; secrets not in git |
 | 5 | RefuseTransport → live flag | **Yes** | Step (5) **PASS**; step (6) **EXECUTED** (CP-0075 canary HTTP 200); module `LIVE_API_ENABLED=False` final |
-| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED** metrics; sample **MEASURED** (n=1 ≠ SLO); permanent enable **not** claimed |
+| 6 | Acceptance metrics / D4-K | **Yes** | **DESIGN_SEALED** metrics; sample **MEASURED** (n=1 ≠ SLO); **CP-0077** completion design (n≥N); live seal **OPEN**; permanent enable **not** claimed |
 | 7 | Optional D3 | No (orthogonal) | NOT ACKed / flag OFF |
 | 8 | M1 N=2 vs local judge API | Clarifies non-block for **local/mock** | Local/mock OK; live still blocked by 1–6 |
 
-**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075** canary **EXECUTED**; dual hygiene ACK; **CP-0076 DESIGN_ONLY** LiveHttpTransport residual sealed (does **not** authorize impl). Module **`LIVE_API_ENABLED=False`** / RefuseTransport-safe. Live+API product **100%** still not a permanent enable. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
+**Bottom line:** Gate1 **SIGNED ENABLE_UNDER_FENCES**. Gates **2–4 ENABLE_READY**. **CP-0075** canary **EXECUTED**; **CP-0076 DESIGN_ONLY** residual (no impl auth); **CP-0077 DESIGN_ONLY** metric completion (**n=1 cannot seal**). Module **`LIVE_API_ENABLED=False`**. Product-ready live still needs: **codec impl auth**, **multi-canary n≥N**, **permanent enable policy/runbook**. NO_HELD unchanged. See `GEMINI_FREE_NEXT_STEPS.md`.
 
 ---
 
@@ -164,7 +164,8 @@ Gates are **serial**. A later gate may be drafted in parallel as design text, bu
 - `docs/planning/GATE6_LIVE_ACCEPTANCE_METRICS.md` · `GATE6_DESIGN_SEALED.md` · `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_DESIGN_SEALED.md`
 - `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · `GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (historical)
 - `docs/planning/LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `DESIGN_CP_0076_LIVE_HTTP_TRANSPORT_RESIDUAL.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
-- `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · dual REPLY_*_GATE5_CANARY_HYGIENE_ACK.md
+- `docs/planning/GATE6_METRIC_COMPLETION_DESIGN.md` · `DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md` · `council/NOTE_DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
+- `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md` · `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · dual REPLY_*_GATE5_CANARY_HYGIENE_ACK.md
   - `docs/planning/GATE2_ENABLE_READY.md` · `GATE3_ENABLE_READY.md` · `GATE4_ENABLE_READY.md` · `GATE5_HEALTH_CHECK_EVIDENCE.md`
 - `council/COUNCIL_AGREEMENT_D4.md` · `council/D4_CHATGPT_FINDINGS.md`
 - `council/NOTE_GOOGLE_AI_TOOLS_FENCED.md` · `docs/planning/GOOGLE_L_JUDGE_PEER_SPIKE.md`

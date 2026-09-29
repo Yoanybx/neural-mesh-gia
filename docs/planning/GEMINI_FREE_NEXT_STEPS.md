@@ -3,8 +3,8 @@
 **Status:** Ordered plan under Gate1 **SIGNED ENABLE_UNDER_FENCES** (「Aprobado」 2026-09-28 ~19:41 ET)  
 **Does not** mint keys into repo · **does not** start D3 · **does not** push/tag · **does not** unlock NO_HELD  
 **Scope:** Gemini **free-tier canary only**; Vertex paid **OUT**  
-**Posture:** **`LIVE_API_ENABLED=False`** (module final after canary); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075 authorized**; **CP-0076 DESIGN_ONLY** LiveHttpTransport residual sealed (dual council Option 1)  
-**Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · prior DISCUSS_ONLY + leave-Hold notes · dual canary hygiene ACK  
+**Posture:** **`LIVE_API_ENABLED=False`** (module final after canary); RefuseTransport default ON; Gates 2–4 ENABLE_READY; **CP-0075 authorized**; **CP-0076 DESIGN_ONLY** residual sealed; DeepSeek CP-0076 hygiene ACK; **CP-0077 DESIGN_ONLY** Gate6 metric completion (n≥N; M-KILL/M-ABORT/M-LEDGER)  
+**Cite:** `GATE1_ENABLE_UNDER_FENCES_ACK_SIGNED.md` · dual canary hygiene ACK · `REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md`  
 **Dry-run evidence:** `council/NOTE_GEMINI_DRY_RUN.md` · `docs/planning/GEMINI_DRY_RUN_EVIDENCE.md` (2026-09-28 18:09 ET) · peer wire `council/NOTE_GEMINI_PEER_DRY_RUN_WIRE.md`
 
 ---
@@ -29,7 +29,10 @@
 | **7b** | **Gate5 step (6) canary / runtime LIVE flip** | **DONE** — one canary HTTP 200 / `MESH_CANARY_OK`; module `LIVE_API_ENABLED=False` final; RefuseTransport restored — `GATE5_CANARY_EVIDENCE.md` | Treat dry-run as canary; leave half-enabled |
 | **8** | **Gate6 live measurement** on canary evidence | **DONE (sample n=1)** — `GATE6_CANARY_MEASUREMENT.md`; dual ACK: advisory≠SoT · n=1≠SLO | Claim production SLO / 100% product enable |
 | **9** | **Full LiveHttpTransport residual design** (dual Option 1) | **DONE (DESIGN_ONLY)** — **CP-0076** `LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · schema `live_http_transport_v0.md` · neg descriptors T-lht-*; **does NOT authorize impl**; LIVE_API stays False | Codec impl; LIVE flip; claim CP-0075 = full adapter |
-| **10** | **Optional Gate6 metric completion design** (DeepSeek Option 2) | **OPEN / not chosen this cycle** | Premature Gate6 seal from n=1 |
+| **10** | **Gate6 metric completion design** (DeepSeek Option 2 / CP-0076 NEXT #1) | **DONE (DESIGN_ONLY)** — **CP-0077** `GATE6_METRIC_COMPLETION_DESIGN.md`; **n≥N_min=5**; M-KILL live / M-ABORT / M-LEDGER designed; **n=1 cannot seal** | Premature Gate6 live seal; multi-canary execute; permanent LIVE flip |
+| **11** | **Multi-canary measurement pack** (n≥N + edges) | **OPEN** — needs operator/runbook; not authorized by CP-0077 | Claim seal from n=1; skip E-KILL/E-ABORT |
+| **12** | **Codec impl CP** (after CP-0076 design) | **OPEN** — CP-0076 does **NOT** authorize impl | Ship LiveHttpTransport under design CP |
+| **13** | **Permanent LIVE_API enable policy / runbook** | **OPEN** — do **not** permanently flip without runbook | Leave module LIVE true after canary |
 
 ---
 
@@ -44,7 +47,7 @@ Before any flag flip:
 5. Gate6 metrics DESIGN_SEALED; sample measurement **DONE** on canary  
 6. ENABLE_UNDER_FENCES — **SIGNED**  
 
-**Intent today:** ENABLE signed; CP-0075 canary done; dual hygiene ACK; **CP-0076 DESIGN_ONLY** residual sealed; **module LIVE_API_ENABLED=False** / RefuseTransport-safe final; codec **not** authorized.
+**Intent today:** ENABLE signed; CP-0075 canary done; dual hygiene ACK; **CP-0076 DESIGN_ONLY** residual sealed; DeepSeek CP-0076 hygiene ACK (NEXT #1 executed as **CP-0077**); metric completion **designed** (n=1 cannot seal); **module LIVE_API_ENABLED=False**; codec **not** authorized; multi-canary + permanent enable policy still **OPEN**.
 
 ---
 
@@ -56,9 +59,11 @@ Before any flag flip:
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/LIVE_100_OPERATOR_WALL.md`
 - `docs/planning/LIVE_HTTP_TRANSPORT_RESIDUAL_DESIGN.md` · `DESIGN_CP_0076_LIVE_HTTP_TRANSPORT_RESIDUAL.md`
+- `docs/planning/GATE6_METRIC_COMPLETION_DESIGN.md` · `DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `council/NOTE_DEEPSEEK_ACK_GATE5_CANARY.md` · `council/NOTE_DESIGN_CP_0076_LIVE_HTTP_TRANSPORT.md`
+- `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md` · `council/NOTE_DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md`
 - `council/HOLD_POSTURE_AND_REOPEN_CONDITIONS.md`
 
 ---
 
-*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 canary done; dual ACK; CP-0076 DESIGN_ONLY residual sealed; module LIVE_API_ENABLED=False; NO_HELD unchanged.*
+*End GEMINI_FREE_NEXT_STEPS — ENABLE SIGNED; CP-0075 canary done; CP-0076 DESIGN_ONLY; CP-0077 metric completion DESIGN_ONLY; module LIVE_API_ENABLED=False; n=1≠seal; NO_HELD unchanged.*

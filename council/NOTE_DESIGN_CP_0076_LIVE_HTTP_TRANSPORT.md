@@ -25,4 +25,4 @@ Covers retries, backoff, idempotency, streaming vs unary, error taxonomy, timeou
 - No secrets · no push/tags · **NO_HELD unchanged**  
 - advisory ≠ SoT · n=1 ≠ SLO · design ≠ live seal
 
-**Next (not this CP):** optional Gate6 metric completion design (DeepSeek Option 2) or STOP; any codec ship needs a **new** authorized impl CP.
+**Next after this CP:** DeepSeek CP-0076 hygiene ACK ranked NEXT #1 → executed as **CP-0077** `GATE6_METRIC_COMPLETION_DESIGN.md` (DESIGN_ONLY). Cite `council/REPLY_DEEPSEEK_CP0076_DESIGN_HYGIENE_ACK.md`. Any codec ship still needs a **new** authorized impl CP; STOP remains coherent for execute path.

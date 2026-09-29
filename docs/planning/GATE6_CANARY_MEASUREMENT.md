@@ -27,7 +27,8 @@
 - n=1 free-tier canary ≠ production SLO / multi-provider proof  
 - Full LiveHttpTransport codec still **not** shipped  
 - Module `LIVE_API_ENABLED=False` retained  
+- **n=1 cannot seal** Gate6 live-measurement — see **CP-0077** `GATE6_METRIC_COMPLETION_DESIGN.md` (N_min=5 + edges; M-KILL live / M-ABORT / M-LEDGER still design-only here)
 
 ---
 
-*End GATE6_CANARY_MEASUREMENT — sample metrics on one canary; RefuseTransport-safe final.*
+*End GATE6_CANARY_MEASUREMENT — sample metrics on one canary; n=1≠seal; RefuseTransport-safe final.*

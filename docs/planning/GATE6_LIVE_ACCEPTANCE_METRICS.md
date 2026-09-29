@@ -153,6 +153,7 @@ All must remain true before any live *discussion* / ACK cycle uses this bundle (
 
 - `docs/planning/LIVE_READINESS_CHECKLIST.md`
 - `docs/planning/GATE6_DESIGN_SEALED.md` · `docs/planning/LIVE_100_OPERATOR_WALL.md`
+- `docs/planning/GATE6_METRIC_COMPLETION_DESIGN.md` · `DESIGN_CP_0077_GATE6_METRIC_COMPLETION.md` (remaining M-KILL live / M-ABORT / M-LEDGER + n≥N; **n=1 cannot seal**)
 - `docs/planning/GATE1_ENABLE_UNDER_FENCES_ACK_DRAFT.md` (**UNSIGNED**)
 - `docs/planning/GEMINI_FREE_NEXT_STEPS.md` · `docs/planning/HOLD_MOCK_NEXT.md`
 - `council/NOTE_GATE6_ACCEPTANCE_METRICS.md` · `council/NOTE_GATE6_DESIGN_SEALED.md`
