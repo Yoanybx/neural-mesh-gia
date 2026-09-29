@@ -38,6 +38,23 @@ L_nervous  →  L_judge  →  L_GIA
 - **Terminar H8 no crea un cerebro suprahumano solo.** H8 cierra el endurecimiento nervioso @N2; no es AGI ni L_GIA.
 - Completar L_nervous es **necesario pero no suficiente** para el norte aspiracional.
 
+## Puntero de producto: Mesh más allá de Cursor (DESIGN_ONLY)
+
+La barra aspiracional de producto es **mejor que Cursor**, no “tipo Cursor” ni un
+clon de Cursor: Mesh aporta orquestación, auditoría/ledger y refusal alrededor
+de una UX de agent-shell. El track por etapas está en
+`docs/planning/BLUEPRINT_AGENT_SHELL_BEYOND_CURSOR_TRACK.md`.
+
+- **Cerca:** bus MCP-lite + jueces L_judge gratis (Gemini/DeepSeek) bajo la
+  autorización F4 LIVE existente; advisory, no Mesh SoT.
+- **Medio:** superficie agent-shell con herramientas orquestadas, ledger visible
+  y refuse/abort explícito.
+- **Lejos:** GIA / self-building agent; **NO_HELD** hasta consejo + evidence
+  bundle y gates existentes.
+
+Esto actualiza la intención de producto, no el código ni el estado LIVE: no abre
+GIA, self-mod auto-loop, nuevas credenciales, proveedores, permisos o NO_HELD.
+
 ---
 
 ## Aparcamientos / PARKED
