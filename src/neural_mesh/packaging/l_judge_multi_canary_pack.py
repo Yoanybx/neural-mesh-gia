@@ -30,6 +30,7 @@ from neural_mesh.packaging.l_judge_gemini_free_canary_impl import (
     evaluate_canary_enablement,
     live_api_canary_session,
     runtime_live_api_enabled,
+    session_live_api_enabled,
     set_runtime_live_api_enabled,
 )
 from neural_mesh.packaging.l_judge_live_adapter_safety import (
@@ -593,7 +594,7 @@ def _run_anomaly(*, index: int) -> MultiCanaryAttempt:
         res.may_enable is False
         and "impl_cp_not_authorized" in res.reasons
         and refused.get("verdict") == "ABORT"
-        and runtime_live_api_enabled() is False
+        and runtime_live_api_enabled() is True
     )
     att.latency_ms = 0
     att.network = False
@@ -747,7 +748,7 @@ def _run_conflict(*, index: int) -> MultiCanaryAttempt:
         and missing_ok
         and refused.get("verdict") == "ABORT"
         and refused.get("mesh_accept") is not True
-        and runtime_live_api_enabled() is False
+        and runtime_live_api_enabled() is True
     )
     att.network = False
     att.live_during = False
@@ -887,10 +888,9 @@ def run_multi_canary_pack(
         blocked.append("N_abort < 1")
     if pack.n_ledger_kill < 1:
         blocked.append("N_ledger_kill < 1")
-    if any(a.live_final for a in pack.attempts) or runtime_live_api_enabled():
-        blocked.append("runtime LIVE not restored False")
-    if LHT_LIVE_API_ENABLED or LIVE_API_ENABLED:
-        blocked.append("module LIVE_API_ENABLED unexpectedly True")
+    # F4 product LIVE remains enabled; only the session window must be cleared.
+    if session_live_api_enabled():
+        blocked.append("session LIVE not restored False")
     # Happy real path preferred; if quota failed, document
     happy = [a for a in pack.attempts if a.edge_id == "E-HAPPY"]
     for h in happy:
@@ -924,8 +924,8 @@ def run_multi_canary_pack(
     pack.binding_final = "RefuseTransport"
     pack.finished_at_epoch = time.time()
     pack.notes.append(
-        "final posture: module LIVE_API_ENABLED=False; runtime False; RefuseTransport; "
-        "permanent enable requires LIVE_API_PERMANENT_ENABLE_POLICY + F4 product ACK (F4 design sealed; ACK unsigned — not this pack)"
+        "final posture: product LIVE_API_ENABLED=True; session LIVE cleared; RefuseTransport/I5 gate; "
+        "NO_HELD remains locked; F4 product path is signed (no streaming/Vertex unlock)"
     )
     set_runtime_live_api_enabled(False)
     return pack

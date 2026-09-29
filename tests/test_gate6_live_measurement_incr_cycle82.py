@@ -1,4 +1,4 @@
-"""CP-0086 Gate6 live-measurement incremental + seal attempt (LIVE default False)."""
+"""CP-0086 Gate6 live-measurement incremental + seal attempt (F4 product LIVE)."""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ SCHEMA = REPO / "docs" / "schema" / "judge" / "gate6_live_measurement_incr_v0.md
 EVIDENCE = REPO / "docs" / "planning" / "EVIDENCE_CP_0086_GATE6_LIVE_MEASUREMENT_INCR.md"
 
 
-def test_module_live_false_constants():
+def test_f4_product_constants_and_cleared_session():
     assert LIVE_API_ENABLED is True
     assert CANARY_LIVE is True
     assert LHT_LIVE is True
@@ -140,7 +140,7 @@ def test_t_g6_incr_b_incremental_mock():
     res = run_incremental_happy_if_allowed(allow_real_http=False)
     assert res.attempted is True
     assert res.real_http is False
-    assert res.live_final is False
+    assert res.live_final is True  # F4 product/module state; RefuseTransport still binds
     assert res.binding_final == "RefuseTransport"
     assert_module_live_false()
 
@@ -173,7 +173,7 @@ def test_policy_rows_and_docs_exist():
 @pytest.mark.skip(reason="opt-in real HTTP; run manually with gates + oob key")
 def test_t_g6_incr_b_real_http_opt_in_if_gates():
     res = run_incremental_happy_if_allowed(allow_real_http=True)
-    assert res.live_final is False
+    assert res.live_final is True  # F4 product/module state; RefuseTransport still binds
     assert_module_live_false()
     if res.real_http:
         assert res.http_status == 200

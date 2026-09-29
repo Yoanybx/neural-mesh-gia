@@ -155,7 +155,7 @@ class CorrelationReport:
     mesh_accept: bool = False
     advisory_only: bool = True
     m1_status: str = M1_STATUS
-    live_api_enabled: bool = False
+    live_api_enabled: bool = LIVE_API_ENABLED
     refuse_transport_default: bool = True
     attributions: list[PeerAttribution] = field(default_factory=list)
     abort_code: str | None = None
@@ -225,7 +225,7 @@ class MockGeminiPeerTransport:
 def _base_abort_provenance(**extra: Any) -> dict[str, Any]:
     """Structured abort / dual-advisory provenance (mock; live=DISABLED)."""
     base: dict[str, Any] = {
-        "live_api_enabled": False,
+        "live_api_enabled": LIVE_API_ENABLED,
         "refuse_transport_default": True,
         "binding": "RefuseTransport",
         "mesh_accept": False,
@@ -556,7 +556,7 @@ class GeminiFreeDryRunTransport:
                 "peer_id": self.peer_id,
                 "transport": "dry_run_refused",
                 "secret_handle": self.secret_handle,
-                "live_api_enabled": False,
+                "live_api_enabled": LIVE_API_ENABLED,
                 "note": "explicit GEMINI_DRY_RUN / --gemini-dry-run required; key file alone is not enough",
             }
 
@@ -576,7 +576,7 @@ class GeminiFreeDryRunTransport:
                 "peer_id": self.peer_id,
                 "transport": "dry_run",
                 "secret_handle": self.secret_handle,
-                "live_api_enabled": False,
+                "live_api_enabled": LIVE_API_ENABLED,
             }
 
         try:
@@ -597,7 +597,7 @@ class GeminiFreeDryRunTransport:
                 "peer_id": self.peer_id,
                 "transport": "dry_run",
                 "secret_handle": self.secret_handle,
-                "live_api_enabled": False,
+                "live_api_enabled": LIVE_API_ENABLED,
                 "error_class": "auth",
                 "error_detail": type(exc).__name__,
             }
@@ -653,7 +653,7 @@ class GeminiFreeDryRunTransport:
                 "peer_id": self.peer_id,
                 "transport": "dry_run",
                 "secret_handle": self.secret_handle,
-                "live_api_enabled": False,
+                "live_api_enabled": LIVE_API_ENABLED,
                 "error_class": error_class,
                 "error_detail": _redact(str(exc), api_key)[:200],
                 "error_body_redacted": err_body,
@@ -675,7 +675,7 @@ class GeminiFreeDryRunTransport:
                 "peer_id": self.peer_id,
                 "transport": "dry_run",
                 "secret_handle": self.secret_handle,
-                "live_api_enabled": False,
+                "live_api_enabled": LIVE_API_ENABLED,
                 "error_class": "network",
                 "error_detail": type(exc).__name__,
             }
@@ -702,7 +702,7 @@ class GeminiFreeDryRunTransport:
                 "peer_id": self.peer_id,
                 "transport": "dry_run",
                 "secret_handle": self.secret_handle,
-                "live_api_enabled": False,
+                "live_api_enabled": LIVE_API_ENABLED,
                 "error_class": "schema",
             }
 
@@ -744,7 +744,7 @@ class GeminiFreeDryRunTransport:
             "peer_id": self.peer_id,
             "transport": "dry_run",
             "secret_handle": self.secret_handle,
-            "live_api_enabled": False,
+            "live_api_enabled": LIVE_API_ENABLED,
             "ok_marker": marker_ok,
             "response_sha256": hashlib.sha256(raw).hexdigest(),
             "usage": usage_safe,
@@ -757,7 +757,7 @@ class GeminiFreeDryRunTransport:
             "ok": True,
             "binding": self.name,
             "live": False,
-            "live_api_enabled": False,
+            "live_api_enabled": LIVE_API_ENABLED,
             "dry_run_enabled": bool(self.dry_run_enabled),
             "provider": "gemini-free",
             "secret_handle": self.secret_handle,

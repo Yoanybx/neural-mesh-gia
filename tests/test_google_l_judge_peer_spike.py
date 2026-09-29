@@ -392,4 +392,4 @@ def test_cli_mock_default_no_network(monkeypatch, capsys):
     assert rc == 0
     captured = capsys.readouterr().out
     assert "mock" in captured
-    assert '"live_api_enabled": false' in captured.lower() or '"live_api_enabled": False' in captured
+    assert '"live_api_enabled": true' in captured.lower()  # F4 product path; mock transport remains non-network

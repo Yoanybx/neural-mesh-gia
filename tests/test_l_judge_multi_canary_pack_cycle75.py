@@ -1,7 +1,7 @@
 """Tests for Cycle 75 / CP-0079: multi-canary pack (n≥5) under fences.
 
 Markers: l_judge_multi_canary_pack_cycle75
-Default pytest: mock-only pack (no live network). Module LIVE stays False.
+Default pytest: mock-only pack (no live network). Product LIVE is True under F4; I5 gates network.
 """
 
 from __future__ import annotations
@@ -75,7 +75,7 @@ def test_default_plan_covers_edges():
     assert "E-HAPPY" in ids
 
 
-def test_mock_pack_reaches_n_min_and_restores_live_false():
+def test_mock_pack_reaches_n_min_and_keeps_f4_product_live():
     pack = run_multi_canary_pack(allow_real_http=False, sleep_between_s=0.0)
     assert pack.n >= N_MIN
     assert pack.n_kill_live >= 1
@@ -88,7 +88,7 @@ def test_mock_pack_reaches_n_min_and_restores_live_false():
     assert LIVE_API_ENABLED is True
     # All edge attempts (non-happy) should ok under mock
     for a in pack.attempts:
-        assert a.live_final is False
+        assert a.live_final is True  # F4 product/module state; I5/RefuseTransport still gate
         if a.edge_id != "E-HAPPY":
             assert a.ok, (a.edge_id, a.notes, a.result)
     # Happy mock should also ok

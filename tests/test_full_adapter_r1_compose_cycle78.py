@@ -1,7 +1,7 @@
 """Tests for Cycle 78 / CP-0082: Phase R1 full-adapter SoT+Refuse+I5 compose.
 
 Markers: full_adapter_r1_compose_cycle78
-Default pytest: mock-only; module LIVE stays False; no network; no R2–R5.
+Default pytest: mock-only; product LIVE is True under F4; I5/RefuseTransport still gate; no R2–R5.
 """
 
 from __future__ import annotations
@@ -136,7 +136,7 @@ def test_run_r1_compose_suite_all_pass():
     assert suite["impl_cp"] == "CP-0082"
     assert suite["r2_r5_authorized"] is False
     assert suite["LIVE_API_ENABLED_module_final"] is True
-    assert suite["runtime_live_api_enabled_final"] is False
+    assert suite["runtime_live_api_enabled_final"] is True  # F4 product path; session is cleared
     ids = {d["descriptor"] for d in suite["descriptors"]}
     assert ids == set(DESCRIPTOR_IDS)
     for d in suite["descriptors"]:

@@ -1,7 +1,7 @@
 """Tests for Cycle 76 / CP-0080: M-KILL-2 ops budget + M-ABORT-3 conflict drill.
 
 Markers: m_kill_2_abort3_cycle76
-Default pytest: mock-only; module LIVE stays False; no network.
+Default pytest: mock-only; product LIVE is True under F4; I5/RefuseTransport gate network.
 """
 
 from __future__ import annotations
@@ -116,8 +116,8 @@ def test_default_plan_includes_conflict_and_pack_ok():
     conflict = next(a for a in pack.attempts if a.edge_id == "E-CONFLICT")
     assert kill.ok and conflict.ok
     assert pack.authorization.get("ops_cp") == "CP-0080"
-    assert pack.authorization.get("f4_product_enable") is False
-    assert pack.live_api_enabled_module_final is False
+    assert pack.authorization.get("f4_product_enable") is True
+    assert pack.live_api_enabled_module_final is True
     blob = json.dumps(pack.to_dict())
     assert "AIza" not in blob
     assert "sk-" not in blob

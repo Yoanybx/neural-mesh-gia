@@ -138,7 +138,7 @@ def impl_cp_authorization_record() -> dict[str, Any]:
             "streaming codec ship",
         ],
         "permanent_live_enable": True,  # F4 SIGNED
-        "live_api_enabled_module_default": False,
+        "live_api_enabled_module_default": LIVE_API_ENABLED,
         "canary_live_api_enabled_constant": CANARY_LIVE_API_ENABLED,
         "lht_live_api_enabled_constant": LHT_LIVE_API_ENABLED,
         "seal_candidate": SEAL_CANDIDATE,
@@ -417,7 +417,7 @@ def evaluate_live_measurement_seal(
         verdict=verdict,
         reasons=reasons,
         f4_ack_signed=f4_ack_signed,
-        module_live_final=False,
+        module_live_final=LIVE_API_ENABLED,
     )
 
 
@@ -518,7 +518,7 @@ def run_gate6_incr_suite(
             ),
         },
         "T-g6-incr-b": {
-            "ok": incr is not None and incr.attempted and incr.live_final is False,
+            "ok": incr is not None and incr.attempted and incr.live_final is True,
             "note": (
                 f"incremental real_http={incr.real_http if incr else False} "
                 f"quota={incr.quota_hit if incr else False} "
@@ -551,9 +551,9 @@ def run_gate6_incr_suite(
             "ok": (
                 LIVE_API_ENABLED is True
                 and session_live_api_enabled() is False
-                and seal.module_live_final is False
+                and seal.module_live_final is True
             ),
-            "note": "module + runtime LIVE False; R5/F4 invent not authorized",
+            "note": "module LIVE True; session LIVE cleared; R5/F4 scope remains gated",
         },
     }
     ok = all(d["ok"] for d in descriptors.values())

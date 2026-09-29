@@ -319,12 +319,12 @@ def compose_i5_kill() -> ComposeResult:
         if not _is_abort(out2) or _mesh_accept_of(out2) is not False:
             ok = False
             notes.append("post-kill second call did not stay ABORT/mesh_accept=false")
-    # Session must restore runtime False
-    if runtime_live_api_enabled():
+    # Session must clear after the canary window; F4 keeps product runtime live.
+    if session_live_api_enabled():
         ok = False
-        notes.append("runtime LIVE not restored False after kill session")
+        notes.append("session LIVE not restored False after kill session")
     else:
-        notes.append("session restored runtime LIVE False")
+        notes.append("session restored LIVE False; product LIVE remains enabled")
     return ComposeResult(
         ok=ok,
         descriptor="T-fa-r1-b",
@@ -401,7 +401,7 @@ def compose_advisory_not_sot() -> ComposeResult:
 
 
 def run_r1_compose_suite() -> dict[str, Any]:
-    """Run R1 compose negatives; always leave runtime LIVE False."""
+    """Run R1 compose negatives; always clear the session LIVE window."""
     set_runtime_live_api_enabled(False)
     assert_module_live_false()
     results = [
@@ -419,7 +419,7 @@ def run_r1_compose_suite() -> dict[str, Any]:
     d_ok = ComposeResult(
         ok=restore_ok,
         descriptor="T-fa-r1-d",
-        notes=["runtime LIVE False after suite" if restore_ok else "restore failed"],
+        notes=["session LIVE False after suite" if restore_ok else "restore failed"],
         result={"runtime_live_api_enabled": runtime_live_api_enabled()},
         mesh_accept=False,
         binding="RefuseTransport",
@@ -427,7 +427,7 @@ def run_r1_compose_suite() -> dict[str, Any]:
     e_ok = ComposeResult(
         ok=module_ok,
         descriptor="T-fa-r1-e",
-        notes=["module LIVE False on canary+LHT+R1" if module_ok else "module True leak"],
+        notes=["module LIVE True on canary+LHT+R1" if module_ok else "module LIVE mismatch"],
         result={
             "r1": LIVE_API_ENABLED,
             "canary": CANARY_LIVE_API_ENABLED,

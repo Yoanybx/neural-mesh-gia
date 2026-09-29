@@ -1,7 +1,7 @@
 """Tests for Cycle 79 / CP-0083: Phase R2 multi-judge live/mock-bound RV.
 
 Markers: full_adapter_r2_multi_judge_cycle79
-Default pytest: mock-only; module LIVE stays False; no network unless
+Default pytest: mock-only; product LIVE is True under F4; I5/RefuseTransport gate network unless
 --real-http / MESH_R2_ALLOW_REAL_HTTP=1 and runbook gates pass.
 """
 
@@ -191,7 +191,7 @@ def test_run_r2_compose_suite_mock_all_pass():
     assert suite["impl_cp"] == "CP-0083"
     assert suite["r3_r5_authorized"] is False
     assert suite["LIVE_API_ENABLED_module_final"] is True
-    assert suite["runtime_live_api_enabled_final"] is False
+    assert suite["runtime_live_api_enabled_final"] is True  # F4 product path; session is cleared
     assert suite["m1_status"] == "NO_CONSENSUS_YET"
     assert suite["real_http_used"] is False
     assert suite["binding_final"] == "RefuseTransport"
@@ -240,7 +240,7 @@ def test_docs_and_no_secrets():
     reason="real HTTP opt-in via MESH_R2_ALLOW_REAL_HTTP=1 only",
 )
 def test_t_fa_r2_g_real_http_opt_in_if_gates():
-    """Optional real Gemini HTTP under fences; leave LIVE False after."""
+    """Optional real Gemini HTTP under fences; clear the session window after."""
     gates = check_runbook_gates()
     res = compose_live_mock_bound(allow_real_http=True)
     assert res.ok, res.notes
