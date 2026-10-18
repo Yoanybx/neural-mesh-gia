@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "minogan.uw/v0",
+  "title": "Minogan underwriting hint (UW) v0",
+  "description": "Advisory underwriting hint derived deterministically from a Mesh score. Minogan is not an insurer and binds nothing; outcome is a recommendation to a human underwriter. No prompts/completions; metadata and trace ids only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "uw_score",
+    "tier",
+    "outcome",
+    "conditions",
+    "exclusions",
+    "evidence_window",
+    "confidence",
+    "methodology_version"
+  ],
+  "properties": {
+    "schema": { "const": "minogan.uw/v0" },
+    "tenant_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "agent_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "uw_score": {
+      "description": "Integer 0-100, higher = riskier. v0: equals ScorerOutput.score (no separate UW model).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "tier": {
+      "description": "Band of uw_score. v0 bands (uncalibrated): T1 <40, T2 40-64, T3 65-84, T4 >=85.",
+      "enum": ["T1", "T2", "T3", "T4"]
+    },
+    "outcome": {
+      "description": "Recommendation only. v0 rule in uw_v0.md section 3.",
+      "enum": ["bind", "bind-with-terms", "refer", "decline"]
+    },
+    "conditions": {
+      "description": "Terms an underwriter could attach (bind-with-terms). Empty for bind.",
+      "type": "array",
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/clause" }
+    },
+    "exclusions": {
+      "description": "Behaviour classes suggested for exclusion from cover (e.g. unapproved payment writes).",
+      "type": "array",
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/clause" }
+    },
+    "evidence_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "description": "epoch ms (ScorerInput.window.from)", "type": "integer", "minimum": 0 },
+        "to": { "description": "epoch ms (ScorerInput.window.to)", "type": "integer", "minimum": 0 },
+        "memory_from": {
+          "description": "epoch ms of the oldest AgentMemory record used for long-horizon drift/recurrence (null if none).",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "spans": { "type": "integer", "minimum": 0 },
+        "signals": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "confidence": {
+      "description": "0-1, evidence-volume confidence (deterministic, see uw_v0.md section 4). Not a calibrated probability.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "methodology_version": {
+      "description": "e.g. mesh.minogan.score/v0+score_v0.3",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    }
+  },
+  "$defs": {
+    "clause": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "text"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,47}$" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 280 },
+        "evidence_trace_ids": {
+          "type": "array",
+          "maxItems": 10,
+          "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+        }
+      }
+    }
+  }
+}

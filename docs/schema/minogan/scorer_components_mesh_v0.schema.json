@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mesh.minogan.components/v0",
+  "title": "Mesh additions inside ScorerOutput.components (minogan.scorer/v1)",
+  "description": "Extra keys a Mesh scorer adds inside the free-form ScorerOutput.components object. The pilot's validateOutput() keeps components as-is (spread) and overwrites only cited_trace_ids and scorer, so these keys survive persistence.",
+  "type": "object",
+  "required": [
+    "methodology",
+    "formula",
+    "explain",
+    "confidence",
+    "reasons",
+    "model_version",
+    "input_digest",
+    "uw"
+  ],
+  "properties": {
+    "methodology": {
+      "type": "string"
+    },
+    "formula": {
+      "type": "string"
+    },
+    "explain": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "weight",
+          "evidence_trace_ids"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.:-]{1,63}$"
+          },
+          "weight": {
+            "description": "signed score points attributed to this reason",
+            "type": "number"
+          },
+          "evidence_trace_ids": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          }
+        }
+      }
+    },
+    "model_version": {
+      "type": "string",
+      "pattern": "^mesh\\.minogan\\.score/v[0-9]+(\\.[0-9]+)*$"
+    },
+    "input_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "uw": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "conditions"
+      ],
+      "properties": {
+        "outcome": {
+          "enum": [
+            "bind",
+            "bind-with-terms",
+            "refer",
+            "decline"
+          ]
+        },
+        "conditions": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "text"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]{1,47}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 280
+              },
+              "evidence_trace_ids": {
+                "type": "array",
+                "maxItems": 10,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "Compact UW hint; same clause shape as minogan.uw/v0 conditions. Full record (tier, exclusions, evidence_window, confidence) is minogan.uw/v0."
+    },
+    "advisory": {
+      "description": "Optional L_judge explanation. Advisory only; never an input to score/uw. Absent when judge not armed.",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "judge": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "affects_score": {
+          "const": false
+        }
+      }
+    }
+  }
+}

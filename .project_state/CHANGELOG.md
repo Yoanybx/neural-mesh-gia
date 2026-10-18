@@ -1,3 +1,10 @@
+## Cycle 84 — 2026-10-18 — CP-0088 camino_minogan OPEN (P0.1)
+
+- council/NOTE_S0_MESH_MINOGAN_INTELLIGENCE.md: Mesh as Minogan.ai intelligence backend (per-tenant agent behaviour memory); honest gap list.
+- docs/planning/CP_0088_CAMINO_MINOGAN.md: P0.1–P0.7 with acceptance; P1 deferred; SaaS un-PARKED for this path only.
+- docs/schema/minogan/: minogan.uw/v0 (md + JSON Schema), mesh.minogan.components/v0, minogan.scorer/v1 mapping (canonical input digest, parity hazards, fixture plan).
+- Docs only. Package 0.18.0 held; GIA NO_HELD; no Raft/N>2; M1=NO_CONSENSUS_YET; LIVE untouched; no push/tags.
+
 ## Cycle 66 — 2026-09-26 — CP-0070 orchestrator_design_set_signoff
 
 - Formal ledger close for orchestrator contract CP-0064..CP-0069 (routing, continuity, oversight, spikes, perf, safety).

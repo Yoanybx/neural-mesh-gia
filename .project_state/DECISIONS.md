@@ -75,3 +75,10 @@ Use ADR files for major decisions.
 - Non-goals: Raft, N>2, multi-primary, tag_schema, SLO chase, EVERY_fsync.
 
 - Cycle 29: Fabric ops UX is operator ergonomics only; TLS fail-closed; no Vault/ACME required; dual_primary=0; plaintext_fallback=0.
+
+## D-C84 — CP-0088 camino Minogan (2026-10-18)
+- Decision (operator Joan): Mesh becomes the intelligence backend of Minogan.ai; SaaS un-PARKED **only** for this path.
+- Score deterministic, no LLM; L_judge advisory text only, computed after the number, never an input.
+- Metadata only (pilot redaction); never prompts/completions/tool args/results.
+- Integration via pilot Scorer contract `minogan.scorer/v1`; pilot not rewritten.
+- Non-goals: GIA, Raft, N>2, paid services/domains/VMs/keys without OK, push/tags, deploy.

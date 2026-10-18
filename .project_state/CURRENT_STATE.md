@@ -1,16 +1,17 @@
 # CURRENT STATE
 
-**Cycle:** 83  
-**Checkpoint:** CP-0087 SEALED (R5 F4 product ACK SIGNED + LIVE product path)  
-**Tip:** `21f9e48` (chain `6aba4c7` CP-0087 R5 → `88f1276` residual tests → `3a70a50` / `21f9e48` docs)  
-**Theme:** l_judge_full_adapter_live_rv (R0–R5 DONE, streaming DEFER)  
+**Cycle:** 84  
+**Checkpoint:** CP-0088 OPEN — camino Minogan (P0.1 DONE; P0.2–P0.7 not started) · prior CP-0087 SEALED (R5 F4 product ACK SIGNED + LIVE product path)  
+**CP-0087 tip:** `21f9e48` (state truth-up `b9ffe44`; chain `6aba4c7` CP-0087 R5 → `88f1276` residual tests → `3a70a50` / `21f9e48` docs)  
+**Theme:** camino_minogan (Mesh = Minogan.ai intelligence backend; `docs/planning/CP_0088_CAMINO_MINOGAN.md`) · prior: l_judge_full_adapter_live_rv (R0–R5 DONE, streaming DEFER)  
 **Version:** 0.18.0 HELD  
 **Pytest:** 1297 passed / 17 failed / 3 skipped (2026-10-18; failures = missing `dist/` artefacts, see below; last green 1314/0/3 at CP-0087)  
 **Date:** 2026-10-18 01:45 EDT  
 **live:** `LIVE_API_ENABLED=True` on CP-0087 product modules only (peer / canary / LHT / multi-canary / R1–R4 / Gate6 incr); others False; I5 / RefuseTransport gate network  
 **M1:** NO_CONSENSUS_YET (PERMANENT under N=2 scope)  
 **HOLD:** Active · D3 NOT ACKed · MESH_PERF_EXPERIMENTAL OFF · pkg0190 NOT_OPENED  
-**NO_HELD:** unchanged (GIA / Raft / N>2 / train / SaaS / economy)  
+**NO_HELD:** unchanged (GIA / Raft / N>2 / train / economy) · **SaaS un-PARKED only for the CP-0088 Minogan path** (operator 2026-10-18)  
+**Minogan honesty:** Mesh has no Minogan code yet; GoalRegistry/EvidenceLedger are in-memory mocks; `ObjectType.MEMORY` unused; no tenant isolation  
 **Tags:** v0.16.3 / v0.17.0 / v0.18.0 untouched
 
 ## dist/ shows deleted — root cause (2026-10-18)
