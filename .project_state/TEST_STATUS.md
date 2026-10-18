@@ -1,8 +1,10 @@
 # TEST STATUS
 
-**Checkpoint:** CP-0088 OPEN (P0.1 done)  
+**Checkpoint:** CP-0088 OPEN (P0.1–P0.3 done)  
 **Command:** `.venv/bin/python -m pytest -q -p no:cacheprovider -rfs`  
-**Pytest:** 1297 passed / 17 failed / 3 skipped (2026-10-18 01:48 EDT, after `git checkout -- dist`)  
+**Pytest:** 1356 passed / 17 known-failed / 3 skipped (2026-10-18 01:58 EDT; +59 CP-0088 tests: contract 46, scorer parity 13)
+**Previous:** 1297 / 17 / 3 (01:48 EDT, after `git checkout -- dist`)
+**Minogan only:** `.venv/bin/python -m pytest -q -m minogan_cp0088` → 59 passed  
 **Baseline:** 1314 passed / 0 failed / 3 skipped (CP-0087)  
 **Skipped:** 3 opt-in real-HTTP tests (R2 / R3 / Gate6 incr).
 

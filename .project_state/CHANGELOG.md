@@ -1,3 +1,9 @@
+## Cycle 84 — 2026-10-18 — CP-0088 P0.2 + P0.3
+
+- P0.2: `neural_mesh/minogan/contract.py` + `canonical.py` (strict pydantic minogan.scorer/v1, typed errors, canonical JSON + input_digest); frozen fixtures from the real pilot pipeline (228 valid / 12 invalid).
+- P0.3: `neural_mesh/minogan/scorer.py` deterministic scorer v0; 228/228 exact parity with pilot computeScore score_v0.3; byte-identical output; zero network.
+- pytest 1356 passed / 17 known-failed (lost dist artefacts) / 3 skipped. No push/tags; LIVE untouched; pilot untouched.
+
 ## Cycle 84 — 2026-10-18 — CP-0088 camino_minogan OPEN (P0.1)
 
 - council/NOTE_S0_MESH_MINOGAN_INTELLIGENCE.md: Mesh as Minogan.ai intelligence backend (per-tenant agent behaviour memory); honest gap list.

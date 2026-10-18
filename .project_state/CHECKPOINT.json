@@ -1,7 +1,5 @@
 {
   "active_tasks": [
-    "cp0088_p0_2_contract",
-    "cp0088_p0_3_scorer_parity",
     "cp0088_p0_4_agent_memory",
     "cp0088_p0_5_http",
     "cp0088_p0_6_score_ledger_replay",
@@ -110,7 +108,9 @@
     "mesh_streaming_defer_seal_cp0085",
     "mesh_gate6_live_measurement_incr_cp0086",
     "mesh_f4_product_enable_r5_cp0087",
-    "mesh_minogan_s0_uw_schema_v0_cp0088_p0_1"
+    "mesh_minogan_s0_uw_schema_v0_cp0088_p0_1",
+    "mesh_minogan_contract_cp0088_p0_2",
+    "mesh_minogan_scorer_parity_cp0088_p0_3"
   ],
   "current_module": "minogan-path",
   "current_phase": 5,
@@ -126,36 +126,40 @@
   "l1_status": "CLOSED",
   "last_checkpoint": "CP-0088",
   "last_failed_test": "2026-10-18T05:33:00Z",
-  "last_successful_test": "2026-10-18T05:33:00Z",
-  "last_updated": "2026-10-18T05:40:00Z",
+  "last_successful_test": "2026-10-18T05:58:00Z",
+  "last_updated": "2026-10-18T06:00:00Z",
   "modified_files": [
-    "council/NOTE_S0_MESH_MINOGAN_INTELLIGENCE.md",
-    "docs/planning/CP_0088_CAMINO_MINOGAN.md",
-    "docs/schema/minogan/",
+    "src/neural_mesh/minogan/",
+    "scripts/minogan/gen_fixtures.mjs",
+    "tests/fixtures/minogan/",
+    "tests/test_minogan_contract_cp0088.py",
+    "tests/test_minogan_scorer_parity_cp0088.py",
     ".project_state/"
   ],
-  "next_action": "CP-0088 OPEN camino Minogan. P0.1 (NOTE S0 + UW schema v0) done. Next P0.2 contract.py. 0.18.0 held; M1=NO_CONSENSUS_YET; SaaS un-PARKED for this path only; GIA NO_HELD.",
+  "next_action": "CP-0088 OPEN: P0.1-P0.3 done (contract, deterministic scorer parity 228/228 exact vs pilot score_v0.3). Next P0.4 AgentMemory on C-RAM. 0.18.0 held; M1=NO_CONSENSUS_YET; GIA NO_HELD.",
   "open_questions": [],
-  "preferred_next": "cp0088_p0_2_contract",
+  "preferred_next": "cp0088_p0_4_agent_memory",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
-    "passed": 1297,
+    "passed": 1356,
     "failed": 17,
-    "skipped": 3
+    "skipped": 3,
+    "known_failed": 17
   },
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
-    "passed": 1297,
+    "passed": 1356,
     "failed": 17,
-    "skipped": 3
+    "skipped": 3,
+    "known_failed": 17
   },
   "theme": "camino_minogan",
-  "themes_status": "CP_0088_OPEN_P0_1_DONE",
+  "themes_status": "CP_0088_OPEN_P0_3_DONE",
   "version": "0.18.0",
   "live": "LIVE_API_ENABLED=True on CP-0087 product modules only",
   "saas_status": "UNPARKED_CP0088_PATH_ONLY",
-  "cp_phase": "OPEN_P0_1_DONE"
+  "cp_phase": "OPEN_P0_3_DONE"
 }

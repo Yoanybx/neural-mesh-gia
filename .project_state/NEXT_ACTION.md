@@ -1,6 +1,8 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: CP-0088 P0.2 — `neural_mesh/minogan/contract.py` (pydantic) + frozen fixtures from pilot pipeline
+PREFERRED_NEXT: CP-0088 P0.4 — AgentMemory on C-RAM keyed (tenant_id, agent_id) (await operator go)
+
+DONE: P0.2 contract.py + frozen pilot fixtures (228 valid / 12 invalid); P0.3 Mesh scorer v0 (228/228 exact parity vs pilot computeScore score_v0.3; byte-identical; zero network).
 
 CP-0088 OPEN (camino Minogan, operator Joan 2026-10-18). P0.1 done: `council/NOTE_S0_MESH_MINOGAN_INTELLIGENCE.md`,
 `docs/schema/minogan/` (uw_v0 + components ext + scorer_contract_v1_mapping). Then P0.3 deterministic scorer

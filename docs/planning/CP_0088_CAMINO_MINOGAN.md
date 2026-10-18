@@ -1,6 +1,6 @@
 # CP-0088 — Camino Minogan (Mesh as Minogan.ai intelligence backend) — OPEN
 
-**Status:** **OPEN** · P0.1 (NOTE S0 + UW schema v0) **DONE in this commit**; P0.2–P0.7 **NOT STARTED**  
+**Status:** **OPEN** · P0.1 (NOTE S0 + UW schema v0) **DONE** `4dd797a` · P0.2 contract **DONE** `d52226a` · P0.3 scorer parity **DONE** (see §7) · P0.4–P0.7 **NOT STARTED**  
 **Cycle / Checkpoint:** 84 / **CP-0088**  
 **Date:** 2026-10-18 ~01:40 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
@@ -66,3 +66,14 @@ verifiable per-tenant retention/deletion · per-tenant metrics.
 - Pilot is **not under git** (`/workspace/minogan-pilot` has no `.git`) → contract drift risk; Mesh pins the contract by frozen fixtures + field list.
 - Test suite currently 17 failures caused by missing untracked `dist/releases/*` artefacts (see `.project_state/CURRENT_STATE.md`); unrelated to this path, must not be "fixed" by re-minting frozen releases.
 - Several suite tests write into the real repo (`dist/releases/0.16.3/`, `.project_state/*SIGNOFF*.json`, `post_rc_watch_report.json`) — pre-existing hygiene debt.
+
+## 7. Progress log
+
+| Item | Commit | Evidence |
+|------|--------|----------|
+| P0.1 | `4dd797a` | NOTE S0, `docs/schema/minogan/*` |
+| P0.2 | `d52226a` | `neural_mesh/minogan/{contract,canonical}.py`; 228 valid + 12 invalid frozen fixtures from the real pilot pipeline (`scripts/minogan/gen_fixtures.mjs`, /tmp copy, seeded); Python `input_digest` == JS canonical sha256 on 228/228; 46 tests |
+| P0.3 | (this commit) | `neural_mesh/minogan/scorer.py`; parity vs pilot `computeScore` score_v0.3: **max abs diff 0 on 228/228** (123 pipeline + 105 JS-scored variants; exposure, behavior, driftPct, driftStatus, axes, cited_trace_ids, explain, floor, drift all exact); byte-identical across processes / PYTHONHASHSEED; socket-refusing test; 13 tests |
+
+Left out of P0.3 (by design): long-horizon drift (`components.drift_long`) and `decline` (need AgentMemory, P0.4); `events`-based
+exclusions (`EXCL_*`) and the full `minogan.uw/v0` record (only the compact `components.uw`); calibration of tiers/thresholds (P1).

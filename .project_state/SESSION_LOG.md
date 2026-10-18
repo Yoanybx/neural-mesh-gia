@@ -193,3 +193,8 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - `src/neural_mesh/minogan/{__init__,canonical,contract}.py`: strict pydantic ScorerInput/ScorerOutput (+ Mesh components), typed errors (contract_version / content_key / limit / validation), canonical JSON (JS number format) + `input_digest`.
 - Fixtures frozen from the real pilot pipeline (`scripts/minogan/gen_fixtures.mjs`, /tmp copy, seeded): 228 valid + 12 invalid; pilot unversioned at capture time.
 - `tests/test_minogan_contract_cp0088.py`: 46 passed.
+
+## 2026-10-18 02:00 EDT — CP-0088 P0.3 deterministic scorer
+- `src/neural_mesh/minogan/scorer.py`: port of pilot computeScore score_v0.3 (JS Math.round semantics) + Mesh components (confidence, reasons, model_version, input_digest, uw). No LLM, no network, no clock/randomness.
+- Parity: 228/228 exact (max abs diff 0). Byte-identical across processes / hash seeds. uw = pilot uwOutcome (no decline).
+- pytest 1356 passed / 17 known-failed (dist) / 3 skipped.
