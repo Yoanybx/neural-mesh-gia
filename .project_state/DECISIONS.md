@@ -95,3 +95,8 @@ Use ADR files for major decisions.
 - Order memory → ledger; the cross-structure crash window fails verify (indistinguishable from a deleted tail) and is healed by an explicit `memory_unledgered` entry at the agent's next scoring — holes are recorded, never silent.
 - Replay compares full output bytes (stored output object) + digest + memory-used digest; refuses on model_version mismatch rather than re-scoring with other code.
 - No external anchoring/signing in v0 (P1).
+
+## D-C84d — CP-0088 P0.7 deploy proposal (2026-10-18)
+- Exposure keeps the in-code loopback guard: cloudflared sidecar shares the service network namespace and dials out only; no published ports. A non-loopback bind flag is documented as an option only, not implemented.
+- Single writer / single replica on a persistent POSIX volume (fcntl locks); Cloudflare Containers disqualified (ephemeral disk).
+- Recommended (pending operator approval): DigitalOcean Basic 1 GiB VM + Compose + Tunnel + Workers VPC binding; nightly stop-tar-start backup to R2 + weekly `verify --replay` restore drill.

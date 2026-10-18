@@ -1,0 +1,55 @@
+{
+ "agent": {
+  "allowed_tools": [
+   "lookup_order",
+   "get_customer",
+   "search_kb",
+   "issue_refund",
+   "send_reply"
+  ],
+  "autonomy": 65,
+  "criticality": null,
+  "data_sensitivity": 60,
+  "framework": "openai-agents-sdk (simulated)",
+  "function": "Customer refund triage (synthetic test agent)",
+  "id": "synthetic-refunddesk-agent",
+  "name": "Synthetic \u00b7 RefundDesk Agent"
+ },
+ "baseline_score": null,
+ "contract": "minogan.scorer/v1",
+ "features": {
+  "approvedWrites": 10,
+  "baselineErrors": 0,
+  "baselineSpans": 210,
+  "distinctModels": 1,
+  "distinctTools": 5,
+  "hasBaseline": true,
+  "newToolCalls24h": 0,
+  "newTools24h": 0,
+  "recentErrors": 0,
+  "recentSpans": 33,
+  "toolCalls24h": 120,
+  "writeTools": 2,
+  "writes": 55
+ },
+ "now": 1790856000000,
+ "org_id": "org_fx_101",
+ "signals": [
+  {
+   "id": "240fa132-c6ef-4dd2-abd7-398d936f9357",
+   "pattern": "tool=lookup_order",
+   "rule": "tool_loop",
+   "severity": "high",
+   "title": "Tool-call loop: lookup_order \u00d79 in one trace",
+   "trace_ids": [
+    "578f04c690a7a5a1380279536b69f032"
+   ],
+   "ts": 1790854801482,
+   "type": "tool-call loop"
+  }
+ ],
+ "window": {
+  "from": 1790251200000,
+  "to": 1790856000000
+ }
+}

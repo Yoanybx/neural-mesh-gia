@@ -1,7 +1,5 @@
 {
-  "active_tasks": [
-    "cp0088_p0_7_deploy_proposal"
-  ],
+  "active_tasks": [],
   "blocked_tasks": [],
   "checkpoint": "CP-0088",
   "completed_phases": [
@@ -110,9 +108,10 @@
     "mesh_minogan_scorer_parity_cp0088_p0_3",
     "mesh_minogan_agent_memory_cp0088_p0_4",
     "cp0088_p0_5_http",
-    "cp0088_p0_6_score_ledger_replay"
+    "cp0088_p0_6_score_ledger_replay",
+    "cp0088_p0_7_deploy_proposal"
   ],
-  "cp_phase": "OPEN_P0_6_DONE",
+  "cp_phase": "OPEN_P0_7_DONE_P0_COMPLETE",
   "current_module": "minogan-path",
   "current_phase": 5,
   "cycle": 84,
@@ -127,29 +126,24 @@
   "l1_status": "CLOSED",
   "last_checkpoint": "CP-0088",
   "last_failed_test": "2026-10-18T05:33:00Z",
-  "last_successful_test": "2026-10-18T06:45:00Z",
-  "last_updated": "2026-10-18T06:46:00Z",
+  "last_successful_test": "2026-10-18T06:40:00Z",
+  "last_updated": "2026-10-18T06:43:00Z",
   "live": "LIVE_API_ENABLED=True on CP-0087 product modules only",
   "modified_files": [
-    "src/neural_mesh/minogan/ledger.py",
-    "src/neural_mesh/minogan/memory.py",
-    "src/neural_mesh/minogan/service.py",
-    "src/neural_mesh/minogan/scorer.py",
-    "src/neural_mesh/cli.py",
-    "tests/test_minogan_score_ledger_cp0088.py",
-    "docs/schema/minogan/score_ledger_v0.md",
-    "docs/schema/minogan/service_v0.md",
+    "deploy/minogan/",
+    "docs/planning/CP_0088_P0_7_DEPLOY_PROPOSAL.md",
+    "tests/test_minogan_deploy_cp0088.py",
     ".project_state/"
   ],
-  "next_action": "CP-0088 OPEN: P0.1-P0.6 done (contract, scorer parity 228/228, AgentMemory, loopback HTTP service, per-tenant score ledger + byte-identical replay/verify). Next P0.7 deploy proposal only (operator OK). 0.18.0 held; M1=NO_CONSENSUS_YET; GIA NO_HELD.",
+  "next_action": "CP-0088 OPEN: P0 complete (P0.1-P0.7). P0.7 = deploy proposal only (deploy/minogan + docs/planning/CP_0088_P0_7_DEPLOY_PROPOSAL.md; image not built, nothing deployed, no costs). Await operator decision on hosting/approvals or P1. 0.18.0 held; M1=NO_CONSENSUS_YET; GIA NO_HELD.",
   "open_questions": [],
-  "preferred_next": "cp0088_p0_7_deploy_proposal",
+  "preferred_next": "operator_decision_p0_7_hosting_or_p1",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
     "failed": 17,
     "known_failed": 17,
-    "passed": 1435,
+    "passed": 1440,
     "skipped": 3
   },
   "saas_status": "UNPARKED_CP0088_PATH_ONLY",
@@ -159,10 +153,10 @@
   "test_summary": {
     "failed": 17,
     "known_failed": 17,
-    "passed": 1435,
+    "passed": 1440,
     "skipped": 3
   },
   "theme": "camino_minogan",
-  "themes_status": "CP_0088_OPEN_P0_6_DONE",
+  "themes_status": "CP_0088_OPEN_P0_COMPLETE",
   "version": "0.18.0"
 }

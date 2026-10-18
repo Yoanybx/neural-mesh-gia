@@ -1,3 +1,9 @@
+## Cycle 84 — 2026-10-18 — CP-0088 P0.7 (proposal only)
+
+- `deploy/minogan/`: Dockerfile (python:3.13-slim, two-stage wheel install, uid 10001, `/data` volume 0700, tokens via `/run/secrets/minogan_tokens`, HEALTHCHECK on 127.0.0.1 /health, no EXPOSE), allowlist `Dockerfile.dockerignore`, `compose.proposal.yaml` (read-only, cap_drop ALL, single replica, cloudflared sidecar in the service netns), README, stdlib `smoke.py` + fixture.
+- `docs/planning/CP_0088_P0_7_DEPLOY_PROPOSAL.md`: constraints (persistent POSIX disk, fcntl, single writer), cost table from official pricing pages (checked 2026-10-18), Worker integration (Bearer + Tunnel/Workers VPC), recommendation, backups, risks, operator approvals. No costs incurred.
+- Loopback guard in code unchanged. Image not built (docker unavailable); container-equivalent smoke passed. pytest 1440 passed / 17 known-failed / 3 skipped. No push/tags; LIVE untouched; pilot untouched; no deploy.
+
 ## Cycle 84 — 2026-10-18 — CP-0088 P0.6
 
 - `neural_mesh/minogan/ledger.py`: per-tenant hash-chained score ledger (`mesh.minogan.ledger/v0`) on C-RAM (EVIDENCE: entry, canonical metadata input, canonical output); seq-chunked index; AgentMemory-style pending-head crash protocol; `memory_unledgered` entries for memory records without a scoring entry.

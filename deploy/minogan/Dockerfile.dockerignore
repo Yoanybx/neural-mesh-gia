@@ -1,0 +1,8 @@
+# BuildKit uses <Dockerfile>.dockerignore when building with -f deploy/minogan/Dockerfile (context = repo root).
+# Allowlist: the image needs only the package source and its metadata (no tests, dist/, .project_state, secrets).
+*
+!pyproject.toml
+!src/
+!src/**
+src/**/__pycache__
+src/**/*.pyc

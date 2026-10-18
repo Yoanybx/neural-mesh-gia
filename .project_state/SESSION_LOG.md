@@ -217,3 +217,8 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Verify fails on: entry/input/output byte flips, re-hashed entries, index/head edits, deleted ledger tail, memory byte flips, consistently rewritten memory chain, unledgered memory.
 - kill -9 at each step of memory + ledger protocols and mid-stream: chains valid; cross-structure gap fails verify until next scoring heals it.
 - Bench with ledger: p50 31.8 / p95 45.8 ms (300 req, 200 events). pytest 1435 / 17 known / 3.
+
+## 2026-10-18 02:43 EDT — CP-0088 P0.7 deploy proposal (PROPOSAL ONLY)
+- `deploy/minogan/` Dockerfile + dockerignore + compose proposal + smoke; proposal doc with cost table (official pages, checked 2026-10-18).
+- No docker on box → image NOT built; container-equivalent smoke (wheel install in clean venv, non-root-style data dir, tokens file, HEALTHCHECK command verbatim) passed; listener 127.0.0.1 only; no token in logs.
+- Nothing deployed; no accounts/keys/VMs/domains/images; no costs incurred. pytest 1440 / 17 known / 3. P0 complete; awaiting operator.

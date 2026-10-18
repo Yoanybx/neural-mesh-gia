@@ -1,0 +1,54 @@
+# PROPOSAL ONLY (CP-0088 P0.7) — not run, not deployed. Requires operator approval before any use.
+# Single host (VM) layout: the Mesh service binds 127.0.0.1 inside its network namespace; cloudflared shares that
+# namespace (network_mode: service:...) and dials OUT to Cloudflare. No inbound port is published on the host.
+#
+# Host prerequisites (operator):
+#   /etc/mesh-minogan/tokens.json       {"tenants": {"<org_id>": ["sha256:<hex>"]}}  owner 10001, mode 0400
+#   /etc/mesh-minogan/cloudflared.env   TUNNEL_TOKEN=<token from the Cloudflare dashboard>  mode 0400
+# Neither file is in the repo; the image contains no secrets.
+
+name: mesh-minogan
+
+services:
+  mesh-minogan:
+    build:
+      context: ../..
+      dockerfile: deploy/minogan/Dockerfile
+    image: mesh-minogan:local
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - minogan-data:/data          # AgentMemory + score ledger + C-RAM (POSIX fs, flock)
+    secrets:
+      - minogan_tokens              # → /run/secrets/minogan_tokens (= MESH_MINOGAN_TOKENS_FILE)
+    deploy:
+      replicas: 1                   # single writer: NEVER scale > 1 on the same volume
+    stop_signal: SIGINT
+    stop_grace_period: 10s
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest   # operator: pin an exact version / digest before use
+    restart: unless-stopped
+    command: ["tunnel", "--no-autoupdate", "run"]
+    env_file:
+      - /etc/mesh-minogan/cloudflared.env
+    network_mode: "service:mesh-minogan"    # shares loopback with the service → origin http://127.0.0.1:8787
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      mesh-minogan:
+        condition: service_healthy
+
+secrets:
+  minogan_tokens:
+    file: /etc/mesh-minogan/tokens.json
+
+volumes:
+  minogan-data: {}

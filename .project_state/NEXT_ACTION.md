@@ -1,6 +1,8 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: CP-0088 P0.7 — deploy proposal only (await operator go)
+PREFERRED_NEXT: CP-0088 P0 COMPLETE — await operator decision on P0.7 deploy proposal (hosting choice + approvals in `docs/planning/CP_0088_P0_7_DEPLOY_PROPOSAL.md`) or P1 scope
+
+DONE: P0.7 deploy PROPOSAL ONLY: `deploy/minogan/` (Dockerfile non-root + /data volume + tokens secret + /health HEALTHCHECK, allowlist dockerignore, compose proposal with cloudflared sidecar sharing netns so the 127.0.0.1 guard stays, smoke.py) + proposal doc (cost table checked 2026-10-18; recommendation DO Basic 1 GiB + Tunnel + Workers VPC + R2 backups). Image NOT built (no docker on box). Nothing deployed; no accounts/keys/VMs/domains; no costs incurred.
 
 DONE: P0.6 per-tenant hash-chained score ledger (`mesh.minogan.ledger/v0`): every scoring (service + optional in-process) with canonical metadata input, memory snapshot ref (before/used/appended), model_version, output digest; `mesh minogan replay <id>` byte-identical; `mesh minogan verify [--replay]` whole chain + memory refs + coverage.
 
