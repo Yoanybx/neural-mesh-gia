@@ -188,3 +188,8 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 ## 2026-10-18 01:48 EDT — dist/ option A (operator)
 - `git checkout -- dist`: 4 tracked files restored, blob hashes = HEAD. Lost untracked release archives NOT rebuilt (preserve audit history).
 - pytest 1297 passed / 17 known-failed / 3 skipped; known list in TEST_STATUS.md.
+
+## 2026-10-18 01:55 EDT — CP-0088 P0.2 contract
+- `src/neural_mesh/minogan/{__init__,canonical,contract}.py`: strict pydantic ScorerInput/ScorerOutput (+ Mesh components), typed errors (contract_version / content_key / limit / validation), canonical JSON (JS number format) + `input_digest`.
+- Fixtures frozen from the real pilot pipeline (`scripts/minogan/gen_fixtures.mjs`, /tmp copy, seeded): 228 valid + 12 invalid; pilot unversioned at capture time.
+- `tests/test_minogan_contract_cp0088.py`: 46 passed.

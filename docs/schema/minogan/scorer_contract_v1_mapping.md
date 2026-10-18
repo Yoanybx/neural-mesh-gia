@@ -70,3 +70,14 @@ Pilot `validateOutput()` clamps numbers to 0–100 (`Math.round`), coerces unkno
 ## 6. Fixtures
 
 `scripts/synthetic.mjs` emits **OTLP spans**, not ScorerInput, and is non-deterministic (`crypto.getRandomValues`, `Math.random`, `Date.now`). Fixtures for P0.2/P0.3 are therefore produced by running pilot ingest → `scoreAgents`/`scoreAll` (`engine.js`) on the sql.js D1 shim (`scripts/d1-shim.mjs`) and capturing each ScorerInput. `getScorer(env)` is hard-wired to `ruleScorer`, so capture happens in a **throw-away copy** of the pilot `src/` under `/tmp` (or a Node module hook) — never by editing the pilot. Inputs are then **frozen** to JSON (`input`, `expected` from `computeScore`). Generation is a one-time, local, read-only use of the pilot code; the frozen fixtures make Mesh tests independent of Node.
+
+## 7. Observed at capture (P0.2, 2026-10-18)
+
+- `events[]` rows from the pilot query also carry **`org_id`, `agent_id`, `rn`** (SQL columns leaking past the documented list).
+  `contract.py` accepts exactly these three extras and still forbids any other key. `is_write` / `human_approved` arrive as `0/1` ints.
+- `agent.criticality` is `null` in all captures; `autonomy` / `data_sensitivity` may be `null` (scored as 50).
+- Fixtures: `tests/fixtures/minogan/scorer_v1_fixtures.json` (228 = 123 pipeline captures + 105 variants re-scored by the real
+  pilot `ruleScorer`), `scorer_v1_invalid.json` (12 typed-error cases). Generator: `scripts/minogan/gen_fixtures.mjs`
+  (seeded, fake clock, network stubbed; byte-identical on re-run). Pilot version recorded as `pilot unversioned at capture time`
+  plus sha256 of the pilot source files used.
+- Cross-language check: Python `input_digest` equals the generator's JS canonical sha256 on all 228 inputs.
