@@ -184,3 +184,7 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - NOTE S0 `council/NOTE_S0_MESH_MINOGAN_INTELLIGENCE.md` (intent + honest gap list); `docs/planning/CP_0088_CAMINO_MINOGAN.md` (P0 list + P1 deferred).
 - `docs/schema/minogan/`: `uw_v0.md` + `uw_v0.schema.json`, `scorer_components_mesh_v0.schema.json`, `scorer_contract_v1_mapping.md` (names confirmed vs pilot scorer.js/engine.js/rules.js).
 - Docs only; no code; no network; LIVE untouched; no push/tags.
+
+## 2026-10-18 01:48 EDT — dist/ option A (operator)
+- `git checkout -- dist`: 4 tracked files restored, blob hashes = HEAD. Lost untracked release archives NOT rebuilt (preserve audit history).
+- pytest 1297 passed / 17 known-failed / 3 skipped; known list in TEST_STATUS.md.
