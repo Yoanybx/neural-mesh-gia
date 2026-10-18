@@ -1,23 +1,23 @@
 # CURRENT STATE
 
-**Cycle:** 70  
-**Checkpoint:** CP-0074 VERIFIED  
-**Theme:** m1_no_consensus_n2_scope  
+**Cycle:** 83  
+**Checkpoint:** CP-0087 SEALED (R5 F4 product ACK SIGNED + LIVE product path)  
+**Tip:** `21f9e48` (chain `6aba4c7` CP-0087 R5 → `88f1276` residual tests → `3a70a50` / `21f9e48` docs)  
+**Theme:** l_judge_full_adapter_live_rv (R0–R5 DONE, streaming DEFER)  
 **Version:** 0.18.0 HELD  
-**Pytest:** 1200/0  
-**Date:** 2026-09-26 23:45 EDT  
-**PREFERRED_NEXT:** await_deepseek  
-**live:** DISABLED  
-**M1:** NO_CONSENSUS_YET (PERMANENT under N=2 scope; C5 FQ-ED=80 numeric ≠ ratified)  
-**Posture:** PERMANENT_UNDER_N2_SCOPE  
-**HOLD:** Active  
-**MESH_PERF_EXPERIMENTAL:** OFF  
-**D3:** NOT ACKed  
-**pkg0190:** NOT_OPENED  
-**L1:** CLOSED  
-**D1:** sealed CP-0071  
-**D2:** sealed CP-0072  
-**C5 refine:** sealed CP-0073  
-**D4 lock:** 97735e9  
-**Orchestrator contract:** CLOSED (CP-0070)  
-**NO_HELD:** unchanged  
+**Pytest:** 1297 passed / 17 failed / 3 skipped (2026-10-18; failures = missing `dist/` artefacts, see below; last green 1314/0/3 at CP-0087)  
+**Date:** 2026-10-18 01:45 EDT  
+**live:** `LIVE_API_ENABLED=True` on CP-0087 product modules only (peer / canary / LHT / multi-canary / R1–R4 / Gate6 incr); others False; I5 / RefuseTransport gate network  
+**M1:** NO_CONSENSUS_YET (PERMANENT under N=2 scope)  
+**HOLD:** Active · D3 NOT ACKed · MESH_PERF_EXPERIMENTAL OFF · pkg0190 NOT_OPENED  
+**NO_HELD:** unchanged (GIA / Raft / N>2 / train / SaaS / economy)  
+**Tags:** v0.16.3 / v0.17.0 / v0.18.0 untouched
+
+## dist/ shows deleted — root cause (2026-10-18)
+
+- `.gitignore` ignores `dist/` (CP-0024), but 4 files were force-added: `dist/releases/0.16.3/{DEBT_GATE_REVIEW.json,MONITOR.json,monitor_history.jsonl}` (`f54c8f0`, CP-0029) and `dist/releases/m1-no-consensus-n2-scope/M1_NO_CONSENSUS_N2_SCOPE.json` (`b3e84fb`, CP-0074).
+- The workspace was re-materialised on **2026-10-17 12:15–12:17 EDT** (every file mtime in the tree falls in that window; reflog ends 2026-09-28 at `21f9e48`). The copy did **not** include `dist/` or `.venv/` (other ignored dirs such as `experiments/`, `.cram/` did survive). So the whole `dist/` tree vanished → the 4 tracked files read as ` D`.
+- No commit, clean script or build deleted them (`git log -- dist` has only the two adds; no code path `rmtree`s `dist/releases`).
+- Collateral: untracked frozen release artefacts (`dist/releases/0.16.3/*.tar.gz`, `SIGNOFF.json`, `0.17.0/`, `0.18.0/` archives) are also gone and are **not** recoverable from git → 17 suite failures (`test_017_signoff_cycle32`, `test_018_signoff_cycle42`, `test_018_bootstrap_cycle33`, `test_019_bootstrap_plan_cycle43`, `test_quickstart_cycle31`).
+- The 4 tracked files can be restored safely with `git checkout -- dist` (byte-exact from HEAD). Re-minting the untracked release archives would produce new hashes for frozen releases → needs operator decision; not done.
+- Separate pre-existing debt: the suite writes into the real repo (`dist/releases/0.16.3/`, `.project_state/THEME_SIGNOFF_0.17.0.json`, `RELEASE_SIGNOFF_0.16.3.json`, `post_rc_watch_report.json`). The uncommitted diffs in the two SIGNOFF mirrors (dated 2026-09-29, `tip: cli017`, `pytest_count: 50`) are that pollution, not real signoffs; left uncommitted.

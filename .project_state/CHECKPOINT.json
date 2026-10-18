@@ -1,7 +1,7 @@
 {
   "active_tasks": [],
   "blocked_tasks": [],
-  "checkpoint": "CP-0074",
+  "checkpoint": "CP-0087",
   "completed_phases": [
     0,
     1,
@@ -89,47 +89,65 @@
     "mesh_d1_l_judge_safety_case_maturation_cp0071",
     "mesh_d2_m1_consensus_candidate_reresearch_cp0072",
     "mesh_c5_fq_ed_refinement_cp0073",
-    "mesh_m1_no_consensus_n2_scope_cp0074"
+    "mesh_m1_no_consensus_n2_scope_cp0074",
+    "mesh_l_judge_gemini_free_canary_cp0075",
+    "mesh_live_http_transport_residual_design_cp0076",
+    "mesh_gate6_metric_completion_design_cp0077",
+    "mesh_l_judge_live_http_transport_cp0078",
+    "mesh_multi_canary_pack_cp0079",
+    "mesh_f4_kill_abort_cp0080",
+    "mesh_full_adapter_live_rv_design_cp0081",
+    "mesh_full_adapter_r1_compose_cp0082",
+    "mesh_full_adapter_r2_multi_judge_cp0083",
+    "mesh_gate6_seal_policy_cp0084",
+    "mesh_streaming_defer_seal_cp0085",
+    "mesh_gate6_live_measurement_incr_cp0086",
+    "mesh_f4_product_enable_r5_cp0087"
   ],
-  "current_module": "m1-no-consensus-n2-scope",
+  "current_module": "l-judge-full-adapter-live-rv",
   "current_phase": 5,
-  "cycle": 70,
+  "cycle": 83,
   "decisions_pending": [],
-  "git_commit": null,
+  "git_commit": "21f9e48",
   "h1_h8_complete": true,
   "human_approval_required": false,
-  "known_bugs": [],
-  "l1_status": "CLOSED",
-  "last_checkpoint": "CP-0074",
-  "last_failed_test": null,
-  "last_successful_test": "2026-09-27T03:45:00Z",
-  "last_updated": "2026-09-27T03:45:00Z",
-  "modified_files": [
-    "docs/planning/C5_FQ_ED_REFINEMENT.md",
-    "src/neural_mesh/packaging/c5_fq_ed_refinement.py",
-    "tests/test_c5_fq_ed_refinement_cycle69.py",
-    "council/PASTE_CYCLE69_M2M.md",
-    "council/COUNCIL_AGREEMENT_CYCLE69.md",
-    "snapshots/CP-0073/",
-    ".project_state/C5_FQ_ED_REFINEMENT.json"
+  "known_bugs": [
+    "dist/ tree missing after 2026-10-17 workspace re-materialisation: 4 tracked files show deleted; untracked release archives lost -> 17 pytest failures",
+    "test suite writes into real repo (dist/releases/0.16.3, .project_state SIGNOFF mirrors, post_rc_watch_report.json)"
   ],
-  "next_action": "CP-0074 sealed (m1_no_consensus_n2_scope). PREFERRED_NEXT=await_deepseek. M1=NO_CONSENSUS_YET PERMANENT under N=2; C5=80\u2260ratified; HOLD; D3 NOT ACKed; live=DISABLED; package 0.18.0 held; pkg0190 NOT_OPENED.",
+  "l1_status": "CLOSED",
+  "last_checkpoint": "CP-0087",
+  "last_failed_test": "2026-10-18T05:33:00Z",
+  "last_successful_test": "2026-10-18T05:33:00Z",
+  "last_updated": "2026-10-18T05:45:00Z",
+  "modified_files": [
+    ".project_state/CURRENT_STATE.md",
+    ".project_state/CHECKPOINT.md",
+    ".project_state/CHECKPOINT.json",
+    ".project_state/NEXT_ACTION.md",
+    ".project_state/TEST_STATUS.md",
+    ".project_state/SESSION_LOG.md"
+  ],
+  "next_action": "CP-0087 sealed at 21f9e48. Next: CP-0088 camino Minogan (operator 2026-10-18). Package 0.18.0 held; M1=NO_CONSENSUS_YET; NO_HELD unchanged.",
   "open_questions": [],
-  "preferred_next": "await_deepseek",
+  "preferred_next": "cp0088_camino_minogan",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
-    "passed": 1200,
-    "failed": 0
+    "passed": 1297,
+    "failed": 17,
+    "skipped": 3
   },
   "safety_status": "SAFE",
   "schema_version": "1.0",
-  "status": "VERIFIED",
+  "status": "SEALED",
   "test_summary": {
-    "passed": 1200,
-    "failed": 0
+    "passed": 1297,
+    "failed": 17,
+    "skipped": 3
   },
-  "theme": "m1_no_consensus_n2_scope",
-  "themes_status": "M1_NO_CONSENSUS_N2_SCOPE_SEALED",
-  "version": "0.18.0"
+  "theme": "l_judge_full_adapter_live_rv",
+  "themes_status": "F4_PRODUCT_ENABLE_R5_SEALED",
+  "version": "0.18.0",
+  "live": "LIVE_API_ENABLED=True on CP-0087 product modules only"
 }
