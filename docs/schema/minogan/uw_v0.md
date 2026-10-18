@@ -52,7 +52,8 @@ Mesh v0 keeps pilot parity and adds `decline` only behind long-horizon evidence:
    high-severity `data exfil pattern` or `prompt injection attempt` rule in ≥ 2 distinct days
    **and** `confidence ≥ 0.6`.
 
-Until `AgentMemory` lands (P0.4) rule 4 can never fire, so Mesh v0 output == pilot hint.
+Rule 4 fires only when the scorer is given an `AgentMemory` (P0.4, `agent_memory_v0.md` §5); candidate rules are those in the
+current input's high signals. Without memory, Mesh output == pilot hint.
 Thresholds are **placeholders** pending P1 calibration.
 
 ## 4. Confidence (v0 proposal, deterministic)

@@ -198,3 +198,8 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - `src/neural_mesh/minogan/scorer.py`: port of pilot computeScore score_v0.3 (JS Math.round semantics) + Mesh components (confidence, reasons, model_version, input_digest, uw). No LLM, no network, no clock/randomness.
 - Parity: 228/228 exact (max abs diff 0). Byte-identical across processes / hash seeds. uw = pilot uwOutcome (no decline).
 - pytest 1356 passed / 17 known-failed (dist) / 3 skipped.
+
+## 2026-10-18 02:10 EDT — CP-0088 P0.4 AgentMemory
+- `src/neural_mesh/minogan/memory.py`: MEMORY objects on C-RAM; per-(tenant, agent) hash chain; UTC day-bucket index; pending-head append protocol + recovery; tenant-checked reads.
+- Scorer `memory=`: drift_long (90d excl. pilot 7d), recurrence (30d), decline per uw_v0 rule 4. No memory ⇒ byte-identical parity path (228/228).
+- Tests 20 (real SIGKILL mid-stream + per step; 90d = 91 bucket reads of 301 days; cross-tenant; tamper). pytest 1376 / 17 known / 3.

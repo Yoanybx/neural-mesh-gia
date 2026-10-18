@@ -1,3 +1,9 @@
+## Cycle 84 — 2026-10-18 — CP-0088 P0.4
+
+- `neural_mesh/minogan/memory.py` AgentMemory on C-RAM (`ObjectType.MEMORY`), per-(tenant, agent) hash chain, UTC day-bucket index, crash-safe pending-head protocol; `docs/schema/minogan/agent_memory_v0.md`.
+- Scorer `memory=`: `components.drift_long`, `components.recurrence`, `decline` (uw_v0 rule 4) only with memory; no-memory parity unchanged.
+- pytest 1376 passed / 17 known-failed / 3 skipped. No push/tags; LIVE untouched; pilot untouched.
+
 ## Cycle 84 — 2026-10-18 — CP-0088 P0.2 + P0.3
 
 - P0.2: `neural_mesh/minogan/contract.py` + `canonical.py` (strict pydantic minogan.scorer/v1, typed errors, canonical JSON + input_digest); frozen fixtures from the real pilot pipeline (228 valid / 12 invalid).

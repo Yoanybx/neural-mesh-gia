@@ -20,6 +20,7 @@ from neural_mesh.minogan.contract import (
     parse_scorer_input,
     validate_scorer_output,
 )
+from neural_mesh.minogan.memory import DAY_MS, recurrence_from_records
 
 MODEL_VERSION = "mesh.minogan.score/v0"
 PARITY_TARGET = "score_v0.3"
@@ -256,17 +257,70 @@ def score_input(inp: ScorerInput) -> dict[str, Any]:
     }
 
 
-def score(data: Any) -> dict[str, Any]:
-    """Validate (typed ContractError on bad input), score, and self-check the output contract."""
+LONG_HORIZON_DAYS = 90
+RECURRENCE_DAYS = 30
+DECLINE_TYPES = ("data exfil pattern", "prompt injection attempt")
+DECLINE_MIN_SCORE = 85  # tier T4
+DECLINE_MIN_CONFIDENCE = 0.6
+DECLINE_MIN_DAYS = 2
+
+
+def _drift_status(p: float) -> str:
+    return "stable" if p < 10 else "watch" if p < 25 else "elevated" if p < 50 else "critical"
+
+
+def apply_memory(inp: ScorerInput, out: dict[str, Any], memory: Any) -> dict[str, Any]:
+    """Long-horizon drift + recurrence from AgentMemory (read-only, records with ts ≤ input.now only).
+
+    Never changes ``score``/``driftPct``/``driftStatus``. May turn ``uw.outcome`` into ``decline`` per uw_v0 §3 rule 4.
+    """
+    now, tenant, agent = inp.now, inp.org_id, inp.agent.id
+    recs = memory.history(tenant, agent, now - LONG_HORIZON_DAYS * DAY_MS, now)
+    c = out["components"]
+    # long-horizon baseline: scores older than the pilot's 7-day window, up to 90 days back
+    older = [r for r in recs if r.get("kind") == "score" and r["ts"] < inp.window.from_]
+    if older:
+        mean = sum(r["score"] for r in older) / len(older)
+        dp = js_round(((out["score"] - mean) / max(mean, 1)) * 1000) / 10
+        c["drift_long"] = {"window_days": LONG_HORIZON_DAYS, "excludes": "pilot 7d window", "n": len(older),
+                           "baseline_mean": r1(mean), "drift_pct": dp, "status": _drift_status(dp),
+                           "memory_from": older[0]["ts"]}
+    else:
+        c["drift_long"] = {"window_days": LONG_HORIZON_DAYS, "excludes": "pilot 7d window", "n": 0,
+                           "baseline_mean": None, "drift_pct": None, "status": None, "memory_from": None}
+    cur = [{"id": s.id, "rule": s.rule, "severity": s.severity, "ts": s.ts} for s in inp.signals]
+    rules = sorted({(s.rule, s.type) for s in inp.signals})
+    rec_list = []
+    for rule, typ in rules:
+        rr = recurrence_from_records(recs, rule, RECURRENCE_DAYS, now, extra_signals=cur)
+        rh = recurrence_from_records(recs, rule, RECURRENCE_DAYS, now, severity="high", extra_signals=cur)
+        rec_list.append({"rule": rule, "type": typ, "days": RECURRENCE_DAYS, "occurrences": rr["occurrences"],
+                         "distinct_days": rr["distinct_days"], "high_distinct_days": rh["distinct_days"]})
+    c["recurrence"] = rec_list
+    basis = [r for r in rec_list if r["type"] in DECLINE_TYPES and r["high_distinct_days"] >= DECLINE_MIN_DAYS]
+    if out["score"] >= DECLINE_MIN_SCORE and c["confidence"] >= DECLINE_MIN_CONFIDENCE and basis:
+        c["uw"] = {"outcome": "decline", "conditions": _uw_conditions(inp, "decline")}
+        c["decline_basis"] = {"rule": "uw_v0 §3.4", "recurrence": basis, "min_score": DECLINE_MIN_SCORE,
+                              "min_confidence": DECLINE_MIN_CONFIDENCE}
+    return out
+
+
+def score(data: Any, memory: Any = None) -> dict[str, Any]:
+    """Validate (typed ContractError on bad input), score, and self-check the output contract.
+
+    ``memory`` (an AgentMemory) is optional; without it the output is the parity path, byte-for-byte.
+    """
     inp = data if isinstance(data, ScorerInput) else parse_scorer_input(data)
     out = score_input(inp)
+    if memory is not None:
+        apply_memory(inp, out, memory)
     validate_scorer_output(out, inp)
     return out
 
 
-def score_bytes(data: Any) -> bytes:
-    """Canonical JSON bytes of the ScorerOutput (byte-identical for identical input)."""
-    return canonical_json(score(data))
+def score_bytes(data: Any, memory: Any = None) -> bytes:
+    """Canonical JSON bytes of the ScorerOutput (byte-identical for identical input and memory state)."""
+    return canonical_json(score(data, memory))
 
 
 class MeshScorer:
@@ -276,5 +330,8 @@ class MeshScorer:
     methodology = METHODOLOGY
     needs: tuple[str, ...] = ()
 
+    def __init__(self, memory: Any = None):
+        self.memory = memory
+
     def score(self, data: Any) -> dict[str, Any]:
-        return score(data)
+        return score(data, self.memory)

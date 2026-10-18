@@ -1,6 +1,8 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: CP-0088 P0.4 — AgentMemory on C-RAM keyed (tenant_id, agent_id) (await operator go)
+PREFERRED_NEXT: CP-0088 P0.5 — HTTP service (POST /v1/score, GET /health, per-tenant Bearer, 1 MB)
+
+DONE: P0.4 AgentMemory on C-RAM (day-bucket index, hash chain, kill -9 safe, tenant-checked reads); scorer memory= adds drift_long / recurrence / decline.
 
 DONE: P0.2 contract.py + frozen pilot fixtures (228 valid / 12 invalid); P0.3 Mesh scorer v0 (228/228 exact parity vs pilot computeScore score_v0.3; byte-identical; zero network).
 

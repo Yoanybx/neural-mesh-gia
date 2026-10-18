@@ -1,6 +1,6 @@
 # CP-0088 — Camino Minogan (Mesh as Minogan.ai intelligence backend) — OPEN
 
-**Status:** **OPEN** · P0.1 (NOTE S0 + UW schema v0) **DONE** `4dd797a` · P0.2 contract **DONE** `d52226a` · P0.3 scorer parity **DONE** (see §7) · P0.4–P0.7 **NOT STARTED**  
+**Status:** **OPEN** · P0.1 (NOTE S0 + UW schema v0) **DONE** `4dd797a` · P0.2 contract **DONE** `d52226a` · P0.3 scorer parity **DONE** `37a0d7c` · P0.4 AgentMemory **DONE** (see §7) · P0.5–P0.7 **NOT STARTED**  
 **Cycle / Checkpoint:** 84 / **CP-0088**  
 **Date:** 2026-10-18 ~01:40 EDT (America/New_York)  
 **Author:** Grok Bot `<grok-bot@local>`  
@@ -73,7 +73,8 @@ verifiable per-tenant retention/deletion · per-tenant metrics.
 |------|--------|----------|
 | P0.1 | `4dd797a` | NOTE S0, `docs/schema/minogan/*` |
 | P0.2 | `d52226a` | `neural_mesh/minogan/{contract,canonical}.py`; 228 valid + 12 invalid frozen fixtures from the real pilot pipeline (`scripts/minogan/gen_fixtures.mjs`, /tmp copy, seeded); Python `input_digest` == JS canonical sha256 on 228/228; 46 tests |
-| P0.3 | (this commit) | `neural_mesh/minogan/scorer.py`; parity vs pilot `computeScore` score_v0.3: **max abs diff 0 on 228/228** (123 pipeline + 105 JS-scored variants; exposure, behavior, driftPct, driftStatus, axes, cited_trace_ids, explain, floor, drift all exact); byte-identical across processes / PYTHONHASHSEED; socket-refusing test; 13 tests |
+| P0.3 | `37a0d7c` | `neural_mesh/minogan/scorer.py`; parity vs pilot `computeScore` score_v0.3: **max abs diff 0 on 228/228** (123 pipeline + 105 JS-scored variants; exposure, behavior, driftPct, driftStatus, axes, cited_trace_ids, explain, floor, drift all exact); byte-identical across processes / PYTHONHASHSEED; socket-refusing test; 13 tests |
+| P0.4 | (this commit) | `neural_mesh/minogan/memory.py` (`docs/schema/minogan/agent_memory_v0.md`): MEMORY objects on C-RAM, per-(tenant, agent) hash chain, UTC day-bucket index, pending-head crash protocol; real SIGKILL tests (mid-stream + each protocol step); 90-day history = 91 bucket reads with 301 days stored; cross-tenant negative + forged-index tests; tamper (CAS bytes, re-hashed record, deleted line, head) detected; scorer `memory=` adds drift_long / recurrence / decline; no-memory parity 228/228 unchanged; 20 tests |
 
 Left out of P0.3 (by design): long-horizon drift (`components.drift_long`) and `decline` (need AgentMemory, P0.4); `events`-based
 exclusions (`EXCL_*`) and the full `minogan.uw/v0` record (only the compact `components.uw`); calibration of tiers/thresholds (P1).
