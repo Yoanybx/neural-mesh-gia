@@ -6,7 +6,7 @@
 **Theme:** camino_minogan (Mesh = Minogan.ai intelligence backend; `docs/planning/CP_0088_CAMINO_MINOGAN.md`) · prior: l_judge_full_adapter_live_rv (R0–R5 DONE, streaming DEFER)  
 **Version:** 0.18.0 HELD  
 **Pytest:** 1297 passed / 17 failed / 3 skipped (2026-10-18; failures = missing `dist/` artefacts, see below; last green 1314/0/3 at CP-0087)  
-**Date:** 2026-10-18 01:45 EDT  
+**Date:** 2026-10-18 01:40 EDT  
 **live:** `LIVE_API_ENABLED=True` on CP-0087 product modules only (peer / canary / LHT / multi-canary / R1–R4 / Gate6 incr); others False; I5 / RefuseTransport gate network  
 **M1:** NO_CONSENSUS_YET (PERMANENT under N=2 scope)  
 **HOLD:** Active · D3 NOT ACKed · MESH_PERF_EXPERIMENTAL OFF · pkg0190 NOT_OPENED  

@@ -174,12 +174,12 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Durable goals + audit ledger + resume-after-restart; orphan policy LEFT/REJOIN; idempotency; compose CP-0064.
 - Substrate memory NOT consciousness; T-cont-a/b/c; pytest 1046/0; package 0.18.0 held; M1=NO_CONSENSUS_YET.
 
-## 2026-10-18 01:45 EDT — state truth-up (post CP-0087)
+## 2026-10-18 01:40 EDT — state truth-up (post CP-0087)
 - `.project_state` was stale at CP-0074 (cycle 70); real tip `21f9e48` / CP-0087 (F4 product ACK SIGNED, LIVE product path). Updated CURRENT_STATE / CHECKPOINT / TEST_STATUS / NEXT_ACTION.
 - `dist/` deleted: root cause = workspace re-materialised 2026-10-17 12:15–12:17 EDT without `dist/` and `.venv/`; 4 tracked files (force-added despite `.gitignore: dist/`) read as deleted. No commit/script deleted them. Untracked frozen release archives lost → 17 pytest failures. Nothing restored or re-minted.
 - `.venv` recreated locally (gitignored). pytest 1297 passed / 17 failed / 3 skipped.
 
-## Cycle 84 — 2026-10-18 01:50 EDT — CP-0088 camino Minogan OPEN (P0.1)
+## Cycle 84 — 2026-10-18 01:40 EDT — CP-0088 camino Minogan OPEN (P0.1)
 - Operator (Joan): Mesh = intelligence backend of Minogan.ai; SaaS un-PARKED for this path only; GIA NO_HELD; no Raft/N>2; deterministic no-LLM score; metadata only.
 - NOTE S0 `council/NOTE_S0_MESH_MINOGAN_INTELLIGENCE.md` (intent + honest gap list); `docs/planning/CP_0088_CAMINO_MINOGAN.md` (P0 list + P1 deferred).
 - `docs/schema/minogan/`: `uw_v0.md` + `uw_v0.schema.json`, `scorer_components_mesh_v0.schema.json`, `scorer_contract_v1_mapping.md` (names confirmed vs pilot scorer.js/engine.js/rules.js).
