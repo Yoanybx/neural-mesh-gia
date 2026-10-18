@@ -12,7 +12,8 @@ Rules:
   deadline keep every request < 2 s (408 slow body / 504 deadline); nothing is appended to memory after the deadline.
 - Typed contract errors → 4xx JSON ``{"error": {code, message, path?}}``; request content is never echoed.
 - Logs are one metadata JSON line per request (tenant, agent, status, latency, digest, score) — never bodies.
-- Score is deterministic and LLM-free; the memory record is appended after scoring (per-agent serialised).
+- Score is deterministic and LLM-free; after scoring, the memory record and then the score-ledger entry (P0.6) are
+  appended (per-agent serialised); the ledger id is returned in ``X-Mesh-Ledger-Id``.
 """
 
 from __future__ import annotations
@@ -39,6 +40,12 @@ from neural_mesh.minogan.contract import (
     ContractError,
     ContractLimitError,
     parse_scorer_input,
+)
+from neural_mesh.minogan.ledger import (
+    DeadlineExceeded,
+    LedgerError,
+    ScoreLedger,
+    record_scoring,
 )
 from neural_mesh.minogan.memory import AgentMemory, MemoryError_, MemoryOrderError
 from neural_mesh.minogan.scorer import METHODOLOGY, MODEL_VERSION, SCORER_ID, score
@@ -116,6 +123,7 @@ class MinoganService:
         if deadline_s >= 2.0 or read_timeout_s >= 2.0:
             raise ValueError("timeouts must stay < 2 s")
         self.memory = AgentMemory(memory_root)
+        self.ledger = ScoreLedger(memory_root)
         self.tokens = tokens
         self.log = log if log is not None else sys.stderr
         self.deadline_s = deadline_s
@@ -145,11 +153,10 @@ class MinoganService:
         if inp.org_id != tenant:
             return 403, {"error": {"code": "tenant_mismatch", "message": "org_id does not match the token's tenant"}}, meta
         with self._agent_lock(tenant, inp.agent.id):
-            out = self.score_fn(inp, memory=self.memory)
-            if time.monotonic() > deadline:  # never persist a result the client will not receive
-                return 504, {"error": {"code": "deadline", "message": "scoring exceeded the deadline; not recorded"}}, meta
-            rec = self.memory.append_score(inp, out)
-        meta.update(digest=out["components"]["input_digest"], score=out["score"], seq=rec["seq"])
+            # never persist (memory or ledger) a result the client will not receive
+            out, rec, entry = record_scoring(inp, self.memory, self.ledger, score_fn=self.score_fn,
+                                             check=lambda: time.monotonic() <= deadline)
+        meta.update(digest=out["components"]["input_digest"], score=out["score"], seq=rec["seq"], ledger=entry["id"])
         return 200, out, meta
 
     def handle_score(self, raw: bytes, tenant: str, started: float) -> tuple[int, dict, dict]:
@@ -168,6 +175,10 @@ class MinoganService:
             if e.errors:
                 err["errors"] = [{"loc": [str(p)[:64] for p in x["loc"]], "type": x["type"]} for x in e.errors[:20]]
             return status, {"error": err}, {}
+        except DeadlineExceeded:
+            return 504, {"error": {"code": "deadline", "message": "scoring exceeded the deadline; not recorded"}}, {}
+        except LedgerError as e:
+            return 500, {"error": {"code": e.code, "message": "score ledger integrity error"}}, {}
         except MemoryOrderError:
             return 409, {"error": {"code": "memory_order", "message": "now is older than this agent's last record"}}, {}
         except MemoryError_ as e:
@@ -244,7 +255,7 @@ def _make_handler(svc: MinoganService) -> type[BaseHTTPRequestHandler]:
                 self._send(400, {"error": {"code": "short_body", "message": "body shorter than Content-Length"}})
                 return self._done(400, t0, tenant=tenant)
             status, body, meta = svc.handle_score(raw, tenant, t0)
-            extra = {"X-Mesh-Memory-Seq": str(meta["seq"])} if "seq" in meta else None
+            extra = {"X-Mesh-Memory-Seq": str(meta["seq"]), "X-Mesh-Ledger-Id": meta["ledger"]} if "seq" in meta else None
             self._send(status, body, extra)
             self._done(status, t0, tenant=tenant, bytes=n, err=body.get("error", {}).get("code"), **meta)
 

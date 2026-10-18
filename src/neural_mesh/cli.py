@@ -876,6 +876,13 @@ def main(argv: list[str] | None = None):
         help="JSON {tenants:{org:[sha256:..]}} outside the repo (else $MESH_MINOGAN_TOKENS_FILE / $MESH_MINOGAN_TOKENS)",
     )
     mino_subs.add_parser("hash-token", help="Read a token on stdin; print sha256:<hex> for the tokens file")
+    mino_rep = mino_subs.add_parser("replay", help="Re-score a ledger entry; verify output byte-identical")
+    mino_rep.add_argument("entry_id", type=str, help="Ledger id (msl_<16hex>_<seq>)")
+    mino_rep.add_argument("--root", type=str, required=True, help="Memory/ledger root dir")
+    mino_ver = mino_subs.add_parser("verify", help="Verify the whole score ledger chain (+ memory refs)")
+    mino_ver.add_argument("--root", type=str, required=True, help="Memory/ledger root dir")
+    mino_ver.add_argument("--tenant", type=str, default=None, help="Only this tenant (org_id)")
+    mino_ver.add_argument("--replay", action="store_true", help="Also replay every scoring entry")
 
     a = parser.parse_args(argv)
     if a.cmd == "minogan":
@@ -884,6 +891,21 @@ def main(argv: list[str] | None = None):
 
             print(hash_token(sys.stdin.readline().strip()))
             return
+        if a.mino_op in ("replay", "verify"):
+            from .minogan.ledger import ScoreLedger
+            from .minogan.memory import AgentMemory
+
+            led, mem = ScoreLedger(a.root), AgentMemory(a.root)
+            if a.mino_op == "replay":
+                try:
+                    res = led.replay(a.entry_id, mem)
+                except Exception as e:  # LedgerNotFound / LedgerCorrupt
+                    res = {"id": a.entry_id, "ok": False, "error": getattr(e, "code", type(e).__name__),
+                           "detail": str(e)[:300]}
+            else:
+                res = led.verify(mem, a.tenant, replay=a.replay)
+            print(json.dumps(res, sort_keys=True, indent=2))
+            raise SystemExit(0 if res["ok"] else 1)
         from .minogan.service import serve
 
         serve(a.memory_root, host=a.host, port=a.port, tokens_file=a.tokens_file)

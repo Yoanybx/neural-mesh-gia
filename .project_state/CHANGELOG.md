@@ -1,3 +1,11 @@
+## Cycle 84 — 2026-10-18 — CP-0088 P0.6
+
+- `neural_mesh/minogan/ledger.py`: per-tenant hash-chained score ledger (`mesh.minogan.ledger/v0`) on C-RAM (EVIDENCE: entry, canonical metadata input, canonical output); seq-chunked index; AgentMemory-style pending-head crash protocol; `memory_unledgered` entries for memory records without a scoring entry.
+- Entry: id, tenant, agent, input_digest + stored input, memory snapshot ref (before / used digest / appended), model_version, output digest, prev_hash, hash. Wired into the service (`X-Mesh-Ledger-Id`) and optional `MeshScorer(ledger=)`.
+- `MemoryView` (memory as of seq) shared by live scoring and replay; `AgentMemory.history(max_seq=)`, `record_at`, `agents`.
+- CLI `mesh minogan replay <id>` (byte-identical) and `mesh minogan verify [--tenant] [--replay]`. Doc `docs/schema/minogan/score_ledger_v0.md`.
+- pytest 1435 passed / 17 known-failed / 3 skipped. No push/tags; LIVE untouched; pilot untouched; no deploy.
+
 ## Cycle 84 — 2026-10-18 — CP-0088 P0.5
 
 - `neural_mesh/minogan/service.py`: stdlib loopback HTTP service — POST /v1/score (contract → org_id==token tenant → deterministic score with AgentMemory → append), GET /health (model_version, contract). sha256-only per-tenant Bearer (hmac.compare_digest), 1 MB/413, 411, 408/504 under 2 s (no append after deadline), typed 4xx JSON without echo, metadata-only logs. `mesh minogan serve|hash-token`. `docs/schema/minogan/service_v0.md`.

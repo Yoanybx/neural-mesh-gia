@@ -210,3 +210,10 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - Limits: 1 MB → 413 before read; 411; read timeout 1.0 s (408); deadline 1.5 s (504, no append after deadline); typed 4xx with fixed messages (no echo); metadata-only log lines.
 - AgentMemory verified-hash cache (perf; tamper still caught in-process — new test). Bench p50 21 / p95 27 ms (300 req, 200 events); 1000-record memory p95 61 ms.
 - Tests 28 service + 1 memory. pytest 1405 / 17 known / 3.
+
+## 2026-10-18 02:45 EDT — CP-0088 P0.6 score ledger + replay
+- `src/neural_mesh/minogan/ledger.py`: per-tenant chain, entries/inputs/outputs as C-RAM EVIDENCE, seq-chunked index, pending-head recovery; `record_scoring` (memory append → ledger append; reconcile writes `memory_unledgered`).
+- Replay: 228/228 fixtures byte-identical (+ memory-backed decline / drift_long); replay uses memory as of `before.seq`, unaffected by later scorings.
+- Verify fails on: entry/input/output byte flips, re-hashed entries, index/head edits, deleted ledger tail, memory byte flips, consistently rewritten memory chain, unledgered memory.
+- kill -9 at each step of memory + ledger protocols and mid-stream: chains valid; cross-structure gap fails verify until next scoring heals it.
+- Bench with ledger: p50 31.8 / p95 45.8 ms (300 req, 200 events). pytest 1435 / 17 known / 3.

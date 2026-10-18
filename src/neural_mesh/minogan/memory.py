@@ -321,8 +321,12 @@ class AgentMemory:
         self._ensure(adir, tenant_id, agent_id)
         return self._read_head(adir)
 
-    def history(self, tenant_id: str, agent_id: str, since: int, until: int) -> list[dict[str, Any]]:
-        """Records with since ≤ ts ≤ until (inclusive), in chain order. Reads only the day buckets in range."""
+    def history(self, tenant_id: str, agent_id: str, since: int, until: int,
+                max_seq: int | None = None) -> list[dict[str, Any]]:
+        """Records with since ≤ ts ≤ until (inclusive), in chain order. Reads only the day buckets in range.
+
+        ``max_seq`` limits the view to the chain as it was at that seq (replay of a past scoring).
+        """
         if until < since:
             return []
         adir = self._agent_dir(tenant_id, agent_id)
@@ -330,17 +334,64 @@ class AgentMemory:
         head = self._read_head(adir)
         if not head["last_day"]:
             return []
+        limit = head["seq"] if max_seq is None else min(head["seq"], max_seq)
         out = []
         for day in _days(since, until):
             if day < head["first_day"] or day > head["last_day"]:
                 continue  # outside this agent's lifetime: no read
             for line in self._bucket_lines(adir / "days" / f"{day}.jsonl"):
-                if since <= line["ts"] <= until and line["seq"] <= head["seq"]:
+                if since <= line["ts"] <= until and line["seq"] <= limit:
                     rec = self._load(line["key"], tenant_id, agent_id)
                     if rec["hash"] != line["hash"] or rec["seq"] != line["seq"]:
                         raise MemoryCorrupt(f"index line seq {line['seq']} does not match its record")
                     out.append(rec)
         return out
+
+    def record_at(self, tenant_id: str, agent_id: str, seq: int, ts: int) -> dict[str, Any]:
+        """The committed record ``seq`` (its ``ts`` locates the day bucket). MemoryCorrupt if absent or altered."""
+        adir = self._agent_dir(tenant_id, agent_id)
+        self._ensure(adir, tenant_id, agent_id)
+        head = self._read_head(adir)
+        if not isinstance(seq, int) or seq < 1 or seq > head["seq"]:
+            raise MemoryCorrupt(f"record seq {seq} not in chain (head {head['seq']})")
+        for line in self._bucket_lines(adir / "days" / f"{_day(ts)}.jsonl"):
+            if line["seq"] == seq:
+                rec = self._load(line["key"], tenant_id, agent_id)
+                if rec["hash"] != line["hash"] or rec["seq"] != seq or rec["ts"] != ts:
+                    raise MemoryCorrupt(f"index line seq {seq} does not match its record")
+                return rec
+        raise MemoryCorrupt(f"record seq {seq} not found in its day bucket")
+
+    def agents(self, tenant_id: str | None = None) -> list[tuple[str, str]]:
+        """(tenant_id, agent_id) of every non-empty chain (audit path: one record read per agent).
+
+        Raw ids are taken from the agent's first record and must hash back to its directory.
+        """
+        out = []
+        tdirs = [self._agent_dir(tenant_id, "x").parent] if tenant_id else sorted(self.base.iterdir())
+        for tdir in tdirs:
+            if not tdir.is_dir():
+                continue
+            for adir in sorted(tdir.iterdir()):
+                head = self._read_head(adir) if (adir / "head.json").exists() else None
+                if not head or not (head["seq"] or head.get("pending")):
+                    continue
+                day = head["first_day"] or head["pending"]["day"]
+                lines = self._bucket_lines(adir / "days" / f"{day}.jsonl")
+                key = lines[0]["key"] if lines else head["pending"]["key"]
+                try:
+                    self.cram.verify_or_raise(key)
+                    rec = json.loads(self.cram.get(key))
+                except (ObjectMissing, CRAMCorrupt) as e:
+                    raise MemoryCorrupt(f"first record of {adir.name[:12]}: {type(e).__name__}") from None
+                t, a = rec.get("tenant_id"), rec.get("agent_id")
+                if self._agent_dir(t, a) != adir:
+                    raise MemoryTenantError("agent directory does not match its first record's ids")
+                out.append((t, a))
+        return out
+
+    def view(self, tenant_id: str, agent_id: str, max_seq: int) -> MemoryView:
+        return MemoryView(self, tenant_id, agent_id, max_seq)
 
     def baseline(self, tenant_id: str, agent_id: str, since: int, until: int) -> dict[str, Any]:
         recs = [r for r in self.history(tenant_id, agent_id, since, until) if r.get("kind") == "score"]
@@ -384,3 +435,27 @@ class AgentMemory:
             return {"ok": True, "n": expect - 1, "head_seq": head["seq"], "head_hash": head["hash"]}
         except (MemoryError_, json.JSONDecodeError, KeyError) as e:
             return {"ok": False, "error": f"{type(e).__name__}: {e}"}
+
+
+class MemoryView:
+    """Read-only view of one agent's chain as of ``max_seq``; records which records were read.
+
+    Used for both live scoring (``max_seq`` = head before the append) and replay, so both run the same code.
+    """
+
+    def __init__(self, memory: AgentMemory, tenant_id: str, agent_id: str, max_seq: int):
+        self.memory, self.tenant_id, self.agent_id, self.max_seq = memory, tenant_id, agent_id, max_seq
+        self.used: dict[int, str] = {}
+
+    def history(self, tenant_id: str, agent_id: str, since: int, until: int) -> list[dict[str, Any]]:
+        if (tenant_id, agent_id) != (self.tenant_id, self.agent_id):
+            raise MemoryTenantError("view is bound to another (tenant_id, agent_id)")
+        recs = self.memory.history(tenant_id, agent_id, since, until, max_seq=self.max_seq)
+        for r in recs:
+            self.used[r["seq"]] = r["hash"]
+        return recs
+
+    def used_ref(self) -> dict[str, Any]:
+        seqs = sorted(self.used)
+        return {"n": len(seqs), "first_seq": seqs[0] if seqs else None, "last_seq": seqs[-1] if seqs else None,
+                "digest": sha256_hex(canonical_json([[q, self.used[q]] for q in seqs]))}

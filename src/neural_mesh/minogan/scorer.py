@@ -330,8 +330,16 @@ class MeshScorer:
     methodology = METHODOLOGY
     needs: tuple[str, ...] = ()
 
-    def __init__(self, memory: Any = None):
+    def __init__(self, memory: Any = None, ledger: Any = None):
         self.memory = memory
+        self.ledger = ledger  # optional ScoreLedger (P0.6): every scoring recorded + replayable
 
     def score(self, data: Any) -> dict[str, Any]:
-        return score(data, self.memory)
+        if self.ledger is None:
+            return score(data, self.memory)
+        from neural_mesh.minogan.ledger import (
+            record_scoring,  # local: ledger imports this module
+        )
+
+        inp = data if isinstance(data, ScorerInput) else parse_scorer_input(data)
+        return record_scoring(inp, self.memory, self.ledger)[0]

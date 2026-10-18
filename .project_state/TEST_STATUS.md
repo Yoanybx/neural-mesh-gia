@@ -1,18 +1,19 @@
 # TEST STATUS
 
-**Checkpoint:** CP-0088 OPEN (P0.1–P0.5 done)  
+**Checkpoint:** CP-0088 OPEN (P0.1–P0.6 done)  
 **Command:** `.venv/bin/python -m pytest -q -p no:cacheprovider -rfs`  
-**Pytest:** 1405 passed / 17 known-failed / 3 skipped (2026-10-18 02:19 EDT; +108 CP-0088 tests: contract 46, scorer parity 13, agent memory 21, service 28)
+**Pytest:** 1435 passed / 17 known-failed / 3 skipped (2026-10-18 02:45 EDT; +138 CP-0088 tests: contract 46, scorer parity 13, agent memory 21, service 28, score ledger 30)
+**Previous:** 1405 / 17 / 3 (02:19 EDT)
 **Previous:** 1376 / 17 / 3 (02:08 EDT)
 **Previous:** 1356 / 17 / 3 (01:58 EDT)
 **Previous:** 1297 / 17 / 3 (01:48 EDT, after `git checkout -- dist`)
-**Minogan only:** `.venv/bin/python -m pytest -q -m minogan_cp0088` → 108 passed  
+**Minogan only:** `.venv/bin/python -m pytest -q -m minogan_cp0088` → 138 passed  
 **Baseline:** 1314 passed / 0 failed / 3 skipped (CP-0087)  
 **Skipped:** 3 opt-in real-HTTP tests (R2 / R3 / Gate6 incr).
 
 ## P0.5 latency (local loopback, 200-event / 71 KB ScorerInput, every request appends to AgentMemory)
 
-`.venv/bin/python scripts/minogan/bench_service.py -n 300` → bench 300 req: p50 20.95 ms / p95 26.95 ms; 1000 req (1000-record memory): p50 37.24 / p95 61.43 ms; pytest 60 req p95 33–42 ms. Target p95 < 300 ms. Latency grows with records in the agent's 90-day window.
+`.venv/bin/python scripts/minogan/bench_service.py -n 300` → bench 300 req: p50 20.95 ms / p95 26.95 ms; 1000 req (1000-record memory): p50 37.24 / p95 61.43 ms; pytest 60 req p95 33–42 ms. With the P0.6 score ledger (3 more CAS puts + 2 head writes per request): 300 req p50 31.84 / p95 45.81 / p99 54.84 ms. Target p95 < 300 ms. Latency grows with records in the agent's 90-day window.
 
 ## Known failures (17) — accepted, intentionally not fixed
 

@@ -11,11 +11,11 @@ Code: `src/neural_mesh/minogan/service.py` · CLI: `mesh minogan serve|hash-toke
 | Method | Path | Auth | Response |
 |--------|------|------|----------|
 | GET | `/health` | none | `{ok, service:"mesh-minogan", model_version, contract:"minogan.scorer/v1", methodology, scorer:"mesh"}` |
-| POST | `/v1/score` | Bearer | `ScorerOutput` (canonical JSON, byte-identical to `score(inp, memory)`), header `X-Mesh-Memory-Seq` |
+| POST | `/v1/score` | Bearer | `ScorerOutput` (canonical JSON, byte-identical to `score(inp, memory)`), headers `X-Mesh-Memory-Seq`, `X-Mesh-Ledger-Id` (P0.6) |
 
 `POST /v1/score` flow: auth → `Content-Length` (411 missing, 413 > 1 048 576 B, rejected before reading) → read
 (socket timeout) → `parse_scorer_input` → `org_id == tenant(token)` → per-(tenant, agent) lock → `score(inp,
-memory=AgentMemory)` → deadline check → `AgentMemory.append_score` → 200.
+memory=AgentMemory)` → deadline check → `AgentMemory.append_score` → score ledger entry (P0.6, `score_ledger_v0.md`) → 200.
 
 ## Auth
 

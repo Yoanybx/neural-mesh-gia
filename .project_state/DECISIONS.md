@@ -89,3 +89,9 @@ Use ADR files for major decisions.
 - One ScorerInput per request (pilot `getScorer()` calls score per agent); batch endpoint deferred.
 - Error responses use fixed per-code messages; parser text never returned (it can quote input values).
 - Memory append happens only if scoring finished inside the deadline; per-(tenant, agent) lock serialises read→score→append.
+
+## D-C84c — CP-0088 P0.6 score ledger (2026-10-18)
+- Ledger per tenant (not per agent) on the same root/CAS as AgentMemory; ids `msl_<T16>_<seq>` (no raw tenant id).
+- Order memory → ledger; the cross-structure crash window fails verify (indistinguishable from a deleted tail) and is healed by an explicit `memory_unledgered` entry at the agent's next scoring — holes are recorded, never silent.
+- Replay compares full output bytes (stored output object) + digest + memory-used digest; refuses on model_version mismatch rather than re-scoring with other code.
+- No external anchoring/signing in v0 (P1).

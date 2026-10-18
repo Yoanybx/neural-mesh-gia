@@ -1,6 +1,8 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: CP-0088 P0.6 — score ledger + replay (await operator go)
+PREFERRED_NEXT: CP-0088 P0.7 — deploy proposal only (await operator go)
+
+DONE: P0.6 per-tenant hash-chained score ledger (`mesh.minogan.ledger/v0`): every scoring (service + optional in-process) with canonical metadata input, memory snapshot ref (before/used/appended), model_version, output digest; `mesh minogan replay <id>` byte-identical; `mesh minogan verify [--replay]` whole chain + memory refs + coverage.
 
 DONE: P0.5 loopback HTTP service (stdlib): POST /v1/score + GET /health, sha256-only per-tenant Bearer, org_id==tenant, 1 MB/413, <2 s timeouts (408/504, no append after deadline), typed 4xx without echo, metadata-only logs; `mesh minogan serve|hash-token`; p95 27 ms @200 events.
 
