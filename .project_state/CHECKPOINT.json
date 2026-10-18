@@ -1,6 +1,5 @@
 {
   "active_tasks": [
-    "cp0088_p0_5_http",
     "cp0088_p0_6_score_ledger_replay",
     "cp0088_p0_7_deploy_proposal"
   ],
@@ -110,8 +109,10 @@
     "mesh_minogan_s0_uw_schema_v0_cp0088_p0_1",
     "mesh_minogan_contract_cp0088_p0_2",
     "mesh_minogan_scorer_parity_cp0088_p0_3",
-    "mesh_minogan_agent_memory_cp0088_p0_4"
+    "mesh_minogan_agent_memory_cp0088_p0_4",
+    "cp0088_p0_5_http"
   ],
+  "cp_phase": "OPEN_P0_5_DONE",
   "current_module": "minogan-path",
   "current_phase": 5,
   "cycle": 84,
@@ -126,39 +127,41 @@
   "l1_status": "CLOSED",
   "last_checkpoint": "CP-0088",
   "last_failed_test": "2026-10-18T05:33:00Z",
-  "last_successful_test": "2026-10-18T06:08:00Z",
-  "last_updated": "2026-10-18T06:10:00Z",
+  "last_successful_test": "2026-10-18T06:19:00Z",
+  "last_updated": "2026-10-18T06:20:00Z",
+  "live": "LIVE_API_ENABLED=True on CP-0087 product modules only",
   "modified_files": [
+    "src/neural_mesh/minogan/service.py",
     "src/neural_mesh/minogan/memory.py",
-    "src/neural_mesh/minogan/scorer.py",
+    "src/neural_mesh/cli.py",
+    "tests/test_minogan_service_cp0088.py",
     "tests/test_minogan_agent_memory_cp0088.py",
-    "docs/schema/minogan/agent_memory_v0.md",
+    "scripts/minogan/bench_service.py",
+    "docs/schema/minogan/service_v0.md",
     ".project_state/"
   ],
-  "next_action": "CP-0088 OPEN: P0.1-P0.4 done (contract, scorer parity 228/228, AgentMemory on C-RAM with day-bucket index + hash chain). Next P0.5 HTTP service. 0.18.0 held; M1=NO_CONSENSUS_YET; GIA NO_HELD.",
+  "next_action": "CP-0088 OPEN: P0.1-P0.5 done (contract, scorer parity 228/228, AgentMemory on C-RAM, loopback HTTP service POST /v1/score + GET /health). Next P0.6 score ledger + replay. 0.18.0 held; M1=NO_CONSENSUS_YET; GIA NO_HELD.",
   "open_questions": [],
-  "preferred_next": "cp0088_p0_5_http",
+  "preferred_next": "cp0088_p0_6_score_ledger_replay",
   "project": "Neural Mesh / GIA-COS",
   "project_version": "0.18.0",
   "pytest": {
-    "passed": 1376,
     "failed": 17,
-    "skipped": 3,
-    "known_failed": 17
+    "known_failed": 17,
+    "passed": 1405,
+    "skipped": 3
   },
+  "saas_status": "UNPARKED_CP0088_PATH_ONLY",
   "safety_status": "SAFE",
   "schema_version": "1.0",
   "status": "VERIFIED",
   "test_summary": {
-    "passed": 1376,
     "failed": 17,
-    "skipped": 3,
-    "known_failed": 17
+    "known_failed": 17,
+    "passed": 1405,
+    "skipped": 3
   },
   "theme": "camino_minogan",
-  "themes_status": "CP_0088_OPEN_P0_4_DONE",
-  "version": "0.18.0",
-  "live": "LIVE_API_ENABLED=True on CP-0087 product modules only",
-  "saas_status": "UNPARKED_CP0088_PATH_ONLY",
-  "cp_phase": "OPEN_P0_4_DONE"
+  "themes_status": "CP_0088_OPEN_P0_5_DONE",
+  "version": "0.18.0"
 }

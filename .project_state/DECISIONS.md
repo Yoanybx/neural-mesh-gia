@@ -82,3 +82,10 @@ Use ADR files for major decisions.
 - Metadata only (pilot redaction); never prompts/completions/tool args/results.
 - Integration via pilot Scorer contract `minogan.scorer/v1`; pilot not rewritten.
 - Non-goals: GIA, Raft, N>2, paid services/domains/VMs/keys without OK, push/tags, deploy.
+
+## D-C84b — CP-0088 P0.5 service shape (2026-10-18)
+- stdlib `http.server` (no starlette/uvicorn): zero new deps; adequate for loopback pilot integration; revisit at P0.7 deploy.
+- Loopback only (non-loopback host refused in code); deployment remains P0.7 (proposal + operator OK).
+- One ScorerInput per request (pilot `getScorer()` calls score per agent); batch endpoint deferred.
+- Error responses use fixed per-code messages; parser text never returned (it can quote input values).
+- Memory append happens only if scoring finished inside the deadline; per-(tenant, agent) lock serialises read→score→append.

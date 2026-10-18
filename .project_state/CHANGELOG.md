@@ -1,3 +1,9 @@
+## Cycle 84 — 2026-10-18 — CP-0088 P0.5
+
+- `neural_mesh/minogan/service.py`: stdlib loopback HTTP service — POST /v1/score (contract → org_id==token tenant → deterministic score with AgentMemory → append), GET /health (model_version, contract). sha256-only per-tenant Bearer (hmac.compare_digest), 1 MB/413, 411, 408/504 under 2 s (no append after deadline), typed 4xx JSON without echo, metadata-only logs. `mesh minogan serve|hash-token`. `docs/schema/minogan/service_v0.md`.
+- AgentMemory: in-process cache of verified record hashes (bytes still re-verified vs C-RAM key every read).
+- Latency 200 events: p50 21 ms / p95 27 ms (300 req). pytest 1405 passed / 17 known-failed / 3 skipped. No push/tags; LIVE untouched; pilot untouched; no deploy.
+
 ## Cycle 84 — 2026-10-18 — CP-0088 P0.4
 
 - `neural_mesh/minogan/memory.py` AgentMemory on C-RAM (`ObjectType.MEMORY`), per-(tenant, agent) hash chain, UTC day-bucket index, crash-safe pending-head protocol; `docs/schema/minogan/agent_memory_v0.md`.

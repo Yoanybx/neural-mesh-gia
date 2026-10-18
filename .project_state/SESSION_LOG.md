@@ -203,3 +203,10 @@ CP-0020 EVERY floor optimize; primary GAP + EXPLICIT DEBT; BATCH/recovery MET; p
 - `src/neural_mesh/minogan/memory.py`: MEMORY objects on C-RAM; per-(tenant, agent) hash chain; UTC day-bucket index; pending-head append protocol + recovery; tenant-checked reads.
 - Scorer `memory=`: drift_long (90d excl. pilot 7d), recurrence (30d), decline per uw_v0 rule 4. No memory ⇒ byte-identical parity path (228/228).
 - Tests 20 (real SIGKILL mid-stream + per step; 90d = 91 bucket reads of 301 days; cross-tenant; tamper). pytest 1376 / 17 known / 3.
+
+## 2026-10-18 02:19 EDT — CP-0088 P0.5 HTTP service (loopback)
+- `src/neural_mesh/minogan/service.py` (stdlib ThreadingHTTPServer, 127.0.0.1/::1 only): POST /v1/score, GET /health; `mesh minogan serve|hash-token`.
+- Auth: sha256-only token config (file outside repo or env), constant-time compare over all hashes, tenant from token, org_id mismatch → 403 (nothing written).
+- Limits: 1 MB → 413 before read; 411; read timeout 1.0 s (408); deadline 1.5 s (504, no append after deadline); typed 4xx with fixed messages (no echo); metadata-only log lines.
+- AgentMemory verified-hash cache (perf; tamper still caught in-process — new test). Bench p50 21 / p95 27 ms (300 req, 200 events); 1000-record memory p95 61 ms.
+- Tests 28 service + 1 memory. pytest 1405 / 17 known / 3.

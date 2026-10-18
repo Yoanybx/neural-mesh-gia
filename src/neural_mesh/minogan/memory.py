@@ -139,6 +139,9 @@ def recurrence_from_records(records: list[dict[str, Any]], rule: str, days: int,
             "last_ts": ts[-1] if ts else None}
 
 
+_HASH_OK_MAX = 262_144
+
+
 class AgentMemory:
     def __init__(self, root: str | Path):
         self.root = Path(root)
@@ -147,6 +150,9 @@ class AgentMemory:
         self.base.mkdir(parents=True, exist_ok=True)
         self.stats = {"bucket_reads": 0, "record_reads": 0, "lines_read": 0}
         self._recovered: set[Path] = set()
+        # C-RAM keys whose record_hash was already verified. Bytes are still re-verified against the key on every
+        # read (tamper is still caught); only the canonical re-hash of identical bytes is skipped. Bounded.
+        self._hash_ok: set[str] = set()
 
     # ------------------------------------------------------------------ layout
 
@@ -270,8 +276,12 @@ class AgentMemory:
             raise MemoryCorrupt(f"record {key[:12]}: {type(e).__name__}") from None
         if rec.get("tenant_id") != tenant_id or rec.get("agent_id") != agent_id:
             raise MemoryTenantError("record does not belong to the requested (tenant_id, agent_id)")
-        if rec.get("schema") != SCHEMA or record_hash(rec) != rec.get("hash"):
-            raise MemoryCorrupt(f"record {key[:12]}: hash mismatch")
+        if key not in self._hash_ok:
+            if rec.get("schema") != SCHEMA or record_hash(rec) != rec.get("hash"):
+                raise MemoryCorrupt(f"record {key[:12]}: hash mismatch")
+            if len(self._hash_ok) >= _HASH_OK_MAX:
+                self._hash_ok.clear()
+            self._hash_ok.add(key)
         return rec
 
     def append(self, tenant_id: str, agent_id: str, payload: dict[str, Any]) -> dict[str, Any]:

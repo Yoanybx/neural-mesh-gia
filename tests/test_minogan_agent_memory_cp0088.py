@@ -250,6 +250,20 @@ def test_tamper_cas_bytes_detected(tmp_path):
         AgentMemory(tmp_path).history(T, A, T0, T0 + 5)
 
 
+def test_tamper_detected_by_same_instance_after_cached_read(tmp_path):
+    """P0.5 perf cache (verified record hashes) must not mask on-disk tamper in a long-lived service process."""
+    m = AgentMemory(tmp_path)
+    for i in range(3):
+        m.append(T, A, _rec(T0 + i))
+    assert len(m.history(T, A, T0, T0 + 5)) == 3  # warms the cache
+    key = json.loads(_bucket(m, T, A, T0).read_text().splitlines()[1])["key"]
+    assert key in m._hash_ok
+    p = m.cram._object_path(key)
+    p.write_bytes(p.read_bytes().replace(b'"score":30', b'"score":31'))
+    with pytest.raises(MemoryCorrupt):
+        m.history(T, A, T0, T0 + 5)
+
+
 def test_tamper_rehashed_record_breaks_chain(tmp_path):
     from neural_mesh.cram.models import ObjectType
     from neural_mesh.minogan.canonical import canonical_json

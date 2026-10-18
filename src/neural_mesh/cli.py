@@ -863,7 +863,31 @@ def main(argv: list[str] | None = None):
     rreplay.add_argument("--store", type=str, required=True, help="C-RAM DecisionStore root")
     rreplay.add_argument("--json", action="store_true")
 
+    mino_cmd = sub.add_parser("minogan", help="Minogan.ai scorer (CP-0088): local loopback service")
+    mino_subs = mino_cmd.add_subparsers(dest="mino_op", required=True)
+    mino_srv = mino_subs.add_parser("serve", help="Serve POST /v1/score + GET /health on loopback")
+    mino_srv.add_argument("--host", type=str, default="127.0.0.1", help="Loopback only")
+    mino_srv.add_argument("--port", type=int, default=8787)
+    mino_srv.add_argument("--memory-root", type=str, required=True, help="AgentMemory root dir")
+    mino_srv.add_argument(
+        "--tokens-file",
+        type=str,
+        default=None,
+        help="JSON {tenants:{org:[sha256:..]}} outside the repo (else $MESH_MINOGAN_TOKENS_FILE / $MESH_MINOGAN_TOKENS)",
+    )
+    mino_subs.add_parser("hash-token", help="Read a token on stdin; print sha256:<hex> for the tokens file")
+
     a = parser.parse_args(argv)
+    if a.cmd == "minogan":
+        if a.mino_op == "hash-token":
+            from .minogan.service import hash_token
+
+            print(hash_token(sys.stdin.readline().strip()))
+            return
+        from .minogan.service import serve
+
+        serve(a.memory_root, host=a.host, port=a.port, tokens_file=a.tokens_file)
+        return
     root = Path.cwd()
     mgr = CheckpointManager(root)
 

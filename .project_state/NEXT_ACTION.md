@@ -1,6 +1,8 @@
 # NEXT ACTION
 
-PREFERRED_NEXT: CP-0088 P0.5 — HTTP service (POST /v1/score, GET /health, per-tenant Bearer, 1 MB)
+PREFERRED_NEXT: CP-0088 P0.6 — score ledger + replay (await operator go)
+
+DONE: P0.5 loopback HTTP service (stdlib): POST /v1/score + GET /health, sha256-only per-tenant Bearer, org_id==tenant, 1 MB/413, <2 s timeouts (408/504, no append after deadline), typed 4xx without echo, metadata-only logs; `mesh minogan serve|hash-token`; p95 27 ms @200 events.
 
 DONE: P0.4 AgentMemory on C-RAM (day-bucket index, hash chain, kill -9 safe, tenant-checked reads); scorer memory= adds drift_long / recurrence / decline.
 
