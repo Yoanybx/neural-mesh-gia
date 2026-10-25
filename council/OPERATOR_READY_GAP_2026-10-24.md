@@ -37,7 +37,7 @@ Landing repo (`/workspace/minogan-landing`): marketing + investor papers only. *
 **Multi-tenant:** soft — schema has `orgs` + keys; **not** hard SaaS multi-tenant (no SSO, no per-tenant retention/delete proof, free-tier caps).  
 **Scorer:** built-in `rules` / `score_v0.3` only. Hook for external Mesh exists; **`getScorer` → `ruleScorer` only. “Not integrated yet.”**  
 **UW outcome in rules:** `uwOutcome(score)` → bind | bind-with-terms | refer (threshold heuristic). **No `decline` persistence path for a desk.**  
-**Repo:** `/workspace/minogan-pilot` — **not a git repo** (contract can drift without SHA).
+**Repo:** `/workspace/minogan-pilot` — **local git** HEAD `c1eb66490008462f554af24418edb02e367d8c39` (no remote/push). Contract pin: `docs/SCORER_CONTRACT_PIN.md`.
 
 ### C. SaaS / Command Center UI
 
@@ -90,7 +90,7 @@ Acceptance = one **named pilot carrier org** (still can be synthetic-first), rea
 Ordered steps (no spend until operator OK):
 
 1. **Freeze pilot in git** — SHA-pin `minogan.scorer/v1`; stop unversioned contract drift.  
-   ✔ Pilot is a repo; tag or commit hash cited by Mesh parity tests.
+   ✔ **DONE 2026-10-24** — local git HEAD `c1eb66490008462f554af24418edb02e367d8c39`; see `docs/SCORER_CONTRACT_PIN.md`. No remote/push.
 
 2. **Promote a `pilot` (not `dev`) Workers+D1 stack** on Cloudflare — separate D1, keys, no shared synthetic demo key in the UI.  
    ✔ Health returns `env: "pilot"`; unauthenticated reads 401; org isolation tested with 2 orgs.
